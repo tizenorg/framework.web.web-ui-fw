@@ -150,7 +150,7 @@ $( document ).bind("pagecreate", function () {
 		$.getScript( "./virtuallist-db-demo.js", function ( data, textStatus ) {
 			$("ul").filter( function () {
 				return $( this ).data("role") == "extendablelist";
-			}).addClass("vlLoadSuccess");
+			}).addClass("elLoadSuccess");
 
 			$("#genlist-extendable-page").die();
 			$("ul.ui-extendable-list-container").extendablelist("create");
@@ -218,20 +218,10 @@ $( document ).bind("pagecreate", function () {
 	});
 });
 
-$( document ).bind("pagecreate", function () {
-	var button = $('#calendarbutton');
-
-	button.bind('vclick', function ( e ) {
-		button.calendarpicker('open');
-		button.unbind('selectedDate').bind('selectedDate', function ( e,val ) {
-			$('#selectedCalendarDate').attr('value',val);
-		});
-	});
-});
-
-domReady( function () {
+$(document).ready( function () {
 	// add current datetime with browser language format
-	// NOTE: Globalize.* functions must be run after domReady.
+	// NOTE: Globalize.* functions must be run after docoument ready.
 	$('#current_date').html(Globalize.culture().name + " -- " +
 				Globalize.format( new Date(), "F" ));
+	$('#html_font_size').html('html font size:' + $('html').css('font-size'));
 });

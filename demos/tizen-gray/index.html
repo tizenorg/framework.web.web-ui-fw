@@ -1,23 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8" >
 	<script src="../../build/tizen-web-ui-fw/0.1/js/jquery.js"></script>
 	<script src="configure.js"></script>
 	<script src="../../build/tizen-web-ui-fw/0.1/js/tizen-web-ui-fw-libs.min.js"></script>
 	<script src="../../build/tizen-web-ui-fw/0.1/js/tizen-web-ui-fw.min.js"
-		data-framework-root="../../build/tizen-web-ui-fw"
-		data-framework-version="0.1"
-		data-framework-theme="tizen-gray">
+		data-framework-theme="tizen-gray"
+		data-framework-viewport-scale=false>
 	</script>
 	<script src="init.js"></script>
 	<script src="widgets/checkbox/checkbox.js"></script>
 	<script src="widgets/switch/switch.js"></script>
 	<script src="widgets/radio/radio.js"></script>
 	<script src="widgets/progressbar.js"></script>
+	<script src="widgets/ctxpopup.js"></script>
 	<script src="widgets/popupwindow/popupwindow.js"></script>
 	<script src="tips/generate-elements-dynamically.js"></script>
 	<script src="widgets/pagecontrol/pagecontrol-demo.js"></script>
+	<script src="widgets/multibuttonentry-demo.js"></script>
 	<link rel="stylesheet" href="custom.css" />
+	<title>Tizen UI</title>
+
+	<!-- for compatibility test -->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon" href="icon-tizen.png" />
+	<link rel="stylesheet" href="./widgets/grid/css/namecard.css" />
 </head>
 
 <body>
@@ -27,6 +36,7 @@
 		</div>
 		<div data-role="content">
 			<p id="current_date"></p>
+			<p id="html_font_size"></p>
 			<ul data-role="listview" data-icon="1line-textonly">
 				<li data-role="list-divider">Controls</li>
 				<li><a href="widgets/button/button.html">Button</a></li>
@@ -44,6 +54,8 @@
 				<li><a href="widgets/imageslider.html">ImageSlider</a></li>
 				<li><a href="widgets/pagecontrol/pagecontrol.html">PageControl</a></li>
 				<li><a href="widgets/selectioninfo.html">SelectionInfo</a></li>
+				<li><a href="widgets/handler.html">Handler</a></li>
+				<li><a href="#multibuttonentry">Multi-Button Entry</a></li>
 				<li data-role="list-divider">ControlBar</li>
 				<li><a href="#controlbar-demo">ControlBar</a></li>
 
@@ -51,8 +63,6 @@
 				<li><a href="widgets/list/list.html">List</a></li>
 				<li><a href="widgets/auto-dividers.html">Auto-Dividers</a></li>
 				<li><a href="widgets/fast-scroll.html">Short cut scroll (aka fast-scroll)</a></li>
-
-				<li data-role="list-divider">Dialogue Group</li>
 
 				<li data-role="list-divider">Navigation Bar</li>
 				<li><a href="widgets/segmentctrl.html">Segment Control</a></li>
@@ -75,13 +85,9 @@
 				<li><a href="#no-contents-3">No Contents - Unnamed</a></li>
 
 				<li data-role="list-divider">Grid view</li>
-				<li data-role="list-divider">Background text</li>
-				<li data-role="list-divider">Page Indicator</li>
-				<li data-role="list-divider">Landscape</li>
-				<li data-role="list-divider">Spilit view</li>
-
-				<li data-role="list-divider">Etc.</li>
-				<li><a href="#widgets/label.html">Label</a></li>
+				<li><a href="widgets/grid/virtualgrid.html">Virtual Grid</a></li>
+				<li data-role="list-divider">Multimedia view</li>
+				<li><a href="widgets/multimediaview/multimediaview.html">Multimedia view</a></li>
 
 				<li data-role="list-divider">Programming Tips</li>
 				<li><a href="tips/generate-elements-dynamically.html">Generate Elements by JS</a></li>
@@ -124,7 +130,7 @@
 			<h1>No Contents</h1>
 		</div>
 		<div data-role="content">
-			<div data-role="nocontents" id="nocontents0" data-text1="Text Type" data-text2="Text Text Text" data-type="text"></div>
+			<div data-role="nocontents" id="nocontents0" data-text1="Text Type" data-text2="Text" data-type="text"></div>
 		</div> <!-- /content -->
 	</div> <!-- /page -->
 
@@ -133,7 +139,7 @@
 			<h1>No Contents</h1>
 		</div>
 		<div data-role="content">
-			<div data-role="nocontents" id="nocontents1" data-text1="Picture Type" data-text2="Text Text Text" data-type="picture"></div>
+			<div data-role="nocontents" id="nocontents1" data-text1="Picture Type" data-text2="Text" data-type="picture"></div>
 		</div> <!-- /content -->
 	</div> <!-- /page -->
 
@@ -142,7 +148,7 @@
 			<h1>No Contents</h1>
 		</div>
 		<div data-role="content">
-			<div data-role="nocontents" id="nocontents2" data-text1="Multimeida Type" data-text2="Text Text Text" data-type="multimedia"></div>
+			<div data-role="nocontents" id="nocontents2" data-text1="Multimedia Type" data-text2="Text" data-type="multimedia"></div>
 		</div> <!-- /content -->
 	</div> <!-- /page -->
 
@@ -151,7 +157,7 @@
 			<h1>No Contents</h1>
 		</div>
 		<div data-role="content">
-			<div data-role="nocontents" id="nocontents3" data-text1="Unknown Type"></div>
+			<div data-role="nocontents" id="nocontents3" data-text1="Unnamed Type"></div>
 		</div> <!-- /content -->
 	</div> <!-- /page -->
 
@@ -727,8 +733,8 @@
 		<div data-role="content">
 			<div class="content-primary">
 				<ul data-role="listview">
-					<li><a href="#normalstyle">Normal</a></li>
-					<li><a href="#expendedstyle">Expended</a></li>
+					<li><a href="#normalstyle">Normal style title</a></li>
+					<li><a href="#extendedstyle">Extended style title</a></li>
 				</ul>
 			</div><!--/content-primary -->
 		</div>
@@ -736,7 +742,7 @@
 
 	<div data-role="page" id="normalstyle" data-add-back-btn="true">
 		<div data-role="header" data-position="fixed">
-			<h1>Title Area</h1>
+			<h1>Normal Title</h1>
 		</div>
 		<div data-role="content">
 			<div class="content-primary">
@@ -752,7 +758,7 @@
 	<div data-role="page" id="normal1btn">
 		<div data-role="header" data-position="fixed">
 			<a>Text1</a>
-			<h1>Title Area</h1>
+			<h1>Normal Title</h1>
 		</div>
 		<div data-role="content">
 			<div class="content-primary">
@@ -768,7 +774,7 @@
 	<div data-role="page" id="normal2btn">
 		<div data-role="header" data-position="fixed">
 			<a>Text1</a>
-			<h1>Title Area</h1>
+			<h1>Normal Title</h1>
 			<a>Text2</a>
 		</div>
 		<div data-role="content">
@@ -785,7 +791,7 @@
 	<div data-role="page" id="normal3btn" data-add-back-btn="true">
 		<div data-role="header" data-position="fixed">
 			<a>Text1</a>
-			<h1>Title Area</h1>
+			<h1>Normal Title</h1>
 			<a>Text2</a>
 			<a>Text3</a>
 		</div>
@@ -800,26 +806,26 @@
 		</div>
 	</div>
 
-	<div data-role="page" id="expendedstyle"  data-add-back-btn="true">
+	<div data-role="page" id="extendedstyle"  data-add-back-btn="true">
 		<div data-role="header" data-position="fixed">
-			<h1>Title Extend</h1>
+			<h1>Extended Title</h1>
 		</div>
 		<div data-role="content">
 			<div class="content-primary">
 				<ul data-role="listview">
-					<li><a href="#expendedstyle2btn">2 Button</a></li>
-					<li><a href="#expendedstyle3btn">3 Button</a></li>
-					<li><a href="#expendedstyle4btn">4 Button</a></li>
+					<li><a href="#extendedstyle2btn">2 Button</a></li>
+					<li><a href="#extendedstyle3btn">3 Button</a></li>
+					<li><a href="#extendedstyle4btn">4 Button</a></li>
 					<li><a href="#footerExtendedStyle">Footer Extended Style</a></li>
 				</ul>
 			</div><!--/content-primary -->
 		</div>
 	</div>
 
-	<div data-role="page" id="expendedstyle2btn">
+	<div data-role="page" id="extendedstyle2btn">
 		<div data-role="header" data-position="fixed">
 			<a>Text</a>
-			<h1>Title Extend 2 Button </h1>
+			<h1>Extended Title 2 Button </h1>
 			<a>Text</a>
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup" data-type="horizontal">
@@ -833,17 +839,17 @@
 		<div data-role="content">
 			<div class="content-primary">
 				<ul data-role="listview">
-					<li><a href="#expendedstyle2btn">2 Button</a></li>
-					<li><a href="#expendedstyle3btn">3 Button</a></li>
+					<li><a href="#extendedstyle2btn">2 Button</a></li>
+					<li><a href="#extendedstyle3btn">3 Button</a></li>
 				</ul>
 			</div><!--/content-primary -->
 		</div>
 	</div>
 
-	<div data-role="page" id="expendedstyle3btn">
+	<div data-role="page" id="extendedstyle3btn">
 		<div data-role="header" data-position="fixed">
 			<a>Text</a>
-			<h1>Title Extend 3 Button </h1>
+			<h1>Extended Title 3 Button </h1>
 			<a>Text</a>
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup" data-type="horizontal">
@@ -859,16 +865,16 @@
 		<div data-role="content">
 			<div class="content-primary">
 				<ul data-role="listview">
-					<li><a href="#expendedstyle2btn">2 Button</a></li>
-					<li><a href="#expendedstyle3btn">3 Button</a></li>
+					<li><a href="#extendedstyle2btn">2 Button</a></li>
+					<li><a href="#extendedstyle3btn">3 Button</a></li>
 				</ul>
 			</div><!--/content-primary -->
 		</div>
 	</div>
 
-	<div data-role="page" id="expendedstyle4btn">
+	<div data-role="page" id="extendedstyle4btn">
 		<div data-role="header" data-position="fixed">
-			<h1>Title Extend 4 Button </h1>
+			<h1>Extended Title 4 Button </h1>
 			<div data-role="fieldcontain">
 				<fieldset data-role="controlgroup" data-type="horizontal">
 					<input type="radio" name="radio-view-8" data-icon="segment-titlestyle-segonly" id="segment71" value="on" checked="checked" />
@@ -885,8 +891,8 @@
 		<div data-role="content">
 			<div class="content-primary">
 				<ul data-role="listview">
-					<li><a href="#expendedstyle2btn">2 Button</a></li>
-					<li><a href="#expendedstyle3btn">3 Button</a></li>
+					<li><a href="#extendedstyle2btn">2 Button</a></li>
+					<li><a href="#extendedstyle3btn">3 Button</a></li>
 				</ul>
 			</div><!--/content-primary -->
 		</div>
@@ -894,7 +900,7 @@
 
 	<div data-role="page" id="footerExtendedStyle">
 		<div data-role="header" data-position="fixed">
-			<h1>Footer extended style</h1>
+			<h1>Extended Footer style</h1>
 		</div>
 		<div data-role="content">
 			<p> test page </p>
@@ -915,5 +921,73 @@
 			<a>Edit</a>
 		</div>
 	</div>
+
+	<div data-role="page" id="multibuttonentry">
+		<div data-role="header" >
+			<h1>Multi-button Entry</h1>
+		</div>
+		<div data-role="content">
+			<div data-role="multibuttonentry" data-listuri="addressbook"></div>
+			<br>
+			<ul data-role="listview">
+				<li><a id='MBTaddItemTest'>Append Item</a></li>
+				<li><a id='MBTremoveItemTest'>Remove first Item</a></li>
+				<li><a id='MBTinputTextTest'>Input 'Hello'</a></li>
+				<li><a id='MBTgetInputTextTest'>Get input text</a></li>
+				<li><a id='MBTselectItemTest'>Select 1</a></li>
+				<li><a id='MBTgetSelectedItemTest'>Selected item</a></li>
+				<li><a id='MBTlengthTest'>Length</a></li>
+				<li><a id='MBTfocusOutTest'>Grouping On</a></li>
+				<li><a id='MBTfocusInTest'>Grouping Off</a></li>
+				<li><a id='MBTremoveAllItemTest'>Remove All Item</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="page"  id="addressbook" data-footer-Exist="false" >
+		<div data-role="header">
+			<h1>Address Book</h1>
+			<a id="cancelBtn" href="#multibuttonentry" data-role="button" class="ui-btn-right" >Cancel</a>
+		</div>
+		<div data-role="content" id="contentList">
+			<ul data-role="listview">
+				<li data-role="list-divider">A</li>
+				<li><a href="#multibuttonentry">Adam Kinkaid</a></li>
+				<li><a href="#multibuttonentry">Alex Wickerham</a></li>
+				<li><a href="#multibuttonentry">Avery Johnson</a></li>
+				<li data-role="list-divider">B</li>
+				<li><a href="#multibuttonentry">Bob Cabot</a></li>
+				<li data-role="list-divider">C</li>
+				<li><a href="#multibuttonentry">Caleb Booth</a></li>
+				<li><a href="#multibuttonentry">Christopher Adams</a></li>
+				<li><a href="#multibuttonentry">Culver James</a></li>
+				<li data-role="list-divider">D</li>
+				<li><a href="#multibuttonentry">David Walsh</a></li>
+				<li><a href="#multibuttonentry">Drake Alfred</a></li>
+				<li data-role="list-divider">E</li>
+				<li><a href="#multibuttonentry">Elizabeth Bacon</a></li>
+				<li><a href="#multibuttonentry">Emery Parker</a></li>
+				<li><a href="#multibuttonentry">Enid Voldon</a></li>
+				<li data-role="list-divider">F</li>
+				<li><a href="#multibuttonentry">Francis Wall</a></li>
+				<li data-role="list-divider">G</li>
+				<li><a href="#multibuttonentry">Graham Smith</a></li>
+				<li><a href="#multibuttonentry">Greta Peete</a></li>
+				<li data-role="list-divider">H</li>
+				<li><a href="#multibuttonentry">Harvey Walls</a></li>
+				<li data-role="list-divider">M</li>
+				<li><a href="#multibuttonentry">Mike Farnsworth</a></li>
+				<li><a href="#multibuttonentry">Murray Vanderbuilt</a></li>
+				<li data-role="list-divider">N</li>
+				<li><a href="#multibuttonentry">Nathan Williams</a></li>
+				<li data-role="list-divider">P</li>
+				<li><a href="#multibuttonentry">Paul Baker</a></li>
+				<li><a href="#multibuttonentry">Pete Mason</a></li>
+				<li data-role="list-divider">R</li>
+				<li><a href="#multibuttonentry">Rod Tarker</a></li>
+				<li data-role="list-divider">S</li>
+				<li><a href="#multibuttonentry">Sawyer Wakefield</a></li>
+			</ul>
+		</div> <!--/content -->
+	</div> <!--/page -->
 </body>
 </html>

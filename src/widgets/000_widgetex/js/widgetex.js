@@ -7,7 +7,7 @@
  * Copyright (C) 2011 by Intel Corporation Ltd.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
+ * copy of this software and associated documentation files (the "Software" ),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
@@ -69,7 +69,7 @@
 // source: "alternateWidgetName"
 //
 // If AJAX loading fails, source is set to a jQuery object containing a div with an error message. You can check whether
-// loading failed via the jQuery object's jqmData("tizen.widgetex.ajax.fail") data item. If false, then the jQuery object
+// loading failed via the jQuery object's jqmData( "tizen.widgetex.ajax.fail" ) data item. If false, then the jQuery object
 // is the actual prototype loaded via AJAX or present inline. Otherwise, the jQuery object is the error message div.
 //
 // If 'source' is defined as a jQuery object, it is considered already loaded.
@@ -88,7 +88,7 @@
 // Add _htmlProto to your widget's prototype as described above. Then, in your widget's _create() method, call
 // loadPrototype in the following manner:
 //
-// $.tizen.widgetex.loadPrototype.call(this, "namespace.widgetName");
+// $.tizen.widgetex.loadPrototype.call(this, "namespace.widgetName" );
 //
 // Thereafter, you may use the HTML prototype from your widget's prototype or, if you have specified a 'ui' key in your
 // _htmlProto key, you may use this._ui from your widget instance.
@@ -114,7 +114,7 @@
 // such code duplication, this class calls _setOption once for each option after _create() has completed.
 //
 // Furthermore, to avoid writing long switches in a widget's _setOption method, this class implements _setOption in such
-// a way that, for any given option (e.g. "myOption"), _setOption looks for a method _setMyOption in the widget's
+// a way that, for any given option (e.g. "myOption" ), _setOption looks for a method _setMyOption in the widget's
 // implementation, and if found, calls the method with the value of the option.
 //
 // If your widget does not inherit from widgetex, you can still use widgetex' systematic option handling:
@@ -151,176 +151,198 @@
 //
 // widgetex implements _setDisabled which will disable the input associated with this widget, if any. Thus, if you derive
 // from widgetex and you plan on implementing the disabled state, you should chain up to
-// $.tizen.widgetex.prototype._setDisabled(value), rather than $.Widget.prototype._setOption("disabled", value).
+// $.tizen.widgetex.prototype._setDisabled(value), rather than $.Widget.prototype._setOption( "disabled", value).
 
-(function($, undefined) {
+(function ($, undefined) {
 
 // Framework-specific HTML prototype path for AJAX loads
-function getProtoPath() {
-    var theScriptTag = $("script[data-framework-version][data-framework-root][data-framework-theme]");
+	function getProtoPath() {
+		var theScriptTag = $( "script[data-framework-version][data-framework-root][data-framework-theme]" );
 
-    return (theScriptTag.attr("data-framework-root")    + "/" +
-            theScriptTag.attr("data-framework-version") + "/themes/" + 
-            theScriptTag.attr("data-framework-theme")   + "/proto-html");
-}
+		return (theScriptTag.attr( "data-framework-root" ) + "/" +
+				theScriptTag.attr( "data-framework-version" ) + "/themes/" +
+				theScriptTag.attr( "data-framework-theme" ) + "/proto-html" );
+	}
 
-$.widget("tizen.widgetex", $.mobile.widget, {
-    _createWidget: function() {
-        $.tizen.widgetex.loadPrototype.call(this, this.namespace + "." + this.widgetName);
-        $.mobile.widget.prototype._createWidget.apply(this, arguments);
-    },
+	$.widget( "tizen.widgetex", $.mobile.widget, {
+		_createWidget: function () {
+			$.tizen.widgetex.loadPrototype.call( this, this.namespace + "." + this.widgetName );
+			$.mobile.widget.prototype._createWidget.apply( this, arguments );
+		},
 
-    _init: function() {
-        var page = this.element.closest(".ui-page"),
-            self = this,
-            myOptions = {};
+		_init: function () {
+			// TODO THIS IS TEMPORARY PATCH TO AVOID CTXPOPUP PAGE CRASH
+			if ( this.element === undefined ) {
+				return;
+			}
 
-        if (page.is(":visible"))
-            this._realize();
-        else
-            page.bind("pageshow", function() { self._realize(); });
+			var page = this.element.closest( ".ui-page" ),
+				self = this,
+				myOptions = {};
 
-        $.extend(myOptions, this.options);
+			if ( page.is( ":visible" ) ) {
+				this._realize();
+			} else {
+				page.bind( "pageshow", function () { self._realize(); } );
+			}
 
-        this.options = {};
+			$.extend( myOptions, this.options );
 
-        this._setOptions(myOptions);
-    },
+			this.options = {};
 
-    _getCreateOptions: function() {
-        // if we're dealing with an <input> element, value takes precedence over corresponding data-* attribute, if a
-        // mapping has been established via this._value. So, assign the value to the data-* attribute, so that it may
-        // then be assigned to this.options in the superclass' _getCreateOptions
+			this._setOptions( myOptions );
+		},
 
-        if (this.element.is("input") && this._value !== undefined) {
-            var theValue =
-                ((this.element.attr("type") === "checkbox" || this.element.attr("type") === "radio")
-                    ? this.element.is(":checked")
-                    : this.element.is("[value]")
-                        ? this.element.attr("value")
-                        : undefined);
+		_getCreateOptions: function () {
+			// if we're dealing with an <input> element, value takes precedence over corresponding data-* attribute, if a
+			// mapping has been established via this._value. So, assign the value to the data-* attribute, so that it may
+			// then be assigned to this.options in the superclass' _getCreateOptions
 
-            if (theValue != undefined)
-                this.element.attr(this._value.attr, theValue);
-        }
+			if (this.element.is( "input" ) && this._value !== undefined) {
+				var theValue =
+					( ( this.element.attr( "type" ) === "checkbox" || this.element.attr( "type" ) === "radio" )
+							? this.element.is( ":checked" )
+									: this.element.is( "[value]" )
+									? this.element.attr( "value" )
+											: undefined);
 
-        return $.mobile.widget.prototype._getCreateOptions.apply(this, arguments);
-    },
+				if ( theValue != undefined ) {
+					this.element.attr( this._value.attr, theValue );
+				}
+			}
 
-    _setOption: function(key, value) {
-        var setter = "_set" + key.replace(/^[a-z]/, function(c) {return c.toUpperCase();});
+			return $.mobile.widget.prototype._getCreateOptions.apply( this, arguments );
+		},
 
-        if (this[setter] !== undefined)
-            this[setter](value);
-        else
-            $.mobile.widget.prototype._setOption.apply(this, arguments);
-    },
+		_setOption: function ( key, value ) {
+			var setter = "_set" + key.replace(/^[a-z]/, function (c) { return c.toUpperCase(); } );
 
-    _setDisabled: function(value) {
-        $.Widget.prototype._setOption.call(this, "disabled", value);
-        if (this.element.is("input"))
-            this.element.attr("disabled", value);
-    },
+			if ( this[setter] !== undefined ) {
+				this[setter]( value );
+			} else {
+				$.mobile.widget.prototype._setOption.apply( this, arguments );
+			}
+		},
 
-    _setValue: function(newValue) {
-        $.tizen.widgetex.setValue(this, newValue);
-    },
+		_setDisabled: function ( value ) {
+			$.Widget.prototype._setOption.call( this, "disabled", value );
+			if ( this.element.is( "input" ) ) {
+				this.element.attr( "disabled", value );
+			}
+		},
 
-    _realize: function() {}
-});
+		_setValue: function ( newValue ) {
+			$.tizen.widgetex.setValue( this, newValue );
+		},
 
-$.tizen.widgetex.setValue = function(widget, newValue) {
-    if (widget._value !== undefined) {
-        var valueString = widget._value.makeString ? widget._value.makeString(newValue) : newValue;
+		_realize: function () {}
+	} );
 
-        widget.element.attr(widget._value.attr, valueString);
-        if (widget._value.signal !== undefined)
-            widget.element.triggerHandler(widget._value.signal, newValue);
-        if (widget.element.is("input")) {
-            var inputType = widget.element.attr("type");
+	$.tizen.widgetex.setValue = function ( widget, newValue ) {
+		if ( widget._value !== undefined ) {
+			var valueString = ( widget._value.makeString ? widget._value.makeString(newValue) : newValue ),
+				inputType;
 
-            // Special handling for checkboxes and radio buttons, where the presence of the "checked" attribute is really
-            // the value
-            if (inputType === "checkbox" || inputType === "radio") {
-                if (newValue)
-                    widget.element.attr("checked", true);
-                else
-                    widget.element.removeAttr("checked");
-            }
-            else
-                widget.element.attr("value", valueString);
-            widget.element.trigger("change");
-        }
-    }
-};
+			widget.element.attr( widget._value.attr, valueString );
+			if ( widget._value.signal !== undefined ) {
+				widget.element.triggerHandler( widget._value.signal, newValue );
+			}
 
-$.tizen.widgetex.assignElements = function(proto, obj) {
-    var ret = {};
-    for (var key in obj)
-        if ((typeof obj[key]) === "string") {
-            ret[key] = proto.find(obj[key]);
-            if (obj[key].match(/^#/))
-                ret[key].removeAttr("id");
-        }
-        else
-        if ((typeof obj[key]) === "object")
-            ret[key] = $.tizen.widgetex.assignElements(proto, obj[key]);
-    return ret;
-}
+			if ( widget.element.is( "input" ) ) {
+				inputType = widget.element.attr( "type" );
 
-$.tizen.widgetex.loadPrototype = function(widget, ui) {
-    var ar = widget.split(".");
+				// Special handling for checkboxes and radio buttons, where the presence of the "checked" attribute is really
+				// the value
+				if ( inputType === "checkbox" || inputType === "radio" ) {
+					if ( newValue ) {
+						widget.element.attr( "checked", true );
+					} else {
+						widget.element.removeAttr( "checked" );
+					}
+				} else {
+					widget.element.attr( "value", valueString );
+				}
 
-    if (ar.length == 2) {
-        var namespace = ar[0],
-            widgetName = ar[1];
+				widget.element.trigger( "change" );
+			}
+		}
+	};
 
-        var htmlProto = $("<div></div>")
-                .text("Failed to load proto for widget " + namespace + "." + widgetName + "!")
-                .css({background: "red", color: "blue", border: "1px solid black"})
-                .jqmData("tizen.widgetex.ajax.fail", true);
+	$.tizen.widgetex.assignElements = function (proto, obj) {
+		var ret = {},
+			key;
 
-        // If htmlProto is defined
-        if ($[namespace][widgetName].prototype._htmlProto !== undefined) {
-            // If no source is defined, use the widget name
-            if ($[namespace][widgetName].prototype._htmlProto.source === undefined)
-                $[namespace][widgetName].prototype._htmlProto.source = widgetName;
+		for ( key in obj ) {
+			if ( ( typeof obj[key] ) === "string" ) {
+				ret[key] = proto.find( obj[key] );
+				if ( obj[key].match(/^#/) ) {
+					ret[key].removeAttr( "id" );
+				}
+			} else {
+				if ( (typeof obj[key]) === "object" ) {
+					ret[key] = $.tizen.widgetex.assignElements( proto, obj[key] );
+				}
+			}
+		}
 
-            // Load the HTML prototype via AJAX if not defined inline
-            if (typeof $[namespace][widgetName].prototype._htmlProto.source === "string") {
-                // Establish the path for the proto file
-                    widget = $[namespace][widgetName].prototype._htmlProto.source,
-                    protoPath = getProtoPath();
+		return ret;
+	};
 
-                // Make the AJAX call
-                $.ajax({
-                    url: protoPath + "/" + widget + ".prototype.html",
-                    async: false,
-                    dataType: "html"
-                }).success(function(data, textStatus, jqXHR) {
-                    htmlProto = $("<div></div>").html(data).jqmData("tizen.widgetex.ajax.fail", false);
-                });
+	$.tizen.widgetex.loadPrototype = function ( widget, ui ) {
+		var ar = widget.split( "." ),
+			namespace,
+			widgetName,
+			htmlProto,
+			protoPath;
 
-                // Assign the HTML proto to the widget prototype
-                $[namespace][widgetName].prototype._htmlProto.source = htmlProto;
-            }
-            // Otherwise, use the inline definition
-            else {
-                // AJAX loading has trivially succeeded, since there was no AJAX loading at all
-                $[namespace][widgetName].prototype._htmlProto.source.jqmData("tizen.widgetex.ajax.fail", false);
-                htmlProto = $[namespace][widgetName].prototype._htmlProto.source;
-            }
+		if ( ar.length == 2 ) {
+			namespace = ar[0];
+			widgetName = ar[1];
+			htmlProto = $( "<div></div>" )
+						.text( "Failed to load proto for widget " + namespace + "." + widgetName + "!" )
+						.css( {background: "red", color: "blue", border: "1px solid black"} )
+						.jqmData( "tizen.widgetex.ajax.fail", true );
 
-            // If there's a "ui" portion in the HTML proto, copy it over to this instance, and
-            // replace the selectors with the selected elements from a copy of the HTML prototype
-            if ($[namespace][widgetName].prototype._htmlProto.ui !== undefined) {
-	        // Assign the relevant parts of the proto
-                $.extend(this, {
-                    _ui: $.tizen.widgetex.assignElements(htmlProto.clone(), $[namespace][widgetName].prototype._htmlProto.ui)
-                });
-            }
-        }
-    }
-};
+			// If htmlProto is defined
+			if ( $[namespace][widgetName].prototype._htmlProto !== undefined ) {
+				// If no source is defined, use the widget name
+				if ( $[namespace][widgetName].prototype._htmlProto.source === undefined ) {
+					$[namespace][widgetName].prototype._htmlProto.source = widgetName;
+				}
 
-})(jQuery);
+				// Load the HTML prototype via AJAX if not defined inline
+				if ( typeof $[namespace][widgetName].prototype._htmlProto.source === "string" ) {
+					// Establish the path for the proto file
+					widget = $[namespace][widgetName].prototype._htmlProto.source;
+					protoPath = getProtoPath();
+
+					// Make the AJAX call
+					$.ajax( {
+						url: protoPath + "/" + widget + ".prototype.html",
+						async: false,
+						dataType: "html"
+					}).success( function (data, textStatus, jqXHR ) {
+						htmlProto = $( "<div></div>" ).html(data).jqmData( "tizen.widgetex.ajax.fail", false );
+					} );
+
+					// Assign the HTML proto to the widget prototype
+					$[namespace][widgetName].prototype._htmlProto.source = htmlProto;
+				} else { // Otherwise, use the inline definition
+					// AJAX loading has trivially succeeded, since there was no AJAX loading at all
+					$[namespace][widgetName].prototype._htmlProto.source.jqmData( "tizen.widgetex.ajax.fail", false );
+					htmlProto = $[namespace][widgetName].prototype._htmlProto.source;
+				}
+
+				// If there's a "ui" portion in the HTML proto, copy it over to this instance, and
+				// replace the selectors with the selected elements from a copy of the HTML prototype
+				if ( $[namespace][widgetName].prototype._htmlProto.ui !== undefined ) {
+					// Assign the relevant parts of the proto
+					$.extend( this, {
+						_ui: $.tizen.widgetex.assignElements( htmlProto.clone(), $[namespace][widgetName].prototype._htmlProto.ui )
+					});
+				}
+			}
+		}
+	};
+
+}( jQuery ) );

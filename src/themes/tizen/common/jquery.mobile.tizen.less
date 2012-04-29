@@ -2,13 +2,13 @@
  * Common definition for theme
  */
 
-@font_size_default: 32px;	// Default unit font size
-//@rem_base: (1rem/@font_size_default);
+@font_size_default: 36px;	// Default unit font size. DO NOT USE THIS VALUE IN WIDGET CSS!
+@rem_base: (1rem/@font_size_default);
 
 @em_base: 1em/@font_size_default;	// WARNING: Don't use em unit!	This value is to be removed.
 @px_base: 1px;
 
-@unit_base: @px_base;
+@unit_base: @rem_base;
 
 @font_family: Helvetica, Arial, sans-serif;
 

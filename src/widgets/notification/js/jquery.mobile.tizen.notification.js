@@ -1,6 +1,27 @@
-/*
-	Author: Minkyu Kang <mk7.kang@samsung.com>
-*/
+/* ***************************************************************************
+ * Copyright (c) 2000 - 2011 Samsung Electronics Co., Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ * ***************************************************************************
+ *
+ *	Author: Minkyu Kang <mk7.kang@samsung.com>
+ */
 
 /*
  * Notification widget
@@ -90,9 +111,9 @@
 		_get_container: function () {
 			if ( this.type === 'ticker' ) {
 				return $( this.element ).find(".ui-ticker");
-			} else {
-				return $( this.element ).find(".ui-smallpopup");
 			}
+
+			return $( this.element ).find(".ui-smallpopup");
 		},
 
 		_add_event: function () {
@@ -100,9 +121,7 @@
 				container = this._get_container();
 
 			if ( this.type === 'ticker' ) {
-				var btn_container = container.find(".ui-ticker-btn");
-
-				btn_container.append( this.btn );
+				container.find(".ui-ticker-btn").append( this.btn );
 
 				this.btn.bind( "vmouseup", function () {
 					self.hide();
@@ -131,13 +150,15 @@
 			clearInterval( this.interval );
 		},
 
-		_get_position: function ( height ) {
-			var $page = $('.ui-page'),
+		_set_position: function () {
+			var container = this._get_container(),
+				container_h = parseFloat( container.css('height') ),
+				$page = $('.ui-page'),
 				$footer = $page.children('.ui-footer'),
 				footer_h = $footer.outerHeight() || 0,
-				position = window.innerHeight - height - footer_h;
+				position = $(window).height() - container_h - footer_h;
 
-			return position;
+			container.css( 'top', position );
 		},
 
 		_update: function () {
@@ -147,11 +168,11 @@
 				this.html.detach();
 			}
 
-			text[0] = $(this.element).attr('data-text1');
-			text[1] = $(this.element).attr('data-text2');
-			this.param = $(this.element).attr('data-param');
-			this.seconds = $(this.element).attr('data-interval');
-			this.type = $(this.element).attr('data-type') || 'popup';
+			text[0] = $(this.element).jqmData('text1');
+			text[1] = $(this.element).jqmData('text2');
+			this.param = $(this.element).jqmData('param');
+			this.seconds = $(this.element).jqmData('interval');
+			this.type = $(this.element).jqmData('type') || 'popup';
 
 			if ( this.type === 'ticker' ) {
 				this.html = $('<div class="ui-ticker">' +
@@ -162,7 +183,6 @@
 						text[1] + '</div>' +
 						'<div class="ui-ticker-body"></div>' +
 						'<div class="ui-ticker-btn"></div>' +
-						'</div>' +
 						'</div>');
 
 				$( this.element ).append( this.html );
@@ -174,16 +194,13 @@
 
 				$( this.element ).append( this.html );
 
-				var container = $( this.element ).find(".ui-smallpopup"),
-					container_h = parseFloat( container.css('height') );
-
-				container.css( 'top', this._get_position(container_h) );
+				this._set_position();
 			}
 		},
 
 		_create: function () {
 			this.btn = $("<a href='#' class='ui-input-cancel' title='close' data-theme='s'>Close</a>")
-				.tap( function( event ) {
+				.tap( function ( event ) {
 					event.preventDefault();
 				})
 				.buttonMarkup({

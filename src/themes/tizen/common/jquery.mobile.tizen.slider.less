@@ -1,7 +1,9 @@
 @import "config.less";
 
-@popup-size: 102px;
-@padding-size: 18px;
+@popup-size: 102 * @unit_base;
+@padding-size: 18 * @unit_base;
+@img-height: 80 * @unit_base;
+@img-width: 80 * @unit_base;
 
 label.ui-slider {
 	display: block;
@@ -9,7 +11,7 @@ label.ui-slider {
 
 input.ui-slider-input {
 	display: inline-block;
-	width: 50px;
+	width: 50 * @unit_base;
 }
 
 select.ui-slider-switch {
@@ -19,53 +21,57 @@ select.ui-slider-switch {
 .ui-slider-bg,
 .ui-slider-icon-bg {
 	position: relative;
-	margin-left: 32px;
-	margin-right: 32px;
+	margin-left: 32 * @unit_base;
+	margin-right: 32 * @unit_base;
 	margin-bottom: 0.2em;
 	vertical-align: middle;
 }
 
 .ui-slider-icon-bg {
-	margin-left: 96px;
-	margin-right: 96px;
+	margin-left: 96 * @unit_base;
+	margin-right: 96 * @unit_base;
 }
 
 .ui-slider-left-volume,
 .ui-slider-left-bright {
 	position: absolute;
 	top: -0.2em;
-	left: -96px;
-	height: 80px;
-	width: 80px;
+	left: -96 * @unit_base;
+	height: @img-height;
+	width: @img-width;
 	vertical-align: middle;
 	background: url(images/00_slider_btn_brightness01.png) no-repeat;
+	.LESSbackground-size(@img-height, @img-width);
 }
 
 .ui-slider-left-volume {
 	background: url(images/00_slider_btn_volume01.png) no-repeat;
+	.LESSbackground-size(@img-height, @img-width);
 }
 
 .ui-slider-right-volume,
 .ui-slider-right-bright {
 	position: absolute;
 	top: -0.2em;
-	right: -96px;
-	height: 80px;
-	width: 80px;
+	right: -96 * @unit_base;
+	height: @img-height;
+	width: @img-width;
 	vertical-align: middle;
 	background: url(images/00_slider_btn_brightness02.png) no-repeat;
+	.LESSbackground-size(@img-height, @img-width);
 }
 
 .ui-slider-right-volume {
 	background: url(images/00_slider_btn_volume02.png) no-repeat;
+	.LESSbackground-size(@img-height, @img-width);
 }
 
 .ui-slider-left-text {
 	position: absolute;
 	top: -0.2em;
-	left: -96px;
-	height: 80px;
-	width: 80px;
+	left: -96 * @unit_base;
+	height: 80 * @unit_base;
+	width: 80 * @unit_base;
 	text-align: center;
 	color: rgb(100, 100, 100);
 }
@@ -73,9 +79,9 @@ select.ui-slider-switch {
 .ui-slider-right-text {
 	position: absolute;
 	top: -0.2em;
-	right: -96px;
-	height: 80px;
-	width: 80px;
+	right: -96 * @unit_base;
+	height: 80 * @unit_base;
+	width: 80 * @unit_base;
 	text-align: center;
 	color: rgb(100, 100, 100);
 }
@@ -83,7 +89,7 @@ select.ui-slider-switch {
 div.ui-slider {
 	display: inline-block;
 	overflow: visible;
-	height: 16px;
+	height: 16 * @unit_base;
 	width: 100%;
 	background-image: url(images/00_winset_list_progress_bg.png);
 
@@ -91,7 +97,7 @@ div.ui-slider {
 		top: 0.15em !important;
 	}
 	.ui-btn-inner {
-		padding: 0.4em 0px;
+		padding: 0.4em 0 * @unit_base;
 	}
 	.ui-btn-text {
 		color: @color_slider_handle_text;
@@ -101,13 +107,14 @@ div.ui-slider {
 a.ui-slider-handle {
 	position: relative;
 	z-index: 10;
-	top: -21px;
-	width: 58px;
-	height: 58px;
-	margin-top: -29px;
-	margin-left: -29px;
+	top: -21 * @unit_base;
+	width: 58 * @unit_base;
+	height: 58 * @unit_base;
+	margin-top: -29 * @unit_base;
+	margin-left: -29 * @unit_base;
 	color: @color_slider_handle_text;
 	background: url(images/00_slider_handle.png) no-repeat;
+	.LESSbackground-size(58 * @unit_base, 58 * @unit_base);
 }
 
 .ui-slider-popup {
@@ -119,12 +126,13 @@ a.ui-slider-handle {
 	z-index: 100;
 	opacity: 0.9;
 	background: url(images/00_slider_popup_bg.png) no-repeat;
+	.LESSbackground-size(@popup-size, @popup-size);
 }
 
 .ui-slider-bar {
 	position: absolute;
 	top: 0.8em;
-	height: 16px;
+	height: 16 * @unit_base;
 	width: 0;
 	background-image: url(images/00_winset_list_progress_bar.png);
 }
@@ -132,7 +140,8 @@ a.ui-slider-handle {
 .ui-slider-handle-press {
 	position: absolute;
 	z-index: 15;
-	width: 58px;
-	height: 58px;
+	width: 58 * @unit_base;
+	height: 58 * @unit_base;
 	background: url(images/00_slider_handle_press.png) no-repeat;
+	.LESSbackground-size(58 * @unit_base, 58 * @unit_base);
 }

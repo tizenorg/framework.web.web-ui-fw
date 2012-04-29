@@ -1,8 +1,8 @@
 @import "config.less";
-@search-bar-padding: (16*@em_base);
+@search-bar-padding: (16*@unit_base);
 
 label.ui-input-text {
-	font-size: @font_size_default;
+	font-size: 32 * @unit_base;
 	line-height: 1.4;
 	display: block;
 	font-weight: normal;
@@ -12,13 +12,13 @@ input.ui-input-text, textarea.ui-input-text {
 	background-image: none;
 	padding: .4em;
 	line-height: 1.4;
-	font-size: @font_size_default;
+	font-size: 32 * @unit_base;
 	display: block;
 	width: 95%;
 }
 input.ui-input-text { -webkit-appearance: none; }
 textarea.ui-input-text {
-	height: 50*@em_base;
+	height: 50*@unit_base;
 	-webkit-transition: height 200ms linear;
 	-moz-transition: height 200ms linear;
 	-o-transition: height 200ms linear;
@@ -72,7 +72,7 @@ textarea.ui-input-text {
 }
 
 /* orientation adjustments - incomplete!*/
-@media all and (min-width: 720*@em_base){
+@media all and (min-width: 720*@unit_base){
 	label.ui-input-text  {
 		vertical-align: top;
 		display: inline-block;
@@ -137,7 +137,6 @@ textarea.ui-input-text {
 		margin-right : 10 * @unit_base;
 		padding : 0px;
 
-		background : black;
 		height : 74 * @unit_base;
 		
 		border-color : none;

@@ -7,6 +7,8 @@ THEME_NAME = default
 
 PATH := $(CURDIR)/build-tools/bin:$(PATH)
 
+JSLINT_LEVEL = 1
+JSLINT = jslint --sloppy --eqeq --bitwise --forin --nomen --predef jQuery --color --plusplus --browser --jqmspace
 INLINE_PROTO = 1
 OUTPUT_ROOT = $(CURDIR)/build
 FRAMEWORK_ROOT = ${OUTPUT_ROOT}/${PROJECT_NAME}/${VERSION}
@@ -37,25 +39,20 @@ FW_MIN = $(subst .js,.min.js,$(FW_JS))
 FW_LIB_JS = ${JS_OUTPUT_ROOT}/${PROJECT_NAME}-libs.js
 FW_LIB_MIN = $(subst .js,.min.js,$(FW_LIB_JS))
 
-
-
 FW_JS_THEME = ${JS_OUTPUT_ROOT}/${PROJECT_NAME}-${THEME_NAME}-theme.js
 FW_CSS = ${CSS_OUTPUT_ROOT}/${PROJECT_NAME}-theme.css
 FW_LIBS_JS = ${JS_OUTPUT_ROOT}/${PROJECT_NAME}-libs.js
 FW_THEME_CSS_FILE = ${PROJECT_NAME}-theme.css
 FW_WIDGET_CSS_FILE = ${WIDGET_CSS_OUTPUT_ROOT}/${PROJECT_NAME}-widget.css
 
-LIBS_JS_FILES = underscore.js \
-                jlayout/jquery.sizes.js \
-                jlayout/jlayout.border.js \
-                jlayout/jlayout.grid.js \
-                jlayout/jlayout.flexgrid.js \
-                jlayout/jlayout.flow.js \
-                jlayout/jquery.jlayout.js \
-				domready.js \
+LIBS_JS_FILES = jlayout/jquery.sizes.js \
+				jlayout/jlayout.border.js \
+				jlayout/jlayout.grid.js \
+				jlayout/jlayout.flexgrid.js \
+				jlayout/jlayout.flow.js \
+				jlayout/jquery.jlayout.js \
                 $(NULL)
 
-JQUERY_MOBILE = submodules/jquery-mobile/compiled/jquery.mobile.js
 JQUERY_MOBILE_CSS = submodules/jquery-mobile/compiled/jquery.mobile.structure.css \
                     submodules/jquery-mobile/compiled/jquery.mobile.css \
                     $(NULL)
@@ -67,13 +64,11 @@ JQM_LIB_PATH = $(CURDIR)/libs/js/${JQM_VERSION}
 ifeq (${DEBUG},yes)
 LIBS_JS_FILES +=\
 	jquery.mobile.js \
-    jquery.ui.position.git+dfe75e1.js \
     $(NULL)
 JQUERY = jquery-1.6.4.js
 else
 LIBS_JS_FILES +=\
 	jquery.mobile.min.js \
-    jquery.ui.position.git+dfe75e1.min.js \
     $(NULL)
 JQUERY = jquery-1.6.4.min.js
 endif
@@ -90,23 +85,26 @@ LIBS_CSS_FILES +=\
 endif
 
 
-all: third_party widgets loader themes version_compat compress
+all: libs_prepare third_party widgets libs_cleanup loader themes version_compat compress
 
-
-jqm: init
-	# Building jQuery Mobile...
-	@@test -d ${JQM_LIB_PATH}.bak && rm -f ${JQM_LIB_PATH} && mv ${JQM_LIB_PATH}.bak ${JQM_LIB_PATH}; \
-	cp -a ${JQM_LIB_PATH} ${JQM_LIB_PATH}.bak; \
-	for f in `ls $(CURDIR)/libs/patch/*.patch`; do \
+libs_prepare:
+	# Prepare libs/ build...
+	@@test -d ${LIBS_DIR}.bak && rm -rf ${LIBS_DIR} && mv ${LIBS_DIR}.bak ${LIBS_DIR}; \
+	cp -a ${LIBS_DIR} ${LIBS_DIR}.bak
+	for f in `ls ${LIBS_DIR}/patch/*.patch`; do \
 		cd $(CURDIR); \
 		echo "Apply patch: $$f";  \
 		cat $$f | patch -p1 -N; \
 	done; \
+
+libs_cleanup:
+	# Cleanup libs/ directory...
+	@@rm -rf ${LIBS_DIR} && mv ${LIBS_DIR}.bak ${LIBS_DIR}
+
+jqm: init
+	# Building jQuery Mobile...
 	cd ${JQM_LIB_PATH} && make all-but-min || exit 1; \
 	cp -f ${JQM_LIB_PATH}/compiled/*.js ${JQM_LIB_PATH}/../; \
-	rm -rf ${JQM_LIB_PATH}; mv ${JQM_LIB_PATH}.bak ${JQM_LIB_PATH};
-
-
 
 third_party: init jqm
 	# Building third party components...
@@ -131,15 +129,23 @@ widgets: init third_party
 	@@ls -l ${WIDGETS_DIR} | grep '^d' | awk '{print $$NF;}' | \
 	    while read REPLY; do \
 	        echo "	# Building widget $$REPLY"; \
-                if test "x${INLINE_PROTO}x" = "x1x"; then \
-                  ./tools/inline-protos.sh ${WIDGETS_DIR}/$$REPLY >> ${WIDGETS_DIR}/$$REPLY/js/$$REPLY.js.compiled; \
-                  cat ${WIDGETS_DIR}/$$REPLY/js/$$REPLY.js.compiled >> ${FW_JS}; \
-                else \
-	          for f in `find ${WIDGETS_DIR}/$$REPLY -iname 'js/*.js' | sort`; do \
-	              echo "		$$f"; \
-	              cat $$f >> ${FW_JS}; \
-	          done; \
-                fi; \
+			if test ${JSLINT_LEVEL} -ge 1; then \
+				for FNAME in ${WIDGETS_DIR}/$$REPLY/js/*.js; do \
+					${JSLINT} $$FNAME; \
+					if test ${JSLINT_LEVEL} -ge 2 -a $$? -ne 0; then \
+						exit 1; \
+					fi; \
+				done; \
+			fi; \
+			if test "x${INLINE_PROTO}x" = "x1x"; then \
+				./tools/inline-protos.sh ${WIDGETS_DIR}/$$REPLY >> ${WIDGETS_DIR}/$$REPLY/js/$$REPLY.js.compiled; \
+				cat ${WIDGETS_DIR}/$$REPLY/js/$$REPLY.js.compiled >> ${FW_JS}; \
+			else \
+				for f in `find ${WIDGETS_DIR}/$$REPLY -iname 'js/*.js' | sort`; do \
+					echo "		$$f"; \
+					cat $$f >> ${FW_JS}; \
+				done; \
+            fi; \
 	        for f in `find ${WIDGETS_DIR}/$$REPLY -iname '*.js.theme' | sort`; do \
 	            echo "		$$f"; \
 	            cat $$f >> ${FW_JS_THEME}; \
@@ -279,4 +285,5 @@ init: clean
 	@@mkdir -p ${CSS_OUTPUT_ROOT}
 	@@mkdir -p ${CSS_IMAGES_OUTPUT_DIR}
 	@@mkdir -p ${PROTOTYPE_HTML_OUTPUT_DIR}
+	@@test -h ${LATEST_ROOT} || ln -s ${FRAMEWORK_ROOT} ${LATEST_ROOT}
 	@@rm -f docs/*.html

@@ -23,7 +23,7 @@ CSS_SRCS=	../common/jquery.mobile.theme.less.css \
 		../common/jquery.mobile.segmentctrl.less.css \
 		../common/jquery.mobile.tizen.optionheader.less.css \
 		../common/jquery.mobile.tizen.virtuallistview.less.css \
-		../common/jquery.mobile.tizen.scrollview.css \
+		../common/jquery.mobile.tizen.scrollview.less.css \
 		../common/jquery.mobile.tizen.hsvpicker.less.css \
 		../common/jquery.mobile.tizen.colorpalette.less.css \
 		../common/jquery.mobile.tizen.colortitle.less.css \
@@ -43,8 +43,12 @@ CSS_SRCS=	../common/jquery.mobile.theme.less.css \
 		../common/jquery.mobile.tizen.toggleswitch.less.css \
 		../common/jquery.mobile.tizen.huegradient.css \
 		../common/jquery.mobile.tizen.colorpicker.less.css \
-		../common/jquery.mobile.tizen.colorpickerbutton.css \
-		../common/jquery.mobile.tizen.triangle.less.css
+		../common/jquery.mobile.tizen.colorpickerbutton.less.css \
+		../common/jquery.mobile.tizen.triangle.less.css \
+		../common/jquery.mobile.tizen.multibuttonentry.less.css \
+		../common/jquery.mobile.tizen.scrollview.handler.less.css \
+		../common/jquery.mobile.tizen.virtualgridview.less.css \
+		../common/jquery.mobile.tizen.multimediaview.less.css
 
 all: prepare css images js
 
