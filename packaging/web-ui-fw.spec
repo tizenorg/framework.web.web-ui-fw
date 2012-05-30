@@ -14,6 +14,7 @@ Tizen Web UI Framework library package
 %setup -q
 
 %build
+cp %{SOURCE1001} .
 make
 
 
@@ -24,6 +25,7 @@ make
 
 
 %files
+%manifest web-ui-fw.manifest
 /usr/lib/tizen-web-ui-fw/*/js
 /usr/lib/tizen-web-ui-fw/*/themes/tizen-gray
 
