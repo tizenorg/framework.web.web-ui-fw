@@ -111,10 +111,13 @@
 
 		_stylerMouseOut: function () {
 			$( this ).toggleClass( "ui-btn-hover-s" );
+			$( this ).addClass( "ui-btn-up-s" );
+			$( this ).removeClass( "ui-btn-down-s" );
 		},
 
 		_pushData: function ( template, data ) {
 			var o = this.options,
+				t = this,
 				i = 0,
 				dataTable = data,
 				myTemplate = $( "#" + template ),
@@ -124,6 +127,15 @@
 			for (i = 0; i < loadMoreItems; i++ ) {
 				htmlData = myTemplate.tmpl( dataTable[ i ] );
 				$( o.id ).append( $( htmlData ).attr( 'id', 'li_' + i ) );
+
+				/* Add style */
+				$( o.id + ">" + o.childSelector )
+					.addClass( "ui-btn-up-s" )
+					.bind( "mouseup", t._stylerMouseUp )
+					.bind( "mousedown", t._stylerMouseDown )
+					.bind( "mouseover", t._stylerMouseOver )
+					.bind( "mouseout", t._stylerMouseOut );
+
 				last_index++;
 			}
 
@@ -168,13 +180,34 @@
 
 		recreate: function ( newArray ) {
 			var t = this,
-				o = this.options;
+				o = this.options,
+				myTemplate,
+				more_items_to_load,
+				num_next_load_items,
+				htmlData;
 
 			$( o.id ).empty();
 
+			last_index = 0;
 			TOTAL_ITEMS = newArray.length;
 
 			t._pushData( ( o.template), newArray );
+
+			/* Append "Load more" message on the last of list */
+			if ( TOTAL_ITEMS > last_index ) {
+				myTemplate = $( "#" + o.loadmore );
+				more_items_to_load = TOTAL_ITEMS - last_index;
+				num_next_load_items = ( o.extenditems <= more_items_to_load) ? o.extenditems : more_items_to_load;
+				htmlData = myTemplate.tmpl( { NUM_MORE_ITEMS : num_next_load_items } );
+
+				$( o.id ).append( $( htmlData ).attr( 'id', "load_more_message" ) );
+
+				$( "#load_more_message" ).live( "click", t.options, t._loadmore );
+			} else {
+				/* No more items to load */
+				$( "#load_more_message" ).die();
+				$( "#load_more_message" ).remove();
+			}
 
 			if ( o.childSelector == " ul" ) {
 				$( o.id + " ul" ).swipelist();

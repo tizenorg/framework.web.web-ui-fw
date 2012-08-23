@@ -24,19 +24,19 @@
  */
 
 /*
- * Notification widget
+ * Imageslider widget
  *
  * HTML Attributes
  *
  *  data-role: set to 'imageslider'
- *  data-start-index: start index
+ *  data-index: start index
  *  data-vertical-align: set to top or middle or bottom.
  *
  * APIs
  *
- *  add(image_file): add the image (parameter: url of iamge)
- *  del(image_index): delete the image (parameter: index of image)
- *  refresh(): refresh the widget, should be called after add or del.
+ *  add(file): add the image (parameter: url of iamge)
+ *  delete(index): delete the image (parameter: index of image)
+ *  refresh(index): refresh the widget, should be called after add or del. (parameter: start index)
  *
  * Events
  *
@@ -44,7 +44,7 @@
  *
  * Example
  *
- * <div data-role="imageslider" id="imageslider" data-start-index="3" data-vertical-align="middle">
+ * <div data-role="imageslider" id="imageslider" data-index="3" data-vertical-align="middle">
  *	<img src="01.jpg">
  *	<img src="02.jpg">
  *	<img src="03.jpg">
@@ -60,7 +60,7 @@
  * });
  *
  * $('#imageslider-del').bind('vmouseup', function ( e ) {
- *	$('#imageslider').imageslider('del');
+ *	$('#imageslider').imageslider('delete');
  * });
  *
  */
@@ -68,7 +68,8 @@
 (function ( $, window, undefined ) {
 	$.widget( "tizen.imageslider", $.mobile.widget, {
 		options: {
-			photoFlicking: false
+			flicking: false,
+			duration: 500
 		},
 
 		dragging: false,
@@ -86,36 +87,35 @@
 		align_type: null,
 		direction: 1,
 		container: null,
-		interval: null,
+		loader: [],
 
-		_resize: function ( obj ) {
-			var width,
-				height,
-				margin = 40,
+		_resize: function ( index ) {
+			var img = this.images[index],
+				width = this.images[index].width(),
+				height = this.images[index].height(),
+				margin = 0,
 				ratio,
 				img_max_width = this.max_width - margin,
 				img_max_height = this.max_height - margin;
 
-			height = obj.height();
-			width = obj.width();
-
 			ratio = height / width;
 
 			if ( width > img_max_width ) {
-				obj.width( img_max_width );
-				obj.height( img_max_width * ratio );
+				img.width( img_max_width );
+				img.height( img_max_width * ratio );
 			}
 
-			height = obj.height();
+			height = img.height();
 
 			if ( height > img_max_height ) {
-				obj.height( img_max_height );
-				obj.width( img_max_height / ratio );
+				img.height( img_max_height );
+				img.width( img_max_height / ratio );
 			}
 		},
 
-		_align: function ( obj, img ) {
-			var img_top = 0;
+		_align: function ( index, obj ) {
+			var img = this.images[index],
+				img_top = 0;
 
 			if ( !obj.length ) {
 				return;
@@ -132,36 +132,56 @@
 			obj.css( 'top', img_top + 'px' );
 		},
 
-		_detach: function ( image_index, obj ) {
+		_attach: function ( index, obj ) {
+			var self = this,
+				processing = function () {
+					self._resize( index );
+					self._align( index, obj );
+				};
+
 			if ( !obj.length ) {
 				return;
 			}
-			if ( image_index < 0 ) {
+			if ( index < 0 ) {
 				return;
 			}
-			if ( image_index >= this.images.length ) {
-				return;
-			}
-
-			this.images[image_index].detach();
-			obj.css( "display", "none" );
-		},
-
-		_attach: function ( image_index, obj ) {
-			if ( !obj.length ) {
-				return;
-			}
-			if ( image_index < 0 ) {
-				return;
-			}
-			if ( image_index >= this.images.length ) {
+			if ( index >= this.images.length ) {
 				return;
 			}
 
 			obj.css( "display", "block" );
-			obj.append( this.images[image_index] );
-			this._resize( this.images[image_index] );
-			this._align( obj, this.images[image_index] );
+			obj.append( this.images[index] );
+
+			if ( this.images[index].height() ) {
+				processing();
+			} else {
+				this.loader[index] = setInterval( function () {
+					if ( !self.images[index].height() ) {
+						return;
+					}
+
+					processing();
+					clearInterval( self.loader[index] );
+				}, 10);
+			}
+		},
+
+		_detach: function ( index, obj ) {
+			if ( !obj.length ) {
+				return;
+			}
+			if ( index < 0 ) {
+				return;
+			}
+			if ( index >= this.images.length ) {
+				return;
+			}
+
+			obj.css( "display", "none" );
+			this.images[index].removeAttr("style");
+			this.images[index].detach();
+
+			clearInterval( this.loader[index] );
 		},
 
 		_drag: function ( _x ) {
@@ -172,7 +192,7 @@
 				return;
 			}
 
-			if ( this.options.photoFlicking === false ) {
+			if ( this.options.flicking === false ) {
 				delta = this.org_x - _x;
 
 				// first image
@@ -189,10 +209,10 @@
 
 			this.cur_img.css( 'left', coord_x + 'px' );
 			if ( this.next_img.length ) {
-				this.next_img.css( 'left', coord_x + this.max_width + 'px' );
+				this.next_img.css( 'left', coord_x + this.window_width + 'px' );
 			}
 			if ( this.prev_img.length ) {
-				this.prev_img.css( 'left', coord_x - this.max_width + 'px' );
+				this.prev_img.css( 'left', coord_x - this.window_width + 'px' );
 			}
 		},
 
@@ -235,7 +255,7 @@
 					this.index++;
 
 					if ( this.next_img.length ) {
-						this.next_img.css( 'left', this.max_width + 'px' );
+						this.next_img.css( 'left', this.window_width + 'px' );
 						this._attach( this.index + 1, this.next_img );
 					}
 
@@ -252,7 +272,7 @@
 					this.index--;
 
 					if ( this.prev_img.length ) {
-						this.prev_img.css( 'left', -this.max_width + 'px' );
+						this.prev_img.css( 'left', -this.window_width + 'px' );
 						this._attach( this.index - 1, this.prev_img );
 					}
 
@@ -260,22 +280,21 @@
 				}
 			}
 
-			sec = 500;
+			sec = this.options.duration;
 			self = this;
 
 			this.moving = true;
 
-			this.interval = setInterval( function () {
+			setTimeout( function () {
 				self.moving = false;
-				clearInterval( self.interval );
 			}, sec - 50 );
 
 			this.cur_img.animate( { left: 0 }, sec );
 			if ( this.next_img.length ) {
-				this.next_img.animate( { left: this.max_width }, sec );
+				this.next_img.animate( { left: this.window_width }, sec );
 			}
 			if ( this.prev_img.length ) {
-				this.prev_img.animate( { left: -this.max_width }, sec );
+				this.prev_img.animate( { left: -this.window_width }, sec );
 			}
 		},
 
@@ -345,6 +364,12 @@
 		},
 
 		_show: function () {
+			/* resizing */
+			this.window_width = $( window ).width();
+			this.max_width = this._get_width();
+			this.max_height = this._get_height();
+			this.container.css( 'height', this.max_height );
+
 			this.cur_img = $( 'div' ).find( '.ui-imageslider-bg:eq(' + this.index + ')' );
 			this.prev_img = this.cur_img.prev();
 			this.next_img = this.cur_img.next();
@@ -354,13 +379,13 @@
 			this._attach( this.index + 1, this.next_img );
 
 			if ( this.prev_img.length ) {
-				this.prev_img.css( 'left', -this.max_width + 'px' );
+				this.prev_img.css( 'left', -this.window_width + 'px' );
 			}
 
 			this.cur_img.css( 'left', '0px' );
 
 			if ( this.next_img.length ) {
-				this.next_img.css( 'left', this.max_width + 'px' );
+				this.next_img.css( 'left', this.window_width + 'px' );
 			}
 		},
 
@@ -380,32 +405,38 @@
 			this._del_event();
 		},
 
-		_get_height: function () {
-			var $page = $( '.ui-page' ),
+		_get_width: function () {
+			var $page = $( this.element ).parentsUntil( 'ui-page' ),
 				$content = $page.children( '.ui-content' ),
-				$header = $page.children( '.ui-header' ),
-				$footer = $page.children( '.ui-footer' ),
-				header_h = $header.outerHeight(),
-				footer_h = $footer.outerHeight(),
-				padding = parseFloat( $content.css( 'padding-top' ) ) + parseFloat( $content.css( 'padding-bottom' ) ),
-				content_h = $( window ).height() - header_h - footer_h - padding * 2;
+				padding = parseFloat( $content.css( 'padding-left' ) )
+					+ parseFloat( $content.css( 'padding-right' ) ),
+				content_w = $( window ).width() - padding;
+
+			return content_w;
+		},
+
+		_get_height: function () {
+			var $page = $( this.element ).parentsUntil( 'ui-page' ),
+				$content = $page.children( '.ui-content' ),
+				header_h = $page.children( '.ui-header' ).outerHeight() || 0,
+				footer_h = $page.children( '.ui-footer' ).outerHeight() || 0,
+				padding = parseFloat( $content.css( 'padding-top' ) )
+					+ parseFloat( $content.css( 'padding-bottom' ) ),
+				content_h = $( window ).height() - header_h - footer_h - padding;
 
 			return content_h;
 		},
 
 		_create: function () {
 			var temp_img,
-				start_index,
+				self = this,
+				index,
 				i = 0;
 
 			$( this.element ).wrapInner( '<div class="ui-imageslider"></div>' );
 			$( this.element ).find( 'img' ).wrap( '<div class="ui-imageslider-bg"></div>' );
 
 			this.container = $( this.element ).find('.ui-imageslider');
-
-			this.max_width = $( window ).width();
-			this.max_height = this._get_height();
-			this.container.css( 'height', this.max_height );
 
 			temp_img = $( 'div' ).find( '.ui-imageslider-bg:first' );
 
@@ -419,20 +450,24 @@
 				this.images[i].detach();
 			}
 
-			start_index = parseInt( $( this.element ).attr( 'data-start-index' ), 10 );
-			if ( start_index === undefined ) {
-				start_index = 0;
+			index = parseInt( $( this.element ).jqmData( 'index' ), 10 );
+			if ( !index ) {
+				index = 0;
 			}
-			if ( start_index < 0 ) {
-				start_index = 0;
+			if ( index < 0 ) {
+				index = 0;
 			}
-			if ( start_index >= this.images.length ) {
-				start_index = this.images.length - 1;
+			if ( index >= this.images.length ) {
+				index = this.images.length - 1;
 			}
 
-			this.index = start_index;
+			this.index = index;
 
-			this.align_type = $( this.element ).attr( 'data-vertical-align' );
+			this.align_type = $( this.element ).jqmData( 'vertical-align' );
+
+			$( window ).bind( 'resize', function () {
+				self.refresh();
+			});
 		},
 
 		_update: function () {
@@ -472,22 +507,22 @@
 			this._show();
 		},
 
-		add: function ( image_file ) {
-			this.images_hold.push( image_file );
+		add: function ( file ) {
+			this.images_hold.push( file );
 		},
 
-		del: function ( image_index ) {
+		delete: function ( index ) {
 			var temp_img;
 
-			if ( image_index === undefined ) {
-				image_index = this.index;
+			if ( index === undefined ) {
+				index = this.index;
 			}
 
-			if ( image_index < 0 || image_index >= this.images.length ) {
+			if ( index < 0 || index >= this.images.length ) {
 				return;
 			}
 
-			if ( image_index == this.index ) {
+			if ( index == this.index ) {
 				temp_img = this.cur_img;
 
 				if ( this.index == 0 ) {
@@ -500,43 +535,43 @@
 					this.cur_img = this.prev_img;
 					this.prev_img = this.prev_img.prev();
 					if ( this.prev_img.length ) {
-						this.prev_img.css( 'left', -this.max_width );
-						this._attach( image_index - 2, this.prev_img );
+						this.prev_img.css( 'left', -this.window_width );
+						this._attach( index - 2, this.prev_img );
 					}
 					this.index--;
 				} else {
 					this.cur_img = this.next_img;
 					this.next_img = this.next_img.next();
 					if ( this.next_img.length ) {
-						this.next_img.css( 'left', this.max_width );
-						this._attach( image_index + 2, this.next_img );
+						this.next_img.css( 'left', this.window_width );
+						this._attach( index + 2, this.next_img );
 					}
 				}
 
-				this.cur_img.animate( { left: 0 }, 500 );
+				this.cur_img.animate( { left: 0 }, this.options.duration );
 
-			} else if ( image_index == this.index - 1 ) {
+			} else if ( index == this.index - 1 ) {
 				temp_img = this.prev_img;
 				this.prev_img = this.prev_img.prev();
 				if ( this.prev_img.length ) {
-					this.prev_img.css( 'left', -this.max_width );
-					this._attach( image_index - 1, this.prev_img );
+					this.prev_img.css( 'left', -this.window_width );
+					this._attach( index - 1, this.prev_img );
 				}
 				this.index--;
 
-			} else if ( image_index == this.index + 1 ) {
+			} else if ( index == this.index + 1 ) {
 				temp_img = this.next_img;
 				this.next_img = this.next_img.next();
 				if ( this.next_img.length ) {
-					this.next_img.css( 'left', this.max_width );
-					this._attach( image_index + 1, this.next_img );
+					this.next_img.css( 'left', this.window_width );
+					this._attach( index + 1, this.next_img );
 				}
 
 			} else {
-				temp_img = $( 'div' ).find( '.ui-imageslider-bg:eq(' + image_index + ')' );
+				temp_img = $( 'div' ).find( '.ui-imageslider-bg:eq(' + index + ')' );
 			}
 
-			this.images.splice( image_index, 1 );
+			this.images.splice( index, 1 );
 			temp_img.detach();
 		}
 	}); /* End of widget */

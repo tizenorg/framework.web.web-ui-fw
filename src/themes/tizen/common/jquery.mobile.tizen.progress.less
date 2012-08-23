@@ -14,22 +14,10 @@
 	}
 }
 
-.ui-progress-container-circle-bg {
-	position: relative;
-	margin-top: @bar-hmargin;
-	margin-bottom: @bar-hmargin;
-	width: 100%;
-	height: @img-height;
-}
-
 .ui-progress-container-circle {
-	position: relative;
-	margin-left: @bar-vmargin;
-	margin-right: @bar-vmargin;
-	height: @img-height;
-	width: @img-width;
-	float: right;
-	vertical-align: middle;
+	position: absolute;
+	right: 16 * @unit_base;
+	top: 25%;
 }
 
 .ui-progress-circle {
@@ -39,8 +27,8 @@
 	height: @img-height;
 	width: @img-width;
 
-	background: url(images/process/00_winset_list_process_01.png) no-repeat;
-	.LESSbackground-size(@img-height, @img-width);
+	background: url(images/00_winset_list_process_01.png) no-repeat;
+	.LESSbackground-size(@img-width, @img-height);
 }
 .ui-progress-circle-running {
 	-webkit-animation: ui-rotate-animation 1s infinite linear;
@@ -49,8 +37,7 @@
 /* Progress - pending style */
 @bar-height: 16 * @unit_base;
 @bar-margin: 16 * @unit_base;
-@bar-color0: rgb(55, 55, 55);
-@bar-color1: rgb(0, 140, 210);
+@color_progress_bar1: rgb(0, 140, 210);
 
 @-webkit-keyframes ui-move-animation {
 	from {
@@ -79,24 +66,24 @@
 	background: -webkit-linear-gradient(-45deg,
 				transparent,
 				transparent 25%,
-				@bar-color1 25%,
-				@bar-color1 50%,
+				@color_progress_bar1 25%,
+				@color_progress_bar1 50%,
 				transparent 50%,
 				transparent 75%,
-				@bar-color1 75%);
+				@color_progress_bar1 75%);
 
 	background: -webkit-gradient(linear,
 				left top,
 				right bottom,
 				color-stop(0%,  rgba(0,0,0,0)),
 				color-stop(25%, rgba(0,0,0,0)),
-				color-stop(25%, @bar-color1),
-				color-stop(50%, @bar-color1),
+				color-stop(25%, @color_progress_bar1),
+				color-stop(50%, @color_progress_bar1),
 				color-stop(50%, rgba(0,0,0,0)),
 				color-stop(75%, rgba(0,0,0,0)),
-				color-stop(75%, @bar-color1));
+				color-stop(75%, @color_progress_bar1));
 
-	background-color: @bar-color0;
+	background-color: @color_progress_bar0;
 
 	.LESSbackground-size(@bar-height * 2, @bar-height * 2);
 }

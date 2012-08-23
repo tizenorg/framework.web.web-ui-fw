@@ -41,12 +41,12 @@ select.ui-slider-switch {
 	width: @img-width;
 	vertical-align: middle;
 	background: url(images/00_slider_btn_brightness01.png) no-repeat;
-	.LESSbackground-size(@img-height, @img-width);
+	.LESSbackground-size(@img-width, @img-height);
 }
 
 .ui-slider-left-volume {
 	background: url(images/00_slider_btn_volume01.png) no-repeat;
-	.LESSbackground-size(@img-height, @img-width);
+	.LESSbackground-size(@img-width, @img-height);
 }
 
 .ui-slider-right-volume,
@@ -58,12 +58,12 @@ select.ui-slider-switch {
 	width: @img-width;
 	vertical-align: middle;
 	background: url(images/00_slider_btn_brightness02.png) no-repeat;
-	.LESSbackground-size(@img-height, @img-width);
+	.LESSbackground-size(@img-width, @img-height);
 }
 
 .ui-slider-right-volume {
 	background: url(images/00_slider_btn_volume02.png) no-repeat;
-	.LESSbackground-size(@img-height, @img-width);
+	.LESSbackground-size(@img-width, @img-height);
 }
 
 .ui-slider-left-text {
@@ -97,7 +97,7 @@ div.ui-slider {
 		top: 0.15em !important;
 	}
 	.ui-btn-inner {
-		padding: 0.4em 0 * @unit_base;
+		padding: 0.3em 0 * @unit_base;
 	}
 	.ui-btn-text {
 		color: @color_slider_handle_text;
@@ -122,16 +122,16 @@ a.ui-slider-handle {
 	width: @popup-size;
 	height: @popup-size;
 	text-align: center;
-	padding-top: 0.5em;
+	padding-top: 0.6em;
 	z-index: 100;
-	opacity: 0.9;
+	color: @color_slider_popup_text;
 	background: url(images/00_slider_popup_bg.png) no-repeat;
 	.LESSbackground-size(@popup-size, @popup-size);
 }
 
 .ui-slider-bar {
 	position: absolute;
-	top: 0.8em;
+	top: 0.75em;
 	height: 16 * @unit_base;
 	width: 0;
 	background-image: url(images/00_winset_list_progress_bar.png);

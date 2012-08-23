@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 ## Project setting
 DEBUG ?= yes
 PROJECT_NAME = tizen-web-ui-fw
@@ -9,6 +11,7 @@ PATH := $(CURDIR)/build-tools/bin:$(PATH)
 
 JSLINT_LEVEL = 1
 JSLINT = jslint --sloppy --eqeq --bitwise --forin --nomen --predef jQuery --color --plusplus --browser --jqmspace
+COMMON_WIDGET = common
 INLINE_PROTO = 1
 OUTPUT_ROOT = $(CURDIR)/build
 FRAMEWORK_ROOT = ${OUTPUT_ROOT}/${PROJECT_NAME}/${VERSION}
@@ -45,12 +48,24 @@ FW_LIBS_JS = ${JS_OUTPUT_ROOT}/${PROJECT_NAME}-libs.js
 FW_THEME_CSS_FILE = ${PROJECT_NAME}-theme.css
 FW_WIDGET_CSS_FILE = ${WIDGET_CSS_OUTPUT_ROOT}/${PROJECT_NAME}-widget.css
 
+GEO_VERSION = jquery-geo-1.0a4
+
 LIBS_JS_FILES = jlayout/jquery.sizes.js \
 				jlayout/jlayout.border.js \
 				jlayout/jlayout.grid.js \
 				jlayout/jlayout.flexgrid.js \
 				jlayout/jlayout.flow.js \
 				jlayout/jquery.jlayout.js \
+				jquery.easing.1.3.js \
+				jquery.tmpl.js \
+				jquery.mobile.js \
+				${GEO_VERSION}/js/jquery.geo.head.js \
+				${GEO_VERSION}/js/jquery.mousewheel.js \
+				${GEO_VERSION}/js/jquery.geo.core.js \
+				${GEO_VERSION}/js/jquery.geo.geographics.js \
+				${GEO_VERSION}/js/jquery.geo.geomap.js \
+				${GEO_VERSION}/js/jquery.geo.tiled.js \
+				${GEO_VERSION}/js/jquery.geo.shingled.js \
                 $(NULL)
 
 JQUERY_MOBILE_CSS = submodules/jquery-mobile/compiled/jquery.mobile.structure.css \
@@ -58,19 +73,16 @@ JQUERY_MOBILE_CSS = submodules/jquery-mobile/compiled/jquery.mobile.structure.cs
                     $(NULL)
 JQUERY_MOBILE_IMAGES = submodules/jquery-mobile/css/themes/default/images
 
-JQM_VERSION = jquery-mobile-1.0.1pre
+JQM_VERSION = jquery-mobile-1.1.0
 JQM_LIB_PATH = $(CURDIR)/libs/js/${JQM_VERSION}
 
 ifeq (${DEBUG},yes)
-LIBS_JS_FILES +=\
-	jquery.mobile.js \
-    $(NULL)
-JQUERY = jquery-1.6.4.js
+JQUERY = jquery-1.7.1.js
 else
 LIBS_JS_FILES +=\
 	jquery.mobile.min.js \
     $(NULL)
-JQUERY = jquery-1.6.4.min.js
+JQUERY = jquery-1.7.1.min.js
 endif
 
 LIBS_CSS_FILES =
@@ -103,7 +115,7 @@ libs_cleanup:
 
 jqm: init
 	# Building jQuery Mobile...
-	cd ${JQM_LIB_PATH} && make all-but-min || exit 1; \
+	cd ${JQM_LIB_PATH} && make js NODE=/usr/bin/node || exit 1; \
 	cp -f ${JQM_LIB_PATH}/compiled/*.js ${JQM_LIB_PATH}/../; \
 
 third_party: init jqm
@@ -111,7 +123,7 @@ third_party: init jqm
 	@@cd ${LIBS_DIR}/js; \
 	    for f in ${LIBS_JS_FILES}; do \
 	        cat $$f >> ${FW_LIB_JS}; \
-		uglifyjs $$f >> ${FW_LIB_MIN}; \
+		uglifyjs --ascii $$f >> ${FW_LIB_MIN}; \
 		echo "" >> ${FW_LIB_MIN}; \
 	    done; \
 	    cp ${LIBS_DIR}/js/${JQUERY} ${JS_OUTPUT_ROOT}/jquery.js
@@ -130,12 +142,14 @@ widgets: init third_party
 	    while read REPLY; do \
 	        echo "	# Building widget $$REPLY"; \
 			if test ${JSLINT_LEVEL} -ge 1; then \
-				for FNAME in ${WIDGETS_DIR}/$$REPLY/js/*.js; do \
-					${JSLINT} $$FNAME; \
-					if test ${JSLINT_LEVEL} -ge 2 -a $$? -ne 0; then \
-						exit 1; \
-					fi; \
-				done; \
+				if test $$REPLY != ${COMMON_WIDGET}; then \
+					for FNAME in ${WIDGETS_DIR}/$$REPLY/js/*.js; do \
+						${JSLINT} $$FNAME; \
+						if test ${JSLINT_LEVEL} -ge 2 -a $$? -ne 0; then \
+							exit 1; \
+						fi; \
+					done; \
+				fi; \
 			fi; \
 			if test "x${INLINE_PROTO}x" = "x1x"; then \
 				./tools/inline-protos.sh ${WIDGETS_DIR}/$$REPLY >> ${WIDGETS_DIR}/$$REPLY/js/$$REPLY.js.compiled; \
@@ -185,12 +199,19 @@ themes:
 	make -C src/themes || exit $?
 
 
-compress: widgets loader
-	@@echo "	# Compressing....";
-	echo '/*' > ${FW_MIN}
-	cat ${COPYING_FILE} >> ${FW_MIN}
-	echo '*/' >> ${FW_MIN}
-	uglifyjs -nc ${FW_JS} >> ${FW_MIN}
+compress: widgets loader themes
+	# Javacript code compressing
+	@@echo "	# Compressing...."; \
+	echo '/*' > ${FW_MIN}; \
+	cat ${COPYING_FILE} >> ${FW_MIN}; \
+	echo '*/' >> ${FW_MIN}; \
+	uglifyjs --ascii -nc ${FW_JS} >> ${FW_MIN}; \
+	# CSS compressing
+	@@cd ${THEME_OUTPUT_ROOT}; \
+	for csspath in */*.css; do \
+		echo "Compressing $$csspath"; \
+		cleancss -o $${csspath/%.css/.min.css} $$csspath; \
+	done
 
 
 docs: init
@@ -216,6 +237,7 @@ version_compat: third_party widgets
 	for v_compat in ${VERSION_COMPAT}; do \
 		ln -sf ${VERSION} ${FRAMEWORK_ROOT}/../$$v_compat; \
 	done;
+	ln -sf ${VERSION} ${FRAMEWORK_ROOT}/../latest
 
 demo: widgets 
 	mkdir -p ${OUTPUT_ROOT}/demos
@@ -224,10 +246,10 @@ demo: widgets
 
 
 install: all
-	mkdir -p ${INSTALL_DIR}/lib/tizen-web-ui-fw ${INSTALL_DIR}/bin ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/
-	cp -av ${OUTPUT_ROOT}/tizen-web-ui-fw/* src/template ${INSTALL_DIR}/lib/tizen-web-ui-fw/
-	cp -av tools/* ${INSTALL_DIR}/bin/
-	cp -av demos/tizen-gray ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/ && cd ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/tizen-gray && sed -i -e "s#../../build#../../../../lib#g" *.html
+	mkdir -p ${INSTALL_DIR}/bin ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/ ${INSTALL_DIR}/share/tizen-web-ui-fw/bin/
+	cp -av ${OUTPUT_ROOT}/tizen-web-ui-fw/* src/template ${INSTALL_DIR}/share/tizen-web-ui-fw/
+	cp -av tools/* ${INSTALL_DIR}/share/tizen-web-ui-fw/bin/
+	cp -av demos/tizen-winsets ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/ && cd ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/tizen-winsets && sed -i -e "s#../../build#../../..#g" *.html
 
 
 coverage: clean all
@@ -285,5 +307,4 @@ init: clean
 	@@mkdir -p ${CSS_OUTPUT_ROOT}
 	@@mkdir -p ${CSS_IMAGES_OUTPUT_DIR}
 	@@mkdir -p ${PROTOTYPE_HTML_OUTPUT_DIR}
-	@@test -h ${LATEST_ROOT} || ln -s ${FRAMEWORK_ROOT} ${LATEST_ROOT}
 	@@rm -f docs/*.html

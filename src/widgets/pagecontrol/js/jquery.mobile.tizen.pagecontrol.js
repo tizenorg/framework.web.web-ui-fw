@@ -33,7 +33,7 @@
  *
  *		data-role:	This widget must have 'pagecontrol' as data-role value.
  *		data-max:	Maximum nimber of pagecontrol bullets. This property must not exceed 10.
- *		data-initVal:	Initially selected value of the pagecontrol widget. Must between 1 and data-max. If this attribute is not given, initial value is set to 1.
+ *		data-value:	Initially selected value of the pagecontrol widget. Must between 1 and data-max. If this attribute is not given, initial value is set to 1.
  *
  * APIs:
  *
@@ -72,6 +72,31 @@
 			initSelector: ":jqmData(role='pagecontrol')"
 		},
 
+		// subroutine: find a child by value
+		_getBtn: function ( value ) {
+			return $( this.element ).children( ":jqmData(value='" + value + "')" );
+		},
+
+		// subroutine: change active button by value
+		_changeActiveBtn: function ( newNum ) {
+			var oldNum = $( this.element ).data( 'value' );
+
+			// Check value
+			if ( newNum < 1 || newNum > $( this.element ).data( "max" ) ) {
+				return false;
+			}
+
+			this._getBtn( oldNum ).removeClass( 'page_n_' + oldNum )
+					.addClass( 'page_n_dot' );
+			this._getBtn( newNum ).removeClass( 'page_n_dot' )
+					.addClass( 'page_n_' + newNum );
+		},
+
+		_triggerChange: function ( event ) {
+			// Trigger change event
+			$( this ).trigger( 'change', $( this ).data( 'value' ) );
+		},
+
 		_create: function ( ) {
 		},
 
@@ -79,7 +104,7 @@
 			var self = this,
 				e = this.element,
 				maxVal = e.data( "max" ),
-				currentVal = e.attr( "data-initVal" ),
+				value = e.attr( "data-value" ),
 				i = 0,
 				btn = null,
 				buf = null,
@@ -94,10 +119,10 @@
 			}
 			e.data( "max", maxVal );
 
-			if ( ! currentVal ) {
-				currentVal = 1;
+			if ( ! value ) {
+				value = 1;
 			}
-			e.data( "current", currentVal );
+			e.data( "value", value );
 
 			// Set pagecontrol class
 			e.addClass( 'pagecontrol' );
@@ -116,53 +141,41 @@
 				page_margin_class = 'page_n_margin_19';
 			}
 
-			// subroutine: find a child by value
-			function getBtn( value ) {
-				return e.children( ":jqmData(value='" + value + "')" );
-			}
-
-			// subroutine: change active button by value
-			function changeActiveBtn( newNum ) {
-				var oldNum = e.data( 'current' );
-
-				// Check value
-				if ( newNum < 1 || newNum > e.max ) {
-					return false;
-				}
-
-				getBtn( oldNum ).removeClass( 'page_n_' + oldNum )
-						.addClass( 'page_n_dot' );
-				getBtn( newNum ).removeClass( 'page_n_dot' )
-						.addClass( 'page_n_' + newNum );
-			}
-
-			function triggerChange( event ) {
-				// Trigger change event
-				e.trigger( 'change', $( this ).data( 'value' ) );
-			}
 
 			// Add dot icons
 			for ( i = 1; i <= maxVal; i++ ) {
 				btn = $( '<div class="page_n page_n_dot ' + page_margin_class + '" data-value="' + i + '"></div>' );
 				e.append( btn );
-				if ( i == currentVal ) {
+				if ( i == value ) {
 					btn.removeClass( 'page_n_dot' )
 						.addClass( 'page_n_' + i );
 				}
 				// bind vclick event to each icon
-				btn.bind( 'vclick', triggerChange );
+				btn.bind( 'vclick', this._triggerChange );
 			}
 
 			// pagecontrol element's change event
 			e.bind( 'change', function ( event, value ) {
 				// 1. Change activated button
-				changeActiveBtn( value );
+				self._changeActiveBtn( value );
 
 				// 2. Store new value (DO NOT change this order!)
-				e.data( 'current', value );
+				e.data( 'value', value );
 
 			});
+		},
+
+		value: function ( val ) {
+			var pc = $( this.element );
+
+			if ( val && typeof val == "number" ) {
+				this._changeActiveBtn( val );
+				pc.data( 'value', val );
+			} else {
+				return pc.data( "value" );
+			}
 		}
+
 	});	// end: $.widget()
 
 

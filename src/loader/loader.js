@@ -1,21 +1,21 @@
 /**
- * loader.js : Loader for web-ui-fw
- * Refactored from bootstrap.js
+ * loader.js
  *
- * By Youmin Ha <youmin.ha@samsung.com>
- *
+ * Youmin Ha <youmin.ha@samsung.com>
  */
 
 ( function ($, Globalize, window, undefined) {
 
-	window.S = {
+	 var tizen = {
 		libFileName : "tizen-web-ui-fw(.min)?.js",
 
 		frameworkData : {
 			rootDir: '/usr/lib/tizen-web-ui-fw',
 			version: '0.1',
-			theme: "default",
+			theme: "tizen-white",
 			viewportScale: false,
+			defaultFontSize: 16,
+			minified: false
 		},
 
 		util : {
@@ -24,6 +24,7 @@
 					url: scriptPath,
 					dataType: 'script',
 					async: false,
+					crossDomain: false,
 					success: successCB,
 					error: function ( jqXHR, textStatus, errorThrown ) {
 						if ( errorCB ) {
@@ -40,7 +41,7 @@
 				} );
 			},
 			getScaleFactor: function ( ) {
-				var factor = window.scale,
+				var factor = navigator.scale,
 					width = 0,
 					defaultWidth = 720;
 
@@ -68,21 +69,39 @@
 					'',
 			addElementToHead : function ( elem ) {
 				var head = document.getElementsByTagName( 'head' )[0];
-				head.appendChild( elem );
-			},
-			load: function ( path ) {
-				this.addElementToHead( this.makeLink( path + this.cacheBust ) );
+				if( head ) {
+					$( head ).prepend( elem );
+				}
 			},
 			makeLink : function ( href ) {
-				var customstylesheetLink = document.createElement( 'link' );
-				customstylesheetLink.setAttribute( 'rel', 'stylesheet' );
-				customstylesheetLink.setAttribute( 'href', href );
-				return customstylesheetLink;
+				var cssLink = document.createElement( 'link' );
+				cssLink.setAttribute( 'rel', 'stylesheet' );
+				cssLink.setAttribute( 'href', href );
+				cssLink.setAttribute( 'name', 'tizen-theme' );
+				return cssLink;
+			},
+			load: function ( path ) {
+				var head = document.getElementsByTagName( 'head' )[0],
+					cssLinks = head.getElementsByTagName( 'link' ),
+					idx,
+					l = null;
+				// Find css link element
+				for ( idx = 0; idx < cssLinks.length; idx++ ) {
+					if( cssLinks[idx].getAttribute( 'name' ) == "tizen-theme" ) {
+						l = cssLinks[idx];
+						break;
+					}
+				}
+				if ( l ) {	// Found the link element!
+					l.setAttribute( 'href', path );
+				} else {
+					this.addElementToHead( this.makeLink( path ) );
+				}
 			}
 		},
 
 		getParams: function ( ) {
-			/* Get data-* params from <script> tag, and set S.frameworkData.* values
+			/* Get data-* params from <script> tag, and set tizen.frameworkData.* values
 			 * Returns true if proper <script> tag is found, or false if not.
 			 */
 			// Find current <script> tag element
@@ -94,6 +113,18 @@
 				src,
 				tokens,
 				version_idx;
+
+			function getTizenTheme( ) {
+				var t = navigator.theme ? navigator.theme.split( ':' )[0] : null;
+				if ( t ) {
+					t = t.replace('-hd', '');
+					if( ! t.match( /^tizen-/ ) ) {
+						t = 'tizen-' + t;
+					}
+				}
+				return t;
+			}
+
 			for ( idx in scriptElems ) {
 				elem = scriptElems[idx];
 				src = elem.src ? elem.getAttribute( 'src' ) : undefined;
@@ -108,8 +139,10 @@
 						|| tokens[ tokens.length + version_idx ]
 						|| this.frameworkData.version;
 					this.frameworkData.theme = elem.getAttribute( 'data-framework-theme' )
+						|| getTizenTheme( )
 						|| this.frameworkData.theme;
 					this.frameworkData.viewportScale = "true" === elem.getAttribute( 'data-framework-viewport-scale' ) ? true : this.frameworkData.viewportScale;
+					this.frameworkData.minified = src.search(/\.min\.js$/) > -1 ? true : false;
 					foundScriptTag = true;
 					break;
 				}
@@ -117,114 +150,213 @@
 			return foundScriptTag;
 		},
 
-		loadTheme: function ( ) {
-			var themePath = [
-					this.frameworkData.rootDir,
-					this.frameworkData.version,
-					'themes',
-					this.frameworkData.theme
-				].join( '/' ),
-				cssPath = [themePath, 'tizen-web-ui-fw-theme.css'].join( '/' ),
-				jsPath = [themePath, 'theme.js'].join( '/' );
+		loadTheme: function ( theme ) {
+			var themePath, cssPath, jsPath;
 
-			this.css.load( cssPath );
-			this.util.loadScriptSync( jsPath );
+			if ( ! theme ) {
+				theme = tizen.frameworkData.theme;
+			}
+			themePath = [
+					tizen.frameworkData.rootDir,
+					tizen.frameworkData.version,
+					'themes',
+					theme
+				].join( '/' ),
+
+			jsPath = [themePath, 'theme.js'].join( '/' );
+
+			if( tizen.frameworkData.minified ) {
+				cssPath = [themePath, 'tizen-web-ui-fw-theme.min.css'].join( '/' );
+			} else {
+				cssPath = [themePath, 'tizen-web-ui-fw-theme.css'].join( '/' );
+			}
+			tizen.css.load( cssPath );
+			tizen.util.loadScriptSync( jsPath );
 		},
 
 		/** Load Globalize culture file, and set default culture.
-		 *  @param[in]  language  Language code. ex) en-US, en, ko-KR, ko
-		 *                        If language is not given, read language from html 'lang' attribute, or from system setting.
+		 *  @param[in]  language  (optional) Language code. ex) en-US, en, ko-KR, ko
+		 *                        If language is not given, read language from html 'lang' attribute, 
+		 *                        or from system setting.
+		 *  @param[in]  cultureDic (optional) Dictionary having language code->
 		 */
-		loadGlobalizeCulture: function ( language ) {
-			function getGlobalizeCultureFile( lang ) {
-				return ['globalize.culture.', lang, '.js'].join( '' );
-			}
-			function getGlobalizeCulturePath( self, file ) {
-				return [
-					self.frameworkData.rootDir,
-					self.frameworkData.version,
-					'js',
-					'cultures',
-					file,
-				].join( '/' );
-			}
-
-			// Get lang, and change country code to uppercase chars.
+		loadGlobalizeCulture: function ( language, cultureDic ) {
 			var self = this,
-				lang = language
-					|| $( 'html' ).attr( 'lang' )
-					|| window.navigator.language.split( '.' )[0]	/* Webkit, Safari + workaround for Tizen */
-					|| window.navigator.userLanguage	/* IE */
-					|| 'en',
-				countryCode = null,
-				countryCodeIdx = lang.lastIndexOf('-'),
-				ignoreCodes = ['Cyrl', 'Latn', 'Mong'],	// Not country code!
-				globalizeCultureFile,
-				globalizeCulturePath,
-				neutralLangIndex;
+				cFPath,
+				lang,
+				mockJSXHR;
 
-			if ( countryCodeIdx != -1 ) {	// Found country code!
-				countryCode = lang.substr( countryCodeIdx + 1 );
-				if ( ignoreCodes.join( '-' ).indexOf( countryCode ) < 0 ) { // countryCode is not found from ignoreCodes
-					// Make countryCode to uppercase
-					lang = [ lang.substr( 0, countryCodeIdx ), countryCode.toUpperCase( ) ].join( '-' );
-				}
-			}
-
-			globalizeCultureFile = getGlobalizeCultureFile( lang );
-			globalizeCulturePath = getGlobalizeCulturePath( self, globalizeCultureFile );
-			neutralLangIndex = lang.lastIndexOf( '-' );
-
-			// Run culture script
-			console.log( 'Run globalize culture: ' + globalizeCulturePath );
-			this.util.loadScriptSync(
-				globalizeCulturePath,
-				null,
-				function ( jqXHR, textStatus, errorThrown ) {	// Failed to load!
-					if ( jqXHR.status == 404 ) {
-						// If culture file is not found, run neutral language culture. 
-						// (e.g. en-US --> en)
-						if ( neutralLangIndex != -1 ) {
-							var neutralLang = lang.substr( 0, neutralLangIndex ),
-								neutralCultureFile = getGlobalizeCultureFile( neutralLang ),
-								neutralCulturePath = getGlobalizeCulturePath( self, neutralCultureFile );
-							console.log( 'Run globalize culture of neutral lang: ' + neutralCulturePath );
-							self.util.loadScriptSync( neutralCulturePath );
-						}
-					} else {
-						window.alert( 'Error while loading ' + globalizeCulturePath + '\n' + jqXHR.status + ':' + jqXHR.statusText );
+			function getLang ( language ) {
+				var lang = language
+						|| $( 'html' ).attr( 'lang' )
+						|| window.navigator.language.split( '.' )[0]	// Webkit, Safari + workaround for Tizen
+						|| window.navigator.userLanguage	// IE
+						|| 'en',
+					countryCode = null,
+					countryCodeIdx = lang.lastIndexOf('-'),
+					ignoreCodes = ['Cyrl', 'Latn', 'Mong'];	// Not country code!
+				if ( countryCodeIdx != -1 ) {	// Found country code!
+					countryCode = lang.substr( countryCodeIdx + 1 );
+					if ( ignoreCodes.join( '-' ).indexOf( countryCode ) < 0 ) {
+						// countryCode is not found from ignoreCodes.
+						// Make countryCode to uppercase.
+						lang = [ lang.substr( 0, countryCodeIdx ), countryCode.toUpperCase( ) ].join( '-' );
 					}
 				}
-			);
+				// NOTE: 'en' to 'en-US', because globalize has no 'en' culture file.
+				lang = lang == 'en' ? 'en-US' : lang;
+				return lang;
+			}
+
+			function getNeutralLang ( lang ) {
+				var neutralLangIdx = lang.lastIndexOf( '-' ),
+					neutralLang;
+				if ( neutralLangIdx != -1 ) {
+					neutralLang = lang.substr( 0, neutralLangIdx );
+				}
+				return neutralLang;
+			}
+
+			function getCultureFilePath ( lang, cFDic ) {
+				var cFPath = null;	// error value
+
+				if ( "string" != typeof lang ) {
+					return null;
+				}
+				if ( cFDic ) {
+					if ( cFDic[lang] ) cFPath = cFDic[lang];
+				} else {
+					// Default Globalize culture file path
+					cFPath = [
+						self.frameworkData.rootDir,
+						self.frameworkData.version,
+						'js',
+						'cultures',
+						['globalize.culture.', lang, '.js'].join( '' ),
+					].join( '/' );
+				}
+				return cFPath;
+			}
+
+			function printLoadError( cFPath, jqXHR ) {
+				console.log( "Error " + jqXHR.status + ": " + jqXHR.statusText );
+				console.log( "::Culture file (" + cFPath + ") is failed to load.");
+			}
+
+			function loadCultureFile ( cFPath, errCB ) {
+				function _successCB ( ) {
+					console.log( "Culture file (" + cFPath + ") is loaded successfully.");
+				}
+				function _errCB ( jqXHR, textStatus, err ) {
+					if( errCB ) {
+						errCB( jqXHR, textStatus, err );
+					}
+					else {
+						printLoadError( cFPath, jqXHR );
+					}
+				}
+
+				if( ! cFPath ) {	// Invalid cFPath -> Regard it as '404 Not Found' error.
+					mockJSXHR = {
+						status: 404,
+						statusText: "Not Found"
+					};
+					_errCB( mockJSXHR, null, null );
+				} else {
+					$.ajax( {
+						url: cFPath,
+						dataType: 'script',
+						cache: true,
+						async: false,
+						success: _successCB,
+						error: _errCB
+					} );
+				}
+			}
+
+			lang = getLang( language );
+			cFPath = getCultureFilePath( lang, cultureDic );
+			loadCultureFile( cFPath,
+				function ( jqXHR, textStatus, err ) {
+					if( jqXHR.status == 404 ) {
+						// If culture file is not found, try once more with neutral lang.
+						var nLang = getNeutralLang( lang ),
+							cFPath = getCultureFilePath( nLang, cultureDic );
+						loadCultureFile( cFPath, null );
+					} else {
+						printLoadError( cFPath, jqXHR );
+					}
+				} );
+
 			return lang;
 		},
 		setGlobalize: function ( ) {
 			var lang = this.loadGlobalizeCulture( );
 
 			// Set culture
-			// NOTE: It is not needed to set with neutral lang. 
+			// NOTE: It is not needed to set with neutral lang.
 			//       Globalize automatically deals with it.
 			Globalize.culture( lang );
+		},
+		/**
+		 * Load custom globalize culture file
+		 * Find current system language, and load appropriate culture file from given colture file list.
+		 *
+		 * @param[in]	cultureDic	collection of 'language':'culture file path' key-val pair.
+		 * @example
+		 * var myCultures = {
+		 * 		"en"    : "culture/en.js",
+		 * 		"fr"    : "culture/fr.js",
+		 * 		"ko-KR" : "culture/ko-KR.js"
+		 * };
+		 * loadCultomGlobalizeCulture( myCultures );
+		 *
+		 * ex) culture/fr.js
+		 * -------------------------------
+		 * Globalize.addCultureInfo( "fr", {
+		 *   messages: {
+		 *     "hello" : "bonjour",
+		 *     "translate" : "traduire"
+		 *   }
+		 * } );
+		 * -------------------------------
+		 */
+		loadCustomGlobalizeCulture: function ( cultureDic ) {
+			tizen.loadGlobalizeCulture( null, cultureDic );
 		},
 
 		/** Set viewport meta tag for mobile devices.
 		 *
 		 * @param[in]	viewportWidth	Viewport width. 'device-dpi' is also allowed.
-		 * @param[in]	useAutoScale	If true, calculate & use scale factor. otherwise, scale factor is 1.
+		 * @param[in]	useAutoScale	If true, cculate & use scale factor. otherwise, scale factor is 1.
 		 * @param[in]	useDeviceDpi	If true, add 'target-densityDpi=device-dpi' to viewport meta content.
 		 */
 		setViewport: function ( viewportWidth, useAutoScale, useDeviceDpi ) {
 			var meta,
 				scale = 1,
-				head;
+				head,
+				content,
+				ratio,
+				threshold = 15,
+				standardWidth = 360,
+				screenWidth = screen.width;
+
 			// Do nothing if viewport setting code is already in the code.
-			$( "meta" ).each( function ( ) {
-				if ( $( this ).attr( "name" ) === "viewport" ) {
-					console.log( "User set viewport... framework viewport will not be applied." );
-					meta = this;
-					return;
-				}
+			$( "meta[name=viewport]" ).each( function ( ) {
+				console.log( "User set viewport... framework viewport will not be applied." );
+				meta = this;
+				return;
 			});
+			if( meta ) {
+				content = $( meta ).prop( "content" );
+				if ( content.indexOf( "device-width" ) > 0
+						&& content.indexOf( "device-dpi" ) > 0 ) {
+					ratio = screenWidth > standardWidth ? ( screenWidth/standardWidth) : 1;
+					$.vmouse.moveDistanceThreshold = threshold * ratio;
+					$.vmouse.clickDistanceThreshold = threshold * ratio;
+				}
+				return;	// Ignore viewport setting, when viewport is already set.
+			}
 
 			// Set meta tag
 			meta = document.createElement( "meta" );
@@ -238,6 +370,8 @@
 				console.log( meta.content );
 				head = document.getElementsByTagName( 'head' ).item( 0 );
 				head.insertBefore( meta, head.firstChild );
+
+				// TODO : change threshold when scaleFactor is changed. Reference line 354-356
 			}
 		},
 
@@ -246,14 +380,21 @@
 		 */
 		scaleBaseFontSize: function ( themeDefaultFontSize, ratio ) {
 			var scaledFontSize = Math.round( themeDefaultFontSize * ratio );
-			$( '.ui-mobile' ).css( { 'font-size': scaledFontSize + "px" } );
-			$( '.ui-mobile').children( 'body' ).css( { 'font-size': scaledFontSize + "px" } );
+
+			$( 'html.ui-mobile' ).css( { 'font-size': scaledFontSize + "px" } );
+			console.log('html:font size is set to ' + scaledFontSize );
+			$( document ).ready( function ( ) {
+				$( '.ui-mobile').children( 'body' ).css( { 'font-size': scaledFontSize + "px" } );
+			} );
 		},
 
 		setScaling: function ( ) {
-			var baseWidth = 720,		// NOTE: need to be changed to get the value from theme.
+			var baseWidth = 720,		// Winset GUI Guide is 720 HD.
 				standardWidth = 360,
-				themeDefaultFontSize = parseInt( $( 'body' ).css( 'font-size' ), 10 );
+				themeDefaultFontSize;
+
+			themeDefaultFontSize = this.frameworkData.defaultFontSize;
+
 			$( 'body' ).attr( 'data-tizen-theme-default-font-size', themeDefaultFontSize );
 
 			if ( this.frameworkData.viewportScale ) {
@@ -262,26 +403,37 @@
 				this.setViewport( baseWidth, true, true );
 			} else {
 				// Fixed viewport scale(=1.0) with scaled font size
-				this.setViewport( "device-dpi", false, undefined );
+				this.setViewport( "device-width", false, undefined );
 				this.scaleBaseFontSize( themeDefaultFontSize, parseFloat( standardWidth / baseWidth ) );
 			}
 		}
 	};
-} ( jQuery, window.Globalize, window ) );
 
+	function export2TizenNS ( $, tizen ) {
+		if ( undefined == typeof $.tizen ) {
+			$.tizen = { };
+		}
 
-// Loader's job list
-( function ( S, $, undefined ) {
-	S.getParams( );
-	S.loadTheme( );
-	S.setGlobalize( );
+		$.tizen.frameworkData = tizen.frameworkData;
+		$.tizen.loadCustomGlobalizeCulture = tizen.loadCustomGlobalizeCulture;
+		$.tizen.loadTheme = tizen.loadTheme;
+
+		$.tizen.__tizen__ = tizen;	// for unit-test
+	}
+
+	export2TizenNS( $, tizen );
+
+	tizen.getParams( );
+	tizen.loadTheme( );
+	tizen.setScaling( );	// Run after loadTheme(), for the default font size.
+	tizen.setGlobalize( );
 
 	// Turn off JQM's auto initialization option.
 	// NOTE: This job must be done before domready.
 	$.mobile.autoInitializePage = false;
 
 	$(document).ready( function ( ) {
-		S.setScaling( );
 		$.mobile.initializePage( );
 	});
-} ( window.S, jQuery ) );
+
+} ( jQuery, window.Globalize, window ) );

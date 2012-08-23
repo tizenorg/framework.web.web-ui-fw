@@ -138,14 +138,13 @@
 		},
 
 		_create: function () {
-			this._$clip = $( this.element).addClass( "ui-scrollview-clip" );
-			var $child = this._$clip.children(),
-				self;
-			//if ( $child.length > 1 ) {
-			$child = this._$clip.wrapInner( "<div></div>" ).children();
-			//}
-			this._$view = $child.addClass( "ui-scrollview-view" );
-			this._$list = $child.children();
+			var self = this;
+
+			this._items = $( this.element ).jqmData('list');
+			this._$clip = $( this.element ).addClass( "ui-scrollview-clip" );
+			this._$clip.wrapInner( '<div class="ui-scrollview-view"></div>' );
+			this._$view = $('.ui-scrollview-view', this._$clip );
+			this._$list = $( 'ul', this._$clip );
 
 			this._$clip.css( "overflow", "hidden" );
 			this._makePositioned( this._$clip );
@@ -156,7 +155,6 @@
 			this._timerInterval = 1000 / this.options.fps;
 			this._timerID = 0;
 
-			self = this;
 			this._timerCB = function () { self._handleMomentumScroll(); };
 
 			this.refresh();
@@ -164,17 +162,28 @@
 			this._addBehaviors();
 		},
 
+		reflow: function () {
+			var xy = this.getScrollPosition();
+			this.refresh();
+			this.scrollTo( xy.x, xy.y );
+		},
+
 		refresh: function () {
 			var itemsPerView;
 
-			this._viewWidth = this._$view.width();
-			this._clipWidth = $( window ).width();
-			this._itemWidth = this._$list.children().first().outerWidth();
-			this._$items = this._$list.children().detach();
+			this._$clip.width( $(window).width() );
+			this._clipWidth = this._$clip.width();
+			this._$list.empty();
+			this._$list.append(this._items[0]);
+			this._itemWidth = $(this._items[0]).outerWidth();
+			$(this._items[0]).detach();
+
 			itemsPerView = this._clipWidth / this._itemWidth;
 			itemsPerView = Math.ceil( itemsPerView * 10 ) / 10;
 			this._itemsPerView = parseInt( itemsPerView, 10 );
-
+			while ( this._itemsPerView + 1 > this._items.length ) {
+				$.merge( this._items, $(this._items).clone() );
+			}
 			this._rx = -this._itemWidth;
 			this._sx = -this._itemWidth;
 			this._setItems();
@@ -248,7 +257,7 @@
 				$item;
 
 			for ( i = -1; i < this._itemsPerView + 1; i++ ) {
-				$item = this._$items[ circularNum( i, this._$items.length ) ];
+				$item = this._items[ circularNum( i, this._items.length ) ];
 				this._$list.append( $item );
 			}
 			setElementTransform( this._$view, this._sx + "px", 0 );
@@ -268,7 +277,7 @@
 				for ( i = 0; i < di; i++ ) {
 					this._$list.children().last().detach();
 					idx = -parseInt( ( sx / this._itemWidth ) + i + 3, 10 );
-					$item = this._$items[ circularNum( idx, this._$items.length ) ];
+					$item = this._items[ circularNum( idx, this._items.length ) ];
 					this._$list.prepend( $item );
 					//console.log( "di > 0 : " + idx );
 				}
@@ -276,7 +285,7 @@
 				for ( i = 0; i > di; i-- ) {
 					this._$list.children().first().detach();
 					idx = this._itemsPerView - parseInt( ( sx / this._itemWidth ) + i, 10 );
-					$item = this._$items[ circularNum( idx, this._$items.length ) ];
+					$item = this._items[ circularNum( idx, this._items.length ) ];
 					this._$list.append( $item );
 					//console.log( "di < 0 : " + idx );
 				}
@@ -311,15 +320,15 @@
 			return svh;
 		},
 
-		centerTo: function ( selector ) {
+		centerTo: function ( selector, duration ) {
 			var i,
 				newX;
 
-			for ( i = 0; i < this._$items.length; i++ ) {
-				if ( $( this._$items[i]).is( selector ) ) {
-					newX = -( i * this._itemWidth - this._clipWidth / 2 + this._itemWidth * 2 );
-					this.scrollTo( newX, 0 );
-					console.log( i + "," + newX );
+			for ( i = 0; i < this._items.length; i++ ) {
+				if ( $( this._items[i]).is( selector ) ) {
+					newX = -( i * this._itemWidth - this._clipWidth / 2 + this._itemWidth * 1.5 );
+					this.scrollTo( newX + this._clipWidth * 2, 0 );
+					this.scrollTo( newX, 0, duration );
 					return;
 				}
 			}
@@ -333,9 +342,6 @@
 				return;
 			}
 
-			x = -x;
-			y = -y;
-
 			var self = this,
 				start = getCurrentTime(),
 				efunc = $.easing.easeOutQuad,
@@ -346,6 +352,8 @@
 				tfunc,
 				elapsed,
 				ec;
+
+			this._rx = x;
 
 			tfunc = function () {
 				elapsed = getCurrentTime() - start;
