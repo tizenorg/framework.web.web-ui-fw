@@ -59,6 +59,7 @@
 
 			showScrollBars:    true,
 			overshootEnable:   false,
+			scrollJump:        false,
 		},
 
 		_makePositioned: function ( $ele ) {
@@ -108,6 +109,7 @@
 
 			this._add_event();
 			this._add_scrollbar();
+			this._add_scroll_jump();
 		},
 
 		_startMScroll: function ( speedX, speedY ) {
@@ -340,7 +342,7 @@
 				return;
 			}
 
-			if ( y >= 0 ) {
+			if ( y > 0 ) {
 				sy = -y;
 			} else if ( y < -scroll_height ) {
 				sy = -y - scroll_height;
@@ -448,41 +450,32 @@
 			this._stopMScroll();
 
 			this._didDrag = false;
+			this._skip_dragging = false;
 
 			var target = $( e.target ),
 				self = this,
 				$c = this._$clip,
 				svdir = this.options.direction;
 
-			/* should skip the dragging when click the button */
-			this._skip_dragging = target.is( '.ui-btn-text' ) ||
+			/* should prevent the default behavior when click the button */
+			this._is_button = target.is( '.ui-btn-text' ) ||
 					target.is( '.ui-btn-inner' ) ||
 					target.is( '.ui-btn-inner .ui-icon' );
-
-			if ( this._skip_dragging ) {
-				return;
-			}
 
 			/*
 			 * We need to prevent the default behavior to
 			 * suppress accidental selection of text, etc.
 			 */
-			this._shouldBlockEvent = !( target.is(':input') ||
-					target.parents(':input').length > 0 );
+			this._is_inputbox = target.is(':input') ||
+					target.parents(':input').length > 0;
 
-			if ( this._shouldBlockEvent ) {
-				if ( this.options.eventType === "mouse" ) {
-					e.preventDefault();
-				}
-			} else {
+			if ( this._is_inputbox ) {
 				target.one( "resize.scrollview", function () {
 					if ( ey > $c.height() ) {
 						self.scrollTo( -ex, self._sy - ey + $c.height(),
 							self.options.snapbackDuration );
 					}
 				});
-
-				return;
 			}
 
 			this._lastX = ex;
@@ -517,7 +510,7 @@
 				return;
 			}
 
-			if ( this._shouldBlockEvent ) {
+			if ( !this._is_inputbox && !this._is_button ) {
 				e.preventDefault();
 			}
 
@@ -846,6 +839,37 @@
 			this._scrollbar_showed = false;
 		},
 
+		_add_scroll_jump: function () {
+			var $c = this._$clip,
+				self = this,
+				top_btn,
+				left_btn;
+
+			if ( !this.options.scrollJump ) {
+				return;
+			}
+
+			if ( this._vTracker ) {
+				top_btn = $( '<div class="ui-scroll-jump-top-bg ui-btn" data-theme="s">' +
+						'<div class="ui-scroll-jump-top"></div></div>' );
+				$c.append( top_btn );
+
+				top_btn.bind( "vclick", function () {
+					self.scrollTo( 0, 0, self.options.overshootDuration );
+				} );
+			}
+
+			if ( this._hTracker ) {
+				left_btn = $( '<div class="ui-scroll-jump-left-bg ui-btn" data-theme="s">' +
+						'<div class="ui-scroll-jump-left"></div></div>' );
+				$c.append( left_btn );
+
+				left_btn.bind( "vclick", function () {
+					self.scrollTo( 0, 0, self.options.overshootDuration );
+				} );
+			}
+		},
+
 		_set_scrollbar_size: function () {
 			var $c = this._$clip,
 				$v = this._$view,
@@ -1028,7 +1052,8 @@
 
 				opts = {
 					direction: dir || undefined,
-					scrollMethod: $( this ).jqmData("scroll-method") || undefined
+					scrollMethod: $( this ).jqmData("scroll-method") || undefined,
+					scrollJump: $( this ).jqmData("scroll-jump") || undefined
 				};
 
 				$( this ).scrollview( opts );

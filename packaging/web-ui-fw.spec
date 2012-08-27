@@ -1,5 +1,5 @@
 Name:       web-ui-fw
-Version:    0.1.38
+Version:    0.1.41
 Release:    0
 Summary:    Tizen Web UI Framework Library
 Group:      Development/Other
@@ -37,8 +37,15 @@ BuildArch:  noarch
 Summary:    Tizen Web UI Framework Theme : tizen-gray
 %Description -n web-ui-fw-theme-tizen-gray
     Tizen Web UI Framework Theme : tizen-gray
-%files -n web-ui-fw-theme-tizen-gray
-/usr/share/tizen-web-ui-fw/*/themes/tizen-gray
+
+###############################
+%package -n web-ui-fw-theme-tizen-black
+BuildArch:  noarch
+Summary:    Tizen Web UI Framework Theme : tizen-black
+%Description -n web-ui-fw-theme-tizen-black
+    Tizen Web UI Framework Theme : tizen-black
+%files -n web-ui-fw-theme-tizen-black
+/usr/share/tizen-web-ui-fw/*/themes/tizen-black
 
 ###############################
 %package -n web-ui-fw-theme-tizen-white
@@ -81,11 +88,30 @@ Summary:    Tizen Web UI Framework Demo Application: tizen winset demo
 ###############################
 %changelog
 
-* Mon Aug 20 2012 Minkyu Kang <mk7.kang@samasung.com> 0.1.38
+* Mon Aug 27 2012 Jinhyuk Jun <jinhyuk.jun@samsung.com> 0.1.41
+- FIX:
+    - radio/check button : button size bug fix
+
+* Fri Aug 24 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.40
+- FIX:
+	- build error fixed
+
+* Fri Aug 24 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.39
+- FIX:
+	- listview: style fix, remove filter placeholder
+	- controlbar: divide styles
+	- scrollview: don't skip dragging when click button or inputbox
+	- slider: trim the text on text slider
+- Spec changes:
+	- remove gray and blue theme
+	- add white and black theme
+	- support new GUI guide
+
+* Mon Aug 20 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.38
 - FIX:
 	- fix coment of version tag
 
-* Fri Aug 17 2012 Minkyu Kang <mk7.kang@samasung.com> 0.1.37
+* Fri Aug 17 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.37
 - FIX :
 	- button: fix alignment
 	- listview: adjust the main text width
