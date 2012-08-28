@@ -133,6 +133,10 @@
 					.removeClass("fix");
 
 			this.running = true;
+
+			if ( this.type === 'popup' ) {
+				this._set_position();
+			}
 		},
 
 		close: function () {
@@ -149,7 +153,7 @@
 			this.running = false;
 		},
 
-		close: function () {
+		distroy: function () {
 			var container = this._get_container();
 
 			$( container ).removeClass("show")
@@ -270,9 +274,11 @@
 			this._add_event();
 
 			$( window ).bind( "resize", function () {
-				if ( self.running ) {
-					self._refresh();
+				if ( !self.running ) {
+					return;
 				}
+
+				self._refresh();
 
 				if ( self.type === 'popup' ) {
 					self._set_position();
@@ -287,6 +293,6 @@
 	});
 
 	$( document ).bind( "pagebeforehide", function ( e ) {
-		$( e.target ).find(":jqmData(role='notification')").notification('close');
+		$( e.target ).find(":jqmData(role='notification')").notification('destroy');
 	});
 }( jQuery, this ));
