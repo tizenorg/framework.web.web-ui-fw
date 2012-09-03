@@ -183,7 +183,11 @@
 					break;
 				case 'mm': //00 01 ... 59
 				case 'm': //0 1 2 ... 59
-					$(div).append( tpl.replace('%1', 'min') );
+					if ( this.options.type == 'date' ) {
+						$(div).append( tpl.replace('%1', 'month') );
+					} else {
+						$(div).append( tpl.replace('%1', 'min') );
+					}
 					break;
 				case 'ss':
 				case 's':
@@ -713,6 +717,10 @@
 						break;
 					case 'month':
 						date.setMonth( val - 1 );
+
+						if ( date.getMonth() == val ) {
+							date.setDate( date.getDate() - 1 );
+						}
 						break;
 					case 'day':
 						date.setDate( val );
