@@ -35,7 +35,7 @@
 	};
 
 	function getCurrentTime() {
-		return ( new Date() ).getTime();
+		return Date.now();
 	}
 
 	jQuery.widget( "tizen.scrollview", jQuery.mobile.widget, {
@@ -470,6 +470,13 @@
 					target.is( '.ui-btn-inner' ) ||
 					target.is( '.ui-btn-inner .ui-icon' );
 
+			if ( this._is_button ) {
+				if ( target.parents('.ui-slider-handle') ) {
+					this._skip_dragging = true;
+					return;
+				}
+			}
+
 			/*
 			 * We need to prevent the default behavior to
 			 * suppress accidental selection of text, etc.
@@ -816,11 +823,13 @@
 					focused.trigger("resize.scrollview");
 				}
 
-				/* calibration */
-				if ( self._sy < $c.height() - $v.height() ) {
-					self.scrollTo( 0, self._sy,
-						self.options.snapbackDuration );
-				}
+				/* calibration - after triggered throttledresize */
+				setTimeout( function () {
+					if ( self._sy < $c.height() - $v.height() ) {
+						self.scrollTo( 0, self._sy,
+							self.options.snapbackDuration );
+					}
+				}, 260 );
 
 				self._view_height = $v.height();
 			});
