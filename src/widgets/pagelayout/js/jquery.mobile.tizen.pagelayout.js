@@ -269,6 +269,8 @@
 					.css( "height", $elFooter.height() );
 			}
 
+			$elFooter.show();
+
 			/* Header position fix(remove transition) */
 			next_id = $( event.target ).attr( "id" );
 
@@ -293,6 +295,7 @@
 					if ( !o.visibleOnPageShow ) {
 						self.hide( true );
 					}
+					self._IMEShown = false;
 					self.setHeaderFooter( event );
 				} )
 				.bind( "webkitAnimationStart animationstart updatelayout", function ( e, data ) {

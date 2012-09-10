@@ -93,13 +93,20 @@
 				slider_bar,
 				handle_press,
 				popupEnabledAttr,
-				icon;
+				icon,
+				text_right,
+				text_left;
 
 			// apply jqm slider
 			inputElement.slider();
 
 			// hide the slider input element proper
 			inputElement.hide();
+
+			// FIXME: workaround for list elipse
+			if ( inputElement.parent().hasClass("ui-li") ) {
+				inputElement.parent().css( "overflow", "visible" );
+			}
 
 			self.popup = $('<div class="ui-slider-popup"></div>');
 
@@ -140,13 +147,15 @@
 				break;
 
 			case 'text':
+				text_left = ( inputElement.attr('data-text-left') === undefined ) ? '' : inputElement.attr('data-text-left').substring( 0, 3 );
+				text_right = ( inputElement.attr('data-text-right') === undefined ) ? '' : inputElement.attr('data-text-right').substring( 0, 3 );
 				slider.before( $('<div class="ui-slider-left-text">' +
 					'<span style="position:relative;top:0.4em;">' +
-					inputElement.attr('data-text-left').substring( 0, 3) +
+					text_left +
 					'</span></div>') );
 				slider.after( $('<div class="ui-slider-right-text">' +
 					'<span style="position:relative;top:0.4em;">' +
-					inputElement.attr('data-text-right').substring( 0, 3) +
+					text_right +
 					'</span></div>') );
 				break;
 			}

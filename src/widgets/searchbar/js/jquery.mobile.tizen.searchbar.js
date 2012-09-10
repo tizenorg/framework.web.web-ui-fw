@@ -76,7 +76,6 @@
 				themeclass  = " ui-body-" + theme,
 				focusedEl,
 				clearbtn,
-				searchicon,
 				cancelbtn,
 				defaultText,
 				defaultTextClass,
@@ -84,6 +83,7 @@
 				newClassName,
 				newStyle,
 				newDiv,
+				searchimage,
 				inputedText;
 
 			function toggleClear() {
@@ -99,7 +99,6 @@
 				cancelbtn
 					.addClass( "ui-btn-cancel-show" )
 					.removeClass( "ui-btn-cancel-hide" );
-				searchicon.hide();
 			}
 
 			function hideCancel() {
@@ -109,10 +108,6 @@
 				cancelbtn
 					.addClass( "ui-btn-cancel-hide" )
 					.removeClass( "ui-btn-cancel-show" );
-
-				if ( input.val() == "" ) {
-					searchicon.show();
-				}
 
 				toggleClear();
 			}
@@ -164,19 +159,6 @@
 			//SLP --start search bar with cancel button
 			focusedEl.wrapAll( "<div class='input-search-bar'></div>" );
 
-			searchicon = $("<div class='ui-image-search ui-image-searchfield'></div>")
-				.bind('click', function ( event ) {
-					if ( input.attr( "disabled" ) == "disabled" ) {
-						return false;
-					}
-					searchicon.hide();
-
-					input
-						.blur()
-						.focus();
-				} )
-				.appendTo( focusedEl );
-
 			cancelbtn = $( "<a href='#' class='ui-input-cancel' title='clear text'>Cancel</a>" )
 				.bind('click', function ( event ) {
 					if ( input.attr( "disabled" ) == "disabled" ) {
@@ -199,6 +181,8 @@
 					shadow: true
 				} );
 
+			searchimage = $("<div class='ui-image-search'></div>").appendTo( focusedEl );
+
 			// Input Focused
 			input
 				.focus( function () {
@@ -211,30 +195,6 @@
 				.blur(function () {
 					focusedEl.removeClass( $.mobile.focusClass );
 				});
-
-			// Input Blured
-			/* When user touch on page, it's same to blur */
-			/* FIXME : if there is no problem, please remove this codes..
-			$( "div.input-search-bar" ).tap( function ( event ) {
-				if ( input.attr( "disabled" ) == "disabled" ) {
-					return false;
-				}
-				input.focus();
-				event.stopPropagation();
-			} );
-
-			var currentPage = input.closest( ".ui-page" );
-			$( currentPage ).bind("tap", function ( e ) {
-				if ( input.attr( "disabled" ) == "disabled" ) {
-					return;
-				}
-
-				if ( $( input ).is( ":focus" ) ) {
-					focusedEl.removeClass( "ui-focus" );
-					hideCancel();
-					input.blur();
-				}
-			} );*/
 
 			// Default Text
 			defaultText = input.jqmData( "default-text" );
@@ -276,8 +236,8 @@
 					} );
 			}
 
-			if ( input.val() ) {
-				searchicon.hide();
+			if ( !input.attr("placeholder") ) {
+				input.attr( "placeholder", "Search" );
 			}
 		},
 
