@@ -1,0 +1,178 @@
+<div data-role="page" id="ctxpopup-demo" data-add-back-btn="true">
+	<div data-role="header" data-position="fixed">
+		<h1>Contextual Popup</h1>
+	</div>
+	<div class="content" data-role="content">
+		<div>
+<!-- target button -->
+<a href="#pop_js" id="btn_js" data-role="button" data-inline="true" data-rel="popupwindow">Touch me!</a>
+<!-- context popup -->
+<div id="pop_js" data-role="popupwindow" data-show-arrow="true">
+	<ul data-role="listview">
+		<li><a href="#" class="ui-btn-ctxpopup-close">Close</a></li>
+		<li><a href="#" class="ui-btn-ctxpopup-close" id="ctxpopup_update">Update Button Text</a></li>
+	</ul>
+</div>
+<br>
+<br>
+
+<!-- target button -->
+<a href="#pop_icon_text" id="btn_icon_text" data-role="button" data-inline="true" data-rel="popupwindow">Icon+Text</a>
+<!-- context popup -->
+<div id="pop_icon_text" data-role="popupwindow" data-show-arrow="true">
+	<ul data-role="listview">
+		<li class="ui-li-1line-bigicon1">
+			<a href="#">
+				<img class="ui-li-bigicon" src="test/ctxpopup_1.png">
+				<span class="ui-li-text-main">Eenie</span>
+			</a>
+	    </li>
+		<li class="ui-li-1line-bigicon1">
+			<a href="#">
+				<img class="ui-li-bigicon" src="test/ctxpopup_2.png">
+				<span class="ui-li-text-main">Meenie</span>
+			</a>
+		</li>
+		<li class="ui-li-1line-bigicon1">
+			<a href="#">
+				<img class="ui-li-bigicon" src="test/ctxpopup_3.png">
+				<span class="ui-li-text-main">Mynie</span>
+			</a>
+		</li>
+		<li class="ui-li-1line-bigicon1">
+			<a href="#">
+				<img class="ui-li-bigicon" src="test/ctxpopup_4.png">
+				<span class="ui-li-text-main">Mo</span>
+			</a>
+		</li>
+	</ul>
+</div>
+<br>
+<br>
+
+<!-- target button -->
+<a href="#pop_3_icons" id="btn_3_icons" data-role="button" data-inline="true" data-rel="popupwindow">3 Icons</a>
+<!-- context popup -->
+<div class="horizontal" id="pop_3_icons" data-role="popupwindow" data-show-arrow="true">
+	<ul>
+		<li class="icon">
+			<a href="#" data-role="button" data-icon="call"></a>
+		</li>
+		<li class="icon">
+			<a href="#" data-role="button" data-icon="favorite"></a>
+		</li>
+		<li class="text">
+			<a href="#">Function</a>
+		</li>
+   </ul>
+</div>
+<br>
+<br>
+
+<!-- target button -->
+<a href="#pop_6_icons" id="btn_6_icons" data-role="button" data-inline="true" data-rel="popupwindow">6 Icons-Grid</a>
+<!-- context popup -->
+<div class="horizontal" id="pop_6_icons" data-role="popupwindow" data-show-arrow="true">
+	<table>
+		<tr>
+			<td class="icon">
+				<a href="#" data-role="button" data-icon="call"></a>
+			</td>
+			<td class="icon">
+				<a href="#" data-role="button" data-icon="favorite"></a>
+			</td>
+			<td class="text">
+				<a href="#">Eeenie</a>
+			</td>
+		</tr>
+		<tr>
+			<td class="icon">
+				<a href="#" data-role="button" data-icon="call"></a>
+			</td>
+			<td class="text">
+				<a href="#">Mynie</a>
+			</td>
+			<td class="icon">
+				<a href="#" data-role="button" data-icon="favorite"></a>
+			</td>
+		</tr>
+	</table>
+</div>
+<br>
+<br>
+
+<a href="#pop_copy_paste" id="btn_copy_paste" data-role="button" data-inline="true" data-rel="popupwindow">CopyPaste</a>
+
+<div id="pop_copy_paste" class="horizontal" data-role="popupwindow" data-show-arrow="true">
+	<ul>
+		<li class='text'>
+			<a href="#">Copy</a>
+		</li>
+		<li class='text'>
+			<a href="#">All</a>
+		</li>
+		<li class='text'>
+			<a href="#">Paste</a>
+		</li>
+	</ul>
+</div>
+<br>
+<br>
+
+<a href="#pop_text_only" id="btn_text_only" data-role="button" data-inline="true" data-rel="popupwindow">Text Only</a>
+
+<div id="pop_text_only" data-role="popupwindow" data-show-arrow="true">
+	<ul data-role="listview">
+		<li>
+			<a href="http://www.naver.com">www.naver.com</a>
+		</li>
+		<li>
+			<a href="http://www.naver.com">www.naver.com</a>
+		</li>
+		<li>
+			<a href="http://www.samsung.com">www.samsung.com</a>
+		</li>
+		<li>
+			<a href="http://www.apple.com">www.apple.com</a>
+		</li>
+	</ul>
+</div>
+<br>
+<br>
+
+<!-- target button -->
+<a href="#pop_buttons" id="btn_buttons" data-role="button" data-inline="true" data-rel="popupwindow">Buttons</a>
+<!-- context popup -->
+<div id="pop_buttons" class="button" data-role="popupwindow" data-show-arrow="true">
+	<div>
+		<table>
+			<tr>
+				<td>
+					<a href="#" data-role="button">Meenie</a>
+				</td>
+				<td>
+					<a href="#" data-role="button">Mynie</a>
+				</td>
+				<td>
+					<a href="#" data-role="button">Mo</a>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="#" data-role="button">Catch-a</a>
+				</td>
+				<td>
+					<a href="#" data-role="button">Tiger</a>
+				</td>
+				<td>
+					<a href="#" data-role="button">By-the</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+        </div>
+	</div> <!-- /content -->
+
+</div> <!-- /page -->
