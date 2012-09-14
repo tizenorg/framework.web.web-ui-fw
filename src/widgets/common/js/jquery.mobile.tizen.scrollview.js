@@ -40,10 +40,10 @@
 
 	jQuery.widget( "tizen.scrollview", jQuery.mobile.widget, {
 		options: {
-			fps:               60,    // Frames per second in msecs.
 			direction:         null,  // "x", "y", or null for both.
 
-			scrollDuration:    2000,  // Duration of the scrolling animation in msecs.
+			timerInterval:     10,
+			scrollDuration:    1000,  // Duration of the scrolling animation in msecs.
 			overshootDuration: 250,   // Duration of the overshoot animation in msecs.
 			snapbackDuration:  500,   // Duration of the snapback animation in msecs.
 
@@ -59,6 +59,7 @@
 
 			showScrollBars:    true,
 			overshootEnable:   false,
+			outerScrollEnable: false,
 			scrollJump:        false,
 		},
 
@@ -105,7 +106,7 @@
 			this._vTracker = ( direction !== "x" ) ?
 					new MomentumTracker( this.options ) : null;
 
-			this._timerInterval = 1000 / this.options.fps;
+			this._timerInterval = this.options.timerInterval;
 			this._timerID = 0;
 
 			this._timerCB = function () {
@@ -214,7 +215,7 @@
 			if ( !duration || duration === undefined ) {
 				transition = "none";
 			} else {
-				transition =  "-webkit-transform " + duration / 1000 + "s";
+				transition =  "-webkit-transform " + duration / 1000 + "s ease-out";
 			}
 
 			if ( $.support.cssTransform3d ) {
@@ -331,6 +332,10 @@
 				duration = this.options.snapbackDuration,
 				start = getCurrentTime(),
 				tfunc;
+
+			if ( !this.options.outerScrollEnable ) {
+				return;
+			}
 
 			if ( this._$clip.jqmData("scroll") !== "y" ) {
 				return;
@@ -676,8 +681,9 @@
 			this._dragging = false;
 		},
 
-		_showScrollBars: function () {
-			var vclass = "ui-scrollbar-visible";
+		_showScrollBars: function ( interval ) {
+			var vclass = "ui-scrollbar-visible",
+				self = this;
 
 			if ( !this.options.showScrollBars ) {
 				return;
@@ -694,6 +700,12 @@
 			}
 
 			this._scrollbar_showed = true;
+
+			if ( interval ) {
+				setTimeout( function () {
+					self._hideScrollBars();
+				}, interval );
+			}
 		},
 
 		_hideScrollBars: function () {
@@ -811,7 +823,7 @@
 				var focused,
 					view_h = self._getViewHeight();
 
-				if ( $(".ui-page-active").get(0) !== self._page.get(0) ) {
+				if ( $(".ui-page-active").get(0) !== $c.closest(".ui-page").get(0) ) {
 					return;
 				}
 
@@ -836,11 +848,19 @@
 				self._view_height = view_h;
 			});
 
-			$( document ).one( "pageshow", function ( e ) {
-				self._page = $(".ui-page-active");
-				self._view_offset = self._$view.offset().top - self._$clip.offset().top;
-				self._view_height = self._getViewHeight();
-			});
+			$c.closest(".ui-page")
+				.one( "pageshow", function ( e ) {
+					self._view_offset = self._$view.offset().top - self._$clip.offset().top;
+					self._view_height = self._getViewHeight();
+				})
+				.bind( "pageshow", function ( e ) {
+					/* should be called after pagelayout */
+					setTimeout( function () {
+						self._set_scrollbar_size();
+						self._setScrollPosition( self._sx, self._sy );
+						self._showScrollBars( 2000 );
+					}, 0 );
+				});
 		},
 
 		_add_scrollbar: function () {
@@ -918,7 +938,7 @@
 				}
 				if ( this._$hScrollBar && vw ) {
 					thumb = this._$hScrollBar.find(".ui-scrollbar-thumb");
-					thumb.css( "width", (cw >= vw ? "100%" :
+					thumb.css( "width", (cw >= vw ? "0" :
 							(Math.floor(cw / vw * 100) || 1) + "%") );
 				}
 			}
@@ -933,7 +953,7 @@
 				}
 				if ( this._$vScrollBar && vh ) {
 					thumb = this._$vScrollBar.find(".ui-scrollbar-thumb");
-					thumb.css( "height", (ch >= vh ? "100%" :
+					thumb.css( "height", (ch >= vh ? "0" :
 							(Math.floor(ch / vh * 100) || 1) + "%") );
 				}
 			}

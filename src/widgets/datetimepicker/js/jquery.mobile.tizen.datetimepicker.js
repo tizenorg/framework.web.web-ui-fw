@@ -130,7 +130,6 @@
 
 		_makeTwoDigits: function ( val ) {
 			var ret = val.toString(10);
-
 			if ( val < 10 ) {
 				ret = "0" + ret;
 			}
@@ -389,9 +388,7 @@
 						hour = 12;
 					}
 				}
-				if ( pat.length == 2 ) {
-					hour = this._makeTwoDigits( hour );
-				}
+				hour = this._makeTwoDigits( hour );
 				text = hour;
 				break;
 			case 'm':
@@ -713,6 +710,7 @@
 						date.setMonth( val - 1 );
 
 						if ( date.getMonth() == val ) {
+							date.setDate( 1 );
 							date.setDate( date.getDate() - 1 );
 						}
 						break;
@@ -732,7 +730,7 @@
 					}
 				});
 
-				$div.circularview( 'centerTo', '.current', 500 );
+				$div.circularview( 'centerTo', '.current', 200 );
 				$div.bind( 'scrollend' , function ( e ) {
 					if ( !obj._reflow ) {
 						obj._reflow = function () {
