@@ -1,5 +1,5 @@
 Name:       web-ui-fw
-Version:    0.1.48
+Version:    0.1.55
 Release:    0
 Summary:    Tizen Web UI Framework Library
 Group:      Development/Other
@@ -28,6 +28,7 @@ make DESTDIR=%{buildroot} install
 %post
 
 %files
+%manifest web-ui-fw.manifest
 /usr/share/tizen-web-ui-fw/*/js
 /usr/share/tizen-web-ui-fw/latest
 
@@ -45,6 +46,7 @@ Summary:    Tizen Web UI Framework Theme : tizen-black
 %Description -n web-ui-fw-theme-tizen-black
     Tizen Web UI Framework Theme : tizen-black
 %files -n web-ui-fw-theme-tizen-black
+%manifest web-ui-fw-theme-tizen-black.manifest
 /usr/share/tizen-web-ui-fw/*/themes/tizen-black
 
 ###############################
@@ -54,6 +56,7 @@ Summary:    Tizen Web UI Framework Theme : tizen-white
 %Description -n web-ui-fw-theme-tizen-white
     Tizen Web UI Framework Theme : tizen-white
 %files -n web-ui-fw-theme-tizen-white
+%manifest web-ui-fw-theme-tizen-white.manifest
 /usr/share/tizen-web-ui-fw/*/themes/tizen-white
 
 ###############################
@@ -63,6 +66,7 @@ Summary:    Tizen Web UI Framework Theme : default
 %Description -n web-ui-fw-theme-default
     Tizen Web UI Framework Theme : default
 %files -n web-ui-fw-theme-default
+%manifest web-ui-fw-theme-default.manifest
 /usr/share/tizen-web-ui-fw/*/themes/default
 
 ###############################
@@ -87,6 +91,56 @@ Summary:    Tizen Web UI Framework Demo Application: tizen winset demo
 
 ###############################
 %changelog
+* Tue Oct 09 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.55
+- FIX:
+	- Fix SMACK manifest bug (S1-9098)
+
+* Fri Oct 05 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.54
+- FIX:
+	- handler: don't append a handler if handler is not enabled
+	- scrollview: use static value
+	- datetimepicker: fix date-format HH display error
+- ETC:
+	- provide jquery.min.js
+	- barlayout: codes clean
+	- remove unused file
+
+* Wed Sep 26 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.53
+- FIX:
+	- listview: change focused color
+	- multibuttonentry: code refactoring
+	- datetimepicker: modify date format when triggered date-changed event
+	- slider: fix the top of slider bar
+	- add event blocker when load a first page
+
+* Fri Sep 21 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.52
+- ETC.
+	- Move SMACK manifest files to the top SRCDIR
+
+* Fri Sep 21 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.51
+- FIX:
+	- Popup: Do not focus container
+	- Header: show backbutton when both tabbar and header are present together
+	- Multi button entry: text ellipsis, code refactoring
+
+* Fri Sep 21 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.50
+- ETC.
+	- Apply SMACK manifest
+
+* Thu Sep 20 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.49
+- FIX:
+	- JSLINT code clean-up
+	- scrollview: firefox support
+	- scrollview: fix finding slider handle
+	- list: tweak text ellipsis
+	- checkbox: fix selecting wrong label tag (N_SE-8370)
+	- imageslider: check parameter
+	- smallpopup: fix position
+	- searchbar: fix 'clear' button size
+- Spec changes:
+	- scrollview: support outer scroll
+	- JQM: block click event only with the element that does preventdefault on vclick(N_SE-6090)
+	- remove S/W IME control
 
 * Thu Sep 13 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.48
 - FIX:

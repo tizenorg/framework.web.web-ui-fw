@@ -59,7 +59,7 @@
 
 			showScrollBars:    true,
 			overshootEnable:   false,
-			outerScrollEnable: false,
+			outerScrollEnable: true,
 			scrollJump:        false,
 		},
 
@@ -95,6 +95,7 @@
 
 			this._view_offset = this._$view.offset().top - this._$clip.offset().top;
 			this._view_height = this._getViewHeight();
+			this._clip_height = this._$clip.height();
 
 			this._sx = 0;
 			this._sy = 0;
@@ -141,8 +142,8 @@
 			}
 
 			if ( vt ) {
-				c = this._$clip.height();
-				v = this._getViewHeight();
+				c = this._clip_height;
+				v = this._view_height;
 
 				vt.start( this._sy, speedY,
 					duration, (v > c) ? -(v - c) : 0, 0 );
@@ -178,6 +179,7 @@
 			var keepGoing = false,
 				x = 0,
 				y = 0,
+				scroll_height = 0,
 				vt = this._vTracker,
 				ht = this._hTracker;
 
@@ -189,6 +191,16 @@
 				vt.update( this.options.overshootEnable );
 				y = vt.getPosition();
 				keepGoing = !vt.done();
+
+				if ( vt.getRemained() > this.options.overshootDuration ) {
+					scroll_height = this._view_height - this._clip_height;
+
+					if ( vt.isMin() ) {
+						this._outerScroll( y - vt.getRemained() / 3, scroll_height );
+					} else if ( vt.isMax() ) {
+						this._outerScroll( vt.getRemained() / 3, scroll_height );
+					}
+				}
 			}
 
 			if ( ht ) {
@@ -264,11 +276,9 @@
 			}
 
 			if ( dirLock !== "x" && this._vTracker ) {
-				scroll_height = this._getViewHeight() - $c.height();
+				scroll_height = this._view_height - this._clip_height;
 
-				this._outerScroll( y, scroll_height );
-
-				if ( y >= 0 ) {
+				if ( y > 0 ) {
 					this._sy = 0;
 				} else if ( y < -scroll_height ) {
 					this._sy = -scroll_height;
@@ -305,10 +315,10 @@
 
 				if ( sm === "translate" ) {
 					this._setElementTransform( $sbt, "0px",
-						-y / this._getViewHeight() * $sbt.parent().height() + "px",
+						-y / this._view_height * $sbt.parent().height() + "px",
 						duration );
 				} else {
-					$sbt.css( "top", -y / this._getViewHeight() * 100 + "%" );
+					$sbt.css( "top", -y / this._view_height * 100 + "%" );
 				}
 			}
 
@@ -327,7 +337,7 @@
 
 		_outerScroll: function ( y, scroll_height ) {
 			var self = this,
-				top = $( window ).scrollTop(),
+				top = $( window ).scrollTop() - window.screenTop,
 				sy = 0,
 				duration = this.options.snapbackDuration,
 				start = getCurrentTime(),
@@ -345,10 +355,6 @@
 				return;
 			}
 
-			if ( !this._dragging ) {
-				return;
-			}
-
 			if ( scroll_height < 0 ) {
 				return;
 			}
@@ -361,25 +367,23 @@
 				return;
 			}
 
-			sy *= 10;
-
 			tfunc = function () {
 				var elapsed = getCurrentTime() - start;
 
 				if ( elapsed >= duration ) {
 					window.scrollTo( 0, top + sy );
 					self._outerScrolling = undefined;
+
+					self._stopMScroll();
 				} else {
-					ec = $.easing.easeOutQuad( elapsed / duration, elapsed, 0, 1, duration );
+					ec = $.easing.easeOutQuad( elapsed / duration,
+							elapsed, 0, 1, duration );
 
 					window.scrollTo( 0, top + ( sy * ec ) );
 					self._outerScrolling = setTimeout( tfunc, self._timerInterval );
 				}
 			};
 			this._outerScrolling = setTimeout( tfunc, self._timerInterval );
-
-			/* skip the srollview dragging */
-			this._skip_dragging = true;
 		},
 
 		_scrollTo: function ( x, y, duration ) {
@@ -474,7 +478,7 @@
 					target.is( '.ui-btn-inner .ui-icon' );
 
 			if ( this._is_button ) {
-				if ( target.parents('.ui-slider-handle') ) {
+				if ( target.parents('.ui-slider-handle').length ) {
 					this._skip_dragging = true;
 					return;
 				}
@@ -489,11 +493,15 @@
 
 			if ( this._is_inputbox ) {
 				target.one( "resize.scrollview", function () {
-					if ( ey > $c.height() ) {
-						self.scrollTo( -ex, self._sy - ey + $c.height(),
+					if ( ey > self._clip_height ) {
+						self.scrollTo( -ex, self._sy - ey + self._clip_height,
 							self.options.snapbackDuration );
 					}
 				});
+			}
+
+			if ( this.options.eventType === "mouse" && !this._is_inputbox && !this._is_button ) {
+				e.preventDefault();
 			}
 
 			this._lastX = ex;
@@ -794,19 +802,21 @@
 			$c.bind( "updatelayout", function ( e ) {
 				var sy,
 					vh,
+					clip_h = $c.height(),
 					view_h = self._getViewHeight();
 
-				if ( !$c.height() || !view_h ) {
+				if ( !clip_h || !view_h ) {
 					self.scrollTo( 0, 0, 0 );
 					return;
 				}
 
-				sy = $c.height() - view_h;
+				sy = clip_h - view_h;
 				vh = view_h - self._view_height;
 
 				self._view_height = view_h;
+				self._clip_height = clip_h;
 
-				if ( vh == 0 || vh > $c.height() / 2 ) {
+				if ( vh == 0 || vh > clip_h / 2 ) {
 					return;
 				}
 
@@ -821,13 +831,14 @@
 
 			$( window ).bind( "resize", function ( e ) {
 				var focused,
+					clip_h = $c.height(),
 					view_h = self._getViewHeight();
 
 				if ( $(".ui-page-active").get(0) !== $c.closest(".ui-page").get(0) ) {
 					return;
 				}
 
-				if ( !$c.height() || !view_h ) {
+				if ( !clip_h || !view_h ) {
 					return;
 				}
 
@@ -839,23 +850,29 @@
 
 				/* calibration - after triggered throttledresize */
 				setTimeout( function () {
-					if ( self._sy < $c.height() - self._getViewHeight() ) {
+					self._view_height = self._getViewHeight();
+					self._clip_height = $c.height();
+
+					if ( self._sy < self._clip_height - self._veiw_height ) {
 						self.scrollTo( 0, self._sy,
 							self.options.snapbackDuration );
 					}
 				}, 260 );
 
 				self._view_height = view_h;
+				self._clip_height = clip_h;
 			});
 
 			$c.closest(".ui-page")
 				.one( "pageshow", function ( e ) {
 					self._view_offset = self._$view.offset().top - self._$clip.offset().top;
-					self._view_height = self._getViewHeight();
 				})
 				.bind( "pageshow", function ( e ) {
 					/* should be called after pagelayout */
 					setTimeout( function () {
+						self._view_height = self._getViewHeight();
+						self._clip_height = self._$clip.height();
+
 						self._set_scrollbar_size();
 						self._setScrollPosition( self._sx, self._sy );
 						self._showScrollBars( 2000 );
@@ -944,8 +961,8 @@
 			}
 
 			if ( this._vTracker ) {
-				ch = $c.height();
-				vh = this._getViewHeight();
+				ch = this._clip_height;
+				vh = this._view_height;
 				this._maxY = ch - vh;
 
 				if ( this._maxY > 0 ) {
@@ -988,6 +1005,7 @@
 			this.minPos = 0;
 			this.maxPos = 0;
 			this.duration = 0;
+			this.remained = 0;
 		},
 
 		update: function ( overshootEnable ) {
@@ -1004,6 +1022,8 @@
 			}
 
 			elapsed = elapsed > duration ? duration : elapsed;
+
+			this.remained = duration - elapsed;
 
 			if ( state === tstates.scrolling || state === tstates.overshot ) {
 				dx = this.speed *
@@ -1022,6 +1042,9 @@
 				this.pos = x;
 
 				if ( state === tstates.overshot ) {
+					if ( !overshootEnable ) {
+						this.state = tstates.done;
+					}
 					if ( elapsed >= duration ) {
 						this.state = tstates.snapback;
 						this.fromPos = this.pos;
@@ -1057,6 +1080,18 @@
 
 		done: function () {
 			return this.state === tstates.done;
+		},
+
+		isMin: function () {
+			return this.pos === this.minPos;
+		},
+
+		isMax: function () {
+			return this.pos === this.maxPos;
+		},
+
+		getRemained: function () {
+			return this.remained;
 		},
 
 		getPosition: function () {

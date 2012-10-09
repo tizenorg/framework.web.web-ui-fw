@@ -302,7 +302,7 @@
 
 			this.options.date = newdate;
 
-			this._setValue( this.value() );
+			this._setValue( newdate );
 
 			this.element.attr( "data-" + ( $.mobile.ns ? $.mobile.ns + "-" : "" ) + "date", this.options.date );
 			return this.options.date;
@@ -526,7 +526,7 @@
 
 			switch ( field ) {
 			case 'hour':
-				if ( pat == 'H' ) {
+				if ( pat == 'H' || pat == 'HH' ) {
 					// twentyfour
 					values = range( 0, 23 );
 					data = range( 0, 23 );
@@ -671,7 +671,7 @@
 				$div.jqmData( "list", $li );
 				$div.circularview();
 				// cause ctxpopup forced to subtract 10
-				if( $(window).width() / 2 < target.offset().left ) {
+				if ( $( window ).width() / 2 < target.offset().left ) {
 					newLeft = -10;
 				}
 				$ctx.popupwindow( 'open',
@@ -734,8 +734,8 @@
 				$div.bind( 'scrollend' , function ( e ) {
 					if ( !obj._reflow ) {
 						obj._reflow = function () {
-								$div.circularview("reflow");
-							};
+							$div.circularview("reflow");
+						};
 						$(window).bind("resize", obj._reflow);
 					}
 				});
