@@ -8,6 +8,9 @@
 @color_bar_title_text : rgba(59, 115, 182, 1); /* #3b73b6 */ /* title text */
 @color_bar_btn_press : rgba(0, 0, 0, 0.1);
 
+/***************** Controlbar *********************************/
+@color_controlbar_btn_press : -webkit-linear-gradient(top,  rgba(169,165,151,1) 0%,rgba(246,248,239,1) 100%);
+
 /***************** Body ***************************************/
 @color_bg: rgb(248, 246, 239); // #F8F6EF // Main Background color
 @color_text: rgb(0, 0, 0);	// 0 0 0
@@ -47,6 +50,13 @@
 @color_list_bubble_link_text:	rgb(34, 129, 157);
 
 
+/****************** Shortcut Scroll *************************/
+@color_shortcutscroll_rollover_bg: rgba(230, 227, 216, 1);		/* B0723 : 00_fast_scroll_rollover_bg.9.png */
+@color_shortcutscroll_rollover_text: rgba(160, 159, 154, 1);	/* B0721 : Rollover text */
+@color_shortcutscroll_popup_bg: rgba(59, 115, 182, 1);				/* B0731 : 00_fast_scroll_popup_bg.png */
+@color_shortcutscroll_popup_shadow: rgba(199, 199, 199, 0.5);
+@color_shortcutscroll_popup_text: rgba(255, 255, 255, 1);			/* B0732 : Scroll popup text */
+
 /***************** SearchBar(forms.textinput) *****************/
 @color_searchbar_bg : rgba(248, 246, 239, 1);
 @color_searchbar_default_text : rgba(121, 131, 138, 1); /* Search default text */
@@ -54,7 +64,7 @@
 
 /***************** Popup **************************************/
 @font_size_popup_info_style: 24 * @unit_base;
-@color_popup_text_bg: rgba(248, 246, 239, 1);	/* B061L1 */
+@color_popup_text_bg: rgba(248, 246, 239, 1);								/* B061L1 : Popop info					*/
 
 
 /***************** Button *************************************/
@@ -121,7 +131,6 @@
         font-size: 1.0rem;
         font-style:normal;
         color: @color_button_text_black;
-        &:hover {color: @color_button_text_normal;}
 }
 
 .LESSbutton_hover_style{
@@ -254,14 +263,6 @@
 @style_list_bubble_date_text_align:	center;
 
 
-/***************************************************************************
-                   Shortcut Scroll
-***************************************************************************/
-@color_shortcutscroll_rollover_bg: none;
-@color_shortcutscroll_rollover_text: rgba(160, 172, 179, 1);
-@color_shortcutscroll_popup_bg: rgba(229, 229, 229, 1); // 00_fast_scroll_popup_bg.png
-@color_shortcutscroll_popup_shadow: rgba(199, 199, 199, 0.5);
-@color_shortcutscroll_popup_text: rgb(42, 137, 194);
 
 
 /***************************************************************************
@@ -273,7 +274,7 @@
 @color_popup_title_bg:		rgba(80, 147, 182, 255);	/* popup_title_bg.png */
 
 @color_popup_button_bg:		rgba(248, 246, 239, 1);
-@color_popup_font:			white;
+@color_popup_font: rgba(248, 246, 239, 1); /* maybe not use only popupwindow*/
 @color_popup_text_font:		black;
 
 @color_popup_buttonbg:		rgb(84, 126, 153);
@@ -546,7 +547,7 @@
 @color_controlbar_bg : transparent;
 
 @color_controlbar_btn_text : rgba(249, 249, 249, 1); /* #F9F9F9 */
-@color_controlbar_btn_press : -webkit-linear-gradient(top,  rgb(61,121,150) 0%,rgb(48,91,118) 100%);
+
 
 @color_border_top : rgba(255, 255, 255, 0.5);
 @color_border_bottom : rgba(0, 0, 0, 0.5);
@@ -568,6 +569,7 @@
 @color_ticker_text1:			rgb(255, 255, 255);
 @color_ticker_text2:			rgb(255, 255, 255);
 @color_ticker_btn:			rgb(64, 64, 64);
+@color_ticker_btn_border:		rgb(50, 50, 50);
 
 
 /***************************************************************************

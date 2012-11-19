@@ -184,8 +184,6 @@
 	&.ui-li-static {
 		padding-top : 15 * @unit_base;
 		padding-bottom : 15 * @unit_base;
-/*		padding-left : 13 * @unit_base;
-		padding-right : 13 * @unit_base;*/
 		display: block;
 
 		white-space: normal;	// default: 1line
@@ -211,7 +209,7 @@
 	}
 	.ui-toggleswitch.ui-toggleswitch-image-style {
 		&:last-child {
-			margin-top : -22 * @unit_base;
+			margin-top : -17 * @unit_base;
 
 			right : 0px;
 		}
@@ -237,7 +235,6 @@
 			height : 30 * @unit_base;
 
 			.ui-btn-inner {
-				padding : 5 * @unit_base 5 * @unit_base 5 * @unit_base 5 * @unit_base;
 				line-height : 20 * @unit_base;
 
 				color : transparent;
@@ -245,6 +242,11 @@
 				.ui-icon {
 					left : 5 * @unit_base;
 				}
+			}
+
+			label.ui-btn-icon_only {
+				top : 0px;
+				margin-top : 0px;
 			}
 		}
 	}
@@ -364,13 +366,17 @@ li.ui-li-thumbnail-right {
 
 	height: 38 * @unit_base;
 
+	font-size : @list-font-size-divider;
+	&>.ui-btn-inner>.ui-btn-text {	// For buttonMarkup-ed dividers
+		font-size : @list-font-size-divider;
+	}
 
 	&.ui-btn {
 		top : 0px;
 		margin-top: 0 * @unit_base;
 		border-radius : 0px;
 
-		font-size : 16 * @unit_base;
+		font-size : @list-font-size-divider;
 		.ui-btn-inner.ui-btn-hastxt {
 			height : 100%;
 			padding-left : 0px;
@@ -647,9 +653,23 @@ li:not(.ui-li-has-multiline) .ui-li-text-sub {
 	}
 }
 
+.ui-li-has-multiline.ui-li-has-right-btn.ui-li-has-thumb {
+	.ui-btn-inner a {
+		.ui-li-text-sub {
+			width : 64%;
+		}
+	}
+}
+
 .ui-li-has-multiline.ui-li-static.ui-li-has-right-btn {
 	.ui-li-text-sub {
 		width : 74%;
+	}
+}
+
+.ui-li-has-multiline.ui-li-static.ui-li-has-right-btn.ui-li-has-thumb {
+	.ui-li-text-sub {
+		width : 64%;
 	}
 }
 
@@ -680,7 +700,12 @@ li:not(.ui-li-has-multiline) .ui-li-text-sub {
 		border-style : solid;
 		border-color : @color_dialogue_border_right;
 		border-width : 1px;
-/*		border-top-width : 0px;*/
+
+		> .ui-btn-inner {
+			margin-left : 0px;
+			margin-right : 0px;
+		
+		}
 
 		&:first-child {
 			border-top-width : 1px;
@@ -690,6 +715,14 @@ li:not(.ui-li-has-multiline) .ui-li-text-sub {
 		&:last-child {
 			border-bottom-left-radius : 3px;
 			border-bottom-right-radius : 3px;
+		}
+		
+		> img {
+			margin-left : 6 * @unit_base;
+		}
+		
+		[data-role="button"]:last-child {
+			margin-right : 10 * @unit_base;
 		}
 	}
 
@@ -847,16 +880,6 @@ li:not(.ui-li-has-multiline) .ui-li-text-sub {
 }
 
 // Expandable list animation
-
-@-webkit-keyframes ui-expand-show {
-	from {
-		-webkit-transform-origin: 0% 0%;
-		-webkit-transform: rotateX(90deg) skewX(30deg) translateZ(0);
-	} to {
-		-webkit-transform-origin: 0% 0%;
-		-webkit-transform: rotateX(0deg) skewX(0deg) translateZ(0);
-	}
-}
 .ui-listview {
 	&> .ui-li-expanded {
 		background-color: @color_list_expandable_expanded_bg;
@@ -877,7 +900,11 @@ li:not(.ui-li-has-multiline) .ui-li-text-sub {
 	}
 	.ui-li-expand-transition-show {
 		visibility: visible;
-		-webkit-animation: ui-expand-show 0.4s 1 ease-out;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		-o-transition: all 0.2s ease;
+		-ms-transition: all 0.2s ease;
+		transition: all 0.2s ease;
 	}
 	.ui-li-expand-transition-hide {
 		visibility: hidden;
@@ -885,7 +912,8 @@ li:not(.ui-li-has-multiline) .ui-li-text-sub {
 		min-height: 0px !important;
 		padding-top: 0px;
 		padding-bottom: 0px;
-		border: 0px;
+		border-top: 0px !important;
+		border-bottom: 0px !important;
 		-webkit-transition: all 0.2s ease;
 		-moz-transition: all 0.2s ease;
 		-o-transition: all 0.2s ease;
