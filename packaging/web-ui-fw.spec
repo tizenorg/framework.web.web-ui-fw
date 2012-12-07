@@ -1,6 +1,6 @@
 Name:       web-ui-fw
-Version:    0.1.64
-Release:    0
+Version:    0.2.1
+Release:    1
 Summary:    Tizen Web UI Framework Library
 Group:      Development/Other
 License:    MIT
@@ -82,6 +82,34 @@ Summary:    Tizen Web UI Framework Demo Application: tizen winset demo
 
 ###############################
 %changelog
+* Thu Dec 07 2012 Youmin Ha <youmin.ha@samsung.com> 0.2.1
+- FIX:
+	- jqm1.2: Change collapsible style to meet expandable list
+	- remove jquery-geo-1.0.a4
+	- unit-test: rename from imageslider to gallery
+	- nocontent: add warning message
+	- Handler: Fix issues in jqm1.2
+	- Multimediaview: modify APIs & comments
+	- Mapview: Fix issues in jqm1.2
+	- JQM: clean up patches
+	- Swipelist: refactoring swipelist
+	- Popup,Ctxpopup: Apply tizen style popup in JQM1.2
+	- rearrange button's data-icon resources
+- Spec changes:
+	- Virtualgrid: remove option ('data-itemcount')
+	- gallery: rename the widget from imageslider to gallery
+	- add new style for searchbar
+	[tokentextarea] multi-button entry renamed as token text area. API & comments modified.
+
+* Thu Dec 06 2012 Minkyu Kang <mk7.kang@samsung.com> 0.2.0
+- FIX:
+	- fix jslint error
+	- remove unused files
+	- change naviframe style
+- Spec changes:
+	- applied jQuery Mobile 1.2.0
+	- remove optionheader
+
 * Fri Nov 30 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.64
 - FIX:
 	- fix unit tests

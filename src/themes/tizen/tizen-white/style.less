@@ -11,7 +11,9 @@
                    Naviframe
 ***************************************************************************/
 @color_bar_title_text : rgba(59, 115, 182, 1); /* #3b73b6 */ /* title text */
-@color_bar_btn_press : rgba(0, 0, 0, 0.1);
+@color_bar_title_button_text : rgba(58, 58, 58, 1); 				/* B052L4 : Title text button */
+@color_bar_title_button_text_press : rgba(59, 115, 182, 1);	/* B052L5 : Title text button press */
+@color_bar_btn_press : rgba(64, 147, 247, 0.1);							/* B052L1P : Title text button press bg */
 @color_bar_divider_line : rgba(192, 192, 192, 1);						/* 00_divider_line.9.png */
 
 
@@ -55,6 +57,17 @@
 @color_list_bubble_help_text:	rgb(154, 154, 154);
 @color_list_bubble_link_text:	rgb(34, 129, 157);
 
+@list-font-size-main:	22 * @unit_base;
+@list-font-size-sub:	16 * @unit_base;
+@list-font-size-divider: 16 * @unit_base;	// NOTE: defined in dialogue group
+
+@list-font-weight:		normal;
+
+@list-smallicon-size: 17 * @unit_base;
+@list-li-padding-horizontal: 8 * @unit_base;
+
+@list-bigicon-size: 64 * @unit_base;
+@list-bigicon-size2: 72 * @unit_base;
 
 /***************************************************************************
                    Shortcut Scroll
@@ -72,6 +85,7 @@
 @color_searchbar_bg : rgba(248, 246, 239, 1);
 @color_searchbar_default_text : rgba(121, 131, 138, 1); /* Search default text */
 @color_searchbar_input_field_bg : rgba(255, 255, 255, 1); /* W301 : 00_search_edit_field_bg.png */
+@color_searchbar_border : rgba(153, 153, 153, 1);
 
 
 /***************************************************************************
@@ -442,45 +456,14 @@
 
 
 /***************************************************************************
-                   Color widgets
+                   tokentextarea
 ***************************************************************************/
-@color_widgets_title_bg: rgb(235, 239, 241);
-@color_widgets_basic_border: rgb(192, 192, 192);
-@color_widgets_left_border: rgb(108, 168, 199);
-
-.LESScolortitle_background_style{
-        background-color: @color_widgets_title_bg;
-        border: 1px solid;
-        border-color: @color_widgets_basic_border;
-        border-left: 6px solid;
-        border-left-color: @color_widgets_left_border;
-}
-
-.LESShsvpicker_background_style{
-        background-color: @color_widgets_title_bg;
-        border: 1px solid;
-        border-color: @color_widgets_basic_border;
-        border-left: 6px solid;
-        border-left-color: @color_widgets_left_border;
-}
-
-.LESSpalette_background_style{
-        background-color: @color_widgets_title_bg;
-        border: 1px solid;
-        border-top: 6px solid;
-        border-color: @color_widgets_basic_border;
-}
-
-
-/***************************************************************************
-                   multibutton entry
-***************************************************************************/
-@color_multibuttonentry_block_text : rgb(255, 255, 255);
-@color_multibuttonentry_block_bg : rgb(95, 138, 189);
-@color_multibuttonentry_press_bg : rgb(54, 89, 132);
-@color_multibuttonentry_input_text : #222222;
-@color_multibuttonentry_link : rgb(186, 185, 180);
-@color_multibuttonentry_label_text : rgb(102, 102, 102);
+@color_tokentextarea_block_text : rgb(255, 255, 255);
+@color_tokentextarea_block_bg : rgb(95, 138, 189);
+@color_tokentextarea_press_bg : rgb(54, 89, 132);
+@color_tokentextarea_input_text : #222222;
+@color_tokentextarea_link : rgb(186, 185, 180);
+@color_tokentextarea_label_text : rgb(102, 102, 102);
 
 
 /***************************************************************************
