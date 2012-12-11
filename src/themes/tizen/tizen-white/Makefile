@@ -46,7 +46,7 @@ CSS_SRCS=	../common/jquery.mobile.theme.less.css \
 		../common/jquery.mobile.popup.css \
 		../common/jquery.mobile.tizen.popup.less.css \
 		../common/jquery.mobile.tizen.misc.less.css \
-		../common/jquery.mobile.tizen.controlbar.less.css
+		../common/jquery.mobile.tizen.tabbar.less.css
 
 all: prepare css images js
 
