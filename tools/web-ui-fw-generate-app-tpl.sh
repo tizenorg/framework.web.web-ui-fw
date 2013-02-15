@@ -3,7 +3,8 @@
 ### Prepare: set global variables ###
 CWD=`pwd`
 SCRIPTDIR="`cd \`dirname $0\`/; pwd`"
-LIBDIR=$SCRIPTDIR/../lib/tizen-web-ui-fw
+PREFIX="/usr"
+LIBDIR=/share/tizen-web-ui-fw
 DATA_FRAMEWORK_ROOT=
 
 
@@ -89,8 +90,8 @@ function usage
 
 	if [ -n "$1" ]; then EXITCODE=1; echo "ERROR: $ERRMSG"; echo ""; fi
 
-	if [ ! -n "$1" ]; then 
-		echo "Usage: $0 <--copylib> <--type=[w3c|wac]> <app-name> <install-dir>"
+	if [ -n "$1" ]; then
+		echo "Usage: $0 <--copylib> <--type=[w3c|tizen]> <app-name> <install-dir>"
 		echo ""
 		echo "       app-name : Your application name. If whitespace is contained, wrap it "
 		echo "                  by quote mark."
@@ -100,9 +101,9 @@ function usage
 		echo "       --copylib : When this option is used, all libs and resources will be "
 		echo "                  copied into template directory, and all templates will refer"
 		echo "                  those copied libs."
-		echo "       --type=[w3c|wac]"
+		echo "       --type=[w3c|tizen]"
 		echo "                  Set type of application template. If no --type= option is given,"
-		echo "                  only default app template files will be copied."
+		echo "                  the type is set to tizen by default."
 		echo ""
 	fi
 
@@ -113,15 +114,16 @@ function usage
 ### Check argv ###
 function check_argv
 {
-	if [ ! -d "$INSTALL_DIR" ]; then usage "No install-dir found; $INSTALL_DIR"; fi
-	if [ -e "$DESTDIR" ]; then usage "$DESTDIR already exists"; fi
+	if [ ! -n "$APP_NAME" ]; then usage "No app-name is given."; fi
+	if [ ! -d "$INSTALL_DIR" ]; then usage "No install-dir is found; $INSTALL_DIR"; fi
+	if [ -e "$DESTDIR" ]; then usage "$DESTDIR already exists."; fi
 }
 
 
 ### Copy template files into installation directory ###
 function copy_template
 {
-	local libpath=$LIBDIR
+	local libpath="${PREFIX}${LIBDIR}"
 	local tplpath=$libpath/template
 
 	# Check if this script is in src script
@@ -133,6 +135,9 @@ function copy_template
 	echo "Copying template files into $DESTDIR..."
 	mkdir -p $DESTDIR || usage "ERROR: Failed to create directory: $DESTDIR"
 	find $tplpath/ -maxdepth 1 -type f | xargs -i cp -a {} $DESTDIR/ ||  usage "ERROR: Failed to copy templates" ;
+	if [[ ! -n "$type" ]]; then
+		type="tizen"
+	fi
 	if [[ -n "$type" && -d "$tplpath/$type" ]]; then	# Copy type-specific files
 		cp -a $tplpath/$type/* $DESTDIR/ || usage "ERROR: Failed to copy templates"
 	fi
@@ -142,10 +147,9 @@ function copy_template
 		echo "Copying libs into $DESTDIR..."
 		cp -a ${libpath} ${DESTDIR}/	|| usage "ERROR: Failed to copy libs"
 		DATA_FRAMEWORK_ROOT="data-framework-root=\"tizen-web-ui-fw\""
-		LIBDIR="tizen-web-ui-fw/0.1/js"	# This new value is used by replace_template()
+		LIBDIR="tizen-web-ui-fw/latest/js"	# This new value is used by replace_template()
 	else   # otherwise, just set libdir
-		echo;
-		#LIBDIR="file://$LIBDIR/template"
+		LIBDIR="file://${PREFIX}${LIBDIR}/template"
 	fi
 }
 

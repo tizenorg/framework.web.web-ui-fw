@@ -1,97 +1,126 @@
 @import "config.less";
 
-@popup-size: 102px;
-@padding-size: 18px;
+@popup-height: 54 * @unit_base;
+@popup-width: 45 * @unit_base;
+@img-height: 37 * @unit_base;
+@img-width: 37 * @unit_base;
+@handle-height: 36 * @unit_base;
+@handle-width: 36 * @unit_base;
 
 label.ui-slider {
 	display: block;
-}
-
-input.ui-slider-input {
-	display: inline-block;
-	width: 50px;
 }
 
 select.ui-slider-switch {
 	display: none;
 }
 
-.ui-slider-bg,
-.ui-slider-icon-bg {
+.ui-slider-container {
 	position: relative;
-	margin-left: 32px;
-	margin-right: 32px;
-	margin-bottom: 0.2em;
 	vertical-align: middle;
+
+	height: 18 * @unit_base;
+	margin-left: 16 * @unit_base;
+	margin-right: 16 * @unit_base;
+	margin-top: 18 * @unit_base;
+	margin-bottom: 18 * @unit_base;
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, @color_progress_bar1),
+		color-stop(1, @color_progress_bar0)
+	);
+	.LESSbox-shadow(1px, 1px, 0px, white);
+	.LESSborder-radius-all( 10 * @unit_base );
 }
 
-.ui-slider-icon-bg {
-	margin-left: 96px;
-	margin-right: 96px;
+.ui-li > .ui-slider-container {
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 .ui-slider-left-volume,
 .ui-slider-left-bright {
 	position: absolute;
-	top: -0.2em;
-	left: -96px;
-	height: 80px;
-	width: 80px;
 	vertical-align: middle;
-	background: url(images/00_slider_btn_brightness01.png) no-repeat;
+
+	top: -0.5rem;
+	left: -50 * @unit_base;
+	height: @img-height;
+	width: @img-width;
+
+	background: url(images/controls/00_slider_button_brightness_01.png) no-repeat;
+	.LESSbackground-size(@img-width, @img-height);
 }
 
 .ui-slider-left-volume {
-	background: url(images/00_slider_btn_volume01.png) no-repeat;
+	background: url(images/controls/00_slider_button_volume_01.png) no-repeat;
+	.LESSbackground-size(@img-width, @img-height);
 }
 
 .ui-slider-right-volume,
 .ui-slider-right-bright {
 	position: absolute;
-	top: -0.2em;
-	right: -96px;
-	height: 80px;
-	width: 80px;
+
+	top: -0.5rem;
+	right: -50 * @unit_base;
+	height: @img-height;
+	width: @img-width;
+
 	vertical-align: middle;
-	background: url(images/00_slider_btn_brightness02.png) no-repeat;
+
+	background: url(images/controls/00_slider_button_brightness_02.png) no-repeat;
+	.LESSbackground-size(@img-width, @img-height);
 }
 
 .ui-slider-right-volume {
-	background: url(images/00_slider_btn_volume02.png) no-repeat;
+	background: url(images/controls/00_slider_button_volume_02.png) no-repeat;
+	.LESSbackground-size(@img-width, @img-height);
 }
 
 .ui-slider-left-text {
 	position: absolute;
-	top: -0.2em;
-	left: -96px;
-	height: 80px;
-	width: 80px;
+
+	top: -0.5rem;
+	height: 37 * @unit_base;
+
 	text-align: center;
 	color: rgb(100, 100, 100);
 }
 
 .ui-slider-right-text {
 	position: absolute;
-	top: -0.2em;
-	right: -96px;
-	height: 80px;
-	width: 80px;
+
+	top: -0.5rem;
+	height: 37 * @unit_base;
+
 	text-align: center;
 	color: rgb(100, 100, 100);
 }
 
-div.ui-slider {
-	display: inline-block;
-	overflow: visible;
-	height: 16px;
-	width: 100%;
-	background-image: url(images/00_winset_list_progress_bg.png);
+div.ui-slider:not(.ui-toggle-switch) {
+	position: relative;
+
+	top: 5 * @unit_base;
+	height: 7 * @unit_base;
+	margin-left: 5 * @unit_base;
+	margin-right: 5 * @unit_base;
+
+	.LESSborder-radius-all( 10 * @unit_base );
+	border: 1px;
+	border-style: solid;
+	border-color: @color_progress_border;
+	.LESSbox-shadow(1px, -1px, 1px, @color_progress_border);
+	background-color: @color_progress_bar0;
 
 	.ui-btn {
-		top: 0.15em !important;
+		top: -0.75rem;
+		margin-top: 0;
 	}
 	.ui-btn-inner {
-		padding: 0.4em 0px;
+		padding: 0.3rem 0 0 0;
 	}
 	.ui-btn-text {
 		color: @color_slider_handle_text;
@@ -101,38 +130,60 @@ div.ui-slider {
 a.ui-slider-handle {
 	position: relative;
 	z-index: 10;
-	top: -21px;
-	width: 58px;
-	height: 58px;
-	margin-top: -29px;
-	margin-left: -29px;
+
+	width: 36 * @unit_base;
+	height: 36 * @unit_base;
+	margin-left: -19 * @unit_base;
+
 	color: @color_slider_handle_text;
-	background: url(images/00_slider_handle.png) no-repeat;
+	font-size: 0.95rem;
+
+	background: url(images/controls/00_slider_handle.png) no-repeat;
+	.LESSbackground-size(@handle-width, @handle-height);
 }
 
 .ui-slider-popup {
 	position: absolute !important;
-	width: @popup-size;
-	height: @popup-size;
-	text-align: center;
-	padding-top: 0.5em;
 	z-index: 100;
-	opacity: 0.9;
-	background: url(images/00_slider_popup_bg.png) no-repeat;
+
+	width: @popup-width;
+	height: @popup-height;
+	top: -60 * @unit_base;
+	padding-top: 0.1rem;
+
+	color: @color_slider_popup_text;
+	text-align: center;
+	font-size: 1.5rem;
+
+	background: url(images/controls/00_slider_popup_bg.png) no-repeat;
+	.LESSbackground-size(@popup-width, @popup-height);
 }
 
-.ui-slider-bar {
+.ui-slider-bg {
 	position: absolute;
-	top: 0.8em;
-	height: 16px;
+
+	height: 7 * @unit_base;
 	width: 0;
-	background-image: url(images/00_winset_list_progress_bar.png);
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, @color_progress_value0),
+		color-stop(1, @color_progress_value1)
+	);
+	.LESSborder-radius-all( 10 * @unit_base );
+	.LESSbox-shadow(-1px, -1px, 1px, rgb(179, 200, 226));
 }
 
 .ui-slider-handle-press {
 	position: absolute;
 	z-index: 15;
-	width: 58px;
-	height: 58px;
-	background: url(images/00_slider_handle_press.png) no-repeat;
+
+	width: 37 * @unit_base;
+	height: 37 * @unit_base;
+
+	//FIXME
+	background: url(images/controls/00_slider_handle_press.png) no-repeat;
+	.LESSbackground-size(@handle-width, @handle-height);
 }

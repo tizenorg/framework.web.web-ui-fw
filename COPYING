@@ -1,4 +1,4 @@
-This software is licensed under the MIT licence (as defined
+This software is licensed under the MIT license (as defined
 by the OSI at http://www.opensource.org/licenses/mit-license.php)
 
 ****************************************************************************
@@ -33,21 +33,12 @@ widgets/jquery.mobile.groupindex/
 	including theme files (removed php files which required some changes), demo html, js, and also the
 	jquery.mobile.scrollview.{js/css} in the common directories (already copied as part of datetimepicker).
 
-widgets/jquery.mobile.maps/
-	initial version taken from :
-	svn checkout http://jquery-ui-map.googlecode.com/svn/trunk/ jquery-ui-map-read-only
-	Checked out revision 254.
+jQuery UI (http://jqueryui.com/) [MIT license]
 
-jQuery UI (http://jqueryui.com/) [MIT licence]
-JQM-DateBox (https://github.com/jtsage/jquery-mobile-datebox) [CC 3.0 Attribution]
-developed by JTSage (http://dev.jtsage.com/blog/)
+jQuery Mobile (http://jquerymobile.com/) [MIT license]
 
-jQuery Mobile (http://jquerymobile.com/) [MIT licence]
+jQuery (http://jquery.com/) [MIT license]
 
-jQuery (http://jquery.com/) [MIT licence]
+(parts of) Underscore (http://documentcloud.github.com/underscore/) [MIT license]
 
-(parts of) Underscore (http://documentcloud.github.com/underscore/) [MIT licence]
-
-jLayout (http://www.bramstein.com/projects/jlayout/) [BSD licence]
-
-jSizes (http://www.bramstein.com/projects/jsizes/) [BSD licence]
+Globalize (http://github.com/jquery/globalize/) [MIT license]

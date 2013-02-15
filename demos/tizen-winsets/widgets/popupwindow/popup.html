@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet"  href="themes/default/" />
+	<script src="js/jquery.js"></script>
+	<script src="js/"></script>
+	<script src="theme.js"></script>
+	<script src="js/jquery.mobile.forms.checkboxradio.extension.js"></script>
+	</head>
+<body>
+
+<div data-role="page" id="popupwindow-demo" data-add-back-btn="true">
+	<div data-role="header" data-position="fixed">
+		<h1>Popup window</h1>
+	</div>
+	<div class="content" data-role="content">
+		<ul data-role="listview" data-icon="1line-textonly">
+			<li data-role="list-divider">App samples</li>
+			<li><a href="#center_social_style1" data-inline="true" data-rel="popup" data-position-to="window">Social Magazine style1</a></li>
+			<li><a href="#center_social_style2" data-inline="true" data-rel="popup" data-position-to="window">Social Magazine style2</a></li>
+			<li data-role="list-divider">Normal samples</li>
+			<li><a href="#center_info" data-inline="true" data-rel="popup" data-position-to="window">Center info popup</a></li>
+			<li><a href="#center_title" data-inline="true" data-rel="popup" data-position-to="window">Center title popup</a></li>
+			<li><a href="#center_basic_1btn" data-inline="true" data-rel="popup" data-position-to="window">Center basic 1 button popup</a></li>
+			<li><a href="#center_basic_2btn" data-inline="true" data-rel="popup" data-position-to="window">Center basic 2 button popup</a></li>
+			<li><a href="#center_basic_3btn" data-inline="true" data-rel="popup" data-position-to="window">Center basic 3 button popup</a></li>
+			<li><a href="#center_title_1btn" data-inline="true" data-rel="popup" data-position-to="window">Center title 1 button popup</a></li>
+			<li><a href="#center_title_2btn" data-inline="true" data-rel="popup" data-position-to="window">Center title 2 button popup</a></li>
+			<li><a href="#center_title_3btn" data-inline="true" data-rel="popup" data-position-to="window">Center title 3 button popup</a></li>
+			<li><a href="#center_button_vertical" data-inline="true" data-rel="popup" data-position-to="window">Center_button vertical</a></li>
+			<li><a href="#center_checkbox" data-inline="true" data-rel="popup" data-position-to="window">Center_checkbox</a></li>
+			<li><a href="#center_liststyle_1btn" data-inline="true" data-rel="popup" data-position-to="window">Center_list style 1 button popup</a></li>
+			<li><a href="#center_liststyle_2btn" data-inline="true" data-rel="popup" data-position-to="window">Center_list style 2 button popup</a></li>
+			<li><a href="#center_liststyle_3btn" data-inline="true" data-rel="popup" data-position-to="window">Center_list style 3 button popup</a></li>
+			<li><a href="#textbox_popup" data-inline="true" data-rel="popup" data-position-to="window">Popup has textbox</a></li>
+			<li><a href="#positionWindow" data-rel="popup" data-position-to="window">Position</a></li>
+		</ul>
+
+		<!-- Social Magazine font popup -->
+		<div id="center_social_style1" data-role="popup" class="center_liststyle_2btn">
+			<div class="ui-popup-title">
+				<h1>Font Size</h1>
+			</div>
+			<div class="ui-popup-scroller-bg" data-scroll="y"  style="height:auto">
+				<ul data-role="listview">
+					<li class="ui-li-has-radio" id="text_fontSmall">
+						<a href="#">
+						<input type="radio" name="radio-choice-1" id="fontSmall" value="choice-1"/>
+						text_Small</a>
+					</li>
+					<li class="ui-li-has-radio" id="text_fontMedium">
+						<a href="#">
+						<input type="radio" name="radio-choice-1" id="fontMedium" value="choice-2"/>
+						text_Medium</a>
+					</li>
+					<li class="ui-li-has-radio" id="text_fontLarge">
+						<a href="#">
+						<input type="radio" name="radio-choice-1" id="fontLarge" value="choice-3"/>
+						text_Large</a>
+					</li>
+				</ul>
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">OK</a>
+				<a data-role="button" data-rel="back" data-inline="true">Cancel</a>
+			</div>
+		</div>
+
+		<!-- Social Magazine ime popup -->
+		<div id="center_social_style2" data-role="popup" class="center_title_2btn">
+			<div class="ui-popup-title">
+				<h1>Create new category<h1>
+			</div>
+			<div class="ui-popup-text">
+						<input type="text" id="newCategoryPopupInput" name="newCategoryName" size="30" />
+			</div>
+					<div class="ui-popup-button-bg">
+						<a data-role="button" data-rel="back" data-inline="true">OK</a>
+						<a data-role="button" data-rel="back" data-inline="true">Cancel</a>
+					</div>
+		</div>
+
+		<!-- Center info Popup -->
+		<div id="center_info" data-role="popup" class="center_info">
+			<div class="ui-popup-text"> <p>
+				Pop-up dialog box, a child
+				window that blocks user inter-
+				act to the parent windows
+			</p></div>
+		</div>
+
+		<!-- Center title Popup -->
+		<div id="center_title" data-role="popup" class="center_title">
+			<div class="ui-popup-title">
+				<h1>Popup title</h1>
+			</div>
+			<div class="ui-popup-text">
+				Pop-up dialog box, a child
+				window that blocks user interact
+				to the parent windows
+			</div>
+		</div>
+
+		<!-- Center basic 1 button popup -->
+		<div id="center_basic_1btn" data-role="popup" class="center_basic_1btn">
+			<div class="ui-popup-text">
+				Pop-up dialog box, a child
+				window that blocks user interact
+				to the parent windows
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">Button</a>
+			</div>
+		</div>
+
+		<!-- Center basic 2 button popup -->
+		<div id="center_basic_2btn" data-role="popup" class="center_basic_2btn">
+			<div class="ui-popup-text">
+				Pop-up dialog box, a child
+				window that blocks user interact
+				to the parent windows
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">Button1</a>
+				<a data-role="button" data-rel="back" data-inline="true">Button2</a>
+			</div>
+		</div>
+
+		<!-- Center basic 3 button popup -->
+		<div id="center_basic_3btn" data-role="popup" class="center_basic_3btn">
+			<div class="ui-popup-text">
+				Pop-up dialog box, a child
+				window that blocks user interact
+				to the parent windows
+			</div>
+			<div class="ui-popup-button-bg">
+					<a data-role="button" data-rel="back" data-inline="true">1</a>
+					<a data-role="button" data-rel="back" data-inline="true">2</a>
+					<a data-role="button" data-rel="back" data-inline="true">3</a>
+			</div>
+		</div>
+
+		<!-- Center title 1 button popup -->
+		<div id="center_title_1btn" data-role="popup" class="center_title_1btn">
+			<div class="ui-popup-title">
+				<h1>Popup title</h1>
+			</div>
+			<div class="ui-popup-text">
+				Pop-up dialog box, a child
+				window that blocks user interact
+				to the parent windows
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">Button</a>
+			</div>
+		</div>
+
+		<!-- Center title 2 button popup -->
+		<div id="center_title_2btn" data-role="popup" class="center_title_2btn">
+			<div class="ui-popup-title">
+				<h1>Popup title</h1>
+			</div>
+			<div class="ui-popup-text">
+				Pop-up dialog box, a child
+				window that blocks user interact
+				to the parent windows
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">Button1</a>
+				<a data-role="button" data-rel="back" data-inline="true">Button2</a>
+			</div>
+		</div>
+
+		<!-- Center title 3 button popup -->
+		<div id="center_title_3btn" data-role="popup" class="center_title_3btn">
+			<div class="ui-popup-title">
+				<h1>Popup title</h1>
+			</div>
+			<div class="ui-popup-text">
+				Pop-up dialog box, a child
+				window that blocks user interact
+				to the parent windows
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">1</a>
+				<a data-role="button" data-rel="back" data-inline="true">2</a>
+				<a data-role="button" data-rel="back" data-inline="true">3</a>
+			</div>
+		</div>
+
+		<!-- Center button vertical -->
+		<div id="center_button_vertical" data-role="popup" class="center_button_vertical">
+			<div class="ui-popup-text">
+				File 01.jpg
+				already in use
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">Rename</a>
+				<a data-role="button" data-rel="back" data-inline="true">Replace</a>
+				<a data-role="button" data-rel="back" data-inline="true">Cancel</a>
+			</div>
+		</div>
+
+		<!-- popup checkbox  -->
+		<div id="center_checkbox" data-role="popup" class="center_checkbox">
+			<div class="ui-popup-text">
+				Use packet data must
+				be enabled to access
+				data service.
+				Change settings?
+			</div>
+			<div class="ui-popup-check-bg">
+				<input type="checkbox" name="checkbox-1" id="checkbox-1" class="custom" />
+				<label for="checkbox-1">Don't ask again</label>
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">Rename</a>
+				<a data-role="button" data-rel="back" data-inline="true">Replace</a>
+			</div>
+		</div>
+
+		<!-- popup liststyle 1 button -->
+		<div id="center_liststyle_1btn" data-role="popup" class="center_liststyle_1btn">
+			<div class="ui-popup-title">
+				<h1>Popup title</h1>
+			</div>
+			<div class="ui-popup-scroller-bg" data-scroll="y">
+				<ul data-role="listview" data-icon="1line-textonly">
+					<li><a href="#">List item 1</a></li>
+					<li><a href="#">List item 2</a></li>
+					<li><a href="#">List item 3</a></li>
+					<li><a href="#">List item 4</a></li>
+					<li><a href="#">List item 5</a></li>
+					<li><a href="#">List item 6</a></li>
+					<li><a href="#">List item 7</a></li>
+					<li><a href="#">List item 8</a></li>
+					<li><a href="#">List item 9</a></li>
+				</ul>
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">Cancel</a>
+			</div>
+		</div>
+
+		<!-- popup liststyle 2 button -->
+		<div id="center_liststyle_2btn" data-role="popup" class="center_liststyle_2btn">
+			<div class="ui-popup-title">
+				<h1>Popup title</h1>
+			</div>
+			<div class="ui-popup-scroller-bg" data-scroll="y">
+				<ul data-role="listview" data-icon="1line-textonly">
+					<li><a href="#">List item 1</a></li>
+					<li><a href="#">List item 2</a></li>
+					<li><a href="#">List item 3</a></li>
+					<li><a href="#">List item 4</a></li>
+					<li><a href="#">List item 5</a></li>
+					<li><a href="#">List item 6</a></li>
+					<li><a href="#">List item 7</a></li>
+					<li><a href="#">List item 8</a></li>
+					<li><a href="#">List item 9</a></li>
+				</ul>
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">Ok</a>
+				<a data-role="button" data-rel="back" data-inline="true">Cancel</a>
+			</div>
+		</div>
+
+		<!-- popup liststyle 3 button -->
+		<div id="center_liststyle_3btn" data-role="popup" class="center_liststyle_3btn">
+			<div class="ui-popup-title">
+				<h1>Popup title</h1>
+			</div>
+			<div class="ui-popup-scroller-bg" data-scroll="y">
+				<ul data-role="listview" data-icon="1line-textonly">
+					<li><a href="#">List item 1</a></li>
+					<li><a href="#">List item 2</a></li>
+					<li><a href="#">List item 3</a></li>
+					<li><a href="#">List item 4</a></li>
+					<li><a href="#">List item 5</a></li>
+					<li><a href="#">List item 6</a></li>
+					<li><a href="#">List item 7</a></li>
+					<li><a href="#">List item 8</a></li>
+					<li><a href="#">List item 9</a></li>
+				</ul>
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">1</a>
+				<a data-role="button" data-rel="back" data-inline="true">2</a>
+				<a data-role="button" data-rel="back" data-inline="true">3</a>
+			</div>
+		</div>
+
+		<!-- textbox popup -->
+		<div id="textbox_popup" data-role="popup" class="center_title_2btn">
+			<div class="ui-popup-title">
+				<h1>PopupTest<h1>
+			</div>
+			<div class="ui-popup-text">
+				<input type="text" size="30" />
+				<input type="text" size="30" />
+			</div>
+			<div class="ui-popup-button-bg">
+				<a data-role="button" data-rel="back" data-inline="true">OK</a>
+				<a data-role="button" id="btn_textbox_popup_cancel" data-rel="back" data-inline="true">Cancel</a>
+				<script>
+				$("#btn_textbox_popup_cancel").bind("click", function ( ev ) {
+					$("#textbox_popup").find("input").val("");
+				} );
+				</script>
+			</div>
+		</div>
+
+		<div data-role="popup" id="positionWindow">
+			<p>I am positioned to the window.</p>
+		</div>
+
+	</div> <!-- /content -->
+
+	<div data-role="footer">
+	</div>
+
+</div> <!-- /page -->
+
+</body>
+</html>
