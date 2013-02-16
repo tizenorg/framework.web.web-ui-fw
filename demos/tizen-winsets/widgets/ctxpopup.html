@@ -1,0 +1,161 @@
+<div data-role="page" id="ctxpopup-demo" data-add-back-btn="true">
+	<div data-role="header" data-position="fixed">
+		<h1>Contextual Popup</h1>
+	</div>
+	<div class="content" data-role="content">
+		<div>
+<!-- target button -->
+<a href="#pop_js" id="btn_js" data-role="button" data-inline="true" data-rel="popup">Touch me!</a>
+<!-- context popup -->
+<div id="pop_js" data-role="popup" >
+	<ul data-role="listview">
+		<li><a href="#" data-rel="back">Close</a></li>
+		<li><a href="#" data-rel="back" id="ctxpopup_update">Update Button Text</a></li>
+	</ul>
+</div>
+<br>
+<br>
+
+<!-- target button -->
+<a href="#pop_icon_text" id="btn_icon_text" data-role="button" data-inline="true" data-rel="popup">Icon+Text</a>
+<!-- context popup -->
+<div id="pop_icon_text" data-role="popup" >
+	<ul data-role="listview">
+		<li class="ui-li-1line-bigicon1">
+			<a href="#">
+				<img class="ui-li-bigicon" src="test/ctxpopup_1.png">
+				<span class="ui-li-text-main">Eenie</span>
+			</a>
+	    </li>
+		<li class="ui-li-1line-bigicon1">
+			<a href="#">
+				<img class="ui-li-bigicon" src="test/ctxpopup_2.png">
+				<span class="ui-li-text-main">Meenie</span>
+			</a>
+		</li>
+		<li class="ui-li-1line-bigicon1">
+			<a href="#">
+				<img class="ui-li-bigicon" src="test/ctxpopup_3.png">
+				<span class="ui-li-text-main">Mynie</span>
+			</a>
+		</li>
+		<li class="ui-li-1line-bigicon1">
+			<a href="#">
+				<img class="ui-li-bigicon" src="test/ctxpopup_4.png">
+				<span class="ui-li-text-main">Mo</span>
+			</a>
+		</li>
+	</ul>
+</div>
+<br>
+<br>
+
+<a href="#pop_copy_paste" id="btn_copy_paste" data-role="button" data-inline="true" data-rel="popup">CopyPaste</a>
+
+<div id="pop_copy_paste" data-role="popup" >
+	<ul data-role="listview">
+		<li class='text'>
+			<a href="#">Copy</a>
+		</li>
+		<li class='text'>
+			<a href="#">All</a>
+		</li>
+		<li class='text'>
+			<a href="#">Paste</a>
+		</li>
+	</ul>
+</div>
+<br>
+<br>
+
+<a href="#pop_text_only" id="btn_text_only" data-role="button" data-inline="true" data-rel="popup">Text Only</a>
+
+<div id="pop_text_only" data-role="popup" >
+	<ul data-role="listview">
+		<li>
+			<a href="#">Menu1</a>
+		</li>
+		<li>
+			<a href="#">Menu2</a>
+		</li>
+		<li>
+			<a href="#">Menu3</a>
+		</li>
+		<li>
+			<a href="#">Menu4</a>
+		</li>
+	</ul>
+</div>
+<span id="codeSample">
+Code Sample
+</span>
+<br>
+<br>
+
+<!-- target button -->
+<a href="#pop_buttons" id="btn_buttons" data-role="button" data-inline="true" data-rel="popup">Buttons</a>
+<!-- context popup -->
+<div id="pop_buttons"  data-role="popup" >
+	<ul data-role="listview">
+				<li><a href="#">Meenie</a></li>
+				<li><a href="#">Mynie</a></li>
+				<li><a href="#">Mo</a></li>
+	</ul>
+ </div>
+<br>
+<br>
+
+<a href="#pop_text_only" id="btn_text_only" data-role="button"  data-transition="flip" data-inline="true" data-rel="popup">Animation</a>
+
+<div id="pop_text_only" data-role="popup" >
+	<ul data-role="listview">
+		<li>
+			<a href="#">Menu1</a>
+		</li>
+		<li>
+			<a href="#">Menu2</a>
+		</li>
+		<li>
+			<a href="#">Menu3</a>
+		</li>
+		<li>
+			<a href="#">Menu4</a>
+		</li>
+	</ul>
+</div>
+<br>
+<br>
+<a onclick="popupTest()" id="btn_text_only" data-role="button"  data-transition="flip" data-inline="true" data-rel="popup">MethodOpen</a>
+<br>
+<br>
+<a href="#closeTest" id="close_btn_buttons" data-role="button" data-inline="true" data-rel="popup">CloseTest</a>
+<div id="closeTest"  data-role="popup" >
+	<ul data-role="listview">
+				<li><a data-rel="back" href="#">Close</a></li>
+				<li><a data-rel="back" onclick="closeTest()" href="#">Close/javascript</a></li>
+	</ul>
+ </div>
+<br>
+<br>
+</div>
+<a href="#positionOrigin" data-role="button" data-inline="true" data-rel="popup" data-position-to="#codeSample">Position to origin</a>
+<div data-role="popup" id="positionOrigin" class="ui-content" data-theme="d">
+	<p style="color:white">I am positioned over the origin.</p>
+</div>
+</div> <!-- /content -->
+
+<div data-role="footer">
+	<a href="#navi" data-role="button"  data-icon="naviframe-more" data-rel="popup"></a>
+
+		<div id="navi" data-role="popup" >
+		<ul data-role="listview">
+			<li><a href="#" data-rel="back">Settings</a></li>
+			<li><a href="#" data-rel="back">Add to contact</a></li>
+			<li><a href="#" data-rel="back">Call log</a></li>
+			<li><a href="#" data-rel="back">Music</a></li>
+			<li><a href="#" data-rel="back">File manager</a></li>
+			<li><a href="#" data-rel="back">Internal Link</a></li>
+		</ul>
+		</div>
+</div>
+</div> <!-- /page -->

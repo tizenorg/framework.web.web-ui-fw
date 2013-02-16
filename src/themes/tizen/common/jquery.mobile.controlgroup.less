@@ -40,12 +40,14 @@ fieldset.ui-controlgroup {
 	}
 	.ui-radio-off, .ui-radio-on {
 		width: 100%;
-		border-right-width: 1px;
-		border-right-color: @color_controlgroup_btn_border;
-		border-right-style: solid;
-		border-left-width: 1px;
-		border-left-color: @color_controlgroup_btn_border;
-		border-left-style: solid;
+	}
+	.ui-radio-on {
+		.ui-btn-inner {
+			background : @color_bg;
+			.ui-btn-text {
+				color : @color_bar_title_text;
+			}
+		}
 	}
 	.ui-corner-left {
 		border-left-width: 0px;
@@ -62,11 +64,11 @@ fieldset.ui-controlgroup {
 	.ui-controlgroup-last {
 		border-bottom-width: 1px;
 	}
-	
+
 	.ui-radio {
 		width : 100%;
 	}
-	
+
 	.ui-radio label {
 		text-align :left;
 		.ui-btn-inner {
@@ -79,7 +81,8 @@ fieldset.ui-controlgroup {
 	padding: 0;
 	.ui-btn {
 		display: inline-block;
-		margin: 0 -5px 0 0;
+		margin-left : -4 * @unit_base;
+		margin-right : -3 * @unit_base;
 	}
 	.ui-checkbox, .ui-radio {
 		float: left;
@@ -88,16 +91,43 @@ fieldset.ui-controlgroup {
 	.ui-controlgroup-last {
 		margin-right: 0;
 	}
-}
 
-@media all and (min-width: 450px){
-	.ui-controlgroup-label {
-		vertical-align: top;
-		display: inline-block;
-		width: 20%;
-		margin: 0 2% 0 0;
+	[data-role="button"] {
+		border-top : 0px;
+		border-bottom : 0px;
+		border-radius : 0px;
+		box-shadow : none;
+		background : none;
+		&.ui-btn-down-s, .ui-btn-active-s {
+			.ui-btn-inner {
+				background : @color_bg;
+				.ui-btn-text {
+					color : @color_bar_title_text;
+				}
+			}
+		}
+
+		&.ui-btn-down-s {
+			.ui-btn-inner {
+				background : @color_tabbar_btn_tab_press;
+			}
+		}
+
+		>.ui-btn-inner {
+			border : 0px solid;
+			box-shadow : none;
+			padding-top : 5 * @unit_base;
+			padding-bottom : 5 * @unit_base;
+			padding-left : 10 * @unit_base;
+			padding-right : 10 * @unit_base;
+		}
 	}
-	.ui-controlgroup-controls {
-		display: inline-block;
-	} 
+
+	label {
+		> span.ui-btn-inner {
+			padding-top : 3 * @unit_base;
+			padding-bottom : 3 * @unit_base;
+		}
+	}
+
 }

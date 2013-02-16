@@ -1,12 +1,18 @@
+SHELL := /bin/bash
+
 ## Project setting
 DEBUG ?= yes
 PROJECT_NAME = tizen-web-ui-fw
-VERSION = 0.1
+VERSION = 0.2
 VERSION_COMPAT =
+PKG_VERSION = $(shell cat packaging/web-ui-fw.spec | grep Version: | sed -e "s@Version:\s*@@" )
 THEME_NAME = default
 
 PATH := $(CURDIR)/build-tools/bin:$(PATH)
 
+JSLINT_LEVEL = 1
+JSLINT = jslint --sloppy --eqeq --bitwise --forin --nomen --predef jQuery --color --plusplus --browser --jqmspace --regexp --continue
+COMMON_WIDGET = common
 INLINE_PROTO = 1
 OUTPUT_ROOT = $(CURDIR)/build
 FRAMEWORK_ROOT = ${OUTPUT_ROOT}/${PROJECT_NAME}/${VERSION}
@@ -37,109 +43,84 @@ FW_MIN = $(subst .js,.min.js,$(FW_JS))
 FW_LIB_JS = ${JS_OUTPUT_ROOT}/${PROJECT_NAME}-libs.js
 FW_LIB_MIN = $(subst .js,.min.js,$(FW_LIB_JS))
 
-
-
 FW_JS_THEME = ${JS_OUTPUT_ROOT}/${PROJECT_NAME}-${THEME_NAME}-theme.js
 FW_CSS = ${CSS_OUTPUT_ROOT}/${PROJECT_NAME}-theme.css
 FW_LIBS_JS = ${JS_OUTPUT_ROOT}/${PROJECT_NAME}-libs.js
 FW_THEME_CSS_FILE = ${PROJECT_NAME}-theme.css
 FW_WIDGET_CSS_FILE = ${WIDGET_CSS_OUTPUT_ROOT}/${PROJECT_NAME}-widget.css
 
-LIBS_JS_FILES = underscore.js \
-                jlayout/jquery.sizes.js \
-                jlayout/jlayout.border.js \
-                jlayout/jlayout.grid.js \
-                jlayout/jlayout.flexgrid.js \
-                jlayout/jlayout.flow.js \
-                jlayout/jquery.jlayout.js \
-				domready.js \
+LIBS_JS_FILES = jquery.easing.1.3.js \
+		jquery.tmpl.js \
+		jquery.mobile.js \
                 $(NULL)
 
-JQUERY_MOBILE = submodules/jquery-mobile/compiled/jquery.mobile.js
 JQUERY_MOBILE_CSS = submodules/jquery-mobile/compiled/jquery.mobile.structure.css \
                     submodules/jquery-mobile/compiled/jquery.mobile.css \
                     $(NULL)
 JQUERY_MOBILE_IMAGES = submodules/jquery-mobile/css/themes/default/images
 
-JQM_VERSION = jquery-mobile-1.0.1pre
+JQM_VERSION = jquery-mobile-1.2.0
 JQM_LIB_PATH = $(CURDIR)/libs/js/${JQM_VERSION}
 
-ifeq (${DEBUG},yes)
-LIBS_JS_FILES +=\
-	jquery.mobile.js \
-    jquery.ui.position.git+dfe75e1.js \
-    $(NULL)
-JQUERY = jquery-1.6.4.js
-else
-LIBS_JS_FILES +=\
-	jquery.mobile.min.js \
-    jquery.ui.position.git+dfe75e1.min.js \
-    $(NULL)
-JQUERY = jquery-1.6.4.min.js
-endif
+JQUERY = jquery-1.8.2.js
+JQUERY_MIN = $(subst .js,.min.js,$(JQUERY))
 
-LIBS_CSS_FILES =
-ifeq (${DEBUG},yes)
-LIBS_CSS_FILES +=\
-    $(CURDIR)/src/jqm/compiled/jquery.mobile-1.0rc2pre.css \
-    $(NULL)
-else
-LIBS_CSS_FILES +=\
-    $(CURDIR)/src/jqm/compiled/jquery.mobile-1.0rc2pre.min.css \
-    $(NULL)
-endif
+all: libs_prepare third_party widgets libs_cleanup loader themes version version_compat compress
 
-
-all: third_party widgets loader themes version_compat compress
-
-
-jqm: init
-	# Building jQuery Mobile...
-	@@test -d ${JQM_LIB_PATH}.bak && rm -f ${JQM_LIB_PATH} && mv ${JQM_LIB_PATH}.bak ${JQM_LIB_PATH}; \
-	cp -a ${JQM_LIB_PATH} ${JQM_LIB_PATH}.bak; \
-	for f in `ls $(CURDIR)/libs/patch/*.patch`; do \
+libs_prepare:
+	# Prepare libs/ build...
+	@@test -d ${LIBS_DIR}.bak && rm -rf ${LIBS_DIR} && mv ${LIBS_DIR}.bak ${LIBS_DIR}; \
+	cp -a ${LIBS_DIR} ${LIBS_DIR}.bak
+	for f in `ls ${LIBS_DIR}/patch/*.patch`; do \
 		cd $(CURDIR); \
 		echo "Apply patch: $$f";  \
 		cat $$f | patch -p1 -N; \
 	done; \
-	cd ${JQM_LIB_PATH} && make all-but-min || exit 1; \
+
+libs_cleanup:
+	# Cleanup libs/ directory...
+	@@rm -rf ${LIBS_DIR} && mv ${LIBS_DIR}.bak ${LIBS_DIR}
+
+jqm: init
+	# Building jQuery Mobile...
+	cd ${JQM_LIB_PATH} && make js NODE=/usr/bin/node || exit 1; \
 	cp -f ${JQM_LIB_PATH}/compiled/*.js ${JQM_LIB_PATH}/../; \
-	rm -rf ${JQM_LIB_PATH}; mv ${JQM_LIB_PATH}.bak ${JQM_LIB_PATH};
-
-
 
 third_party: init jqm
 	# Building third party components...
 	@@cd ${LIBS_DIR}/js; \
 	    for f in ${LIBS_JS_FILES}; do \
 	        cat $$f >> ${FW_LIB_JS}; \
-		uglifyjs $$f >> ${FW_LIB_MIN}; \
+		uglifyjs --ascii $$f >> ${FW_LIB_MIN}; \
 		echo "" >> ${FW_LIB_MIN}; \
 	    done; \
 	    cp ${LIBS_DIR}/js/${JQUERY} ${JS_OUTPUT_ROOT}/jquery.js
-	@@cd ${LIBS_DIR}/css; \
-	    for f in ${LIBS_CSS_FILES}; do \
-	        cat $$f >> ${FW_CSS}; \
-	    done; \
-	    cp -r images/* ${CSS_IMAGES_OUTPUT_DIR}
-
-	#@@cp -a ${LIBS_DIR}/images ${FRAMEWORK_ROOT}/
-
+	    cp ${LIBS_DIR}/js/${JQUERY_MIN} ${JS_OUTPUT_ROOT}/jquery.min.js
 
 widgets: init third_party
 	# Building widgets...
 	@@ls -l ${WIDGETS_DIR} | grep '^d' | awk '{print $$NF;}' | \
 	    while read REPLY; do \
 	        echo "	# Building widget $$REPLY"; \
-                if test "x${INLINE_PROTO}x" = "x1x"; then \
-                  ./tools/inline-protos.sh ${WIDGETS_DIR}/$$REPLY >> ${WIDGETS_DIR}/$$REPLY/js/$$REPLY.js.compiled; \
-                  cat ${WIDGETS_DIR}/$$REPLY/js/$$REPLY.js.compiled >> ${FW_JS}; \
-                else \
-	          for f in `find ${WIDGETS_DIR}/$$REPLY -iname 'js/*.js' | sort`; do \
-	              echo "		$$f"; \
-	              cat $$f >> ${FW_JS}; \
-	          done; \
-                fi; \
+			if test ${JSLINT_LEVEL} -ge 1; then \
+				if test $$REPLY != ${COMMON_WIDGET}; then \
+					for FNAME in ${WIDGETS_DIR}/$$REPLY/js/*.js; do \
+						${JSLINT} $$FNAME; \
+						if test ${JSLINT_LEVEL} -ge 2 -a $$? -ne 0; then \
+							exit 1; \
+						fi; \
+					done; \
+				fi; \
+			fi; \
+			if test "x${INLINE_PROTO}x" = "x1x"; then \
+				./tools/inline-protos.sh ${WIDGETS_DIR}/$$REPLY >> ${WIDGETS_DIR}/$$REPLY/js/$$REPLY.js.compiled; \
+				cat ${WIDGETS_DIR}/$$REPLY/js/$$REPLY.js.compiled >> ${FW_JS}; \
+			else \
+				for f in `find ${WIDGETS_DIR}/$$REPLY -iname 'js/*.js' | sort`; do \
+					echo "		$$f"; \
+					cat $$f >> ${FW_JS}; \
+				done; \
+            fi; \
 	        for f in `find ${WIDGETS_DIR}/$$REPLY -iname '*.js.theme' | sort`; do \
 	            echo "		$$f"; \
 	            cat $$f >> ${FW_JS_THEME}; \
@@ -178,13 +159,23 @@ globalize: widgets
 themes:
 	make -C src/themes || exit $?
 
+version: loader themes
+	echo '(function($$){$$.tizen.frameworkData.pkgVersion="$(PKG_VERSION)";}(jQuery));' >> ${FW_JS}
+	echo "$(PKG_VERSION)" > ${FRAMEWORK_ROOT}/../VERSION
 
-compress: widgets loader
-	@@echo "	# Compressing....";
-	echo '/*' > ${FW_MIN}
-	cat ${COPYING_FILE} >> ${FW_MIN}
-	echo '*/' >> ${FW_MIN}
-	uglifyjs -nc ${FW_JS} >> ${FW_MIN}
+compress: widgets loader themes
+	# Javacript code compressing
+	@@echo "	# Compressing...."; \
+	echo '/*' > ${FW_MIN}; \
+	cat ${COPYING_FILE} >> ${FW_MIN}; \
+	echo '*/' >> ${FW_MIN}; \
+	uglifyjs --ascii -nc ${FW_JS} >> ${FW_MIN}; \
+	# CSS compressing
+	@@cd ${THEME_OUTPUT_ROOT}; \
+	for csspath in */*.css; do \
+		echo "Compressing $$csspath"; \
+		cleancss -o $${csspath/%.css/.min.css} $$csspath; \
+	done
 
 
 docs: init
@@ -210,6 +201,7 @@ version_compat: third_party widgets
 	for v_compat in ${VERSION_COMPAT}; do \
 		ln -sf ${VERSION} ${FRAMEWORK_ROOT}/../$$v_compat; \
 	done;
+	ln -sf ${VERSION} ${FRAMEWORK_ROOT}/../latest
 
 demo: widgets 
 	mkdir -p ${OUTPUT_ROOT}/demos
@@ -218,10 +210,10 @@ demo: widgets
 
 
 install: all
-	mkdir -p ${INSTALL_DIR}/lib/tizen-web-ui-fw ${INSTALL_DIR}/bin ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/
-	cp -av ${OUTPUT_ROOT}/tizen-web-ui-fw/* src/template ${INSTALL_DIR}/lib/tizen-web-ui-fw/
-	cp -av tools/* ${INSTALL_DIR}/bin/
-	cp -av demos/tizen-gray ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/ && cd ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/tizen-gray && sed -i -e "s#../../build#../../../../lib#g" *.html
+	mkdir -p ${INSTALL_DIR}/bin ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/ ${INSTALL_DIR}/share/tizen-web-ui-fw/bin/
+	cp -av ${OUTPUT_ROOT}/tizen-web-ui-fw/* src/template ${INSTALL_DIR}/share/tizen-web-ui-fw/
+	cp -av tools/* ${INSTALL_DIR}/share/tizen-web-ui-fw/bin/
+	cp -av demos/tizen-winsets ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/ && cd ${INSTALL_DIR}/share/tizen-web-ui-fw/demos/tizen-winsets && sed -i -e "s#../../build#../../..#g" *.html
 
 
 coverage: clean all

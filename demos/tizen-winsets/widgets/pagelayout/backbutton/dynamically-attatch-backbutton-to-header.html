@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+<body>
+
+<div data-role="page">
+	<div data-role="header" data-position="fixed" >
+		<h1>Back button demo</h1>
+		<span class="ui-title-text-sub">Back button to Header</span>
+	</div>
+
+	<div data-role="content">
+		<p> Case 6 : <br><br>
+		Web Developer declared only footer in page<br>
+		but need to add back button dynamically in header<br>
+		call page("addBackBtn", target) API<br></p>
+		<div>
+			<p style="margin-right:0.5em; padding:1em; background-color:whitesmoke; color:black; border-width:3px; border-style:inset">
+			&lt;div data-role="page"&gt; <br>
+			&nbsp&nbsp&nbsp&nbsp&lt;div data-role="header" data-position="fixed"&gt; <br>
+			&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&lt;h1&gt;back button sample&lt;/h1&gt; <br>
+			&nbsp&nbsp&nbsp&nbsp&lt;/div&gt; <br>
+			&nbsp&nbsp&nbsp&nbsp&lt;div data-role="content"&gt; <br>
+			&nbsp&nbsp&nbsp&nbsp&lt;/div&gt; <br>
+			&nbsp&nbsp&nbsp&nbsp&lt;div data-role="footer"&gt; <br>
+			&nbsp&nbsp&nbsp&nbsp&lt;/div&gt; <br>
+		  &lt;/div&gt; </p>
+		</div><br>
+
+		<div>
+			<p style="margin-right:0.5em; padding:1em; background-color:whitesmoke; color:black; border-width:3px; border-style:inset">
+				&lt;script&gt; <br>
+				&nbsp;&nbsp;$(".ui-page-active").page( "addBackBtn", "header" );<br>
+				&lt;/script&gt; <br>
+			</p>
+		</div><br>
+
+		<a id="genBackToFooter2" data-role="button" data-inline="true">Generate backbutton to header</a><br><br>
+		<a href="#" data-role="button" data-inline="true" data-rel="back">Go Back</a>
+	</div>
+
+	<div data-role="footer">
+	</div>
+</div>
+
+</body>
+</html>
