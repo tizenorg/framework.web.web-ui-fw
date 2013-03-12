@@ -1,8 +1,12 @@
 var path = require('path'),
-    sys = require('sys'),
+    sys = require('util'),
     fs = require('fs');
 
-require.paths.unshift(path.join(__dirname, '..'));
+try {
+	// For old node.js versions
+	require.paths.unshift( path.join( __dirname, '..' ) );
+} catch ( ex ) {
+}
 
 var less = {
     version: [1, 1, 3],

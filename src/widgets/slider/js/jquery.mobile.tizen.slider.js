@@ -5,7 +5,8 @@
  * http://www.opensource.org/licenses/mit-license.php)
  *
  * ***************************************************************************
- * Copyright (C) 2011 by Intel Corporation Ltd.
+ * Copyright (c) 2000 - 2011 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2011 by Intel Corporation Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -42,9 +43,9 @@
  * Options:
  *     theme: string; the theme to use if none is specified using the 'data-theme' attribute
  *            default: 'c'
- *     popupEnabled: boolean; controls whether the popup is displayed or not
- *                   specify if the popup is enabled using the 'data-popupEnabled' attribute
- *                   set from javascript using .tizenslider('option','popupEnabled',newValue)
+ *     popup: boolean; controls whether the popup is displayed or not
+ *                   specify if the popup is enabled using the 'data-popup' attribute
+ *                   set from javascript using .tizenslider('option','popup',newValue)
  *
  * Events:
  *     changed: triggers when the value is changed (rather than when the handle is moved)
@@ -54,28 +55,60 @@
  *     <a href="#" id="popupEnabler" data-role="button" data-inline="true">Enable popup</a>
  *     <a href="#" id="popupDisabler" data-role="button" data-inline="true">Disable popup</a>
  *     <div data-role="fieldcontain">
- *         <input id="mySlider" data-theme='a' data-popupenabled='false' type="range" name="slider" value="7" min="0" max="9" />
+ *         <input id="mySlider" data-theme='a' data-popup='false' type="range" name="slider" value="7" min="0" max="9" />
  *     </div>
  *     <div data-role="fieldcontain">
  *         <input id="mySlider2" type="range" name="slider" value="77" min="0" max="777" />
  *     </div>
  *
  *     // disable popup from javascript
- *     $('#mySlider').tizenslider('option','popupEnabled',false);
+ *     $('#mySlider').tizenslider('option','popup',false);
  *
  *     // from buttons
  *     $('#popupEnabler').bind('vclick', function() {
- *         $('#mySlider').tizenslider('option','popupEnabled',true);
+ *         $('#mySlider').tizenslider('option','popup',true);
  *     });
  *     $('#popupDisabler').bind('vclick', function() {
- *         $('#mySlider').tizenslider('option','popupEnabled',false);
+ *         $('#mySlider').tizenslider('option','popup',false);
  *     });
  */
+
+/**
+	@class Slider
+	The slider widget shows a control on the screen that you can use to change values by dragging a handle on a horizontal scale. Sliders can be used in Tizen as described in the jQueryMobile documentation for sliders.
+
+	To add a slider widget to the application, use the following code:
+
+		<input data-popup='false' type="range" name="slider" value="5" min="0" max="10" data-icon="text" data-text-left="Min" data-text-right="Max" />
+
+	The slider can define callbacks for events as described in the jQueryMobile documentation for slider events.
+	You can use methods with the slider as described in the jQueryMobile documentation for slider methods.
+*/
+/**
+	@property {String} data-icon
+	Defines the icon style for the slider ends. The icon options are bright, volume, and text.
+	The default value is text.
+*/
+/**
+	@property {Boolean} data-popup
+	Enables or disables a pop-up showing the current value while the handle is dragged.
+	The default value is true.
+*/
+/**
+	@property {String} data-text-left
+	Defines the text displayed on the left side of the slider.
+	The data-icon option must be set to text.
+*/
+/**
+	@property {String} data-text-right
+	Defines the text displayed on the right side of the slider.
+	The data-icon option must be set to text.
+*/
 
 (function ($, window, undefined) {
 	$.widget("tizen.tizenslider", $.mobile.widget, {
 		options: {
-			popupEnabled: true,
+			popup: true
 		},
 
 		popup: null,
@@ -87,14 +120,18 @@
 			this.popupVisible = false;
 
 			var self = this,
-			inputElement = $(this.element),
-			slider,
-			showPopup,
-			hidePopup,
-			positionPopup,
-			updateSlider,
-			slider_bar,
-			handle_press;
+				inputElement = $( this.element ),
+				slider,
+				handle_press,
+				popupEnabledAttr,
+				icon,
+				text_right,
+				text_left,
+				text_length,
+				elem_left,
+				elem_right,
+				margin_left,
+				margin_right;
 
 			// apply jqm slider
 			inputElement.slider();
@@ -104,23 +141,19 @@
 
 			self.popup = $('<div class="ui-slider-popup"></div>');
 
-			// set the popupEnabled according to the html attribute
-			var popupEnabledAttr = inputElement.attr('data-popupenabled');
+			// set the popup according to the html attribute
+			popupEnabledAttr = inputElement.jqmData('popup');
 			if ( popupEnabledAttr !== undefined ) {
-				self.options.popupEnabled = (popupEnabledAttr === 'true');
+				self.options.popup = ( popupEnabledAttr == true );
 			}
 
 			// get the actual slider added by jqm
 			slider = inputElement.next('.ui-slider');
 
-			var icon = inputElement.attr('data-icon');
+			icon = inputElement.attr('data-icon');
 
 			// wrap the background
-			if ( icon === undefined ) {
-				slider.wrap('<div class="ui-slider-bg"></div>');
-			} else {
-				slider.wrap('<div class="ui-slider-icon-bg"></div>');
-			}
+			slider.wrap('<div class="ui-slider-container"></div>');
 
 			// get the handle
 			self.handle = slider.find('.ui-slider-handle');
@@ -130,31 +163,52 @@
 			slider.find('*').removeClass('ui-btn-corner-all');
 
 			// add icon
-
 			switch ( icon ) {
 			case 'bright':
 			case 'volume':
-				slider.before( $('<div class="ui-slider-left-' +
-							icon + '"></div>') );
-				slider.after( $('<div class="ui-slider-right-' +
-							icon + '"></div>') );
+				elem_left = $('<div class="ui-slider-left-' + icon + '"></div>');
+				elem_right = $('<div class="ui-slider-right-' + icon + '"></div>');
+
+				slider.before( elem_left );
+				slider.after( elem_right );
+
+				margin_left = elem_left.width() + 16;
+				margin_right = elem_right.width() + 16;
 				break;
 
 			case 'text':
-				slider.before( $('<div class="ui-slider-left-text">' +
+				text_left = ( inputElement.attr('data-text-left') === undefined ) ? '' :
+						inputElement.attr('data-text-left').substring( 0, 3 );
+				text_right = ( inputElement.attr('data-text-right') === undefined ) ? '' :
+						inputElement.attr('data-text-right').substring( 0, 3 );
+
+				text_length = Math.max( text_left.length, text_right.length ) + 1;
+
+				margin_left = text_length + "rem";
+				margin_right = text_length + "rem";
+
+				elem_left = $('<div class="ui-slider-left-text" style="left:' +
+					-( text_length ) + 'rem; width:' + text_length + 'rem;">' +
 					'<span style="position:relative;top:0.4em;">' +
-					inputElement.attr('data-text-left') +
-					'</span></div>') );
-				slider.after( $('<div class="ui-slider-right-text">' +
+					text_left +
+					'</span></div>');
+				elem_right = $('<div class="ui-slider-right-text" style="right:' +
+					-( text_length ) + 'rem; width:' + text_length + 'rem;">' +
 					'<span style="position:relative;top:0.4em;">' +
-					inputElement.attr('data-text-right') +
-					'</span></div>') );
+					text_right +
+					'</span></div>');
+
+				slider.before( elem_left );
+				slider.after( elem_right );
 				break;
 			}
 
-			// slider bar
-			slider.append($('<div class="ui-slider-bar"></div>'));
-			self.slider_bar = slider.find('.ui-slider-bar');
+			if ( icon ) {
+				slider.parent('.ui-slider-container').css({
+					"margin-left": margin_left,
+					"margin-right": margin_right
+				});
+			}
 
 			// handle press
 			slider.append($('<div class="ui-slider-handle-press"></div>'));
@@ -162,14 +216,11 @@
 			self.handle_press.css('display', 'none');
 
 			// add a popup element (hidden initially)
-			slider.before(self.popup);
+			slider.before( self.popup );
 			self.popup.hide();
 
 			// get the element where value can be displayed
 			self.handleText = slider.find('.ui-btn-text');
-			if ( inputElement.attr('max') > 999 ) {
-				self.handleText.css('font-size', '0.8em');
-			}
 
 			// set initial value
 			self.updateSlider();
@@ -185,7 +236,7 @@
 			});
 
 			// watch events on the document to turn off the slider popup
-			slider.add(document).bind('vmouseup', function () {
+			slider.add( document ).bind('vmouseup', function () {
 				self.hidePopup();
 			});
 		},
@@ -200,22 +251,45 @@
 
 		// position the popup
 		positionPopup: function () {
-			this.popup.position({my: 'center bottom',
-					at: 'center top',
-					offset: '0 20px',
-					of: this.handle});
+			var dstOffset = this.handle.offset();
 
-			this.handle_press.position({my: 'left top',
-					at: 'left top',
-					offset: '0 0',
-					of: this.handle});
-	       },
+			this.popup.offset({
+				left: dstOffset.left + ( this.handle.width() - this.popup.width() ) / 2
+			});
+
+			this.handle_press.offset({
+				left: dstOffset.left,
+				top: dstOffset.top
+			});
+		},
 
 		// show value on the handle and in popup
 		updateSlider: function () {
-			if ( this.popupVisible ) {
-				this.positionPopup();
-			}
+			var font_size,
+				font_length,
+				font_top,
+				padding_size,
+				newValue,
+				get_value_length = function ( v ) {
+					var val = Math.abs( v ),
+						len;
+
+					if ( val > 999 ) {
+						len = 4;
+					} else if ( val > 99 ) {
+						len = 3;
+					} else if ( val > 9 ) {
+						len = 2;
+					} else {
+						len = 1;
+					}
+
+					if ( v < 0 ) {
+						len++;
+					}
+
+					return len;
+				};
 
 			// remove the title attribute from the handle (which is
 			// responsible for the annoying tooltip); NB we have
@@ -223,28 +297,78 @@
 			// the slider's value changes :(
 			this.handle.removeAttr('title');
 
-			this.slider_bar.width(this.handle.css('left'));
+			newValue = this.element.val();
 
-			var newValue = this.element.val();
+			font_length = get_value_length( newValue );
+
+			if ( this.popupVisible ) {
+				this.positionPopup();
+
+				switch ( font_length ) {
+				case 1:
+				case 2:
+					font_size = '1.5rem';
+					padding_size = '0.15rem';
+					break;
+				case 3:
+					font_size = '1rem';
+					padding_size = '0.5rem';
+					break;
+				default:
+					font_size = '0.8rem';
+					padding_size = '0.5rem';
+					break;
+				}
+
+				this.popup.css({
+					"font-size": font_size,
+					"padding-top": padding_size
+				});
+			}
 
 			if ( newValue === this.currentValue ) {
 				return;
 			}
 
-			this.currentValue = newValue;
-			this.handleText.text(newValue);
-			this.popup.html(newValue);
+			switch ( font_length ) {
+			case 1:
+				font_size = '0.95rem';
+				font_top = '0';
+				break;
+			case 2:
+				font_size = '0.85rem';
+				font_top = '-0.01rem';
+				break;
+			case 3:
+				font_size = '0.65rem';
+				font_top = '-0.05rem';
+				break;
+			default:
+				font_size = '0.45rem';
+				font_top = '-0.15rem';
+				break;
+			}
 
-			this.element.trigger('update', newValue);
+			if ( font_size != this.handleText.css('font-size') ) {
+				this.handleText.css({
+					'font-size': font_size,
+					'top': font_top
+				});
+			}
+
+			this.currentValue = newValue;
+			this.handleText.text( newValue );
+			this.popup.html( newValue );
+
+			this.element.trigger( 'update', newValue );
 		},
 
 		// show the popup
 		showPopup: function () {
-			if ( !(this.options.popupEnabled && !this.popupVisible) ) {
+			if ( !this.options.popup || this.popupVisible ) {
 				return;
 			}
 
-			this.handleText.hide();
 			this.popup.show();
 			this.popupVisible = true;
 			this._handle_press_show();
@@ -252,11 +376,10 @@
 
 		// hide the popup
 		hidePopup: function () {
-			if ( !(this.options.popupEnabled && this.popupVisible) ) {
+			if ( !this.options.popup || !this.popupVisible ) {
 				return;
 			}
 
-			this.handleText.show();
 			this.popup.hide();
 			this.popupVisible = false;
 			this._handle_press_hide();
@@ -270,10 +393,10 @@
 			}
 
 			switch ( key ) {
-			case 'popupEnabled':
-				this.options.popupEnabled = value;
+			case 'popup':
+				this.options.popup = value;
 
-				if ( this.options.popupEnabled ) {
+				if ( this.options.popup) {
 					this.updateSlider();
 				} else {
 					this.hidePopup();
@@ -281,23 +404,23 @@
 
 				break;
 			}
-		},
+		}
 	});
 
 	// stop jqm from initialising sliders
-	$(document).bind("pagebeforecreate", function (e) {
-		if ($.data(window, "jqmSliderInitSelector") === undefined ) {
-			$.data(window,"jqmSliderInitSelector",
-				$.mobile.slider.prototype.options.initSelector);
+	$( document ).bind( "pagebeforecreate", function ( e ) {
+		if ( $.data( window, "jqmSliderInitSelector" ) === undefined ) {
+			$.data( window, "jqmSliderInitSelector",
+				$.mobile.slider.prototype.options.initSelector );
 			$.mobile.slider.prototype.options.initSelector = null;
 		}
 	});
 
 	// initialise sliders with our own slider
-	$(document).bind("pagecreate", function(e) {
-		var jqmSliderInitSelector = $.data(window,"jqmSliderInitSelector");
-		$(e.target).find(jqmSliderInitSelector).not('select').tizenslider();
-		$(e.target).find(jqmSliderInitSelector).filter('select').slider();
+	$( document ).bind( "pagecreate create", function ( e ) {
+		var jqmSliderInitSelector = $.data( window, "jqmSliderInitSelector" );
+		$( e.target ).find(jqmSliderInitSelector).not('select').tizenslider();
+		$( e.target ).find(jqmSliderInitSelector).filter('select').slider();
 	});
 
-})( jQuery, this );
+}( jQuery, this ));

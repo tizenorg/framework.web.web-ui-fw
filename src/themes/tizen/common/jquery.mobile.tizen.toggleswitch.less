@@ -1,42 +1,99 @@
 @import "config.less";
 
-.ui-toggleswitch {
-	position: relative;
-	overflow: hidden;
-	background: @color_button_normal;
 
-	.toggleswitch-background {
+div.ui-slider.ui-toggle-switch {
+	width: 66 * @unit_base;
+	height: 35 * @unit_base;
+	background-color : transparent;
+	margin-top : 5 * @unit_base;
+	margin-bottom : 5 * @unit_base;
+
+	.ui-slider-label {
 		position: absolute;
-		margin: 0px;
-		border: 0px;
-		left: 0px;
-		right: 0px;
-		top: 0px;
-		bottom: 0px;
-		pointer-events: none;
+		width: 66 * @unit_base;
+		height: 35 * @unit_base;
+		background-size : 100% 100%;
+		background-repeat : no-repeat;
+		background-color : transparent;
+
+		&.ui-slider-label-a {
+			background-image : url(images/00_button_on.png);
+		}
+
+		&.ui-slider-label-b {
+			background-image : url(images/00_button_off.png);
+		}
 	}
 
-	.toggleswitch-sizer {
-		margin: 0px;
-		opacity: 0;
-		pointer-events: none;
+	.ui-slider-inneroffset {
+		a {
+			background : none;
+		}
+	}
+}
+.ui-slider-switch:not(.ui-toggle-switch) {
+	width : 92 * @unit_base;
+}
+
+div.ui-slider.ui-slider-switch:not(.ui-toggle-switch) {
+	position : relative;
+
+	margin-top : 5 * @unit_base;
+	margin-bottom : 5 * @unit_base;
+
+	height : 32 * @unit_base;
+	top: 0;
+	margin: 5 * @unit_base;
+	border-radius : 15 * @unit_base;
+
+	.ui-slider-inneroffset {
+		position : relative;
+		margin : -1px 16 * @unit_base;
+		z-index : 1;
 	}
 
-	.toggleswitch-floating-button {
-		background: @color_text;
-		position: absolute;
-		margin: 0px;
-		left: 0px;
-		right: 0px;
+	a.ui-slider-handle {
+		position : absolute;
+		background : rgba(255, 255, 255, 1);
+		top : 50%;
+		margin : 1px 0 0 -15 * @unit_base;
+		border-radius : 15 * @unit_base;
+		border : 2px solid gray;
+
+		width : 28 * @unit_base;
+		height : 28 * @unit_base;
 	}
 
-	.ui-btn-inner {
-		padding: 2 * @unit_base 7 * @unit_base !important;
+	a.ui-slider-handle-snapping {
+		-webkit-transition : left 70ms linear;
 	}
 
-	.toggleswitch-mover {
-		border-color: transparent;
-		background: none;
-		pointer-events: none;
+	span {
+		position : absolute;
+		overflow : hidden;
+		text-align : center;
+		height :  32 * @unit_base;
+		font-weight : bold;
+		font-size : 16 * @unit_base;
+		border-radius : 15 * @unit_base;
+		white-space : nowrap;
+		line-height : 2;
+
+		&.ui-slider-label-a {
+			left : 0px;
+			color : white;
+			z-index : 1;
+			text-indent : -1.5em;
+		}
+		&.ui-slider-label-b {
+			right : 0px;
+			color : black;
+			z-index : 0;
+			text-indent : 1.5em;
+		}
 	}
+}
+
+.ui-slider-switch .ui-slider-handle .ui-btn-inner {
+	padding : 0;
 }
