@@ -2,10 +2,10 @@
 <html>
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8" >
-	<script src="tizen-web-ui-fw/latest/js/jquery.js"></script>
+	<script src="tizen-web-ui-fw/latest/js/jquery.min.js"></script>
 	<script src="configure.js"></script>
-	<script src="tizen-web-ui-fw/latest/js/tizen-web-ui-fw-libs.js"></script>
-	<script src="tizen-web-ui-fw/latest/js/tizen-web-ui-fw.js"
+	<script src="tizen-web-ui-fw/latest/js/tizen-web-ui-fw-libs.min.js"></script>
+	<script src="tizen-web-ui-fw/latest/js/tizen-web-ui-fw.min.js"
 		data-framework-theme="tizen-white"
 		data-framework-viewport-width="device-width">
 
@@ -34,7 +34,7 @@
 
 			<script>
 				$( document ).one( "pagecreate", function ( ) {
-					$("#input-select-theme").find("input[name='select-theme']").bind( "change", 
+					$("#input-select-theme").find("input[name='select-theme']").bind( "change",
 						function ( ev, data ) {
 							var radio = this,
 								theme = "tizen-white";
@@ -296,6 +296,7 @@
 	<script src="tips/generate-elements-dynamically.js"></script>
 	<script src="tips/two-line-text/two-line-text.js"></script>
 	<script src="tips/list-sample/list-sample.js"></script>
+	<script src="tips/pinch-event/pinch.js"></script>
 	<script src="widgets/tokentextarea-demo.js"></script>
 	<script src="widgets/pagelayout/barcontrol.js"></script>
 	<script src="widgets/pagelayout/backbutton-control.js"></script>
