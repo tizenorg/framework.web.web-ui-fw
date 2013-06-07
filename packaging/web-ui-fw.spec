@@ -1,5 +1,5 @@
 Name:       web-ui-fw
-Version:    0.2.31
+Version:    0.2.34
 Release:    0
 Summary:    Tizen Web UI Framework Library
 Group:      Development/Other
@@ -97,6 +97,31 @@ Summary:    Tizen Web UI Framework Demo Application: tizen winset demo
 
 ###############################
 %changelog
+* Sat Jun 08 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.34
+	- HWKey support on pagelayout, ctxpopup and loader
+	- multimediaview: Replace contents of demo
+	- demo: add min and max attributes on the number input entry
+	- Scrollview: Improve scroll performance
+	- scrollview: wrong scroll position after textarea autogrow (N_SE-35696,N_SE-35800)
+	- fastscroll: Fix a position issue by auto scrolling.
+	- fastscroll: fix an issue of a popup position.
+
+* Sun June 01 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.33
+	- Loader: fix version and path
+	- Checkbox : Fix incorrect image when favorite checkbox button down
+	- Controlgroup : Fix incorrect background color in horizontal controlgroup
+
+* Thu May 31 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.32
+	- fastscroll: add a routine for finding a substitution divider
+	- virtualgrid: fix layout issue
+	- slider: add conditional statement for dynamic value change of popup-slider
+	- splitview: fix an issue occured when a resize event is triggered.
+	- Scrollview : Fix horizontal scrollview incorrectly occur when rotate landscape
+	- Template : change WRT install spec(remove useless spec)
+	- Scrollview : change gradiation indicatorbar to png image
+	- splitview: fix layout issue when pane maximized
+	- Check divider : modify checkbox style that used list with check divider.
+
 * Thu May 23 2013 Hyunjung kim <hyunjung.kim@samsung.com> 0.2.31
 	- Scrollview : fix misspell api name(startMscroll)
 
