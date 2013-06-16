@@ -130,7 +130,6 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 			var self = this,
 				inputElement = $( this.element ),
 				slider,
-				handle_press,
 				popupEnabledAttr,
 				icon,
 				text_right,
@@ -139,7 +138,8 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 				elem_left,
 				elem_right,
 				margin_left,
-				margin_right;
+				margin_right,
+				_closePopup;
 
 			// apply jqm slider
 			inputElement.slider();
@@ -218,11 +218,6 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 				});
 			}
 
-			// handle press
-			slider.append($('<div class="ui-slider-handle-press"></div>'));
-			self.handle_press = slider.find('.ui-slider-handle-press');
-			self.handle_press.css('display', 'none');
-
 			// add a popup element (hidden initially)
 			slider.parents(".ui-page").append( self.popup );
 			self.popup.hide();
@@ -233,6 +228,10 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 			// set initial value
 			self.updateSlider();
 
+			_closePopup = function () {
+				slider.trigger( 'vmouseup' );
+			};
+
 			// bind to changes in the slider's value to update handle text
 			this.element.on('change', function () {
 				// 2013.05.31 heeju.joo
@@ -240,38 +239,42 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 				// conditional statement has been added ( DCM-1735 )
 				// if this function just call two functions like else statement,
 				// popup and handle displayed in the wrong position because when the variable popupVisible is false, updateSlider() does not call popupPosition().
-				if( !self.popupVisible ) {
+				if ( !self.popupVisible ) {
 					// it is trick to cheat self.updateSlider()
 					self.popupVisible = true;
 					// updateSlider make the position of handle right
 					self.updateSlider();
 					// for other method, popupVisible variable need to have original value.
 					self.popupVisible = false;
-				}
-				else {
+				} else {
 					self.updateSlider();
 					self.showPopup();
+					$.mobile.$document.on( 'vmouseup.slider', _closePopup );
 				}
 			});
 
-			this.element.on( 'slidestart', function( event ) {
+			this.element.on( 'slidestart', function ( event ) {
 				self.updateSlider();
 				self.showPopup();
+				$.mobile.$document.on( 'vmouseup.slider', _closePopup );
 			});
 
 			// bind clicks on the handle to show the popup
 			self.handle.on('vmousedown', function () {
+				self.handle.addClass( "ui-slider-handle-press" );
 				self.showPopup();
+				$.mobile.$document.on( 'vmouseup.slider', _closePopup );
 			});
 
-			slider.on('vmousedown', function() {
+			slider.on( 'vmousedown', function () {
 				self.updateSlider();
+				self.handle.addClass( "ui-slider-handle-press" );
 				self.showPopup();
-			});
-
-			// watch events on the document to turn off the slider popup
-			slider.add( document ).on('vmouseup', function () {
+				$.mobile.$document.on( 'vmouseup.slider', _closePopup );
+			}).on( 'vmouseup', function () {
 				self.hidePopup();
+				self.handle.removeClass( "ui-slider-handle-press" );
+				$.mobile.$document.off('vmouseup.slider');
 			});
 
 			$.extend( this, {
@@ -279,29 +282,16 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 					{
 						src: $( window ),
 						handler: {
-							orientationchange: $.proxy( this, "_orientationHandler" ),
+							orientationchange: _closePopup,
 						}
 					}
 				]
 			});
 
-			$.each( this._globalHandler, function( idx, value ) {
+			$.each( this._globalHandler, function ( idx, value ) {
 				value.src.bind( value.handler );
 			});
 
-		},
-
-		_orientationHandler: function() {
-			var self = this;
-			self.hidePopup();
-		},
-
-		_handle_press_show: function () {
-			this.handle_press.css('display', '');
-		},
-
-		_handle_press_hide: function () {
-			this.handle_press.css('display', 'none');
 		},
 
 		// position the popup
@@ -311,11 +301,6 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 			this.popup.offset({
 				left: dstOffset.left + ( this.handle.width() - this.popup.width() ) / 2,
 				top: dstOffset.top - this.popup.height()
-			});
-
-			this.handle_press.offset({
-				left: dstOffset.left,
-				top: dstOffset.top
 			});
 		},
 
@@ -353,7 +338,7 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 			// the slider's value changes :(
 			this.handle.removeAttr('title');
 
-			newValue = this.element.val();
+			newValue = parseInt(this.element.val(), 10);
 
 			font_length = get_value_length( newValue );
 
@@ -397,7 +382,7 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 				break;
 			case 3:
 				font_size = '0.65rem';
-				font_top = '-0.05rem';
+				font_top = '-0.1rem';
 				break;
 			default:
 				font_size = '0.45rem';
@@ -408,7 +393,8 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 			if ( font_size != this.handleText.css('font-size') ) {
 				this.handleText.css({
 					'font-size': font_size,
-					'top': font_top
+					'top': font_top,
+					'position': 'relative'
 				});
 			}
 
@@ -427,7 +413,6 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 
 			this.popup.show();
 			this.popupVisible = true;
-			this._handle_press_show();
 		},
 
 		// hide the popup
@@ -438,7 +423,6 @@ define( [ '../jquery.mobile.tizen.core' ], function ( ) {
 
 			this.popup.hide();
 			this.popupVisible = false;
-			this._handle_press_hide();
 		},
 
 		_setOption: function (key, value) {
