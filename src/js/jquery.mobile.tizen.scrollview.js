@@ -1271,6 +1271,9 @@ define( [ ], function ( ) {
 		 * @private
 		 */
 		_showOverflowIndicator: function () {
+			/* do not draw overflowIndicator */
+			return true;
+
 			if ( !this.options.overflowEnable || !this._overflowAvail || this._softkeyboard ) {
 				return;
 			}
