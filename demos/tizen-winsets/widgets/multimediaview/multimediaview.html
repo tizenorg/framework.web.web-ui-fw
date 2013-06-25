@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <div data-role="page" id="multimedia-demo">
 	<div data-role="header" data-position="fixed">
-		<h1>MULTIMEDIA VIEW</h1>
+		<h1>Multimedia view</h1>
 	</div>
 	<div data-role="content">
 		<ul data-role="listview">
-			<li><a href="multimediaview_video.html">VIDEO</a></li>
-			<li><a href="multimediaview_audio.html">AUDIO</a></li>
+			<li><a href="multimediaview_video.html">Video</a></li>
+			<li><a href="multimediaview_audio.html">Audio</a></li>
 		</ul>
 	</div>
 	<script>
 	$( "#multimedia-demo" ).on( "pageshow" , function() {
-		$( document ).on( "tizenhwkey", function ( ev ) {
+		$( window ).on( "tizenhwkey", function ( ev ) {
 			if ( ev.originalEvent.keyName === "back" ) {
 				//bind callbacks to the H/W keys
 				window.history.back();
@@ -20,7 +20,7 @@
 	});
 	$( "#multimedia-demo" ).on( "pagebeforehide" , function() {
 		//unbind callbacks to the H/W keys
-		$( document ).off( "tizenhwkey" );
+		$( window ).off( "tizenhwkey" );
 	});
 	</script>
 </div>

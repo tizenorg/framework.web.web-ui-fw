@@ -1,7 +1,7 @@
 
 <div data-role="page" id="virtuallist-normal_1line-bigicon5" class="virtuallist_demo_page">
 	<div data-role="header" data-position="fixed">
-		<h1>VIRTUAL LIST - NORMAL STYLE 1LINE-BIGICON5</h1>
+		<h1>Virtual list - Normal style 1lind-bigicons</h1>
 	</div>
 	<style type="text/css">
 #virtuallist-normal_1line-bigicon5_ul li .ui-li-text-main {
@@ -25,7 +25,7 @@
 	</div>
 	<script>
 	$( "#virtuallist-normal_1line-bigicon5" ).on( "pageshow" , function() {
-		$( document ).on( "tizenhwkey", function ( ev ) {
+		$( window ).on( "tizenhwkey", function ( ev ) {
 			if ( ev.originalEvent.keyName === "back" ) {
 				//bind callbacks to the H/W keys
 				window.history.back();
@@ -34,7 +34,7 @@
 	});
 	$( "#virtuallist-normal_1line-bigicon5" ).on( "pagebeforehide" , function() {
 		//unbind callbacks to the H/W keys
-		$( document ).off( "tizenhwkey" );
+		$( window ).off( "tizenhwkey" );
 	});
 	</script>
 	<script type="text/javascript" src="virtuallist.js"></script>

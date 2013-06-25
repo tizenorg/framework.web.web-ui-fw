@@ -20,7 +20,7 @@
 
 <div data-role="page" id="tabbar_title_icon">
 	<div data-role="header" data-position="fixed">
-		<h1>TABBAR ICON WITH TITLE</h1>
+		<h1>Tabbar icon with title</h1>
 		<div data-role="tabbar">
 			<ul>
 				<li><a href="#" data-icon="naviframe-delete" class="ui-btn-active"></a></li>
@@ -35,7 +35,7 @@
 
 	<script>
 	$( "#tabbar_title_icon" ).on( "pageshow" , function() {
-		$( document ).on( "tizenhwkey", function ( ev ) {
+		$( window ).on( "tizenhwkey", function ( ev ) {
 			if ( ev.originalEvent.keyName === "back" ) {
 				//bind callbacks to the H/W keys
 				window.history.back();
@@ -44,7 +44,7 @@
 	});
 	$( "#tabbar_title_icon" ).on( "pagebeforehide" , function() {
 		//unbind callbacks to the H/W keys
-		$( document ).off( "tizenhwkey" );
+		$( window ).off( "tizenhwkey" );
 	});
 	</script>
 	<link rel="stylesheet" href="tabbar.css" />
