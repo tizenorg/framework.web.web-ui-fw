@@ -19,7 +19,7 @@
 <body>
 <div data-role="page" id="tabbar_segment">
 	<div data-role="header" data-position="fixed">
-		<h1>TABBAR TEXT WITH TITLE</h1>
+		<h1>Tabbar text with title</h1>
 	</div>
 
 	<div data-role="content">
@@ -36,14 +36,14 @@
 			</ul>
 		</div>
 		<div data-role="controlgroup" data-type="horizontal">
-			<a href="#" data-role="button">BACK</a>
-			<a href="#" data-role="button">NEXT</a>
+			<a href="#" data-role="button">Back</a>
+			<a href="#" data-role="button">Next</a>
 		</div>
 	</div>
 	<script>
 	$( "#tabbar_segment" ).on( "pageshow" , function() {
 		//bind callbacks to the H/W keys
-		$( document ).on( "tizenhwkey" , function( e ) {
+		$( window ).on( "tizenhwkey" , function( e ) {
 			if ( e.originalEvent.keyName === "menu" ) {
 				$( "#pop_js" ).popup( "open" );
 			}else if( e.originalEvent.keyName === "back" ) {
@@ -53,7 +53,7 @@
 	});
 	$( "#tabbar_segment" ).on( "pagebeforehide" , function() {
 		//unbind callbacks to the H/W keys
-		$( document ).off( "tizenhwkey" );
+		$( window ).off( "tizenhwkey" );
 	});
 	</script>
 </div>

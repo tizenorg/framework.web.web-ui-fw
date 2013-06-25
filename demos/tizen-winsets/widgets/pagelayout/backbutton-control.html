@@ -20,8 +20,8 @@
 
 	<div data-role="page" id="backButtonDemomain">
 		<div data-role="header" data-position="fixed">
-			<h1>BACK BUTTON CONTROL</h1>
-			<span class="ui-title-text-sub">FOOTER AND BACKBUTTON DEMOPAGE</span>
+			<h1>Back button control</h1>
+			<span class="ui-title-text-sub">Footer and backbutton demopage</span>
 		</div>
 		<div data-role="content">
 			<ul data-role="listview" data-icon="1line-textonly">
@@ -34,7 +34,7 @@
 		</div>
 		<script>
 		$( "#backButtonDemomain" ).on( "pageshow" , function() {
-			$( document ).on( "tizenhwkey", function ( ev ) {
+			$( window ).on( "tizenhwkey", function ( ev ) {
 				if ( ev.originalEvent.keyName === "back" ) {
 					//bind callbacks to the H/W keys
 					window.history.back();
@@ -43,7 +43,7 @@
 		});
 		$( "#backButtonDemomain" ).on( "pagebeforehide" , function() {
 			//unbind callbacks to the H/W keys
-			$( document ).off( "tizenhwkey" );
+			$( window ).off( "tizenhwkey" );
 		});
 		</script>
 	</div>

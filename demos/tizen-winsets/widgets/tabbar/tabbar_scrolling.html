@@ -20,7 +20,7 @@
 
 <div data-role="page" id="tabbar_scroll">
 	<div data-role="header" data-position="fixed">
-		<h1>TABBAR SCROLL</h1>
+		<h1>Tabbar scroll</h1>
 
 		<div style="white-space:nowrap;" data-scroll="x">
 		<div class="ui-scrollview-view" style="display:inline-block">
@@ -50,7 +50,7 @@
 
 	<script>
 	$( "#tabbar_scroll" ).on( "pageshow" , function() {
-		$( document ).on( "tizenhwkey", function ( ev ) {
+		$( window ).on( "tizenhwkey", function ( ev ) {
 			if ( ev.originalEvent.keyName === "back" ) {
 				//bind callbacks to the H/W keys
 				window.history.back();
@@ -59,7 +59,7 @@
 	});
 	$( "#tabbar_scroll" ).on( "pagebeforehide" , function() {
 		//unbind callbacks to the H/W keys
-		$( document ).off( "tizenhwkey" );
+		$( window ).off( "tizenhwkey" );
 	});
 	</script>
 </div>
