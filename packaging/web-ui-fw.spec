@@ -1,5 +1,5 @@
 Name:       web-ui-fw
-Version:    0.2.43
+Version:    0.2.46
 Release:    0
 Summary:    Tizen Web UI Framework Library
 Group:      Development/Other
@@ -97,6 +97,58 @@ Summary:    Tizen Web UI Framework Demo Application: tizen winset demo
 
 ###############################
 %changelog
+* Thu Jul 04 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.46
+	- Naviframe : fix text overflow option of '.ui-title-text-sub'
+	- Popup : modify popup-text padding(left,right) and modify radius style
+	- searchbar: fix error with wrong value on change event after click clear btn (N_SE-44365,N_SE-44265)
+	- Tabbar : modify padding and margin value of footer tabbar buttons
+	- Tokentextarea: Fix the anchor button position
+	- multidmediaview: Fix a press event issue on a button
+	- Toolbar: Change the divider style of footer buttons
+	- Winsets: Remove footer (N_SE-43651)
+	- Winsets: Restore footer in footer more example
+	- Winsets: Popup opened with menu button should have proper class
+	- fastscroll: Fix the left border width to 1 pixel
+	- Remove unbind code in popup widget (DCM-1984)
+	- JQM patch : Improve toggleswitch ux.
+	- checkboxRadio : change resource sync to GUI Guide v4.8
+	- Naviframe: modify radius and padding value of header button
+	- Delete unnecessary image files
+	- Pagelayout: use jQuery to get window height
+
+* Mon Jul 01 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.45
+	- JQM patch : add loadPage no options exception hadling.
+	- Scrollview : change scrollbar calculation routine
+	- Pagelayout : recalculate page's min-height on resize event
+
+* Sat Jun 29 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.44
+	- Slider: modify slider-container padding(top, bottom)
+	- Button : modify button size and added margin.
+	- datetimepicker: Fix layout issue.
+	- fastscroll: Apply divider styles to items
+	- winset: clear text field in popup before close (N_SE-43451)
+	- gallery3d: Fix wrong operations of API
+	- datetimepicker: Apply light theme & dark theme
+	- scrollview: Add pressed icon images of the jump-to-scroll button
+	- winset: checkbox page, changing field with value after click on checkbox (N_SE-43429)
+	- winset: correct name of page (N_SE-43471)
+	- Scrollview : Remove click event in touch state(DCM-1690,DCM-2067).
+	- Pagelayout : Invalidate to add ui-ctxpopup-optionalmenu(DCM-2073).
+	- pagelayout: fix width of h1 in header (N_SE-43307,N_SE-42973,N_SE-43556)
+	- splitview: Fix the handler dragging bug caused by multitouches
+	- Tokentextarea: Fix the anchor button position
+	- progress: Fix the end position of the stripe animation
+	- Scrollview : hide overflowIndicator if not jQM content
+	- JQM : remove scrollTo in jquery.mobile.init.js
+	- multimediaview: Improve usability of volume bar
+	- datetimepicker: Fix resize event issue
+	- Searchbar: modify clearbtn appear concept
+	- JQM patch : invalidate 0021,0045 patch and change toggleswitch ux
+	- fastscroll: Modify the popup position to the center
+	- H/W key : add H/W key event and bug fix.
+	- Winsets: Replace double Cancel buttons
+	- Winsets: Fix id of page for h/w event binding
+
 * Tue Jun 25 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.43
 	- Pagelayout : Add condition check backBtnQueue length (N_SE-42987).
 	- tizen-winsets: fix HW key event binding
