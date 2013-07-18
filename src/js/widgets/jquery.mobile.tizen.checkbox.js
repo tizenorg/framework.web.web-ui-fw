@@ -25,7 +25,3 @@ define( [
 	@property {String} class
 	Defines the check box style. <br/> The default value is check. If the value is set to favorite, a star-shaped check box is created.
 */
-
-//>>excludeStart("jqmBuildExclude", pragmas.jqmBuildExclude);
-} );
-//>>excludeEnd("jqmBuildExclude");
