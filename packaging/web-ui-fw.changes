@@ -1,3 +1,102 @@
+* Mon Jul 29 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.52
+	- toggleswitch : invalidate max-width property in toggle handler (N_SE-42954)
+	- Revert "Slider: Prevent calling buttonMarkup for toggle switch"
+
+* Fri Jul 26 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.51
+	- Swipelist : bug fix( change css selector. check only swipelist)
+	- Scrollview : add custom Overflowscrollbar option
+	- Scrollview : calculate excluding padding in innerScrollview(DCM-2223)
+	- JIRA fix - n_se-47012 Menu button does not respond after tap on BUTTON
+	- Menu popup poisiton problem has been fixed ( when use the timer )
+	- swipe: change height of swipe if in swipe is more than one line (N_SE-36032)
+	- Scrollview : add scrollbar showed routine when resize (N_SE-46664, N_SE-47206)
+	- Revert "Scrollview : add to show scroll bar routine when called resize (N_SE-46664)"
+	- button: fix padding left on button with icon on left side (N_SE-39106)
+	- button: set max-width on button in list (N_SE-41954)
+	- winset: spelling fix in list filter search bar (N_SE-34407)
+	- checkbox: Fix wrong code
+	- Add meta modules and fix dependencies
+	- JQM patch : add touchend event in slider (N_SE-46593)
+	- Collapsible: remove activeBtnClass from collapsible heading
+	- Scrollview: cancel hiding scrollbar when drag start again
+	- tools: automated tests system
+	- LoadPrototype: Fix jslint errors
+	- Configure: Fix jslint errors
+	- Pinch: Fix jslint errors
+	- listview : adding text-overflow property (N_SE-44917)
+	- Winsets: avoid resizing page
+	- Slider: Prevent calling buttonMarkup for toggle switch
+	- Winset: modify title and spell issue (N_SE-46197,N_SE-46399,N_SE-46411)
+	- tizen-winsets: backbutton-control removed in relation to mandatory hw button
+	- JIRA - fix N_SE-46403 removing code from popup message
+	- JIRA - fix N_SE-46874 switch buttons according to new documentation
+	- Globalize : modify culture value exception condition (N_SE-46759)
+	- winset: change wrong number on list (N_SE-35751)
+	- Scrollview : add to show scroll bar routine when called resize (N_SE-46664)
+	- build: change configuration od custom build system
+	- fix included files in devel package
+
+* Mon Jul 15 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.50
+	- Revert "list divider: Update the background color of checkboxes on list dividers when pressed"
+	- controlgroup: Remove invalid css code
+	- fastscroll: Remove features for fade-out
+	- Fastscroll: Remove popup text shadow
+	- list divider: Update the background color of checkboxes on list dividers when pressed
+	- winset: change html of collapsable list to valid HTML5 (N_SE-39338)
+	- datetiempicker: trigger default event after click in datetimepicker (N_SE-39513,N_SE-43673)
+	- scrollview,virtuallist: fix evaluate of scrollbar's thumb position (N_SE-42045)
+	- License: modify license from Dual(MIT,GPL) to MIT
+	- theme: Remove invalid css code
+	- Tabbar : add border-bottom color to scrolling_tabbar (N_SE-34126,N_SE-43442,N_SE-42932)
+	- build system: version 2
+	- build: build system for SDK to create minimal version of framework
+	- build system: fix dependencies for requirejs
+	- Node modules
+	- Grunt build
+
+* Fri Jul 12 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.48
+	- Checkbox: Fix background for active checkbox in divider
+	- Swipe: Make sure current animation is stopped
+	- checkbox (with favourite icon): fixed style (bug)
+	- Pagelayout : down button position bug fix(N_SE-45112)
+	- Tokentextarea: Delete footer and add H/W key event
+	- Modify Tabbar-segment footer, popup button css style (N_SE-43789)
+	- Winset: modify back button issue and miss spell issue (N_SE-43352)
+	- JQM closed popup does not add visible class ( orientation change )
+
+* Wed Jul 10 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.47
+	- Scrollview : showOverflowScrollbar when ctxpopup opens
+	- Popup : delete popup_bg resource and modify dim_background color&opacity
+	- Popup: scrollview line separator has been added
+	- checkbox: fix problem with check after click on list with link (N_SE-44086)
+	- Winset : modify generate element dynamically sample code
+	- loader: Ignore routine setting default theme
+	- scrollview: fix focusen on element on window resize (N_SE-41303, N_SE-41364)
+
+* Thu Jul 04 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.46
+	- Naviframe : fix text overflow option of '.ui-title-text-sub'
+	- Popup : modify popup-text padding(left,right) and modify radius style
+	- searchbar: fix error with wrong value on change event after click clear btn (N_SE-44365,N_SE-44265)
+	- Tabbar : modify padding and margin value of footer tabbar buttons
+	- Tokentextarea: Fix the anchor button position
+	- multidmediaview: Fix a press event issue on a button
+	- Toolbar: Change the divider style of footer buttons
+	- Winsets: Remove footer (N_SE-43651)
+	- Winsets: Restore footer in footer more example
+	- Winsets: Popup opened with menu button should have proper class
+	- fastscroll: Fix the left border width to 1 pixel
+	- Remove unbind code in popup widget (DCM-1984)
+	- JQM patch : Improve toggleswitch ux.
+	- checkboxRadio : change resource sync to GUI Guide v4.8
+	- Naviframe: modify radius and padding value of header button
+	- Delete unnecessary image files
+	- Pagelayout: use jQuery to get window height
+
+* Mon Jul 01 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.45
+	- JQM patch : add loadPage no options exception hadling.
+	- Scrollview : change scrollbar calculation routine
+	- Pagelayout : recalculate page's min-height on resize event
+
 * Sat Jun 29 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.44
 	- Slider: modify slider-container padding(top, bottom)
 	- Button : modify button size and added margin.
