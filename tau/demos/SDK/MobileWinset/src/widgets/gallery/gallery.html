@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div data-role="page" id="gallery-demo">
+	<div data-role="header" data-position="fixed">
+		<h1>Gallery</h1>
+	</div>
+	<div data-role="content" data-scroll="none">
+		<div data-role="gallery" id="gallery" data-vertical-align="middle">
+		</div>
+	</div> <!-- /content -->
+	<div data-role="footer" data-position ="fixed">
+		<a id="gallery-add" href="#" data-role="button">ADD</a>
+		<a id="gallery-del" href="#" data-role="button">DELETE</a>
+	</div>
+	<script src="gallery.js"></script>
+	<script>
+	$( "#gallery-demo" ).on( "pageshow" , function() {
+		$( window ).on( "tizenhwkey", function ( ev ) {
+			if ( ev.originalEvent.keyName === "back" ) {
+				//bind callbacks to the H/W keys
+				window.history.back();
+			}
+		});
+	});
+	$( "#gallery-demo" ).on( "pagebeforehide" , function() {
+		//unbind callbacks to the H/W keys
+		$( window ).off( "tizenhwkey" );
+	});
+	</script>
+</div> <!-- /page -->
+</body>
+</html>

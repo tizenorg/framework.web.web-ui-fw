@@ -1,0 +1,35 @@
+{
+	"path": "src/css/profile",
+	"device": {
+
+		"mobile": [
+			{
+				"name": "changeable",
+				"images": "images/",
+				"src": "style.changeable.less",
+				"default": "true",
+				"changeable-path": "mobile/changeable/theme-changeable/"
+			}
+		],
+
+		"wearable": [
+			{
+				"name": "changeable",
+				"images": "images/",
+				"src": "style.changeable.less",
+				"default": "true",
+				"changeable-path": "wearable/changeable/theme-changeable/"
+			}
+		],
+
+		"tv": [
+			{
+				"name": "black",
+				"images": "images/",
+				"src": "style.less",
+				"default": "true",
+				"default-path": "tv/default/theme-black/"
+			}
+		]
+	}
+}

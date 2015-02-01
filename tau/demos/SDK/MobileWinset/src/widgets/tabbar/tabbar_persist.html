@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div data-role="page" id="tabbar-persist-demo">
+	<div data-role="header" data-position="fixed">
+		<div data-role="tabbar" data-id="persist_header">
+			<ul>
+				<li><a href="#" class="ui-btn-active ui-state-persist">Menu</a>
+				</li>
+				<li><a href="./tabbar_persist_b.html">Save</a></li>
+				<li><a href="./tabbar_persist_c.html">Next</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div data-role="content">
+		<p>Page A</p>
+	</div>
+
+	<script>
+		$("#tabbar-persist-demo").on("pageshow", function () {
+			$(window).on("tizenhwkey", function (event) {
+				if (event.originalEvent.keyName === "back") {
+					//bind callbacks to the H/W keys
+					window.history.back();
+				}
+			});
+		}).on("pagebeforehide", function () {
+			//unbind callbacks to the H/W keys
+			$(window).off("tizenhwkey");
+		});
+	</script>
+</div>
+
+</body>
+</html>
