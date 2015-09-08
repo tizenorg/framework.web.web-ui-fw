@@ -1,12 +1,25 @@
-/*!
- * Globalize
- *
- * http://github.com/jquery/globalize
- *
- * Copyright Software Freedom Conservancy, Inc.
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- */
+/*
+* Module Name : libs/globalize
+* Copyright (c) 2010 - 2013 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+* 
+* The MIT License V2
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy 
+* of this software and associated documentation files (the "Software"), 
+* to deal in the Software without restriction, including without limitation the rights to use, copy, 
+* modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+* and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in 
+* all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+* TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 
 (function( window, undefined ) {
 
@@ -342,7 +355,9 @@ extend = function( deep ) {
 					target[ name ] = extend( deep, clone, copy );
 
 				// Don't bring in undefined values
-				} else if ( copy !== undefined ) {
+				} else if ( copy || copy === 0 ) {
+					// N_SE-46759 : If overring culture value is 'undefined' or 'null'
+					//              then not copy overring value that remain default value.
 					target[ name ] = copy;
 				}
 			}
@@ -1573,4 +1588,10 @@ Globalize.culture = function( cultureSelector ) {
 	return this.findClosestCulture( cultureSelector ) || this.culture[ "default" ];
 };
 
-}( this ));
+window.Globalize = Globalize;
+
+if ( typeof define === "function" ) {
+	define( "globalize/globalize", [], function () { return Globalize; } );
+}
+
+}( window ));

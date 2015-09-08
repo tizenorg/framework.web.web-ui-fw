@@ -4,6 +4,7 @@
 fieldset.ui-controlgroup {
 	padding: 0;
 	margin: .5em 0 1em;
+	width: 100%;
 }
 .ui-bar .ui-controlgroup {
 	margin: 0 .3em;
@@ -15,8 +16,55 @@ fieldset.ui-controlgroup {
 	margin: 0 0 .3em;
 }
 
-.ui-controlgroup-controls {
-	display: block;
+.ui-controlgroup-vertical{
+	.ui-controlgroup-controls {
+		display: block;
+		[data-role="button"] {
+
+			&.ui-btn {
+				background : @color_button_normal;
+				border-radius : 0;
+				border-color : @color_button_inner_border;
+				&:first-child {
+					border-top-left-radius : 7 * @unit_base;
+					border-top-right-radius : 7 * @unit_base;
+				}
+				&:last-child {
+					border-bottom-left-radius : 7 * @unit_base;
+					border-bottom-right-radius : 7 * @unit_base;
+				}
+			}
+			&.ui-btn-hover-s {
+				border-radius: 0 !important;
+				&:first-child {
+					border-top-left-radius : 7 * @unit_base !important;
+					border-top-right-radius : 7 * @unit_base !important;
+				}
+				&:last-child {
+					border-bottom-left-radius : 7 * @unit_base !important;
+					border-bottom-right-radius : 7 * @unit_base !important;
+				}
+			}
+
+			&.ui-btn-box-s {
+				border-radius: 0;
+				box-shadow : 0;
+				.ui-btn-inner{
+					background : @color_button_normal;
+					display : inline-block;
+					border: none;
+					border-radius: 0;
+				}
+			}
+			&.ui-btn-down-s, .ui-btn-active-s {
+				.ui-btn-inner {
+					.ui-btn-text {
+					color : @color_bar_title_text;
+					}
+				}
+			}
+		}
+	}
 }
 .ui-controlgroup {
 	li {
@@ -31,6 +79,7 @@ fieldset.ui-controlgroup {
 		}
 	}
 	.ui-radio {
+
 		width: 25%;
 		overflow: hidden;
 		label {
@@ -38,21 +87,20 @@ fieldset.ui-controlgroup {
 			white-space: nowrap;
 		}
 	}
-	.ui-radio-off, .ui-radio-on {
-		width: 100%;
-		border-right-width: 1px;
-		border-right-color: @color_controlgroup_btn_border;
-		border-right-style: solid;
-		border-left-width: 1px;
-		border-left-color: @color_controlgroup_btn_border;
-		border-left-style: solid;
+	.ui-radio-on {
+		.ui-btn-inner {
+			background : @color_bg;
+			.ui-btn-text {
+				color : @color_bar_title_text;
+			}
+		}
 	}
-	.ui-corner-left {
-		border-left-width: 0px;
-	}
-	.ui-corner-right {
-		border-right-width: 0px;
-	}
+}
+.ui-controlgroup.ui-controlgroup-padding-more {
+	padding-left: 58 * @unit_base;
+}
+.ui-controlgroup.ui-controlgroup-padding-back {
+	padding-right: 58 * @unit_base;
 }
 .ui-controlgroup-vertical {
 	.ui-btn, .ui-checkbox, .ui-radio {
@@ -62,11 +110,11 @@ fieldset.ui-controlgroup {
 	.ui-controlgroup-last {
 		border-bottom-width: 1px;
 	}
-	
+
 	.ui-radio {
 		width : 100%;
 	}
-	
+
 	.ui-radio label {
 		text-align :left;
 		.ui-btn-inner {
@@ -76,10 +124,21 @@ fieldset.ui-controlgroup {
 	}
 }
 .ui-controlgroup-horizontal {
+
 	padding: 0;
 	.ui-btn {
+		border-radius : 0;
 		display: inline-block;
-		margin: 0 -5px 0 0;
+		margin-left : -4 * @unit_base;
+		margin-right : -3 * @unit_base;
+		&:first-child {
+			border-top-left-radius : 7 * @unit_base;
+			border-bottom-left-radius : 7 * @unit_base;
+		}
+		&:last-child {
+			border-top-right-radius : 7 * @unit_base;
+			border-bottom-right-radius : 7 * @unit_base;
+		}
 	}
 	.ui-checkbox, .ui-radio {
 		float: left;
@@ -87,5 +146,45 @@ fieldset.ui-controlgroup {
 	}
 	.ui-controlgroup-last {
 		margin-right: 0;
+	}
+
+	[data-role="button"] {
+		box-shadow : none;
+		background : none;
+		&.ui-btn-down-s, .ui-btn-active-s {
+			.ui-btn-inner {
+				.ui-btn-text {
+					color : @color_bar_title_text;
+				}
+			}
+		}
+
+		>.ui-btn-inner {
+			border : 0px solid;
+			box-shadow : none;
+			padding-top : 0px;
+			padding-bottom : 0px;
+			padding-left : 10 * @unit_base;
+			padding-right : 10 * @unit_base;
+		}
+		&.ui-btn-hover-s {
+			border-radius: 0 !important;
+			&:first-child {
+				border-top-left-radius : 7 * @unit_base !important;
+				border-bottom-left-radius : 7 * @unit_base !important;
+			}
+			&:last-child {
+				border-top-right-radius : 7 * @unit_base !important;
+				border-bottom-right-radius : 7 * @unit_base !important;
+			}
+		}
+	}
+
+	label {
+		width : 100%;
+		> span.ui-btn-inner {
+			padding-top : 3 * @unit_base;
+			padding-bottom : 3 * @unit_base;
+		}
 	}
 }

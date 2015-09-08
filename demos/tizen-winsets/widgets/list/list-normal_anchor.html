@@ -1,8 +1,9 @@
-<div data-role="page" id="genlist-normal" data-add-back-btn="true">
+<div data-role="page" id="genlist-normal">
 	<div data-role="header" data-position="fixed">
 		<h1>Normal anchor lists</h1>
 	</div>
 	<div class="content" data-role="content" data-scroll="y">
+		<form>
 		<ul data-role="listview">
 
 			<li>
@@ -35,20 +36,23 @@
 			<li>
 				<a href="#">
 					1line-toggle
-					<div data-role="toggleswitch"/></div>
+					<select name="flip-11" id="flip-11" data-role="slider">
+						<option value="off"></option>
+						<option value="on"></option>
+					</select>
 				</a>
 			</li>
 
 			<li>
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					1line-bigicon1
 				</a>
 			</li>
 
 			<li>
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					1line-bigicon2
 					<span class="ui-li-text-sub">Sub text</span>
 				</a>
@@ -56,7 +60,7 @@
 
 			<li>
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					1line-bigicon4
 					<div data-role="button" data-inline="true">Text Button</div>
 				</a>
@@ -64,7 +68,7 @@
 
 			<li>
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					1line-bigicon5
 					<div data-role="button" data-inline="true" data-icon="plus" data-style="circle"></div>
 				</a>
@@ -72,22 +76,25 @@
 
 			<li>
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					1line-bigicon6
-					<div data-role="toggleswitch"/></div>
+					<select name="flip-11" id="flip-11" data-role="slider">
+						<option value="off"></option>
+						<option value="on"></option>
+					</select>
 				</a>
 			</li>
 
 			<li class="ui-li-has-checkbox">
 				<a href="#">
-					<form><input type="checkbox" name="c1line-check1" /></form>
+					<input type="checkbox" name="c1line-check1" />
 					1line-check1
 				</a>
 			</li>
 
 			<li class="ui-li-has-checkbox">
 				<a href="#">
-					<form><input type="checkbox" name="c1line-check2" /></form>
+					<input type="checkbox" name="c1line-check2" />
 					1line-check2
 					<div data-role="button" data-inline="true" data-icon="plus" data-style="circle"></div>
 				</a>
@@ -95,16 +102,16 @@
 
 			<li class="ui-li-has-checkbox">
 				<a href="#">
-					<form><input type="checkbox"  name="c1line-check3" /></form>
-					<img src="thumbnail.jpg" class="ui-li-bigicon" >
+					<input type="checkbox"  name="c1line-check3" />
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					1line-check3
 				</a>
 			</li>
 
 			<li class="ui-li-has-checkbox">
 				<a href="#">
-					<form><input type="checkbox"  name="c1line-check4" /></form>
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<input type="checkbox"  name="c1line-check4" />
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					1line-check4
 					<div data-role="button" data-inline="true" data-icon="plus" data-style="circle"></div>
 				</a>
@@ -112,14 +119,14 @@
 
 			<li class="ui-li-has-radio">
 				<a href="#">
-					<form><input type="radio" /></form>
+					<input type="radio" name="1line-radio" />
 					1line-radio1
 				</a>
 			</li>
 
 			<li class="ui-li-has-radio">
 				<a href="#">
-					<form><input type="radio" /></form>
+					<input type="radio" name="1line-radio" />
 					1line-radio3
 					<div data-role="button" data-inline="true" data-icon="plus" data-style="circle"></div>
 				</a>
@@ -127,26 +134,26 @@
 
 			<li class="ui-li-has-radio">
 				<a href="#">
-					<form><input type="radio" /></form>
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<input type="radio" name="1line-radio" />
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					1line-radio4
 				</a>
 			</li>
 
 			<li class="ui-li-has-radio">
 				<a href="#">
-					<form><input type="radio" /></form>
+					<input type="radio" name="1line-radio" />
 					1line-radio5
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					<div data-role="button" data-inline="true" data-icon="plus" data-style="circle"></div>
 				</a>
 			</li>
 
 			<li class="ui-li-has-radio">
 				<a href="#">
-					<form><input type="radio" /></form>
+					<input type="radio" name="1line-radio" />
 					1line-radio6
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 				</a>
 			</li>
 
@@ -200,7 +207,7 @@
 				<a href="#">
 					2line-star1
 					<span class="ui-li-text-sub">Subtext</span>
-					<span style="position:absolute; right:16px; top:80px"><img class= "ui-li-icon-sub-right" src="00_winset_icon_favorite_on.png"></span>
+					<span style="position:absolute; right:16px; top:80px"><img class= "ui-li-icon-sub-right" src="00_winset_icon_favorite_on.png" alt="favorite"></span>
 					<span class="ui-li-text-sub2">Subtext2</span>
 				</a>
 			</li>
@@ -208,8 +215,8 @@
 			<li class="ui-li-has-multiline">
 				<a href="#">
 					2line-star2
-					<span class="ui-li-text-sub"><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png">Subtext</span>
-					<span><img class="ui-li-icon-sub-right" src="00_winset_icon_favorite_on.png"></span>
+					<span class="ui-li-text-sub"><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png" alt="favorite">Subtext</span>
+					<span><img class="ui-li-icon-sub-right" src="00_winset_icon_favorite_on.png" alt="favorite"></span>
 				</a>
 			</li>
 
@@ -224,7 +231,10 @@
 				<a href="#">
 					2line-toggle-setting
 					<span class="ui-li-text-sub">Subtext</span>
-					<div data-role="toggleswitch"/></div>
+					<select name="flip-11" id="flip-11" data-role="slider">
+						<option value="off"></option>
+						<option value="on"></option>
+					</select>
 				</a>
 			</li>
 
@@ -239,14 +249,14 @@
 			<li class="ui-li-has-multiline">
 				<a href="#">
 					2line-bigicon0
-					<span class="ui-li-text-sub">Subtext<img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png"></span>
+					<span class="ui-li-text-sub">Subtext<img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png" alt="favorite"></span>
 					<div data-role="button" data-inline="true" data-icon="call" data-style="circle"></div>
 				</a>
 			</li>
 
 			<li class="ui-li-has-multiline">
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					2line-bigicon1
 					<span class="ui-li-text-sub">Subtext</span>
 				</a>
@@ -254,7 +264,7 @@
 
 			<li class="ui-li-has-multiline">
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					2line-bigicon2
 					<span class="ui-li-text-sub">Subtext</span>
 					<span class="ui-li-text-sub2">Subtext2</span>
@@ -263,7 +273,7 @@
 
 			<li class="ui-li-has-multiline">
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					2line-bigicon3
 					<span class="ui-li-text-sub">Subtext</span>
 				</a>
@@ -271,7 +281,7 @@
 
 			<li class="ui-li-has-multiline">
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					2line-bigicon4
 					<span class="ui-li-text-sub">Subtext</span>
 					<div data-role="button" data-inline="true" data-icon="call" data-style="circle"></div>
@@ -280,7 +290,7 @@
 
 			<li class="ui-li-has-checkbox ui-li-has-multiline">
 				<a href="#">
-					<form><input type="checkbox"  name="c2line-check1" /></form>
+					<input type="checkbox"  name="c2line-check1" />
 					2line-check
 					<span class="ui-li-text-sub">Subtext</span>
 				</a>
@@ -288,7 +298,7 @@
 
 			<li class="ui-li-has-checkbox ui-li-has-multiline">
 				<a href="#">
-					<form><input type="checkbox"  name="c2line-check2" /></form>
+					<input type="checkbox"  name="c2line-check2" />
 					2line-check2
 					<span class="ui-li-text-sub">Subtext</span>
 					<div data-role="button" data-inline="true" data-icon="call" data-style="circle"></div>
@@ -297,8 +307,8 @@
 
 			<li class="ui-li-has-checkbox ui-li-has-multiline">
 				<a href="#">
-					<form><input type="checkbox"  name="c2line-check3" /></form>
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<input type="checkbox"  name="c2line-check3" />
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					2line-check3
 					<span class="ui-li-text-sub">Subtext</span>
 				</a>
@@ -306,7 +316,7 @@
 
 			<li class="ui-li-has-checkbox ui-li-has-multiline">
 				<a href="#">
-					<form><input type="radio" /></form>
+					<input type="radio" name="2line-radio" />
 					2line-radio1
 					<span class="ui-li-text-sub">Subtext</span>
 				</a>
@@ -314,8 +324,8 @@
 
 			<li class="ui-li-has-checkbox ui-li-has-multiline">
 				<a href="#">
-					<form><input type="radio" /></form>
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<input type="radio" name="2line-radio" />
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					2line-radio2
 					<span class="ui-li-text-sub">Subtext</span>
 				</a>
@@ -326,9 +336,9 @@
 					<span class="ui-li-color-bar"></span>
 					2line-colorbar1
 					<span class="ui-li-text-sub">Subtext
-						<img src="00_winset_icon_favorite_on.png">
-						<img src="00_winset_icon_favorite_on.png">
-						<img src="00_winset_icon_favorite_on.png">
+						<img src="00_winset_icon_favorite_on.png" alt="favorite">
+						<img src="00_winset_icon_favorite_on.png" alt="favorite">
+						<img src="00_winset_icon_favorite_on.png" alt="favorite">
 					</span>
 					<div data-role="button" data-inline="true">button</div>
 				</a>
@@ -338,7 +348,7 @@
 				<a href="#">
 					<span class="ui-li-color-bar" style="background-color:rgba(72, 136, 42, 1);"></span>
 					2line-colorbar2
-					<span><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png"></span>
+					<span><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png" alt="favorite"></span>
 					<span class="ui-li-text-sub">Subtext</span>
 					<div data-role="button" data-inline="true">button</div>
 				</a>
@@ -348,7 +358,7 @@
 				<a href="#">
 					<span class="ui-li-color-bar" style="background-color:rgba(204, 52, 52, 1);"></span>
 					2line-colorbar2
-					<span><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png"></span>
+					<span><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png" alt="favorite"></span>
 					<span class="ui-li-text-sub">Subtext</span>
 					<div data-role="button" data-inline="true" data-icon="call"></div>
 				</a>
@@ -357,7 +367,7 @@
 			<li class="ui-li-has-multiline">
 				<a href="#">
 					<span class="ui-li-color-bar" style="background-color:rgba(72, 136, 42, 1);"></span>
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					2line-colorbar3
 					<span class="ui-li-text-sub">Subtext</span>
 					<div data-role="button" data-inline="true" data-icon="call" data-style="circle"></div>
@@ -366,10 +376,10 @@
 
 			<li class="ui-li-has-multiline">
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 					2line-bigicon8
 					<span class="ui-li-text-sub">Subtext</span>
-					<img src="00_winset_icon_favorite_on.png" class="ui-li-icon-sub">
+					<img src="00_winset_icon_favorite_on.png" alt="favorite" class="ui-li-icon-sub">
 				</a>
 			</li>
 
@@ -377,16 +387,16 @@
 				<a href="#">
 					2line-thumb1
 					<span class="ui-li-text-sub">Subtext</span>
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="large_thumbnail.jpg" alt="Photo ID" class="ui-li-bigicon">
 				</a>
 			</li>
 
 			<li class="ui-li-has-multiline">
 				<a href="#">
 					2line-thumb2
-					<span><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png"></span>
-					<span class="ui-li-text-sub"><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png">Subtext</span>
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<span><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png" alt="favorite"></span>
+					<span class="ui-li-text-sub"><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png" alt="favorite">Subtext</span>
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 				</a>
 			</li>
 
@@ -394,52 +404,31 @@
 				<a href="#">
 					<span class="ui-li-text-sub">Subtext</span>
 					2line-sub-main-bigicon1
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="large_thumbnail.jpg" alt="Photo ID" class="ui-li-bigicon">
 				</a>
 			</li>
 
 			<li class="ui-li-has-multiline">
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
 					2line-bigicon-pgbar1
-					<span class="ui-li-text-sub">Subtext</span>
 					<div data-role="progressbar" id="progressbar"></div>
 				</a>
 			</li>
 
 			<li class="ui-li-has-multiline">
 				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
-					2line-bigicon-pgbar2
-					<span class="ui-li-text-sub">Subtext</span>
-					<div data-role="button" data-inline="true">button</div>
-				</a>
-			</li>
-
-			<li class="ui-li-has-multiline">
-				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
-					2line-bigicon-pgbar2
-					<span class="ui-li-text-sub">Subtext</span>
-					<div data-role="button" data-inline="true" data-icon="call"></div>
-				</a>
-			</li>
-
-			<li class="ui-li-has-multiline">
-				<a href="#">
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
-					2line-bigicon-pgbar3
-					<span class="ui-li-text-sub">Subtext</span>
-					<span class="ui-li-text-sub2">Subtext2</span>
-					<div data-role="progressing" data-style="pending" id="pending"></div>
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
+					Short Progress
+					<div data-role="progressbar" id="progressbar"></div>
+					<div data-role="button" data-inline="true">Stop</div>
 				</a>
 			</li>
 
 			<li class="ui-li-has-checkbox ui-li-has-multiline">
 				<a href="#">
-					<form><input type="checkbox"  name="c2line-icon-bigicon-btn" /></form>
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
-					2line-icon-bigicon-btn
+					<input type="checkbox"  name="c2line-icon-bigicon-btn" />
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
+					2line-3items
 					<span class="ui-li-text-sub">Subtext</span>
 					<div data-role="button" data-inline="true" data-icon="call" data-style="circle"></div>
 				</a>
@@ -448,12 +437,39 @@
 			<li class="ui-li-has-multiline">
 				<a href="#">
 					2line-thumb3
-					<span><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png"></span>
+					<span><img class="ui-li-icon-sub" src="00_winset_icon_favorite_on.png" alt="favorite"></span>
 					<span class="ui-li-text-sub">Subtext</span>
-					<img src="thumbnail.jpg" class="ui-li-bigicon">
+					<img src="thumbnail.jpg" alt="icon" class="ui-li-bigicon">
 				</a>
 			</li>
 		</ul>
+		<form>
 	</div>
+	<script>
+	$( "#genlist-normal" ).on( "pageshow" , function() {
+		$( window ).on( "tizenhwkey", function ( ev ) {
+			if ( ev.originalEvent.keyName === "back" ) {
+				//bind callbacks to the H/W keys
+				window.history.back();
+			}
+		});
+		$( ".ui-li-text-sub" ).on ( "vclick" , function( event ) {
+			var targetParent = $( event.target ).parent(),
+				checkboxradio = targetParent.find( ".ui-checkbox" );
+
+			if ( !checkboxradio.length ) {
+				checkboxradio = targetParent.find( ".ui-radio" );
+			}
+
+			if ( checkboxradio.length ) {
+				checkboxradio.children( "label" ).trigger( "vclick" );
+			}
+		});
+	});
+	$( "#genlist-normal" ).on( "pagebeforehide" , function() {
+		//unbind callbacks to the H/W keys
+		$( window ).off( "tizenhwkey" );
+	});
+	</script>
 </div>
 

@@ -12,21 +12,40 @@
 @height_buttonEdit:	74 * @unit_base;
 @width_buttonEdit:	@height_buttonEdit;
 
-.ui-btn { display: block; text-align: center; cursor:pointer;  position: relative; /*margin: .2em 0px;*/ padding: 0; vertical-align: middle; } /* wongi_1018 : For button align. */
+.ui-btn {
+		display: block; 
+		text-align: center; 
+		cursor:pointer;
+		position: relative; 
+		vertical-align: middle;
+} /* wongi_1018 : For button align. */
+
+.ui-footer, .ui-ticker-btn {
+	.ui-btn.ui-btn-box-s {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
+.ui-btn.ui-btn-box-s {
+		margin-top: 6 * @unit_base;
+		margin-bottom: 6 * @unit_base;
+		color: @color_button_text_normal;
+		text-shadow: @color_button_text_shadow;
+		.LESSborder-radius-all( 0.2rem );
+}
+
 .ui-btn:focus, .ui-btn:active { outline: none; }
-.ui-header .ui-btn, .ui-footer .ui-btn, .ui-bar .ui-btn { display: inline-block; font-size: 13 * @unit_base; margin: 0; }
+.ui-header .ui-btn, .ui-bar .ui-btn { display: inline-block; font-size: 13 * @unit_base; margin: 0; }
 .ui-btn-inline { display: inline-block; }
-.ui-btn-inner { padding: .5em 36 * @unit_base; display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; position: relative; zoom: 1; }
-.ui-header .ui-btn-inner, .ui-footer .ui-btn-inner, .ui-bar .ui-btn-inner { padding: 0.7em 0 0.7em; }  /* wongi_1024 : Button text middle align */
-.ui-header .ui-btn-inner.ui-btn-icon-only , .ui-footer .ui-btn-inner, .ui-bar .ui-btn-inner.ui-btn-icon-only { padding: .4em 8 * @unit_base .5em; }	/* wongi_1024 : Button text middle align */
-.ui-btn-icon-notext { width: 24 * @unit_base; height: 24 * @unit_base; }
+.ui-btn-inner { padding: 5 * @unit_base; display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; position: relative; zoom: 1; }
+
+.ui-btn-icon-notext { width: 36 * @unit_base; height: 36 * @unit_base; }
 .ui-btn-icon-notext .ui-btn-inner { padding: 2 * @unit_base 1 * @unit_base 2 * @unit_base 3 * @unit_base; }
+.ui-btn-icon-notext .ui-btn-inner .ui-icon { margin-left: -16 * @unit_base; margin-top: -16 * @unit_base; }
 .ui-btn-icon-notext .ui-btn-text { position: absolute; left: -999 * @unit_base; }
-.ui-btn-icon-left .ui-btn-inner { padding-left: 33 * @unit_base; }
 .ui-header .ui-btn-icon-left .ui-btn-inner,
 .ui-footer .ui-btn-icon-left .ui-btn-inner,
 .ui-bar .ui-btn-icon-left .ui-btn-inner { padding-left: 27 * @unit_base; }
-.ui-btn-icon-right .ui-btn-inner { padding-right: 33 * @unit_base; }
 .ui-header .ui-btn-icon-right .ui-btn-inner,
 .ui-footer .ui-btn-icon-right .ui-btn-inner,
 .ui-bar .ui-btn-icon-right .ui-btn-inner { padding-right: 27 * @unit_base; }
@@ -41,19 +60,15 @@
 
 /*btn icon positioning*/
 .ui-btn-icon-notext .ui-icon { display: block; }
-
 .ui-btn-icon-left .ui-icon, .ui-btn-icon-right .ui-icon, .ui-btn-icon-circle .ui-icon { position: absolute; /*top: 50%; margin-top: -9px;*/ } /* wongi_1018 : do not use. No more use 18px default icons. */
 
 
 .ui-btn-icon-top .ui-icon, .ui-btn-icon-bottom .ui-icon { position: absolute; left: 50%;  margin-left: -9px; }
-.ui-btn-icon-left .ui-icon { left: /*10px;*/ 0 * @unit_base; } /* wongi_1018 : with 64px icon, left 10 -> 0 for good looking. */
-.ui-btn-icon-circle .ui-icon {left: 0 * @unit_base;} /* wongi_1018 : for circle icon center positioning. */
+.ui-btn-icon-left .ui-icon { left: 5 * @unit_base; }
+.ui-btn-icon-circle .ui-icon {left: 0 * @unit_base; } /* wongi_1018 : for circle icon center positioning. */
 .ui-btn-icon-right .ui-icon { right: 10 * @unit_base; }
 .ui-btn-icon-top .ui-icon { top: 0 * @unit_base; margin-top: 0; }
 .ui-btn-icon-bottom .ui-icon { bottom: 0 * @unit_base; }
-.ui-header .ui-btn-icon-left .ui-icon,
-.ui-footer .ui-btn-icon-left .ui-icon,
-.ui-bar .ui-btn-icon-left .ui-icon { left: @style-back-btn-left; } /* SLP Default Footer : Jinhyuk */
 .ui-header .ui-btn-icon-right .ui-icon,
 .ui-footer .ui-btn-icon-right .ui-icon,
 .ui-bar .ui-btn-icon-right .ui-icon { right: 4 * @unit_base; }
@@ -75,42 +90,101 @@
 	padding:0 1px; /* Webkit width(ellipsis) problem workaround */
 }
 
+.ui-btn .ui-btn-inner.ui-btn-hastxt span.ui-btn-text
+{
+	font-size: 18 * @unit_base;
+}
+
 .ui-li .ui-btn.ui-btn-icon_only
 {
 	top: 50%;
-	margin-top:  -32  * @unit_base;
+	margin-top:  -16 * @unit_base;
 }
 
 .ui-li .ui-btn .ui-btn-inner.ui-btn-hastxt
 {
-	padding: 0.2em 0.5em;
+	padding: 0.2em 0.4444444444em;
 }
+.ui-btn-icon-nobg.ui-btn-down-s .ui-btn-inner
+{
+	background: transparent ! important;
+}
+.ui-btn-box-s.ui-btn-up-s
+{
+	.LESSbutton_up_style();
+	box-shadow: @button_shadow_inner;
+
+	&[data-icon="alert"],
+	&[data-icon="minus"] {
+		background: @color_button_warning;
+		box-shadow: @button_shadow_warning_inner;
+	}
+}
+.ui-btn-box-s.ui-btn-hover-s
+{
+	.LESSbutton_up_style();
+	box-shadow: @button_shadow_inner;
+	&[data-icon="alert"],
+	&[data-icon="minus"] {
+		background: @color_button_warning;
+		box-shadow: @button_shadow_warning_inner;
+	}
+}
+.ui-btn-box-s.ui-btn-down-s
+{
+	background: @color_button_press;
+	box-shadow: @button_shadow_inner;
+	text-shadow: none;
+	&[data-icon="alert"],
+	&[data-icon="minus"] {
+		background: @color_button_warning_press;
+		box-shadow: @button_shadow_warning_inner;
+		text-shadow: none;
+	}	
+}
+.ui-btn-corner-all
+{
+	.LESSborder-radius-all( 0.3rem );
+}
+.ui-header .ui-btn-box-s:not(.ui-input-cancel):not(.ui-btn-search-front-icon),
+.ui-header .ui-btn-box-s:not(.ui-input-cancel):not(.ui-btn-search-front-icon) .ui-btn-inner,
+.ui-header .ui-btn.ui-btn-box-s.ui-btn-down-s:not(.ui-input-cancel):not(.ui-btn-search-front-icon) .ui-btn-inner,
+.ui-btn.ui-btn-back.ui-btn-up-s .ui-btn-inner,
+.ui-btn.ui-btn-back.ui-btn-hover-s .ui-btn-inner,
+.ui-btn.ui-btn-back.ui-btn-down-s .ui-btn-inner,
+.ui-btn.ui-btn-footer-down.ui-btn-up-s > .ui-btn-inner,
+.ui-btn.ui-btn-footer-down.ui-btn-hover-s > .ui-btn-inner,
+.ui-btn.ui-btn-footer-down.ui-btn-down-s > .ui-btn-inner
+{
+	background: transparent;
+	border: none;
+	box-shadow: none;
+}
+
+.ui-header .naviframe-button.ui-btn.ui-btn-box-s.ui-btn-down-s {
+	background : @color_bar_btn_press;
+}
+
 .ui-btn-icon-top .ui-btn-inner.ui-btn-hastxt, .ui-li .ui-btn-icon-top .ui-btn-inner.ui-btn-hastxt
 {
-        padding-top: 52 * @unit_base;
+	padding-top: 52 * @unit_base;
 }
 .ui-btn-icon-bottom .ui-btn-inner.ui-btn-hastxt, .ui-li .ui-btn-icon-bottom .ui-btn-inner.ui-btn-hastxt
 {
 	padding-bottom: 52 * @unit_base;
 }
-/* white theme, delete button padding */
-.ui-li .ui-btn.ui-btn-edit .ui-btn-inner.ui-btn-hastxt
-{
-        .LESSbutton_edit_padding;
-}
-	
+
 /* wongi_1017 : Icons */
 /* icons sizing */
-.ui-btn .ui-icon { width: 64 * @unit_base; height: 64 * @unit_base; }
+.ui-btn .ui-icon { width: 22 * @unit_base ; height: 22 * @unit_base; }
 .ui-btn.ui-btn-edit .ui-icon { width: @width_buttonEdit; height: @height_buttonEdit; }
 
 /* Padding for Icon with text */
-.ui-btn .ui-btn-text.ui-btn-text-padding-left { padding-left: 44 * @unit_base; }
-.ui-btn .ui-btn-text.ui-btn-text-padding-right { padding-right: 48 * @unit_base; }
+.ui-btn .ui-btn-text.ui-btn-text-padding-left { padding-left: 26 * @unit_base; }
+.ui-btn .ui-btn-text.ui-btn-text-padding-right { padding-right: 26 * @unit_base; }
 .ui-btn .ui-btn-text.ui-btn-text-padding-top {padding-top: 32 * @unit_base;}
 .ui-icon
 {
-	z-index: 10;
 	background-repeat: no-repeat;
 	vertical-align: middle;
 	background-position: 0% 0%;
@@ -122,78 +196,53 @@
 }
 .ui-btn-box-s.ui-btn-icon-left .ui-icon, .ui-btn-box-s.ui-btn-icon-right .ui-icon
 {
-	margin-top: -64 * @unit_base / 2;
+	margin-top: -10 * @unit_base ;
 	top: 50%;
 }
 .ui-btn-box-s.ui-btn-icon-top .ui-icon, .ui-btn-box-s.ui-btn-icon-bottom .ui-icon
 {
-	margin-left: -64 * @unit_base / 2;
+	margin-left: -10 * @unit_base ;
 	left: 50%;
 }
 .tizen-icon-common
 {
 	/* Overlap original property */
-	width: 64 * @unit_base; height: 64 * @unit_base;
-	/* margin-top : 50 */
-	/* top : -32 * @unit_base; */
+	width: 22 * @unit_base;
+	height: 22 * @unit_base;
+}
+.tizen-smallicon-common
+{
+	width: 20 * @unit_base ! important;
+	height: 20 * @unit_base ! important;
+	top: 50% ! important;
+	left: 50% ! important;
+	margin-top: -20 * @unit_base / 2 ! important;
+	margin-left: -20 * @unit_base / 2 ! important;
 }
 
 .ui-icon-bg			{.tizen-icon-common;	background-image: url(images/00_btn_circle_bg_normal.png);	z-index:0; }
-.ui-icon-reveal			{.tizen-icon-common;	background-image: url(images/00_button_reveal.png);	 }
-.ui-icon-reveal-left	{.tizen-icon-common;	background-image: url(images/00_button_reveal_left.png);	 }
-.ui-icon-closed			{.tizen-icon-common;	background-image: url(images/00_button_expand_closed.png);	 }
-.ui-icon-opened			{.tizen-icon-common;	background-image: url(images/00_button_expand_opened.png);	 }
-.ui-icon-info			{.tizen-icon-common;	background-image: url(images/00_button_info.png);	 }
-.ui-icon-rename			{.tizen-icon-common;	background-image: url(images/00_button_rename.png);	 }
-.ui-icon-call			{.tizen-icon-common;	background-image: url(images/00_button_call.png);	 }
-.ui-icon-warning		{.tizen-icon-common;	background-image: url(images/00_button_warning.png);	 }
-.ui-icon-plus			{.tizen-icon-common;	background-image: url(images/00_button_plus_normal.png);	 }
-.ui-icon-minus			{.tizen-icon-common;	background-image: url(images/00_button_minus_normal.png);	 }
-.ui-icon-cancel			{.tizen-icon-common;	background-image: url(images/00_button_cancel.png);	 }
-.ui-icon-send			{.tizen-icon-common;	background-image: url(images/00_button_send.png);	 }
-.ui-icon-favorite		{.tizen-icon-common;	background-image: url(images/00_winset_icon_favorite_on.png);	 }
-.ui-icon-editexpand		{.tizen-icon-common;	background-image: url(images/00_button_icon_expand.png); top : -@height_buttonEdit/2; }
-.ui-icon-editminus		{.tizen-icon-common;	background-image: url(images/00_button_icon_minus.png); top : -@height_buttonEdit/2;}
-.ui-icon-editplus		{.tizen-icon-common;	background-image: url(images/00_button_icon_plus.png); top : -@height_buttonEdit/2;}
-
-/* Header back btn : Jinjyuk */
-.ui-btn-up-s .ui-icon-header-back-btn{
-	width: 56 * @unit_base; 
-	height: 56 * @unit_base;
-
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-
-	.LESSbtn-arrow-position;
-	background-image: url(images/00_winset_Back.png);
-}
-
-.ui-btn-down-s, .ui-btn-hover-s {
-	.ui-icon-header-back-btn{
-		width: 56 * @unit_base;
-		height: 56 * @unit_base;
-
-		background-repeat: no-repeat;
-		background-size: 100% 100%;
-	
-		.LESSbtn-arrow-position;
-		background-image: url(images/00_winset_Back.png);
-	}
-}
-
-.ui-header {
-	.ui-btn-down-s, .ui-btn-hover-s, .ui-btn-up-s {
-		.ui-icon-header-back-btn {
-			top : @style-back-btn-arrow-top;
-		}
-	}
-}
-
-.ui-icon-header-back-btn{
-	.LESSbackground-size(48 * @unit_base, 38 * @unit_base);
-	width: 48 * @unit_base;
-	height: 38 * @unit_base;	
-}
+.ui-icon-arrow-l		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_left.png);	}
+.ui-icon-arrow-r		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_right.png);	}
+.ui-icon-arrow-u		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_opened.png);	 }
+.ui-icon-arrow-d		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_closed.png);	 }
+.ui-icon-delete			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_cancel.png);	 }
+.ui-icon-plus			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_plus.png);	 }
+.ui-icon-minus			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_minus.png);	 }
+.ui-icon-check			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_check.png);	}
+.ui-icon-gear			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_gear.png);	}
+.ui-icon-refresh		{.tizen-icon-common;    background-image: url(images/controls/button/00_button_refresh.png);	}
+.ui-icon-forward		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_send.png);	 }
+.ui-icon-back			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_back.png);	}
+.ui-icon-grid			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_grid.png);	}
+.ui-icon-star			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_star.png);	}
+.ui-icon-alert			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_warning.png);	 }
+.ui-icon-info			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_info.png);	 }
+.ui-icon-home			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_home.png);	}
+.ui-icon-search			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_search.png);	}
+.ui-icon-call			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_call.png);	 }
+.ui-icon-rename			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_rename.png);	 }
+.ui-icon-scrolltop			{.tizen-smallicon-common;	background-image: url(images/controls/button/00_icon_jump.png);	 }
+.ui-icon-scrollleft			{.tizen-smallicon-common;	background-image: url(images/controls/button/00_icon_jump_left.png);	 }
 
 .ui-icon-expandable-divider-opened {
 	width: 42 * @unit_base;
@@ -228,46 +277,60 @@
 
 /* Pressed images */
 .ui-btn-down-s .ui-icon-bg, .ui-btn-down-s.ui-tizen-icon-bg	{.tizen-icon-common;	background-image: url(images/00_btn_circle_bg_press.png); z-index:0;	 }
-.ui-btn-down-s .ui-icon-reveal			{.tizen-icon-common;	background-image: url(images/00_button_reveal_press.png);	 }
-.ui-btn-down-s .ui-icon-reveal-left		{.tizen-icon-common;	background-image: url(images/00_button_reveal_left_press.png);	 }
-.ui-btn-down-s .ui-icon-closed			{.tizen-icon-common;	background-image: url(images/00_button_expand_closed_press.png);	 }
-.ui-btn-down-s .ui-icon-opened			{.tizen-icon-common;	background-image: url(images/00_button_expand_opened_press.png);	 }
-.ui-btn-down-s .ui-icon-info			{.tizen-icon-common;	background-image: url(images/00_button_info_press.png);	 }
-.ui-btn-down-s .ui-icon-rename			{.tizen-icon-common;	background-image: url(images/00_button_rename_press.png);	 }
-.ui-btn-down-s .ui-icon-call			{.tizen-icon-common;	background-image: url(images/00_button_call_press.png);	 }
-.ui-btn-down-s .ui-icon-warning			{.tizen-icon-common;	background-image: url(images/00_button_warning_press.png);	 }
-.ui-btn-down-s .ui-icon-plus			{.tizen-icon-common;	background-image: url(images/00_button_plus_press.png);	 }
-.ui-btn-down-s .ui-icon-minus			{.tizen-icon-common;	background-image: url(images/00_button_minus_press.png);	 }
-.ui-btn-down-s .ui-icon-cancel			{.tizen-icon-common;	background-image: url(images/00_button_cancel_press.png);	 }
-.ui-btn-down-s .ui-icon-send			{.tizen-icon-common;	background-image: url(images/00_button_send_press.png);	 }
-.ui-btn-down-s .ui-icon-favorite		{.tizen-icon-common;	background-image: url(images/00_winset_icon_favorite_off.png);	 }
-.ui-btn-down-s .ui-icon-editexpand		{.tizen-icon-common;	background-image: url(images/00_button_icon_expand_press.png); top : -@height_buttonEdit/2;}
-.ui-btn-down-s .ui-icon-editminus		{.tizen-icon-common;	background-image: url(images/00_button_icon_minus_press.png); top : -@height_buttonEdit/2;}
-.ui-btn-down-s .ui-icon-editplus		{.tizen-icon-common;	background-image: url(images/00_button_icon_plus_press.png); top : -@height_buttonEdit/2;}
+.ui-btn-down-s .ui-icon-arrow-l		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_left_press.png);	}
+.ui-btn-down-s .ui-icon-arrow-r		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_right_press.png);	}
+.ui-btn-down-s .ui-icon-arrow-u		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_opened_press.png);	 }
+.ui-btn-down-s .ui-icon-arrow-d		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_closed_press.png);	 }
+.ui-btn-down-s .ui-icon-delete			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_cancel_press.png);	 }
+.ui-btn-down-s .ui-icon-plus			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_plus_press.png);	 }
+.ui-btn-down-s .ui-icon-minus			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_minus_press.png);	 }
+.ui-btn-down-s .ui-icon-check			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_check_press.png);	}
+.ui-btn-down-s .ui-icon-gear			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_gear_press.png);	}
+.ui-btn-down-s .ui-icon-refresh		{.tizen-icon-common;    background-image: url(images/controls/button/00_button_refresh_press.png);	}
+.ui-btn-down-s .ui-icon-forward		{.tizen-icon-common;	background-image: url(images/controls/button/00_button_expand_send_press.png);	 }
+.ui-btn-down-s .ui-icon-back			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_back_press.png);	}
+.ui-btn-down-s .ui-icon-grid			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_grid_press.png);	}
+.ui-btn-down-s .ui-icon-star			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_star_press.png);	}
+.ui-btn-down-s .ui-icon-alert			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_warning_press.png);	 }
+.ui-btn-down-s .ui-icon-info			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_info_press.png);	 }
+.ui-btn-down-s .ui-icon-home			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_home_press.png);	}
+.ui-btn-down-s .ui-icon-search			{.tizen-icon-common;    background-image: url(images/controls/button/00_button_search_press.png);	}
+.ui-btn-down-s .ui-icon-call			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_call_press.png);	 }
+.ui-btn-down-s .ui-icon-rename			{.tizen-icon-common;	background-image: url(images/controls/button/00_button_rename_press.png);	 }
+.ui-btn-down-s .ui-icon-scrolltop			{.tizen-icon-common;	background-image: url(images/controls/button/00_icon_jump_press.png);	 }
+.ui-btn-down-s .ui-icon-scrollleft			{.tizen-icon-common;	background-image: url(images/controls/button/00_icon_jump_left_press.png);	 }
 
 .ui-btn-inner.ui-btn-icon-only
 {
-	padding: 32 * @unit_base 32 * @unit_base;
+	padding: 16 * @unit_base 16 * @unit_base;
 }
 
 .ui-btn-icon-only .ui-btn-text
 {
-	left: -9999px;
 	display: none;
+	width: 0;
+	height: 0;
+	overflow: hidden;
 }
 
-.ui-btn-edit .ui-btn-inner.ui-btn-icon-only
-{
-	padding: @width_buttonEdit/2 @height_buttonEdit/2;
-}
-
-/* Circle Icon BG : data-iconbg = "circle" */
-.ui-btn-corner-all.ui-btn-corner-circle
-{
-	.LESSborder-radius-all(1.0em);	//wongi_1018	
-}
-	
 /* No BG button : data-iconbg = "nobg" */
+.ui-btn.ui-btn-icon-nobg
+{
+	box-shadow: none;
+}
+
+.ui-btn-corner-circle
+{
+	.LESSborder-radius-allimportant( 1em );
+}
+.ui-btn-round
+{
+	.LESSborder-radius-allimportant( 1.2em );
+}
+.ui-btn-round .ui-btn-inner
+{
+	.LESSborder-radius-allimportant( 1.2em );
+}
 .ui-btn.ui-btn-icon-nobg, .ui-btn .ui-btn-icon-nobg
 {
 	background: transparent;
@@ -280,30 +343,9 @@
 {
 	color: @color_button_EditText;
 }
-
-.ui-btn.ui-btn-edit.ui-btn-hover-s, .ui-btn.ui-btn-edit.ui-btn-up-s, .ui-btn.ui-btn-edit.ui-btn-down-s
-{	font-size: 0.6em;	}
-
-.ui-btn.ui-btn-edit.ui-btn-down-s .ui-btn-text 
-{
-	color: @color_button_EditTextPress;
-}
-
-.ui-btn.ui-btn-edit
+.ui-btn.ui-btn-edit .ui-btn-inner
 {
 	.LESSbutton_edit_style;
-	position: absolute;
-	top: 0 * @unit_base;
-	margin-top: 0 * @unit_base;
 }
 
-.ui-btn.ui-btn-edit.ui-btn-down-s
-{
-        .LESSbutton_editpress_style;
-}
-
-.ui-btn-box-s
-{
-        .LESSbutton_box_style;
-}
 

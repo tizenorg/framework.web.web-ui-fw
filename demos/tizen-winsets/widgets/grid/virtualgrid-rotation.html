@@ -1,6 +1,6 @@
-<div id="virtualgrid_rotation_page" data-role="page" class="virtualgrid_rotation_demo_page">
+<div id="virtualgrid_rotation_page" data-role="page" class="virtualgrid_grid_demo">
 	<div id="normal" data-role="header" data-position="fixed">
-		<h1>Virtual Grid - Rotation</h1>
+		<h1>Virtual grid - rotation</h1>
 	</div>
 	<div data-role="content" data-scroll="none">
 		<script id="tizen-demo-namecard" type="text/x-jquery-tmpl">
@@ -13,23 +13,23 @@
 			</div>
 			</div>
 		</script>
-		<div id="virtualgrid-demo" data-role="virtualgrid" data-itemcount="3" data-rotation="true" data-template="tizen-demo-namecard">
+		<div id="virtualgrid-demo" data-role="virtualgrid" data-rotation="true" data-template="tizen-demo-namecard">
 		</div>
 	</div>
 	<script>
-		$( ".virtualgrid_rotation_demo_page" ).one( "pagecreate", function() {
-			$.getScript( "./js/virtualgrid-db-demo.js", function( data, textStatus ) {
-				$( ".virtualgrid_demo_page" ).die();
-				$( ":jqmData(role='virtualgrid')" ).virtualgrid( "create", {
-					itemData: function ( idx ) {
-						return JSON_DATA[ idx ];
-					},
-					numItemData: JSON_DATA.length,
-					cacheItemData: function ( minIdx, maxIdx ) {
-					}
-				});
-				$( ".virtualgrid_rotation_demo_page" ).unbind("pagecreate");
-			});
+	$( "#virtualgrid_rotation_page" ).on( "pageshow" , function() {
+		$( window ).on( "tizenhwkey", function ( ev ) {
+			if ( ev.originalEvent.keyName === "back" ) {
+				//bind callbacks to the H/W keys
+				window.history.back();
+			}
 		});
+	});
+	$( "#virtualgrid_rotation_page" ).on( "pagebeforehide" , function() {
+		//unbind callbacks to the H/W keys
+		$( window ).off( "tizenhwkey" );
+	});
 	</script>
+	<link rel="stylesheet" href="namecard.css" />
+	<script type="text/javascript" src="virtualgrid.js"></script>
 </div>

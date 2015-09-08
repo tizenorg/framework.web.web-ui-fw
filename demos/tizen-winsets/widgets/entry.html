@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-<div data-role="page" class="type-interior" data-add-back-btn="true">
+<div data-role="page" class="type-interior" id="entry-demo">
 	<style type="text/css">
 	label.ui-input-text {
-		width: 20%
+		width: 30%
 	}
 	</style>
 	<div data-role="header" >
@@ -14,6 +14,8 @@
 		<div data-role="fieldcontain">
 			<label for="name">Text Input:</label>
 			<input type="text" name="name" id="name" value=""  />
+		</div>
+		<div data-role="fieldcontain">
 			<label for="textarea">Textarea:</label>
 			<textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
 		</div>
@@ -23,11 +25,11 @@
 		</div>
 		<div data-role="fieldcontain">
 			<label for="number">Number:</label>
-			<input type="number" name="number" id="number" value="" />
+			<input type="number" placeholder="number here" name="number" id="number" value="" min="0" max="100"/>
 		</div>
 		<div data-role="fieldcontain">
 			<label for="number-pattern">Number + pattern:</label>
-			<input type="number" name="number" pattern="[0-9]*" id="number-pattern" value="" placeholder="Pattern attribute [0-9]* for a numeric keypad" />
+			<input type="number" name="number-pattern" pattern="[0-9]*" id="number-pattern" style="width:90%" value="" placeholder="Pattern attribute [0-9]* for a numeric keypad" min="0" max="100"/>
 		</div>
 		<div data-role="fieldcontain">
 			<label for="email">Email:</label>
@@ -42,34 +44,24 @@
 			<input type="tel" name="tel" id="tel" value="" />
 		</div>
 		<div data-role="fieldcontain">
-			<label for="time">Time:</label>
-			<input type="time" name="time" id="time" value="" />
-		</div>
-		<div data-role="fieldcontain">
-			<label for="date">Date:</label>
-			<input type="date" name="date" id="date" value="" />
-		</div>
-		<div data-role="fieldcontain">
-			<label for="month">Month:</label>
-			<input type="month" name="month" id="month" value="" />
-		</div>
-		<div data-role="fieldcontain">
-			<label for="week">Week:</label>
-			<input type="week" name="week" id="week" value="" />
-		</div>
-		<div data-role="fieldcontain">
-			<label for="datetime">Datetime:</label>
-			<input type="datetime" name="datetime" id="datetime" value="" />
-		</div>
-		<div data-role="fieldcontain">
-			<label for="datetime-l">Datetime local:</label>
-			<input type="datetime-local" name="datetime-l" id="datetime-l" value="" />
-		</div>
-		<div data-role="fieldcontain">
 			<label for="color">Color:</label>
 			<input type="color" name="color" id="color" value="black" />
 		</div>
 	</div><!-- /content -->
+	<script>
+	$( "#entry-demo" ).on( "pageshow" , function() {
+		$( window ).on( "tizenhwkey", function ( ev ) {
+			if ( ev.originalEvent.keyName === "back" ) {
+				//bind callbacks to the H/W keys
+				window.history.back();
+			}
+		});
+	});
+	$( "#entry-demo" ).on( "pagebeforehide" , function() {
+		//unbind callbacks to the H/W keys
+		$( window ).off( "tizenhwkey" );
+	});
+	</script>
 </div><!-- /page -->
 </html>
 

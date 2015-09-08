@@ -1,46 +1,97 @@
-<!DOCTYPE html> 
-<html> 
+<!DOCTYPE html>
+<html>
 	<head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<link rel="stylesheet"  href="themes/default/" />  
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet"  href="themes/default/" />
 	<script src="js/jquery.js"></script>
 	<script src="js/"></script>
 	<script src="theme.js"></script>
 	<script src="js/jquery.mobile.forms.button.extension.js"></script>
-	</head> 
-<body> 
+	</head>
+<body>
 
-<div data-role="page" id="ButtonDemo" data-add-back-btn="true" >
+<div data-role="page" id="ButtonDemo">
 	<div data-role="header" data-position="fixed">
 		<h1>Buttons</h1>
 	</div>
 	<div data-role="content">
 		<ul data-role = "listview">
-			<li><a href="buttonNolist.html">Buttons Pages(not in list) </a></li>
-			<li class="ui-li-1line-btn1">List item 1<div data-role="button" data-inline="true">Text Button TesT</div></li>
-			<li class="ui-li-1line-btn1">List item 2<div data-role="button" data-inline="true" data-icon="reveal">Call Icon</div></li>
-			<li class="ui-li-1line-btn1">List item 3<div data-role="button" data-inline="true" data-icon="reveal">Longer Call Icon</div></li>
+			<li data-role="list-divider">Basic buttons</li>
+			<li class="ui-li-1line-btn1">List item 1<div data-role="button" data-inline="true">Text Button Test</div></li>
+			<li class="ui-li-1line-btn1">List item 2<div data-role="button" data-inline="true" data-icon="arrow-r">Call Icon</div></li>
+			<li class="ui-li-1line-btn1">List item 3<div data-role="button" data-inline="true" data-icon="arrow-r">Longer Call Icon</div></li>
 			<li class="ui-li-1line-btn1">List item 4<div data-role="button" data-inline="true" data-icon="call" data-iconpos="right">Icon Text</div></li>
-			<li class="ui-li-1line-btn1">List item 5<div data-role="button" data-inline="true" data-icon="reveal"></div></li>
-			<li class="ui-li-1line-btn2">List item 6<div  data-role="button" data-inline="true" data-icon="plus" data-style="circle" class="ui-li-1line-btn2"></div></li>
-			<li class="ui-li-1line-btn2">List item 7<div  data-role="button" data-inline="true" data-icon="minus" data-style="circle"></div></li>
-			<li class="ui-li-1line-btn2">List item 8<div  data-role="button" data-inline="true" data-icon="send" data-style="circle"></div></li>
-			<li class="ui-li-1line-btn2">List item 9<div  data-role="button" data-inline="true" data-icon="call" data-style="circle"></div></li>
-			<li class="ui-li-1line-btn2">List item 10<div  data-role="button" data-inline="true" data-icon="favorite" data-style="nobg"></div></li>
-			<li>List item 11<div  data-role="button" data-inline="true" data-icon="editminus" data-style="edit" 
-				style="position: absolute; top: 0px; margin-top: 0px; left:70%"></div></li>
-			<li>List item 12<div  data-role="button" data-inline="true" data-style="edit" 
-				style="position: absolute; top: 0px; margin-top: 0px; left:70%">Delete</div></li>
-			<li class="ui-li-1line-btn1">Custom <div data-role="button" data-inline="true" data-icon="test">T</div></li>
-                        <li class="ui-li-1line-btn1">Custom Width <div data-role="button" style="width:300px"  data-inline="true" data-icon="test">Test</div></li>
-                        <li class="ui-li-1line-btn1">Custom Width, Height <div data-role="button" style="width:300px;height:40px" data-icon="test" >Test</div> </li>
-                        <li class="ui-li-1line-btn1">Custom Width, Height, Right <div data-role="button" style="width:300px;height:40px" data-iconpos="right" data-icon="test" >Test</div> </li>
-                        <li class="ui-li-1line-btn1">Circle-Custom <div data-role="button" data-inline="true"  data-icon="test2" data-style="circle" ></div> </li>
-                        <li class="ui-li-1line-btn1">Custom Top <div data-role="button" data-iconpos="top" data-icon="test" >tEST</div> </li>
-                        <li class="ui-li-1line-btn1">Custom Bottom <div data-role="button" data-iconpos="bottom" data-icon="test">Test</div></li>
+			<li class="ui-li-1line-btn1">List item 5<div data-role="button" data-inline="true"  data-style="circle">data-style, circle</div></li>
+			<li data-role="list-divider">Only icon buttons for tizen</li>
+			<li class="ui-li-1line-btn1">data-icon = "call" <div data-role="button" data-inline="true" data-icon="call"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "rename" <div data-role="button" data-inline="true" data-icon="rename"></div></li>
+			<li data-role="list-divider">Only icon buttons for JQM style</li>
+			<li class="ui-li-1line-btn1">data-icon = "arrow-l" <div data-role="button" data-inline="true" data-icon="arrow-l"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "arrow-r" <div data-role="button" data-inline="true" data-icon="arrow-r"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "arrow-u" <div data-role="button" data-inline="true" data-icon="arrow-u"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "arrow-d" <div data-role="button" data-inline="true" data-icon="arrow-d"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "delete" <div data-role="button" data-inline="true" data-icon="delete"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "plus" <div data-role="button" data-inline="true" data-icon="plus"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "check" <div data-role="button" data-inline="true" data-icon="check"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "gear" <div data-role="button" data-inline="true" data-icon="gear"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "refresh" <div data-role="button" data-inline="true" data-icon="refresh"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "forward" <div data-role="button" data-inline="true" data-icon="forward"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "back" <div data-role="button" data-inline="true" data-icon="back"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "grid" <div data-role="button" data-inline="true" data-icon="grid"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "star" <div data-role="button" data-inline="true" data-icon="star"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "info" <div data-role="button" data-inline="true" data-icon="info"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "home" <div data-role="button" data-inline="true" data-icon="home"></div></li>
+			<li class="ui-li-1line-btn1">data-icon = "search" <div data-role="button" data-inline="true" data-icon="search"></div></li>
+
+			<li data-role="list-divider">Buttons with data-style</li>
+			<li class="ui-li-1line-btn2">List item<div  data-role="button" data-inline="true" data-icon="plus" data-style="circle"></div></li>
+			<li class="ui-li-1line-btn2">List item<div  data-role="button" data-inline="true" data-icon="forward" data-style="circle"></div></li>
+			<li class="ui-li-1line-btn2">List item<div  data-role="button" data-inline="true" data-icon="call" data-style="circle"></div></li>
+			<li class="ui-li-1line-btn2">List item<div  data-role="button" data-inline="true" data-icon="star" data-style="nobg"></div></li>
+			<li class="ui-li-1line-btn2">List item<div  data-role="button" data-inline="true" data-style="round">Test</div></li>
+			<li class="ui-li-1line-btn2">List item<div  data-role="button" data-inline="true" data-icon="star" data-style="box"></div></li>
+			<li class="ui-li-1line-btn2">List item<div  data-role="button" data-inline="true" data-icon="scrolltop" data-style="box"></div></li>
+			<li class="ui-li-1line-btn2">List item<div  data-role="button" data-inline="true" data-icon="scrollleft" data-style="box"></div></li>
+
+			<li data-role="list-divider">Warning buttons - alert and minus</li>
+			<li class="ui-li-1line-btn3">data-icon = "alert", circle <div data-role="button" data-inline="true" data-icon="alert" data-style="circle"></div></li>
+			<li class="ui-li-1line-btn3">data-icon = "minus", circle <div  data-role="button" data-inline="true" data-icon="minus" data-style="circle"></div></li>
+			<li class="ui-li-1line-btn3">data-icon = "alert", box <div data-role="button" data-inline="true" data-icon="alert" data-style="box"></div></li>
+			<li class="ui-li-1line-btn3">data-icon = "minus", box <div data-role="button" data-inline="true" data-icon="minus" data-style="box"></div></li>
+
+			<li data-role="list-divider">Round button test</li>
+			<li class="ui-li-1line-btn4">
+				Button test
+				<div data-role="button" data-inline="true" data-icon="call" data-corners="false" data-style="round" data-iconpos="right">Text</div>
+			</li>
+			<li class="ui-li-1line-btn4">
+				Button test
+				<div data-role="button" data-inline="true" data-icon="call" data-corners="true" data-style="box" data-iconpos="right">Text</div>
+			</li>
+			<li class="ui-li-1line-btn4">
+				Button test
+				<div data-role="button" data-inline="true" data-icon="call" data-corners="false" data-style="box" data-iconpos="right">Text</div>
+			</li>
+
+			<li data-role="list-divider">Custom buttons</li>
+			<li><a href="buttonNolist.html">Buttons Pages(not in list) </a></li>
 		</ul>
 	</div>
+	<script>
+	$( "#ButtonDemo" ).on( "pageshow" , function() {
+		$( window ).on( "tizenhwkey", function ( ev ) {
+			if ( ev.originalEvent.keyName === "back" ) {
+				//bind callbacks to the H/W keys
+				window.history.back();
+			}
+		});
+	});
+	$( "#ButtonDemo" ).on( "pagebeforehide" , function() {
+		//unbind callbacks to the H/W keys
+		$( window ).off( "tizenhwkey" );
+	});
+	</script>
 </div>
 
 </body>

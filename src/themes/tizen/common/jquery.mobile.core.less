@@ -11,6 +11,10 @@
 
 /* some unsets - more probably needed */
 .ui-mobile, .ui-mobile body { height: 100%; font-size: @font_size_default; }
+@media all and (max-width:359px) {
+	.ui-mobile, .ui-mobile body { font-size: floor(@font_size_default*320/360); }
+}
+
 .ui-mobile fieldset, .ui-page { padding: 0; margin: 0; }
 .ui-mobile a img, .ui-mobile fieldset { border: 0; }
 
@@ -18,7 +22,7 @@
 .ui-mobile-viewport {  margin: 0; overflow-x: hidden; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
 /* "page" containers - full-screen views, one should always be in view post-pageload */
-.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page { top: 0; left: 0; width: 100%; min-height: 100%; position: absolute; display: none; border: 0; } 
+.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page { top: 0; left: 0; width: 100%; position: absolute; display: none; border: 0; }
 .ui-mobile .ui-page-active { display: block; overflow: visible; }
 
 /* on ios4, setting focus on the page element causes flashing during transitions when there is an outline, so we turn off outlines */
@@ -43,7 +47,7 @@
 .ui-page.ui-mobile-touch-overflow,
 .ui-page.ui-mobile-touch-overflow * {
 	/* some level of transform keeps elements from blinking out of visibility on iOS */
-	-webkit-transform: rotateY(0);
+	.LESStransform(rotateY(0));
 }
 .ui-page.ui-mobile-pre-transition {
 	display: block;
@@ -56,6 +60,8 @@
 .ui-loader { display: none; position: absolute; opacity: .85; z-index: @z_base_loader; left: 50%; width: 200px; margin-left: -130px; margin-top: -35px; padding: 10px 30px; }
 .ui-loader h1 { font-size: 32 * @unit_base; text-align: center; }
 .ui-loader .ui-icon { position: static; display: block; opacity: .9; margin: 0 auto; width: 35px; height: 35px; background-color: transparent; }
+
+.ui-blocker { width:100%; height:100%; z-index:@z_base_maximum; }
 
 /*fouc*/
 .ui-mobile-rendering > * { visibility: hidden; }
@@ -82,7 +88,7 @@
 .ui-header .ui-title, .ui-footer .ui-title { min-height: 1.1em; text-align: center; font-size: 16px; display: block; margin: .6em 90px .8em;  padding: 0;  text-overflow: ellipsis; overflow: hidden; white-space: nowrap; outline: 0 !important; }
 
 /*content area*/
-.ui-content { border-width: 0; overflow: visible; overflow-x: hidden; padding: 15px; }
+.ui-content { border-width: 0; overflow: visible; overflow-x: hidden; padding-left : 15 * @unit_base; padding-right : 15 * @unit_base; }
 .ui-page-fullscreen .ui-content { padding:0; }
 
 /* native fixed headers and footers */
@@ -131,9 +137,4 @@
 
 /* non-js content hiding */
 .ui-nojs { position: absolute; left: -9999px; }
-
-/* text-ellipsis: width must not be 'auto' */
-.ui-text-ellipsis {
-	.LESStext-ellipsis();
-}
 

@@ -85,6 +85,13 @@ $(document).ready(function() {
 		this.config.autostart = false;
 	};
 
+	QUnit.done = function( details ) {
+		setCookie( "TizenP", details.passed );
+		setCookie( "TizenF", details.failed );
+		setCookie( "TizenR", details.runtime );
+		setCookie( "TizenT", details.total );
+		location.href = "../unit-tests-runner/result.php";
+	}
 	// get the test directories
 	new Runner().exec(TESTS);
 });

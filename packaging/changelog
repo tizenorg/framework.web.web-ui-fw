@@ -1,0 +1,2477 @@
+%changelog
+* Fri Aug 05 2015 Hyeoncheol Choi <hc7.choi@samsung.com> 0.10.29-6
+	- delete(wearable): delete expandableHeader
+
+* Fri Jul 24 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.29-5
+	- feat(etc): License file has been changed in SDK demos
+	- fix(all): License changed to Flora
+	- refactor(wearable): revert changes about patent issue.
+
+* Fri Jul 24 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.29-4
+	- fix(wearable): remove transition due to patent issue
+	- feat(wearable): modify selector style
+	- refactor(wearable): disable snap list in rectangular demo
+	- refactor(wearable): remove label in thumbnail list
+	- fix(wearable): fix Selector item index issue
+
+* Thu Jul 23 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.29-3
+	- refactor(wearable): remove circular index scrollbar (fast scroll)
+
+* Fri Jul 17 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.29-2
+	- fix(wearable): add enable/disable to Selector
+	- fix(wearable): modify Selector with drawer sample UX
+	- refactor(demo): rename indicator sample from bar to linear
+	- fix(wearable): add animation-fill-mode in page transition
+	- refactor(wearable): add class automatically in section changer
+	- refactor(wearable): add refresh logic in enable method in snap list
+	- refactor(wearable): update color code xml for wc1
+	- fix(wearable): modify snap list animation when using rotary
+	- fix(wearable): modify snap list for using in section changer
+	- fix(wearable): fix page, popup transition animation type
+	- fix(wearable): fix Selector bouncing effect issue
+
+* Mon Jul 13 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.29-1
+	- fix(mobile2.3.1): add destroy method in slider
+	- fix(wearable): modify base degree of items and indicator
+	- fix(wearable): modify custom indicator sample of Selector
+	- refactor(wearable): modify sensitivity for drag event
+
+* Wed Jul 01 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.29
+	- fix(wearable): fix moreoptions handler width and position(P150625-07282)
+	- feat(wearable): add circular index scrollbar component
+	- fix(wearable): modify config.xml in UIComponent
+
+* Mon Jun 22 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.28
+	- feat(wearble): add Selector component
+	- fix(wearable): fix full processing demo sample
+
+* Wed Jun 17 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.27
+	- fix(wearable): fix refresh snaplistview issue
+	- refactor(core): remove hashChangeHandler
+
+* Tue Jun 16 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.26
+	- refactor(wearable): add circular indicator option
+	- fix(wearable): remove debug code.
+
+* Mon Jun 08 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.25
+	- fix(wearable): fixed bug of SnapListMarqueeStyle Helper when using rotary scroll. [P150605-06742]
+	- fix(demos): change timing of showing processing widget [P150605-06759]
+	- fix(wearable): fixed display scroll end effect when page header expanded.
+	- etc(sample): rename wearable demo in config.xml
+
+* Wed May 27 2015 Hyeoncheol Choi <hc7.choi@samsung.com> 0.10.24
+	- fix(wearable): fix rotary event handling in select mode
+
+* Wed May 20 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.23
+	- feat(wearable): fix expandable header issue (P150519-05888)
+	- refactor(wearable): change images in processing
+	- fix(wearable): fixed undefined variable bug in snap list style helper.
+	- integrate(common): integrate Drawer component
+	- fix(wearable): fix incorrect image path in style.css
+
+* Wed May 06 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.22
+	- fix(wearable): fix app css loading issues.
+
+* Thu Apr 30 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.21
+	- refactor(wearable): fix css of rotary event sample
+	- fix(wearble): fix popup footer-button style
+	- fix(wearable): fix popup footer margin issue (P150430-00436)
+	- refactor(wearable): fix vertical size to remove scrollbar
+	- fix(wearable): fix the page event release logic.
+	- fix(wearable): adjust padding of button in marquee sample
+
+* Wed Apr 29 2015 Junyoung Park <jy-.park@samsung.com> 0.10.20
+	- fix(wearable): add viewswitcher dim style in bottom button
+	- fix(core): remodeling ViewSwitcher component code architecture
+	- feat(wearable): add warning screen in indexScrollbar,rotaryevent page
+	- fix(wearable): modify padding value in lists
+	- refactor(wearable): hide scrollbar on full processing page
+	- fix(wearable): modify border color for normal list
+	- fix(wearable): fix UIComponents warning for SDK
+
+* Tue Apr 28 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.19
+	- refactor(wearable): fix image path in toast popup
+	- fix(wearable): fix template sample app warning for SDK
+	- fix(mobile): fix MobileUIComponents warning for SDK 2.3.1
+	- fix(wearable): call unbind/bindEvents at snaplist refresh()
+	- fix(wearable): fixed to footer was showing issue when page transition (P150424-02263)
+	- fix(wearable): adjust label size to fit li in round UI
+	- fix(wearable): remove unecessary class on index.html(template)
+	- fix(core): clean up animatino event listener on changing page
+	- refactor(wearable) : add basic List style (not include snap-list)
+	- fix(wearable): fix snapListview scrollToPosition
+	- refactor(wearable) : reorganize wearable sample directory
+
+* Wed Apr 22 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.18
+	- fix(wearable): remove circularIndexScrollbar
+
+* Tue Apr 21 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.17
+	- fix(wearable): modify detect ellipsisText in marquee
+	- fix(wearable): fix popup transition issue(P150417-06227)
+	- fix(wearable): fix overlapped sub text in thumbnail list
+	- fix(wearable): fix progress layout issue
+	- feat(wearable): add popup toast(graphic style)
+	- fix(wearable): fix swipelist position issue
+	- refactor(wearable) : modify position of small progress
+	- fix(wearable): fixed page structure about display flex.
+
+* Mon Apr 20 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.16
+	- fix(wearable): fix expandableHeader expand logic
+	- refactor(wearable): add marquee on header helper in demo
+	- fix(mobile): fix selectall list script code
+	- fix(wearable): remove scrollbar on popup
+	- fix(demos): fix bug release event callback in animation list.
+	- fix(wearable): fix expandableHeader expand issue
+	- fix(mobile): modify page exit statement in sample
+	- fix(wearable): remove "ui-state-disabled" style in snapListView
+	- fix(wearable): fix previous page scroll position issue
+	- refactor(wearable): fix list animation script
+	- refactor(wearable): remove list basic animation and add sample separately.
+	- refactor(wearable): refactor expandableHeader
+	- refactor(wearable): fix page component
+	- feat(wearable): apply scale VI of snaplist.
+	- fix(mobile): remove decorationline in textarea (TMWC-728)
+	- fix(wearable): drawer handler size fixed
+	- fix(wearable): modify required_version in config.xml
+	- refactor(wearable): add marquee list demo sample
+	- refactor(wearable): fix bg and border of toast popup
+	- refactor(wearable): remove button list
+	- feat(wearable): fix config.xml error
+	- refactor(wearable): modify app css and fix bugs
+	- fix(wearable): remove expandableHeade
+	- feat(wearable): add ui-header-small style
+	- feat(core): add preventDefault check logic on drag
+	- fix(wearable): add snaplist style
+	- refactor(wearable): fix generating and destroying timing in swipe list
+	- refactor(wearable): add virtual list sample
+
+* Wed Apr 15 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.15
+	- fix(wearable): add removeEventHandler of moreoptions sample js
+	- fix(wearable): Viewswitcher Vertical gesture threshold fixed
+	- refactor(wearable): remove unnecessary sample page id
+	- fix(demo): modify required version in config.xml
+
+* Wed Apr 15 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.14
+	- fix(mobile): remove marqueestyle list sample
+	- feat(wearable): apply ViewSwitcher to list selectmode
+	- fix(mobile): modify navigationbar issue (TMWC-658)
+	- feat(wearable): apply viewSwitcher to multiple bottom button
+	- fix(wearable): fixed bug that it doesn't work list item link.
+	- refactor(wearable): update main page of demo sample
+	- feat(wearable): refactor bottom button and side button
+	- fix(wearable): reduce composited layers for page.
+	- fix(wearable): modify swipelist layout issue
+	- fix(mobile): modify listview margin/padding in ctxpopup
+	- refactor(wearable): fix checkbox, radio style for WC1
+	- refactor(wearable): change demo page structure
+	- refactor(wearable): fix toggle switch style for WC1
+	- refactor(wearable): apply the latest xml files for WC1
+	- fix(wearable): fix checkbox sample lower case text
+
+* Thu Apr 09 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.13
+	- fix(demos): modify config.xml in demo sample/template
+
+* Wed Apr 08 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.12
+	- feat(common): add ViewSwitcher component
+	- refactor(wearable): change position of list highlight
+	- feat(common): delete build requirement of spec
+	- fix(mobile) demos: UIComponents - Text overlap with toggle button
+	- fix(wearable): fix popup style for tizen 2.3.1
+	- refactor(wearable): apply additional list style for wc1
+	- fix(wearable): change max page number in page indicator demo.
+	- refactor(wearable): apply VI for indicator
+	- fix(mobile): ToggleSwitch few code fixes
+	- fix(wearable): set overflow hidden on ui-page(P150407-05351)
+	- fix(wearable): fix bottomButton padding for tizen 2.3.1
+	- refactor(wearable) : remove unusable images
+	- fix(mobile): set active Tab using tabbar option
+	- fix(mobile) demos: UIComponents - context popup example fix
+	- fix(mobile): add min-height value to list static mode(NABI-2071)
+	- fix(mobile): fix tickernoti sample page issue(TMWC-413)
+	- fix(mobile): fix button default style and flex prefix(TMWC-421)
+
+* Fri Apr 03 2015 Hagun Kim <hagun.kim@samsung.com> 0.10.11
+	- integrate(common): integrate Drawer component
+	- refactor(wearable): remove virtual list from demo app
+	- refactor(wearable): fix snaplist create and destroy timing
+	- refactor(wearable): fix app css style for divider list
+	- fix(wearable): remove list section on section changer page.
+	- refactor(wearable): fix app css style for thumbnail list
+	- fix(mobile): fix incorrect style css in mobile sample(TMWC-433)
+	- fix(wearable): modify incorrect color code value
+	- fix(wearable): fix circular scrollbar attribute remove issue
+	- etc(tool): update TAU release script(2.3.1SDK version)
+	- fix(core): fix activeClass remove issue in anchorHighlight
+	- feat(wearable) : apply latest list style of WC1
+	- refactor(wearable): fix position of checkbox and radio in demo app
+	- refactor(wearable): remove swipe list sample and fix demo title.
+	- feat(wearable): modify animation of  page transition
+	- feat(wearable): apply popup style for tizen 2.3.1
+	- refactor(wearable): adjust size of page indicator
+	- feat(wearable): apply bottom button style for tizen 2.3.1
+	- refactor(wearable): fix title style for wc1
+	- refactor(wearable): fix body text style for wc1
+	- feat(wearable) apply marquee style for tizen 2.3.1
+	- refactor(wearable): apply toggle switch style for wc1
+	- feat(wearable): processing animation
+	- fix(mobile): UIComponent select all list issue fix
+	- refactor(wearable): apply checkbox and radio button style for wc1
+	- fix(wearable): fix typo in wearable page widget
+
+* Thu Apr 02 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.10
+	- feat(mobile): fix page back method in TAU mobile Templates
+	- refector(tool) fix sample app paths for changing shape mideaquery.
+	- fix(mobile): modify page back(hwback) method
+	- fix(mobile) less: back button doesn't work when a popup is open
+	- fix(mobile): make overflow style of page to hidden
+	- refactor(wearable): remove vw masking and apply image masking
+
+* Wed Apr 01 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.9
+	- feat(wearable): add scroller on page and apply basic style
+	- refactor(wearable): apply new xml files for wc1
+	- fix(wearable): modify toast popup border issue
+	- fix(mobile): fix navigationbar create&destroy error
+	- refactor(wearable): add runOnlyOnEllipsisText option in Marquee
+	- feat(mobile): add custom css style for UIComonents
+	- fix(mobile): fix template(Tizen MultiPage)
+	- feat(wearble): integrate/rename wearable Sample apps
+
+* Thu Mar 26 2015 Junhyoen Lee <juneh.lee@samsung.com> 0.10.8
+	- etc(tool): Device details and results separated per device
+	- etc(tool): Simplified input test application
+	- etc(tool): Running tests on many devices at once
+	- etc(tool): Performance result output to file
+	- etc(tool): Real device performance checks
+	- etc(tool): TAU performance automatic check with Phantom
+	- fix(tv): fix position of arrow in tooltip in button
+	- refactor(mobile): add aplication for layouts
+	- refactor(mobile): In demo app reorganize exaples of layouts
+	- prototype: Layout widgets - Linear
+	- feat(all): Relative layout
+	- fix(all): _layout, _setLayout change and removed removeRule
+	- feat(mobile): add structure for layouts
+	- prototype: Layout widgets
+	- feature(core, mobile): Enable build wigdets from JS code
+	- fix(wearable): modify popup border draw method
+	- feature(tv): Popover - Prevent events on elements
+	- fix(tv): Fix opening and closing contextual menu in DemoTV app
+	- fix(tv): fix problem with keyboard for input
+	- fix(tv): Fix navigation in SelectMenu
+	- fix(core): modify class adding when reverse page
+	- fix(tv): Textinput - fixed problem with pin input size
+	- fix(tv): change style for input and searchbar
+	- fix(core): fix restore content style bug when page has not content.
+	- refector(wearable): created wearable page widget and popup widget for enable page scroll option.
+	- fix(tv): Fix focus animation on buttons
+	- refactor(common): apply jenkins build-bot
+	- fix(tv): Fixed exception inside SearchBar
+	- fix(tv): fix size of "pin button" in drawer
+	- fix(tv): fix size of buttons in drawer
+
+* Wed Mar 11 2015 Junhyoen Lee <juneh.lee@samsung.com> 0.10.7
+	- refactor(wearable): call scrollend handler with setTimeout when expandableHeader is collapsed. (NABI-2040)
+	- refactor(wearable): remove no subtext list item at Subtext List (P150305-02536)
+	- fix(wearable) : context popup size fix
+	- refactor(wearable): remove integration sample app.
+
+* Wed Mar 04 2015 Junhyoen Lee <juneh.lee@samsung.com> 0.10.6
+	- refactor(wearable): add enable/disable method in SnapListview
+	- fix(wearable): add init state of drawer
+	- feat(wearable): add 'headerbeforeexpand' and 'headerbeforecollapse' events
+	- refactor(wearable): add selector option in SnapListview
+	- refector(wearable): change li-divider class to ui-listview-divider class
+	- refactor(wearable): fix typo in contorls checkbox
+	- refactor(wearable): fix progress title short
+	- refactor(wearable): add <a> tag to list_subtext items.(P150226-05031)
+	- refactor(wearable): fix processing and circular index scroll bar size
+	- refactor(wearable): list - subtext style change
+	- refactor(wearable): fix circle progress sample
+	- fix(wearable): remove bottomMarginTop claculation logic in page
+	- fix(wearable): add _clearContent method in page(NABI-1995)
+
+* Thu Feb 26 2015 Junhyoen Lee <juneh.lee@samsung.com> 0.10.5
+	- fix(wearable): fix SCROLL_END_TIME_THRESHOLD in SnapListview
+	- refactor(wearable): fix list item anchor wrong padding-right
+	- fix(werable): fix marquee default delay time
+	- fix(wearable): fix marquee list style demo.
+	- fix(wearable): fix index move issue in circularIndexScrollbar sample(NABI-2000)
+	- feat(wearable): add showDelay option to circularIndexScrollbar
+	- fix(wearable): fix SnapListview init logic
+	- fix(wearable): fire scrollstart/scrollend event from scroller to list element in SnapListview
+	- fix(wearable): fix marguee default delay time unit and fix sample app
+	- refactor(wearable): fix select mode list sample
+	- feat(wearable): set default tizen-circular-scrollbar attribute
+	- refactor(wearable): seperate SnapListStyle helper from SnapListMarqueeStyle helper
+	- refactor(wearable): fix button with icon style for rect. ui
+	- refactor(wearable): fix select mode list sample
+	- refactor(wearable): rollback option popup style
+	- feat(wearable): add rotary event sample
+	- feat(circle): add list button style
+	- feat(wearable): fix swipelist position issue and add swipelist sample in circular sample app
+	- feat(circle): add new UX of popup
+	- fix(wearable): fix thumbnail positoin in list
+	- fix(wearable): fix undefined variable issue in circularindexscrollbar sample - move scroller variable to global
+
+* Mon Feb 23 2015 Junhyoen Lee <juneh.lee@samsung.com> 0.10.4
+	- fix(wearable): fix circularIndexScrollbar indicator hide issue (sample)
+	- refactor(wearable): fix header and footer sample and remove ui-scroll-on
+
+* Mon Feb 23 2015 Junhyoen Lee <juneh.lee@samsung.com> 0.10.3
+	- fix(circle): delete header-small style of circle profile
+	- refactor(wearable): add integrated samples
+	- feat(circle): add bottomButton style of footer button
+	- fix(mobile): fix 'Select All' sample page(NABI-1988)
+	- fix(wearable): fix footer button icon position issue(NABI-1992)
+	- feat(wearable): add moreoptions integration sample page
+	- fix(wearable): fix wrong image path of popup style.css
+	- fix(wearable): remove unnecessary style in marquee
+	- fix(wearable): fix position issue of circularIndexScrollbar Sample
+	- feat(circle): add thumbnail sample page
+	- feat(core): add getScrollableParent method in selectors util
+	- fix(wearable): fix SectionChanger scroll issue
+	- refactor(wearable): fix title fade out style
+	- refactor(wearable): remove ui-scroll-on class in sample page
+	- fix(wearable): add drawer, sectionchanger default height
+	- fix(wearable): remove small header style.
+	- fix(wearable): fix null exception when snap list destory.
+	- fix(wearable): select list fix
+	- fix(wearable): li:lastChild border delete
+	- fix(wearable): small-progress scroll fix
+	- fix(wearable): fixed drawer bugs.
+	- refector(wearable): refectoring indexScrollBar for converting circular and square shape.
+	- fix(wearable): fix radio spelling.
+	- fix(circle): fix toast popup position and layout
+	- fix(circle): change header background color
+	- fix(circle): fixed popup button background color
+	- feat(circle): changeable xml files changed.
+	- fix(wearable): fix indexscrollbar scroll issue
+	- refactor(wearble): delete empty item
+	- refactor(wearable): fix circular processing
+	- fix(wearable): change jenkins server IP in jenkins build script
+	- fix(circle): fix header title padding left
+	- fix(circle): fix the progress less file
+	- refactor(wearable): fix large toggle switch class name
+	- feat(wearable): add Integration Sample App
+	- refactor(wearable): controls in Sample App scroll fix
+	- fix(wearable): modify indexscrollbar sample app for support square and circle shape
+	- refactor(wearable) fix progress/processing style
+
+* Fri Feb 06 2015 Junhyoen Lee <juneh.lee@samsung.com> 0.10.2
+	- refactor(wearable): apply helper config in CircularTemplate sample app
+	- fix(wearable): fix build warning on wearable sdk
+	- fix(core): change support.circle to support.shape.circle
+
+* Thu Feb 05 2015 Junhyoen Lee <juneh.lee@samsung.com> 0.10.1
+	- fix(wearable): fix Marquee sample issue
+	- fix(wearable): fix drawer sample app style
+	- refactor(wearable): change helper name
+	- fix(wearable): fix circleProgressbar position issue
+	- fix(wearable): fixed drawer bug when it is used with page scroll.
+	- refactor(wearable): apply default config(SnapList, ExpandableHeader) on circle sample.
+	- fix(wearable): clean marquee style when be triggered scroll event.
+	- fix(wearable): fix finding scrollable parent logic in SnapListview.
+	- fix(wearable): fix scroll issue in circularIndexScrollbar sample app
+	- refactor(wearable): apply "rotarydetent" event handler on SanpList to scroll list
+	- refactor(wearable): apply enablePopupScroll option and fix style
+	- feat(wearable): add fillContent option to SectionChanger widget
+	- refactor(wearable): exception for enablePageScroll option
+	- fix(wearable): fix circularindexscrollbar position issue
+	- feat(wearable) enable Popup scroll class add
+	- feat(wearable): add ExpandableHeader component.
+	- refactor(wearable): fix bg color of toggle switch
+	- refactor(wearable): remove ui-scroll-on class in sample page
+	- refactor(wearable): fix the path of each sample page
+	- feat(circle): apply to new popup UX
+	- refactor(wearable): add gradient class to marquee sample
+	- feat(wearable): select mode list in Sample app
+	- refactor(wearable): fix and apply bouncing effect style
+	- refactor(wearable): fix align and size of header and listview
+	- fix(wearable): add specific information to comment and fix bug.
+	- feat(wearable): delete footer in sample pages
+	- etc(orbis): revert patch that add ExpandableFooter component
+	- feat(circle): apply new circle changeable XML files
+	- fix(wearable): fix CircularIndexScrollbar TC error
+	- feat(wearable): fix style.less error.
+	- refactor(wearable): fix toggle switch style
+	- fix(wearable) : Stabilize footer with .ui-fixed
+	- feat(wearable): add router function to CircularIndexScrollbar widget
+	- feat(wearable): integrated wearable demo sample
+	- refactor(wearable): fix page indicator style
+	- feat(wearable): fix drawer sample page(more options).
+	- fix(wearable): SnapListview remove unnecessary method
+	- docs(wearable): Add documentation of CircularIndexScrollbar
+	- feat(wearable): Add new feature of CircularIndexScrollbar sample app
+	- etc(tool): Added grunt tool for circular sample development.
+	- feat(wearable): Add Helper Script for ListStyle.
+	- refactor(wearable): move drawer and ex footer less to common
+	- fear(wearable): page scroll on default
+	- feat(refactor): change circle theme folder name.
+	- feat(build): change circle style path.
+	- feat(build): fix grunt themeConverter module
+	- feat(wearable): apply circle css overwrite square css
+	- fix(tool): fix jshint task in build-bot
+	- refactor(wearable): fix divide list name and its padding
+
+* Wed Jan 07 2015 Heeju Joo <heeju.joo@samsung.com> 0.10.0
+	- feat(wearable): add Templates for circular UI
+	- feat(mobile, wearable): Rearrange and Rename sample applications
+	- feat(wearable): add marquee sample
+	- feat(wearable): add SnapListview(with Marquee) sample
+	- feat(wearable): fix drag gesture option in drawer widget and increase animation duration
+	- feat(wearable): Sample Application of WearableCircle
+	- etc(wearable): delete previous sample
+	- feat(wearable): option popup style for orbis
+	- refactor(wearable): fix popup wrapper sizing condition
+	- feat(wearable): add unitTC of Drawer widget
+	- feat(wearable): Add SnapListview widget
+	- etc(tool): set up build-bot with jenkins server
+	- feat(wearable): add router function to Drawer widget
+	- feat(Orbis): add Drawer widget
+	- refactor(wearable): add full size popup option
+	- feat(wearable): Apply popup and page content style
+	- feat(wearable): list with toggle for orbis
+	- feat(orbis): add ExpandableFooter widget
+	- etc(wearable):toggle control page for orbis sample
+	- fix(wearable) : adjust position of input
+	- feat(wearable): PageIndicator widget
+	- feat(wearable): toggle switch style for orbis
+	- refactor(wearable): fix name of the configure file
+	- feat(wearable): list with icon style for orbis
+	- fix(wearable): nested gesture event issue.
+	- feat(wearable): add circular index scrollbar widget
+	- feat(wearable): fixed TC error of popup widget
+	- feat(core): Add Marquee widget
+	- fix(wearable): add UnitTC for CircleProgressBar Widget
+	- fix(wearable): modify _setValue() method CircleProgressBar
+	- feat(wearable): Apply popup header and footer style.
+	- feat(wearable): Apply page header and footer style.
+	- feat(wearable): popup content padding css fix
+	- refactor(wearable): remove duplication on checkbox animation
+	- refactor(wearable): adjust padding of page content
+	- feat(wearable): apply small header
+	- refactor(wearable):filename change to circle-config
+	- feat(wearable): Add CircleProgressBar widget
+	- fix(core):fix if statement for DOM attribute method
+	- feat(wearable): radio button animation using css
+	- feat(wearable): Toast Popup and Remove positioning JS
+	- fix(all): copy mixin from tau branch to circle branch
+	- feat(wearable): normal popup style for orbis
+	- feat(wearable): listview style for orbis
+	- feat(wearable): move action icon list to app style
+	- feat(wearable): processing(full size) for orbis
+	- feat(wearable): change default value for circle.
+	- feat(wearable): Added pop style of popup transition.
+	- feat(wearable): Added pop style of page transition.
+	- feat(wearable): checkbox animation using css
+	- feat(wearable): adjust default font size for rem base
+	- feat(wearable): add CSS layout implement enviroment and rule
+	- feat(wearable): orbis base patch
+	- feat(wearable): Added circle theme and sample app for Orbis.
+
+* Wed Mar 11 2015 Junhyeon Lee <juneh.lee@samsung.com> 0.9.33
+	- fix(mobile): Checkboxes select all example
+
+* Fri Jan 23 2015 Junhyeon Lee <juneh.lee@samsung.com> 0.9.32-1
+	- fix(mobile): toggle switch(select) triggers event
+
+* Thu Nov 27 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.32
+	- etc(resource): remove unnecessary image files
+	- etc(resource): remove unclear-license image files
+
+* Wed Nov 26 2014 Junhyeon Lee <juneh.lee@samsung.com> 0.9.31
+	- fix(mobile): virtual list thumbnai size issue fix
+
+* Tue Nov 25 2014 Hagun Kim <hagun.kim@samsung.com> 0.9.30
+	- test(core): Added tests for utils.colors
+	- fix(tv):Fixed wrong view of Checkbox and Radio Buttons in Popups
+	- fix(tv): Keyup and keydown event handling is always added to Vmouse.
+	- fix(all): Path issue after change page
+	- etc(tool): TCT tests packaging
+	- TCT: Test builder
+	- fix(mobile): slider center option fix
+	- fix(changeable):Fixes of less files.  -- clear descriptions of the variables
+	- (fix) core: fix problem with closing popup
+	- fix(mobile): Popup is unnecessarily shown and incorrectly positioned
+	- docs(tv): Documentation for page/design/elements created
+	- fix(wearable): Unused variables removed from expose.js
+	- (test) mobile: add test for TabBar
+	- tests(mobile,tv): Enable tests from mobile profile in tv profile
+	- [Integrate] move tau.defaults object to core.
+	- fix(mobile): Fix layout of button icon position top, bottom
+	- fix(mobile): Fix margin of button without text
+	- refactor(tv): Less constants moved to files from a theme directory
+	- test(tv): Added destroy and button in header test cases in Page.
+	- test(tv): Added destroy function test for Button
+	- refactor(mobile, core): refactor methods for better memory management
+	- fix,docs,test(mobile): Complement of css selectors for widgets
+	- fix(core): fix problem with opening Popup by function in Router
+	- refactor(mobile): MobileWinset: doctype unification for widget pages
+	- refactor(mobile): modify collapsible and collapsibleset style
+	- fix(mobile): fix back button action in selectmenu
+	- refactor(core) Minor fixes in Core Base Widget
+	- feat(core): add module with decorator for animation on events focus/blur
+	- fix(core): prepare function focus and blur for BaseWidget
+	- feat(mobile): fixed incorrect button within controlgroup width issue
+
+* Thu Nov 06 2014 Junhyeon Lee <juneh.lee@samsung.com> 0.9.29
+	- refactor(wearable): [WearableWidgetSample] Unnecessary new operators
+	- fix(mobile): Fix problem with layout of Swipe widget
+	- fix(mobile): change page issue when using reverse option.
+	- etc(mobile): add ns.warn in replaced widgets (date-time picker, multimediaview).
+	- etc(mobile): remove dependency Navbar, Splitview in tau.js
+	- fix(mobile): Change position of label in ToogleSwitch structure
+	- feat(wearable): Added circle theme and sample app for Orbis.
+	- fix(jqm): fix errors found in jQM port
+	- test(mobile, tv): fix tests for correct work in tv profile
+	- test(mobile): Fix path to tau in navigation widget tests
+	- fix(docs):Documentation for navigation/page
+	- tests(tv): disable mobile tests in tv profile
+	- tests(all): eliminate jQuery
+	- fix(mobile): text input underbar position fix
+	- fix(mobile): Scrollview position is wrong updated after SW keyboard appears
+	- fix(tv):Fix to multiple page not displaying correctly.
+	- feat(mobile): KIRAN slider - vertical option add
+	- fix(tv): fix problem with color of arrow in focused context popup
+	- fix(mobile): page external request open method order fix
+	- feat(tools): Builder: multiple mode added for building multiple html files
+	- fix(tv):Fixes of less files.
+	- fix(tool): don't work watch mode when modified themes.
+	- style(tv): Unused variable removed.
+
+* Fri Oct 31 2014 Junhyeon Lee <juneh.lee@samsung.com> 0.9.28
+	- feat(mobile): KIRAN Navigation Bar widget
+	- Collapsible list: modify some HTML example for collapsible list
+	- feat(mobile): KIRAN SelectMenu widget
+	- fix(wearable): config.xml attribute fix
+	- docs(mobile): Developer Guide: breaking changes
+	- docs(mobile): Developer Guide: switching apps to tau
+	- docs(other): Responsive UI guide
+	- fix(docs):Documentation for design/page.
+	- fix(mobile): searching on listview works improperly
+	- docs(all): ux review and other minor fixes for developer site
+	- fix(core, tv): Bugs fixed in Core Drawer and TV Button
+	- fix(core): Fix for Listview refresh method.
+	- [TV] Listview documentation added
+
+* Fri Oct 24 2014 Junhyeon Lee <juneh.lee@samsung.com> 0.9.27
+	- Mobile: fixed broken button styles
+	- Mobile: modify listview background color code value
+	- [Integrate] removed wearable selector collections.
+	- Build : modify build spec file
+	- KIRAN: apply to latest changable xml files
+	- KIRAN: apply latest GUI to button widget
+	- KIRAN: apply latest GUI guide to header buttons
+	- KIRAN: add swipe open feature to Drawer
+	- [Mobile Multi Page Sample] fix receiving back key event when popup is opened.
+	- Mobile : modify each sample apps config files
+	- [Core, TV] Added documentation for Drawer
+	- [DOCS] Change mobile example window to 480x800
+	- Developer Guide: How to create own widget
+	- TV: fixes for style of context popup
+	- Slider: fixes for handler in the slider
+	- TV: fixes for animated focus
+	- BaseWidget: add function _focus and _blur
+	- [TV] Corrected tests for a Checkboxradio
+	- [Core, TV] Corrected tests for Listview
+	- [TV] All list elements in TV demo: Containers->List->Basic Multiline List are now focusable
+	- [TV] Corrected tests for a Listdivider
+	- [TV] Corrected tests for a Textinput
+	- KIRAN : Implementation of toggleswitch with support for slider
+	- Add new TAU release script
+	- KIRAN : Apply to latest changeable XML files
+	- Modify git address for webuifw in release script
+	- [TV, Mobile] Added documentation for Checkboxradio. Minor fixex in Checkboxradio HTMLs and js.
+	- [DOCS] Routing example fixed
+	- [DOCS] DevSite: changed close link to a button for visuals
+	- [DOCS] DevSite: tutorial fixes
+	- [DOCS] Developer guide, advanced ui layout article fixes
+	- [DOCS] Developer guide, page routing article fixes
+	- Wearable: fixed incorrect spell of swipelist
+	- [TV] Documentation for PageContainer.
+	- [TV] LINUXTWUI-1350 Provided additional selector.
+	- engine: fix error in engine test
+	- [core] disable some mobile tests on tv profile
+	- ContextPopup: add tests for ContextPopup
+	- [TEST] Popup: fixes for profiles wearable and tv
+	- [TV] fix problem with focusable list divider
+	- [MOBILE] VirtualGrid: fix for application
+	- BaseKeyboardSupport: fix problem with selectors for links
+	- [TV] Minor fixes in list examples
+	- [TV] Bug fix LINUXTWUI-1351 Missing ui-listview class after widget build
+	- MobileWinset: remove unnecessary js files
+	- KIRAN: modify popup width and left position on landscape mode
+	- [FIX] Notification: fixed typo in documentation
+	- [DOCS] Introduction to widgets
+	- [Test] gesture.utils tests, cleaning gesture.utils from whitespaces
+	- [DOCS] Developer guide, static tau library for example code
+	- [DOCS] Developer guide, disabled dropdown links (opening links)
+	- [Wearable] VirtualListview: trims elements when buffer size is greater than data length
+	- [TV] Documentation for TextInput widget
+	- [TV] animated focus
+	- [TV] Add animated focus
+	- TVDemo: remove privilege setting and tizen setting in config file
+	- [Wearable] SectionChanger widget tests
+	- [TV] Fixes according to jshint
+	- [SectionChanger] setActiveSection notify changed section
+	- [FIX] BaseKeyboardSupport: use computed style to find active links
+	- [TV] Added documentation for Page widget.
+	- [TV] Qunits for TextInput added
+	- [TV] Added documentation for Slider widget.
+	- [CORE] Minor fix in theme.js and ContextPopup.js
+	- [MOBILE] VirtualGrid: Fix a problem with wrong using this._ui object.
+	- vmouse: add properties connected with position for keyboard events
+	- [TV] Fixed Drawer according to jshint
+	- [TV] Tests for Checkboxradio widget
+	- [TV] Fix merge problem in keyboard support module
+	- [DOCS] add generating tv documentation
+	- [TEST] Scroller
+	- Mobile : modify init method that calculate width and height
+	- [TEST] pageContainer: fix testcase for pageContainer (wearable)
+	- [TEST] VirtualListview: fix testcase for VirtualListview (wearable)
+	- [TV] Qunits for Listview widget added
+	- jQM Event: Fixed exception when changing screen orientation
+	- [TV] Fixes according to jshint
+	- [TV] Page: fix a problem with building page without content
+	- tools: new features in doc generator
+	- [TEST] wearable.IndexScrollBar: enable tests and fix errors
+	- DOM.attributes: fix problem in nsData method
+	- [TV] fix a problems in tests
+	- MigrationGuide: Fix links and preview
+	- [DOCS] Developer guide fixes
+	- [TV] Fix code according to jshint
+	- [TV] Added tests for slider.
+	- [TV] Add tabbar widget in TV profile
+	- [DOCS] Developer Guide fixes for paths
+	- Engine: fix startup timing
+	- Slider: fix problem with popup
+	- Slider: fix problem with keyboard
+	- [DOCS] Developer Guide - Framework Profiles
+	- [TV] Added tests for ListDivider
+	- [TV,TEST] Added tests for Progress widget
+	- [TV] Tests for Drawer added
+	- IndexScrollBar: Multitouch move issue with vmouse
+	- Wearable: apply changeable to swipelist
+	- [CORE] Popup: change position of arrow
+	- Popup: add tests for popup to 100% coverage
+	- [wearable] page: fix calculate of page size
+	- Popup: additional test and fixes in code
+	- MigrationGuide: Fix links
+	- [DOCS] Developer guide, tizen web dev link
+	- [DOCS] Developer guide, license and footer
+	- [DOCS] Developer Guide - Notepad tutorial
+	- [DOCS] Developer Guide - Gallery tutorial
+	- [DOCS] Developer guide, api doc change to jsduck
+	- [DOCS] Developer guide, clock tutorial
+	- DeveloperGuide: Extract markdown comments from files
+	- DeveloperGuide: Using JQuery with TAU
+	- [wearable][test] VirtualList: change constant values to calculeted values
+	- util.array: fix errors found in tests and add test to 100% coverage
+	- event: fix errors found in tests and add test to 100% coverage
+	- Mobile: initialize firstPage variable (NABI-1019)
+	- [TV] fix layout of profile
+	- [DOCS] Developer guide, introduction to widgets
+	- [DOCS] Developer guide, grunt fixes
+	- [DOCS] Developer Guide site, page routing
+	- MigrationGuide: several fixes after merge
+	- [TEST] DOM: add tests for methods getElementOffset and isOccupiedPlace
+	- [Wearable] Updated tests for SwipeList widget (timing differ)
+	- [TEST] object: add tests for merge a inherit methods
+	- MigrationGuide: Breaking changes
+	- MigrationGuide: 3.4 Keeping old Web UI Framework
+	- MigrationGuide: 3.3 Moving from jQuery Mobile to pure TAU
+	- MigrationGuide: 3.2 Stay with jQuery Mobile
+	- Button: Fix setValue method
+	- [test] tests for wearable.defaults
+	- MigrationGuide: Switching apps to TAU
+	- [DOCS] Added framework version to all docs
+	- MigrationGuide: Features overview - framework flow
+	- TV: Tests profile for TV
+	- [TEST] wearable.ToggleSwitch: test of building widget
+	- MigrationGuide: Features overview
+	- [Wearable] SwipeList widget tests
+	- Collapsible: fix for disable/enable css styles of widget
+	- [Integrate] removed util.js in wearable profile.
+	- Popup: Fix problem with checking if element is a popup
+	- [MOBILE] Scroll Handler: hide native scrollbar offset
+	- [Integrate] deleted unused popup files.
+	- Added tests for Button.
+	- MigrationGuide: Styles for tables
+	- Loader: missing selector in routing
+	- MigrationGuide: Initial TOC
+	- Wearable: sync background-color and image (GSDK_SE-2912)
+	- ProgressBar: Issue progressBar value
+
+* Mon Sep 29 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.26
+	- Update tau version in package.json (0.9.25)
+	- Revert "[wearable] Page: fix a problem with calculation of height"
+
+* Thu Sep 25 2014 Youmin Ha <youmin.ha@samsung.com> 0.9.25
+	- [mobile/TV][test] Scrollview: add loading css in test, fix style of content in tv profile
+	- GBS build break FIX: License name changed
+
+* Thu Sep 25 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.24
+	- [Wearable] fixed more button active style in header.
+	- Wearable: change xml files for blue theme
+	- Wearable : modify copy images script of grunt
+	- ListviewFilter: Fixed undefined class
+	- KIRAN : modify scrollHandler width issue when content width changed
+	- Global: add framework version to TAU namespace
+	- KIRAN : fix Button height
+	- JSA : Fix code against coding rule (infos)
+	- [BUG] Wearable, popup: fix problem with closing popup during opening
+	- Converter: changed changeableUI xml files and build script
+	- [Wearable] scrollbar does not disappear during touch screen (GSDK_SE-2904)
+	- License: modify license notice for MobileWinset sample
+	- [DOCS] Developer Guide site
+	- [TV] Slider: fix for popup
+	- [Wearable] change default arrow position of Context Popup
+	- [Wearable] page route: fix problem with more complicated selector
+	- [wearable] Page: fix a problem with calculation of height
+	- Wearable : add blue and brown theme directory and modify build script
+	- License: modify copied license in Gruntfile
+	- Listdivider: Fix problem with isDivider check to work with classes
+	- Package: Fixed package version for dependencies
+	- [TV] popup: fix problem with overlay after merge
+	- Tests: Tests for util.object.hasPropertiesOfValue method
+	- Slider: change keyboard support, enable move only after enter
+	- jQM: Fix tests and method for TizenSlider
+	- [CORE] Popup: define popup widget and redefine context popup if is loaded
+	- [TV] Add globalize library to tv profile
+	- [CORE] Popup: delete checking of existing parent methods, fix binding of arrow in init
+	- [CORE] Popup, Context Popup: optimize code and add comments
+	- [TV] Popup: use function _build from Core Popup
+	- [TV] context popup: fix position and style of context popup
+	- [Core] context popup: change option "arrow"
+	- [TV] Popup: use core Popup in profile TV
+	- [core] Popup: fix problem with structure
+	- [core] Popup: rename widgets
+	- [core] Popup: fix API of widgets and enable old tests
+	- [CORE] Popup: optimize code and fix code style
+	- [FIX] Improper touchend handling
+
+* Mon Sep 22 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.23
+	- Sample : delete unneccesary meta tags
+
+* Mon Sep 22 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.22
+	- [Wearable] adjust interval of tab indicator .
+	- Wearable: modify IndexScrollBar 2nd depth position issue(GSDK_SE-2890)
+	- Mobile : Applied button style to input tag as data-role button
+	- MobileButton: add statement for input type button
+	- License: remove license text in array.js
+	- License: modify license to MIT (mobile)
+	- License Change : from flora to MIT (wearable)
+	- License: modify license to MIT (core, jqm, tv)
+	- modify TAU release script
+	- [jira] fixed page tab navigation.
+	- [Kiran] Added autoChange option at Tabbar.
+	- License: modify COPYING file and add LICENSE.MIT file
+	- Mobile: remove dependency for pinch and Gallery3D.
+	- Add SDK_mobile 4 templates to tau directory
+	- TV: fix problem with displaying list in drawer
+
+* Fri Sep 19 2014 Junyoung Park <jy-.park@samsung.com> 0.9.21
+	- Mobile : add external url routing method
+	- jQM: fixed getBinding missing arguments
+	- KIRAN: add value method to Searchbar
+	- [TV] Page: fix problem with refresh of page and recalculating header and footer
+	- [Kiran] Support external url option at router (NABI-722)
+
+* Fri Sep 19 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.20
+	- [jira] show black line when click list item in option popup.(GSDK_SE-2885)
+	- [Jira] wearable popup arrow bug (GSDK_SE-2886)
+	- Wearable: Color table (xml) changed
+	- [Kiran] Fix to make the controls tags to work inside anchor tags
+
+* Thu Sep 18 2014 Junhyeon Lee <juneh.ee@samsung.com> 0.9.19
+	- KIRAN: add max-width and box-sizing in context popup
+	- Remove Dependency for Mobile(Pinch)
+	- JSA : Fix code against Web API Usage Rule
+	- Drawer: Fix problem with class selector and behavor
+	- Global: Fixed broken layout after moving tau.js
+	- TV: Fix problems with moves by keyboard
+	- [TV] page: add support buttons in page header and footer
+
+* Tue Sep 16 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.18
+	- Modify release script
+	- Modify tau release script
+	- [Jira] Wearable Popup auto hide bug when page is changed. (GSDK_SE-2871)
+	- [Wearable] Option Popup positionTo parameter bug fix.
+	- [Kiran] theme.js bug when embedded tau script inside body.
+	- KIRAN : modify tokentextarea plus button
+	- KIRAN : modify button with textinput position issue
+	- TizenSlider: modify style for popup-slider (sync new UX guide)
+	- TizenSlider: add exception for center-slider
+	- Engine: Logic for removing bindings changed
+	- TAU Build: modify build error
+
+* Mon Sep 12 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.17
+	- event/vmouse: 2nd depth indexBar does not disappear after releasing the tap
+	- Controlgroup: remove color for ui-radio-on font-color
+	- Listview: modify some styles for listview checkbox position.
+	- Buttons: fixed button layout and position bugs
+	- TabBar: fix problem with icon only style in footer
+	- [KIRAN] Popup, router: fix problem with options which should be read from link
+	- Dialog tests: change source for valid theme tau, because test failed.
+	- Wearable : List action icon with divider
+	- TabBar: fix problem with font size
+	- Page, fix selector to find buttons in header
+	- TAU release script: modify path for mobile ide resource git
+	- [Kiran] router chnage page bug fixed on multi page template.
+	- Mobile : Applied style to button, input tags
+	- [Kiran] revert router bug that made by toggleswitch.
+	- Drawer : fixed drawer button position issue.
+	- Drawer: apply KIRAN drawer width value
+	- KIRAN: Button widget layout bug fixed
+	- Drawer: _destroy() bug fixed and remove redundant condition
+	- [Wearable] bug fixed that page transition animation not work.
+	- TAU build: remove black, white directory in built TAU package.
+	- Scrollview: delete duplicate css style (box-sizing: border-box)
+	- Mobile : Remove legacy script path
+	- Mobile: modify style for collapsible list
+	- [Wearable] support backwards compatibility for tau.defaults property.
+	- [Sectionchanger] bug fixed wrong class name of actived section.
+	- JSA : Fix code against coding rule
+	- Tests: fixed tests for Windows platform
+	- MobileWinset: Library CSS file changed to load from default
+	- Themes: Theme CSS is now loading as a link to the stylesheet
+	- Tabbar: fix style of tabbar in footer
+	- Fastscroll: fix for widget selector
+	- Page: Fix size of title in header and using buttons in header
+	- [BUG] Virtual List: fix problem with button
+	- [BUG] list: remove li with progressbar and button
+	- Buttons in header: apply style only for buttons being child of header
+	- [KIRAN] Scroll Handler
+	- DateTimePicker: fix a problem with dots in period button
+	- Scrollview: fix a problem with too big size of content when margin is set
+	- TV: fix problem with position and style of popup
+	- [TV] Fix for inputs.
+	- [TV] Demo: corrected back button support for popups
+	- [WEARABLE] Router: fix problem with function hasActivePopup
+	- [TV] Fix for demo application. Ids for pages and list have been changed
+	- [TV] Demo: corrected channel icons display style
+	- [TV] Corrected bug in _destroy() of Drawer core widget.
+	- FIX: fix problems found in tests
+	- JSA : Fix code against coding rule
+	- WearableWidgets: add version file (for sync web-ide-resource)
+	- docs generator: add event and utilities section
+	- DeviceViewer: modify badage name
+	- Add AUTHORS file(sync sdk git) and modify version file
+	- Modify TAU release script
+	- Wearable : Fixed OK button of 2btn Popup
+	- Mobile: add box-sizing:border-box style of .ui-scrollview-view
+	- [TV] Demo: add back button support
+	- [TV] Demo: add new features in drawer widget
+	- [TV] Demo: add many type of pages style with examples
+	- [TV] Demo: fix building of virtual grid
+	- [TV] demo: fix layout of lists
+	- Scrollview: fix class selector
+	- [TV] disable default scrolling on page content
+	- TV demo: change layout of first page
+	- TV: router: create universal dynamic route
+	- TV popup: add shadow to popups, change first page in demo
+	- [TV] input: fix style of inputs
+	- [TV] Demo: better look of page with buttons
+	- [TV] Multi: fix simple errors found by code inspector
+	- [TV] Drawer: eliminate problem with translate right drawer in refresh method
+	- [TV] Added controllable progress bar widget
+
+* Mon Sep 01 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.16
+	- [Popup] rem rendering bug fix.
+	- Popup documentation.
+	- Wearable: modify header title font size
+	- Wearable : Fixed Button css style
+	- Wearable: modify some styles for IndexScroll (UX sync)
+	- Wearable: modify icon position in swipe list
+	- Wearable : Fixed Popup css style Merged
+	- Wearable: fix listview height(sync UX guide)
+	- synchronize version number
+	- [Popup] Added modal popup option.
+	- [Popup] Added Option Popup Samples.
+	- [Router] added back option of data-rel attribute.
+	- [Popup] Added Option Popup.
+	- TAU Scrollview size issue
+	- IndexScrollbar: Fix logical bug showing 2nd indexbar(GSDK_SE-2830)
+
+* Fri Aug 29 2014 Hyeoncheol Choi <hc7.choi@samsung.com> 0.9.15
+	- Wearable: delete extra main text sample color values
+	- KIRAN: fixed Notification layout issues
+	- KIRAN: modify tabbar widget with scroller bugs
+	- KIRAN: apply KIRAN UX to tokentextarea
+	- KIRAN: listview border-bottom apply to all listview types
+	- KIRAN : fixed textarea issues
+	- KIRAN: modify example for using listview sample page
+	- [TAU KIRAN] modify style for bubble list
+	- [TV] Progress widget support added
+	- [TAU KIRAN] modify slider style sync new UX guide
+	- [TAU KIRAN] modify style for check-all list
+	- [TAU KIRAN] slider new ux guide
+	- [TAU KIRAN]: Progress style changes from UX Guide
+	- KIRAN: toggleswitch
+	- [TV] Scrollbar style added
+	- [TAU KIRAN] Listview: set padding value 0 when li tag has a link
+	- KIRAN : apply footer width button to KIRAN UI
+	- [TAU KIRAN] Listview: remove unused list view examples
+	- Tokentextarea: Defining a local variable for the key codes, removing unnecessary return
+	- KIRAN : delete listdivider border-bottom and fixed line value
+	- KIRAN: apply KIRAN UX to searchbar
+	- KIRAN : modify button layout bugs
+	- KIRAN: checkboxradio
+	- Wearable: modify Popup set content style calculation.
+	- Build: build rpms and install on device, path fix for build
+	- KIRAN: apply KIRAN UX of drawer
+	- [TAU KIRAN]Popup: modify calc to -webkit-calc
+	- [KIRAN] Empty state
+	- KIRAN: Textinput styles
+	- KIRAN : Context popup
+	- KIRAN: modify style for dialogue list
+	- [KIRAN] FastScroll: theme and base widget fix
+	- Utils: fix error during computing height of element
+	- [TAU KIRAN] POPUP theme for kiran
+	- KIRAN : apply button themes (3.1 Button)
+	- KIRAN : add kiran listview feature
+	- KIRAN : appy KIRAN GUI (1.Navigation elements)
+	- KIRAN : apply kiran theme (1.1 Title section)
+	- [TAU KIRAN] multiply (320/480) by @px_base.
+	- [TAU KIRAN] add xml files for Changeable Theme(0822)
+
+* Thu Aug 26 2014 Junyoung Park <jy-.park@samsung.com> 0.9.14
+	- Build: fix error with mobile gbs package build
+	- [TV] textinput: fix problem with events in textinput
+	- [TV] List style extened     - multiline support added     - checkbox/radio button support added
+	- [TV] Added checkbox and radiobutton implementation for TV profile
+	- TV: fix problem with color of Drawer's background
+	- [TV] Input support added
+	- TV: change opening popup in slider on focus
+	- [TV] Listdivider widget added
+	- TV: fix problem with popup in slider
+	- TV: add slider with popup
+	- [TV] Added style for slider
+	- TV: adding context popup for profile TV
+
+* Thu Aug 25 2014 Junyoung Park <jy-.park@samsung.com> 0.9.13
+	- Revert "[BUG] Path issue after change page"
+	- [jira] Block touch event while showing swipe element. [GSDK_SE-2799]
+	- Touch: taphold was triggered almost always
+	- Wearable: modify -webkit-highlight style to transparent.(GSDK_SE-2808)
+	- [jira] initialize canceled flag bug fix.(GSDK_SE-2798)
+	- Tests: API tests for frameworkData object
+	- TV: change stucture of popup
+	- Added TV button
+	- TV: add new variable @virtual_px for less
+	- [TV] KeybordSupport: eliminates from navigation element with visibility hidden
+	- TV: add file config.js for TV profile
+	- TV popup: add support focus on element after open popup
+	- TV: change style of buttons in popup
+	- TV: fixes in theme
+	- TV: VirtualGrid fixes
+	- TV: fix view of virtual list
+	- FrameworkData: Improved performance and readability
+	- TV: Support keyboard in popup
+	- TV profile: fixes for page with popups
+	- TV: fix problem with closing popups in application
+	- TV profile: init profile and demo app
+	- multiple: fix in documentation, change name of 2 widgets for compliance with naming rules
+	- documentation: mobile router and extendables
+	- IndexScrollbar: Lowest index in 2nd depth blinks unnecessarily
+	- documentation: animation utility package
+	- Page: fix for duplicated header divider
+	- wearable.IndexScrollbar: documentation
+
+* Thu Aug 21 2014 Junhyeon Lee <juneh.lee@samsung.com> 0.9.12
+	- [BUG][Wearable] router: fix problem with changing page on popup's closing
+
+* Thu Aug 21 2014 Junhyeon Lee <juneh.lee@samsung.com> 0.9.11
+	- Wearable: GSDK_SE-2781,2785 list highlight remains when visibility changed.
+	- Wearable: modify checkbox/radio (new GUI sync)
+	- Wearable: change new xml files for changeable
+	- Vmouse: add if statement at handleTouchEnd method
+	- IndexScrollbar: GSDK_SE-2775 block bouncing effect when vmousemove in IndexScrollbar
+	- [jira] change widget creation time (GSDK_SE-2582)
+	- [BUG] Path issue after change page
+	- Mobile: Default theme changed to "default"
+	- [BUG] Improved regular expressions for frameworkData
+	- BaseWidget: modify widget disabled check logic in init method
+
+* Wed Aug 13 2014 Hyeoncheol Choi <hc7.choi@samsung.com> 0.9.10
+	- MobileWinset: modify style for Textarea bg and border
+	- MobileWinset: rearranged list of widget pages
+	- WearableWidgets: add style for disabled radio list(GSDK_SE-2718)
+	- Datepicker: Fix bug circularview width
+	- [BUG] TabBar: fixed size after building
+	- TextInput: fix for clear button
+	- Event Manager: change style for popup in datetimepicker
+	- Support Backward Compatibility for widget namespace.
+	- [jira] fixed the issue that scrollbar is hidden during touching screen. (GSDK_SE-2558)
+	- [SectionChanger] change constant value from integer to string.
+	- Wearable : apply new changeable xmls and change default style
+	- IndexScrollbar and VirtualList: Change touch events on vmouse events
+
+* Tue Aug 07 2014 Hyeoncheol Choi <hc7.choi@samsung.com> 0.9.9
+	- Popup: adds events popupshow/popuphide in mobile profile
+	- modify release sync script
+	- Button: fix problem with events for buttonMarkup
+	- Wearable: modification for popup and router
+	- VirtualList: the issue with jump to the last position of list
+	- Drawer : fixed Drawer-right overflow issue in some browser
+	- [BUG] SectionChanger refresh is not work correctly.
+	- [BUG] SectionChanger enable/disable function is not work correctly.
+	- [SectionChanger] fixed bouncing effect on 360 device.
+	- Wearable Popup: apply latest UX of popup widget
+	- MobileWinset: hwkey event handler and list-select-check javascript code
+	- Wearable: Add image for checkboxradio
+	- Swipe: documentation
+	- page, popup: fix simple errors in documentation
+	- Searchbar : fixed searchbar button layout, operation bugs
+	- Revert "[TAU KIRAN] sync listview style for UX guide"
+	- [BUG] list vi: fix problem with bottom border
+	- [TAU KIRAN] sync listview style for UX guide
+	- util: documentation for zoom
+	- package : default theme change black to changeable
+	- ProgressBar: change name of widget in data-role
+	- Mobile Widgets: fixes in documentation and move object ui to protected visibility
+	- docs generator: divide methods for class methods and inherited methods
+	- images : delete unneccessary images (bouncing effect)
+	- [BUG] tokentextarea: fix problem with button in popup in tokentextarea
+	- [BUG] Fix Tokentextarea bugs:
+	- [BUG] toggle switch: fix problem with widget on list
+	- [BUG] context popup: fix problem with bottom border
+	- [BUG] popup: fix problem with position of popup in TizenSlider
+	- [BUG-LINUXTWUI-1257] : "all the contents are placing a bit downward."
+	- [BUG-LINUXTWUI-1241] : header's button has bottom space when clicked.
+	- [BUG] context popup: fix problem with popup positioned to orgin
+	- Revert "[TAU KIRAN] add xml files for Changeable Theme"
+	- documentation tests: fix check object properties
+	- Docs generator: new features
+	- Page: add notices tags in documentation
+	- ListView: issue fix - sub text is not center
+	- Drawer: fix problem with background color
+	- Changeable UI: modify Winset->Searchbar for changeable
+	- [TAU KIRAN] add xml files for Changeable Theme
+	- [BUG] listdivider: fix problem with changing color on pressing
+	- VirtualListview: added scrollToIndex method
+	- Tokentextarea: fix settings width tokens after remove
+	- [BUG] SearchFilterBar fix bugs : Cancel button has wired stuff on the edge.
+	- DeviceViewer: added grunt build mechanism
+	- Many modules: fix class descriptions
+	- many modules: fix simple errors in documentation
+	- documentation: fixes in many modules
+	- [BUG-LINUXTWUI-1243] : footer button - two buttons are overlapped.
+	- nine-patch: modify directory for nine-patch
+	- util: data, deffered, deferredWhen, globalize, grid, load documentation
+	- theme, frameworkData: documentation
+	- wearable.router: documentation
+	- [WEARABLE] PageContainer: fix for method 'change'
+	- Tabbar : modify tabbar sample code
+	- util: anchorHighlight, array, bezierCurve, callbacks, color documentation
+	- scrollhandler: documentation
+	- gallery: documentation for protected and private methods
+	- core.event.gesture: fill inline documentation (LINUXTWUI-1227)
+	- jQM: fix errors in documentation
+	- event namespace: fill documentation for public methods and properties
+	- TextInput: documentation, change name of widget from Textinput to TextInput
+	- TabBar: documentation, change name of widget from Tabbar to TabBar
+	- Wearable: resize checkbox-radio
+	- ProgressBar: documentation, change name of widget from Progressbar to ProgressBar
+	- util.DOM documentation
+	- [WEARABLE] widgets: documentation
+	- SelectMenu: documentation, change name of widget from Selectmenu to SelectMenu
+	- [BUG] SearchFilterBar fix bugs:
+	- [BUG-LINUXTWUI-1240] : 1px margin exists when toggle on.
+	- Progress: documentation
+	- slider: documentation
+	- tizenslider: documentation
+	- NavBar: documentation, change name of widget from Navbar to NavBar
+
+* Tue Jul 22 2014 Heeju Joo <heeju.joo@samsung.com> 0.9.8
+	- Wearable : Fixed unexpected bouncing effect
+	- dialog: fix problems with closing and destroying dialog
+	- DeviceViewer: sync less file with css
+	- [jira] enable bounce effect on SectionChanger. (GSDK_SE-2530)
+	- ninepatch: modify Gruntfile for ninepatch
+	- BubbleList: nine-patch image bubble list
+	- TAU : init changeable UI development enviroment and apply latest wearable changeable xml files
+	- fastscroll: fixed missing hover color
+	- Toggle: apply latest wearable UX
+	- change icon style : background to mask
+	- progressbar : apply webkit-mask-image to progressbar
+	- Processing image to mask
+	- list: Add text of list item for information ( GSDK_SE-2302 )
+	- [TAU Wearable] modify wearable release helper file
+
+* Thu Jul 10 2014 Junyoung Park <jy-.park@samsung.com> 0.9.7
+	- Wearable popup: set border for popup (sync UX guide)
+	- Tokentextarea: documentation
+	- [jira] Show scrollbar when application float front side from background. (GSDK_SE-2510)
+	- [jira] Show scrollbar while drag and hold the page (GSDK_SE-2558)
+	- ThemeConverter : add themeConverter nodejs version
+	- Wearable : modify text color
+
+* Mon Jul 07 2014 Hyeoncheol Choi <hc7.choi@samsung.com> 0.9.6
+	- TAU Framework 0.9.6 release
+
+* Wed Oct 30 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.69
+	- datetimepicker: modify vlick event to click (N_SE-56430)
+	- slider : slider popup do not disappeared issue when called orientationchange fixed(N_SE-56561)
+
+* Tue Oct 29 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.68
+	- Revert "JQM-patch : modify to popup element click event bind, Popup : delete "ui-btn-ctxpopup-close" class click event bind (DCM-2433)"
+	- popup : modify css of popup button
+	- TokenTextArea : enlarge inner text font size (PLM P131028-03014)
+	- DialogueList : add ellipsis to placeholder text(PLM P131028-02021)
+	- Scrollview : Scrollview bugs fixed (P131023-00924)
+
+* Fri Oct 25 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.67
+	- searchbar: changed small letter to capital one (N_SE-55803)
+	- Checkbox: proper checkbox alignment in popup [N_SE-55967]
+	- Pinch : skip ratio setting when touch value is not valid (PLM P131021-02072)
+	- Segment : fixed segment css issue (N_SE-54943)
+	- Popup : add min-width value of ui-btn (P131022-02077)
+	- Revert "Loader : change rule that language is set by region setting(N_SE-53277)"
+
+* Tue Oct 22 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.66
+	- controlgroup: remove css line cause side-effect (P131021-02618)
+	- collapsible: fix collapsible UI (with UX guide)
+	- Revert "JQM: orientation change event does not depend on JQM"
+	- Listview : add border bottom color on press event (PLM P131010-02793)
+	- winset: change background rgb color in black theme (UX guide)
+
+* Fri Oct 18 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.65
+	- listview: remove radius at inset mode (P131016-02897)
+	- Checkbox : modify to checkbox and text position css property (P131017-02872)
+
+* Wed Oct 16 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.64
+	- TizenWinset : add condition popup appear of textbox popup (N_SE-51783)
+	- Globalize: Add AM/PM switcher in hindi language (N_SE-52707)
+	- Tabbar : modify font-size css at tabbar segment text(N_SE-52510)
+	- winset: fix scrollview-horizontal display issue (N_SE-39497)
+	- controlgroup: fixed margins (N_SE-54943)
+	- JIRA fix - N_SE-51795 CheckBox works otsude its area since it overlaps with thumbnail
+	- slider: change event when slider(handle) released (P131008-04153)
+	- checkbox: add ellipsis if label of checkbox is longer than field (N_SE-38978,N_SE-43122)
+	- TizenWinset : popup style change that appeared when icon popup click in searchbar(N_SE-55090)
+
+* Fri Oct 11 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.63
+	- winset/naviframe: changed small letter to capital (N_SE-53904)
+	- searchbar: change small letter to capital (N_SE-53083)
+	- splitview: modify the calculation of panes' sizes
+	- datetimepicker: trigger default click event after click on AM/PM button (N_SE-53036)
+	- Picker : add picker page that has web and native picker widget
+	- gallery3d: add inline comments
+	- JIRA fix - TDIS-6950 The App "TizenWinset" will be pop-up the error
+	- JQM patch : change offset to css in popup when call reposition
+	- Tokentextarea: Clear the input field when reenter Tokentextarea demo
+	- gallery3d: modify comments
+	- scrollview: changing top and bottom position (N_SE_46439)
+	- multimediaview: Fix progress bar issue.(P131008-01234)
+	- JQM: Popup resize event handler is called until resize is ended
+	- Popup : change center_title_1btn's button style(PLM P130918-02212)
+
+* Fri Oct 04 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.62
+	- Popup : bug fix (VPSS-1212)
+	- JQM: popup resize event handler is called
+	- JQM: orientation change event does not depend on JQM
+	- Collapsible: add touch event to block multitouch (N_SE-42871)
+	- winset: set border of scrollview widget area (N_SE-53042)
+	- datetimepicker: Modify demo codes
+	- winset: delete 'depth' transition for winset (not in JQM demo, P130930-01704)
+	- winset: add page refresh in collapsible (P130809-03286)
+	- scrollview: filtering only inputs that have focus in key callbacks
+	- popupwindow : add setResizePosition function in popupwindow
+	- Loader : change rule that language is set by region setting(N_SE-53277)
+	- scrollview : add condition statement to resize event handler(P130914-01206)
+	- winsets/list: fix vclick trigger after click on subtext in multiline (N_SE-51825)
+	- winset: make  'Get input text popup' scrollable (N_SE-53221)
+	- list bubble: changing small letter to capital letter (N_SE-53212)
+	- web-ui-fw spec file: update missing version (0.2.61)
+	- winset: modify entry field width (N_SE-53312)
+	- gallery3d: Fix an issue of canvas height during initialization.
+	- multimediaview: Remove volume handle's afterimage when volume button is pressed repeatedly.
+
+* Thu Sep 26 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.61
+	- Add license information in spec and modify COPYING
+	- JQM-patch : modify to popup element click event bind, Popup : delete "ui-btn-ctxpopup-close" class click event bind (DCM-2433)
+	- Cleanup JQM patches
+
+* Thu Sep 26 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.60
+	- scrollview: N_SE-51475; typo fix
+	- Popup: remove whitespace in popup patch
+	- winset: modify change text in ctxpopup widget (N_SE-51878)
+	- winset: delete no-name checkboxes (N_SE-49159)
+
+* Fri Sep 13 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.59
+	- JIRA fix - N_SE-47442 Item getting disappear when popup appear and keyboard disappear in TizenWinset
+	- Popup : remove whitespace in JQM patch
+	- Layout : remove padding top/bottom on non-scrollview mode
+	- Popup: popup reposition is called immediately
+
+* Thu Sep 12 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.58
+	- notification: fix styles of valign text (N_SE-49495)
+	- Scrollview : bug fix
+	- Popup : modify to set position values of popup when resize window(N_SE-48208)
+	- listview: refresh listview after remove item (N_SE-46260,N_SE-49476)
+	- Hardwarekey: enableHWKeyHandler property has been added
+	- winset: modify list title (P130910-02834)
+	- Module Build : modify license and License folder and file.
+
+* Fri Sep 06 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.57
+	- pagelayout : fixed triggering blur event after pressing H/W menu key (connected with N_SE-47012)
+	- gallery3d: Fix unit-test error
+	- tokentextarea: fixed focusIn function (N_SE-48198)
+	- DateTimePicker : bug fix(PLM P130902-01540)
+	- Pagelayout : bug fix
+	- TizenWinset: Extend the input box size ( N_SE-46409 )
+	- Tabbar : bug fix(N_SE-42974)
+	- Popup: modify popup-button css values
+	- SegmentControl : bug fix (PLM P130809-03230)
+	- JQM patch : add touchcancel event handler
+	- Popupwindow: popupwindow is closed when hardware key button has been clicked
+	- winset: modify page title and contents name (N_SE-48217)
+	- Pagelayout: block the hwkeyevent when changing page (DCM-2374)
+	- winset : modify mp4 file (N_SE-46472)
+	- winset: spelling fixes (N_SE-34225)
+	- slider: fixed paddings and margins (N_SE-45407)
+	- tabbar: hide tabbar dividers after mouseup (N_SE-34126,N_SE-43442,N_SE-42932)
+
+* Thu Aug 29 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.56
+	- modify set position of popup-container (P130821-05228)
+
+* Thu Aug 29 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.55
+	- popup: modify popup scrollview bg CSS value
+	- scrollview: fixed error when element was not specified in positioning API functions
+	- scrollview: fixed N_SE-46434, wrong clip top/bottom boundaries
+	- gallery3d: Apply non-blocking image loading
+	- JIRA fix - N_SE-47115 Abnormal serial wise image showing behavior observe in "Gallery 3D"
+	- JIRA fix - N_SE-48393 popup has textbox
+	- splitiew: modify text() to outerHTML in GetContents function.
+	- JIRA fix - N_SE-48863 Footer more is not displaying for tabbar in TizenWinset
+	- tabbar : adding class for popup (N_SE-49194)
+	- tabbar: inline documentation
+	- gallery3d: Add an error message popup on demo app
+	- winset: fix spelling errors (N_SE-49426)
+
+* Fri Aug 23 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.54
+	- Scrollview : fix scroll position when windows rotated and get resize event
+
+* Thu Aug 22 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.53
+	- button : support Enter button when hostkeyboard on (N_SE-48615)
+	- splitview: Fix panes' wrong ratio issue.
+	- module: copy CSS themes into the project directory
+	- popup : handle tabindex on popup to block unwanted focus by tabkey(N_SE-47126)
+	- Scrollview : bug fix
+	- JIRA fix - N_SE-47690 control.show was called before video was rendered
+	- r.js: fix for windows paths
+	- module: fix JQM dependency for full meta module
+	- DateTimePicker : exception handle for HW key(N_SE-48311)
+	- Pagelayout : bug fix
+
+* Mon Jul 29 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.52
+	- toggleswitch : invalidate max-width property in toggle handler (N_SE-42954)
+	- Revert "Slider: Prevent calling buttonMarkup for toggle switch"
+
+* Fri Jul 26 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.51
+	- Swipelist : bug fix( change css selector. check only swipelist)
+	- Scrollview : add custom Overflowscrollbar option
+	- Scrollview : calculate excluding padding in innerScrollview(DCM-2223)
+	- JIRA fix - n_se-47012 Menu button does not respond after tap on BUTTON
+	- Menu popup poisiton problem has been fixed ( when use the timer )
+	- swipe: change height of swipe if in swipe is more than one line (N_SE-36032)
+	- Scrollview : add scrollbar showed routine when resize (N_SE-46664, N_SE-47206)
+	- Revert "Scrollview : add to show scroll bar routine when called resize (N_SE-46664)"
+	- button: fix padding left on button with icon on left side (N_SE-39106)
+	- button: set max-width on button in list (N_SE-41954)
+	- winset: spelling fix in list filter search bar (N_SE-34407)
+	- checkbox: Fix wrong code
+	- Add meta modules and fix dependencies
+	- JQM patch : add touchend event in slider (N_SE-46593)
+	- Collapsible: remove activeBtnClass from collapsible heading
+	- Scrollview: cancel hiding scrollbar when drag start again
+	- tools: automated tests system
+	- LoadPrototype: Fix jslint errors
+	- Configure: Fix jslint errors
+	- Pinch: Fix jslint errors
+	- listview : adding text-overflow property (N_SE-44917)
+	- Winsets: avoid resizing page
+	- Slider: Prevent calling buttonMarkup for toggle switch
+	- Winset: modify title and spell issue (N_SE-46197,N_SE-46399,N_SE-46411)
+	- tizen-winsets: backbutton-control removed in relation to mandatory hw button
+	- JIRA - fix N_SE-46403 removing code from popup message
+	- JIRA - fix N_SE-46874 switch buttons according to new documentation
+	- Globalize : modify culture value exception condition (N_SE-46759)
+	- winset: change wrong number on list (N_SE-35751)
+	- Scrollview : add to show scroll bar routine when called resize (N_SE-46664)
+	- build: change configuration od custom build system
+	- fix included files in devel package
+
+* Mon Jul 15 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.50
+	- Revert "list divider: Update the background color of checkboxes on list dividers when pressed"
+	- controlgroup: Remove invalid css code
+	- fastscroll: Remove features for fade-out
+	- Fastscroll: Remove popup text shadow
+	- list divider: Update the background color of checkboxes on list dividers when pressed
+	- winset: change html of collapsable list to valid HTML5 (N_SE-39338)
+	- datetiempicker: trigger default event after click in datetimepicker (N_SE-39513,N_SE-43673)
+	- scrollview,virtuallist: fix evaluate of scrollbar's thumb position (N_SE-42045)
+	- License: modify license from Dual(MIT,GPL) to MIT
+	- theme: Remove invalid css code
+	- Tabbar : add border-bottom color to scrolling_tabbar (N_SE-34126,N_SE-43442,N_SE-42932)
+	- build system: version 2
+	- build: build system for SDK to create minimal version of framework
+	- build system: fix dependencies for requirejs
+	- Node modules
+	- Grunt build
+
+* Fri Jul 12 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.48
+	- Checkbox: Fix background for active checkbox in divider
+	- Swipe: Make sure current animation is stopped
+	- checkbox (with favourite icon): fixed style (bug)
+	- Pagelayout : down button position bug fix(N_SE-45112)
+	- Tokentextarea: Delete footer and add H/W key event
+	- Modify Tabbar-segment footer, popup button css style (N_SE-43789)
+	- Winset: modify back button issue and miss spell issue (N_SE-43352)
+	- JQM closed popup does not add visible class ( orientation change )
+
+* Wed Jul 10 2013 Heeju Joo <heeju.joo@samsung.com> 0.2.47
+	- Scrollview : showOverflowScrollbar when ctxpopup opens
+	- Popup : delete popup_bg resource and modify dim_background color&opacity
+	- Popup: scrollview line separator has been added
+	- checkbox: fix problem with check after click on list with link (N_SE-44086)
+	- Winset : modify generate element dynamically sample code
+	- loader: Ignore routine setting default theme
+	- scrollview: fix focusen on element on window resize (N_SE-41303, N_SE-41364)
+
+* Thu Jul 04 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.46
+	- Naviframe : fix text overflow option of '.ui-title-text-sub'
+	- Popup : modify popup-text padding(left,right) and modify radius style
+	- searchbar: fix error with wrong value on change event after click clear btn (N_SE-44365,N_SE-44265)
+	- Tabbar : modify padding and margin value of footer tabbar buttons
+	- Tokentextarea: Fix the anchor button position
+	- multidmediaview: Fix a press event issue on a button
+	- Toolbar: Change the divider style of footer buttons
+	- Winsets: Remove footer (N_SE-43651)
+	- Winsets: Restore footer in footer more example
+	- Winsets: Popup opened with menu button should have proper class
+	- fastscroll: Fix the left border width to 1 pixel
+	- Remove unbind code in popup widget (DCM-1984)
+	- JQM patch : Improve toggleswitch ux.
+	- checkboxRadio : change resource sync to GUI Guide v4.8
+	- Naviframe: modify radius and padding value of header button
+	- Delete unnecessary image files
+	- Pagelayout: use jQuery to get window height
+
+* Mon Jul 01 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.45
+	- JQM patch : add loadPage no options exception hadling.
+	- Scrollview : change scrollbar calculation routine
+	- Pagelayout : recalculate page's min-height on resize event
+
+* Sat Jun 29 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.44
+	- Slider: modify slider-container padding(top, bottom)
+	- Button : modify button size and added margin.
+	- datetimepicker: Fix layout issue.
+	- fastscroll: Apply divider styles to items
+	- winset: clear text field in popup before close (N_SE-43451)
+	- gallery3d: Fix wrong operations of API
+	- datetimepicker: Apply light theme & dark theme
+	- scrollview: Add pressed icon images of the jump-to-scroll button
+	- winset: checkbox page, changing field with value after click on checkbox (N_SE-43429)
+	- winset: correct name of page (N_SE-43471)
+	- Scrollview : Remove click event in touch state(DCM-1690,DCM-2067).
+	- Pagelayout : Invalidate to add ui-ctxpopup-optionalmenu(DCM-2073).
+	- pagelayout: fix width of h1 in header (N_SE-43307,N_SE-42973,N_SE-43556)
+	- splitview: Fix the handler dragging bug caused by multitouches
+	- Tokentextarea: Fix the anchor button position
+	- progress: Fix the end position of the stripe animation
+	- Scrollview : hide overflowIndicator if not jQM content
+	- JQM : remove scrollTo in jquery.mobile.init.js
+	- multimediaview: Improve usability of volume bar
+	- datetimepicker: Fix resize event issue
+	- Searchbar: modify clearbtn appear concept
+	- JQM patch : invalidate 0021,0045 patch and change toggleswitch ux
+	- fastscroll: Modify the popup position to the center
+	- H/W key : add H/W key event and bug fix.
+	- Winsets: Replace double Cancel buttons
+	- Winsets: Fix id of page for h/w event binding
+
+* Tue Jun 25 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.43
+	- Pagelayout : Add condition check backBtnQueue length (N_SE-42987).
+	- tizen-winsets: fix HW key event binding
+	- pagelayout: Apply HW key policy
+	- Naviframe : change footer theme generate routine
+	- TizenWinset: List vi button position has been changed
+	- Tabbar-Persist : modify <a href> url
+	- Fast scroll: modify 'Fast scroll' title (N_SE-42900)
+	- gallery : modify image size set roution in gallery.(N_SE-36862)
+
+* Mon Jun 24 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.42
+	- H/W key : delete footer and add H/W key event
+	- HWkey : remove framework's device check routine
+	- ctxpopup : popup scrollbar tuning(DCM-1971)
+	- Scrollview : modify condition that disappear scrollview
+
+* Sun Jun 23 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.41
+	- pagelayout: not showing back button on keyboard hide (N_SE-41675)
+	- scrollview: N_SE-35649 multitouch scroll bug
+	- progress: update margin values
+	- toolbar: Apply light theme
+
+* Sun Jun 23 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.40
+	- Progress : change white progress resource
+	- Popup : change liststyle height to max-height
+	- Scrollview : change indicatorbar value from opacity to display
+	- DateTimepicker : change theme color
+	- GUI : change resource/permission change
+	- Extendable list : modify 'Load 50 more items' button position
+	- Fastscroll: modify rollover-border color (black, white)
+	- checkbox: modify favorite icon image (white theme)
+	- ContextPopup: modify rgb color of ctxpopup background (black theme)
+	- Checkbox : modify checkbox press image in black theme
+
+* Fri Jun 21 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.39
+	- List : DarkTheme background color change
+
+* Fri Jun 21 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.38
+	- slider: Apply light theme
+	- WhiteGUI : add resource
+	- toolbar: Apply dark theme
+	- progress: Rollback the background gradient of progress pending bar
+	- slider: Apply light theme
+	- extendablelist: trigger updatelayout after create/refresh (N_SE-41287)
+	- Naviframe : apply white theme
+	- List : Apply white Theme (light theme in UX guide)
+	- Loader : rollback theme selection code(apply white theme)
+	- tabbar, controlgroup: Check the existence of buttons in footer
+	- search : Apply light theme
+	- radio btn: Apply light theme
+	- splitview: Apply dark theme
+	- bubble: Apply light theme
+	- Entry : Apply white theme (editfield color)
+	- button: Apply light theme for on/off button
+	- multimediaview: Apply light theme
+	- scrollview: Modify the scrollbar color and change the jump icon image
+	- handler: Apply light theme
+	- list divider: Apply light theme
+	- progressbar: Apply light theme
+	- Fastscroll: Border color has been changed
+	- Ticker-noti : modify rgb color for thicker notification (light theme)
+	- List : modify css for extandable and vi list (light theme)
+	- Popup: Apply White Theme (UX Guide)
+	- tokentextarea: Apply light theme
+	- Title Uppercase : Title uppercase change to lowercase
+	- winset: spelling fixes (N_SE-34225)
+	- Slider : modify popup of slider z-index (fixed DCM-1735)
+	- WhiteGUI : add no masking resources to white theme
+	- Button: Apply white theme ( light theme )
+	- Resource : delete unnecessary png files
+	- Resource : delete white resource, change black resource permission
+
+* Sun Jun 16 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.37
+	- ThemeBugFix : add splitview resource, change datetimepicker top position
+	- List : modify dialogue(and collapsible)list background
+	- Popup : modify center-checkbox background css style
+	- searchbar: Apply dark theme
+	- BubbleList : add theme
+	- Fastscroll: Applied new ux (ver 0.5) color code
+	- Notification : change theme
+	- Editfield : Apply dark theme
+	- radio btn: Apply dark theme
+	- tokentextarea: Apply dark theme
+	- progressbar: Apply dark theme
+	- multimediaview: Apply dark theme
+	- handler: Apply dark theme
+	- button: Apply dark theme for on/off button
+	- list divider: Apply dark theme
+	- ctxpopup: Apply dark theme
+	- slider: Apply dark theme
+	- virtualgrid: Apply dark theme
+	- scrollview: Apply dark theme
+	- Naviframe/Tabbar : add divider to navifame, Tabbar gets press color
+	- Naviframe : add divider to btn
+	- Popup: modify radius of popup title and button background
+	- TizenWinset : add footer check routine(hide in case footer does not have another button)
+	- Popup: change css styles for dark theme (UX guide)
+	- BlackTheme : LandscapeSupport(Naviframe, Tabbar)
+	- Button: distinguish button and other widgets
+	- List: add variables in style.less for both Dark and White theme
+	- Loader : default theme changed(white GUI is not released yet)
+	- Button: supports button inner shadow in white theme
+	- Pagelayout: other popups will be closed when clicked the more button
+	- Button: Change css style for dark theme
+	- Darktheme : naviframe, tabbar theme change
+	- List: Change css style for Dark Theme (UX guide)
+	- Button : change image resource
+	- DarkTheme: 2nd draft
+	- DarkTheme : 1st draft
+
+* Fri Jun 14 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.36
+	- slider: turn off listener on mouse event when popup is hiden (N_SE-41320)
+	- datetimepicker, ctxpopup: FIX errors with position of ctxpopup in datetimepicker
+	- textarea: change white-space css property (N_SE-40269) (N_SE-40347)
+	- JIRA - FIX N_SE-34055 Resolving problem with the pinch event trigered on the image after orientation change
+	- Gallery: Unbind widget's events properly
+	- slider: fix problem with values sterted from 0 (N_SE-34929)
+	- Collapsible: remove ui-btn-active class when collapse or expand event is cancelled
+	- tabbar: add ellipsis in tabbar items (N_SE-38572)
+	- theme: fix error with display multiline header (N_SE-33971)
+	- JIRA fix - Temporary rotaton is blocked as TIZEN API is missing a flag, which can help to check if the orientation is locked or unlocked
+	- RadioDemo : change to select only controlgroup area(N_SE-38023)
+	- PageLayout : set headerArea in pagebefore(N_SE-36612)
+	- changelog: Fix date format
+	- tabbar: adjust margin-top of title icon img
+
+* Sat Jun 08 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.35
+	- contextpopup: Change option menu class name
+	- pagelayout: more popup style is applied even deviceAPI is not supported
+
+* Sat Jun 08 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.34
+	- HWKey support on pagelayout, ctxpopup and loader
+	- multimediaview: Replace contents of demo
+	- demo: add min and max attributes on the number input entry
+	- Scrollview: Improve scroll performance
+	- scrollview: wrong scroll position after textarea autogrow (N_SE-35696,N_SE-35800)
+	- fastscroll: Fix a position issue by auto scrolling.
+	- fastscroll: fix an issue of a popup position.
+
+* Sun Jun 01 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.33
+	- Loader: fix version and path
+	- Checkbox : Fix incorrect image when favorite checkbox button down
+	- Controlgroup : Fix incorrect background color in horizontal controlgroup
+
+* Thu May 31 2013 Hyeoncheol Choi <hc7.choi@samsung.com> 0.2.32
+	- fastscroll: add a routine for finding a substitution divider
+	- virtualgrid: fix layout issue
+	- slider: add conditional statement for dynamic value change of popup-slider
+	- splitview: fix an issue occured when a resize event is triggered.
+	- Scrollview : Fix horizontal scrollview incorrectly occur when rotate landscape
+	- Template : change WRT install spec(remove useless spec)
+	- Scrollview : change gradiation indicatorbar to png image
+	- splitview: fix layout issue when pane maximized
+	- Check divider : modify checkbox style that used list with check divider.
+
+* Thu May 23 2013 Hyunjung kim <hyunjung.kim@samsung.com> 0.2.31
+	- Scrollview : fix misspell api name(startMscroll)
+
+* Thu May 23 2013 heeju.joo <heeju.joo@samsung.com> 0.2.30
+	- scrollview: inline documentation
+	- Rulechecker: wrap with comment excludeStart ... excludeEnd automatically
+	- JQM: Remove global variables
+	- Popup : remove duplicated popup style
+	- Scrollview: Fix comparison syntax correctly
+	- Naviframe : N_SE-38077 issue fix.
+	- Controlgroup : add controlgroup widget.
+	- Bubble List: less file for bubble date has been modified
+	- Popup: Close JQM popup when page navigation event fired
+	- Tabbar-Persist: a href url has been modified.
+	- Splitview: Fix lint error
+	- ScrollView : Fixed indicator display error occured (N_SE-36738)
+	- Gallery: set 'DELETE' button enable exception when any images do not exist
+	- Slider: add orientationchange handler
+	- Tabbar footer : Long 1 line text modify 2 line text. (N_SE-36476)
+	- splitview: fix unit test error
+
+* Fri May 10 2013 Hyunjung Kim <hjnim.kim@samsung.com> 0.2.29
+	- loader: change a warn msg to debug msg
+	- Radio: Radio issue has been fixed ( N_SE-38015 )
+	- Add gallery3D source to the flora license list
+	- Slider: JQM patch fixed ( event.target match )
+	- Tizen-winset: remove unnecessary file
+
+* Tue May 07 2013 Hyunjung kim <hjnim.kim@samsung.com> 0.2.28
+	- Orientation : add landscape UX
+	- ToggleSwitch : divide jQM and Tizen slider on dragging outside of toggle area ( N_SE-37574 )
+	- Slider: Popup slider issue has been fixed ( N_SE-36430 )
+
+* Fri May 03 2013 Hyunjung kim <hjnim.kim@samsung.com> 0.2.27
+	- Splitview: Fix popup error
+	- Tests: Add slider tests checking if jqm slider is used for select elements
+	- Adjust the latest GUI
+	- Handler: Adjust the latest GUI
+	- Swipe: Adjust the latest GUI
+	- Fastscroll: Adjust the latest GUI
+	- ToggleSwitch : bug fix
+	- TizenWinset : bug fix(N_SE-36666)
+	- Gallery3d: Fix Gallery3d TC failure
+	- UnitTC: fix virtualgrid test error
+	- Popup: popup background image have been added
+	- Tokentextarea: Use jQM popup instead of window.alert().
+	- Splitview: Use jQM popup instead of window.alert().
+	- Splitview: Change an option name to start with a capital letter
+	- License: Change flora license version
+	- Tabbar: Adjust the latest GUI
+	- Tokentextarea: Change from 'px' to 'em.'
+	- Fastscroll: Add 'orientationchange' event handler.
+	- Gallery3d: Fix null reference error
+
+* Fri Apr 26 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.26
+	- PageLayout : bug fix
+	- Gallery3d: Change timing of 'gl-matrix' library's execution
+	- Replace in LoadTheme function strings build with array join with the string concat
+	- Contextpopup: context popup reposition module has been added
+	- Pagelayout : skip to calculate min-height using data-scroll="none"(Issue: DCM-1453)
+	- Splitview: Fix the touchend event error.
+	- Gallery3d: Change event registration method from $.bind() to $.on()
+	- Scrollview : remove useless setTimeout in case scrolls go outside
+	- Naviframe : adjust new SIP down button
+	- Timepicker: Added return false; after vclick
+	- Popupwindow: reserved words has been removed
+	- minor changes: replace one occurrence of array.join with string concat and simplify jQuery arguments
+	- TizenWinset : set default margin for checkbox demo
+	- Tizenwinset: Context popup demo has been changed
+	- TizenDemo : add initial orientation mode to popup demo
+	- Widgets: removed parsing error for legacy javascript engine
+	- Delegate init of popup widget with delegateSelfInitWithSingleSelector
+
+* Tue Apr 18 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.25
+	- Pinch: pinch event re-implementation to use size
+	- Pagelayout : prevent code inserting window.innerHeight when content calculate
+	- BlachTheme : add missing icon (SIP down)
+	- Scrollview : support absolute position
+	- tizen-winsets: change the font-family in virtualgrid demo to default
+	- TizenWinset : Change default font
+	- tizen-winsets: Change image link
+	- tizenwinset: change images for virtual grid pages
+
+* Tue Apr 16 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.24
+	- SegmentControl: 2-buttons display issue (N_SE-34200)
+	- Naviframe : remove unnecessary img positioning(N_SE-33969)
+	- Gallery: jslint error fix
+	- TizenWinset : remove landscape SIP on mode
+	- Tizen Black Theme png file changed
+	- Gallery: Images showing bug has been fixed
+	- Scrollview : change horizontal scrollview demo(N_SE-33997)
+	- Tizenwinset: added return false in popup sample
+	- Naviframe : support data-role="button" in header
+	- Additional UnitTC: tizen winset unit tc bugs have been fixed
+	- Checkbox : remove favorite button's display:block(N_SE-33896)
+	- UnitTC: QUnit path has been changed. Priority, function type check function has been added
+	- Tizen-winset : Footer changed from lower case to upper case.
+	- Slider: enhance performance fix
+	- UnitTC: Addtional unit tc ref path has been fixed
+	- virtualgrid: apply overscrolling images to the style of widget
+	- Tabbar : Change overscroll image(left/right)
+	- ensurens: optimizations
+	- ensurens: qunit tests
+	- Tokentextarea: Fix block size error
+	- Fastscroll: Add a feature to fade out Fastscroll widget.
+	- Fastscroll: Add a user interaction at the omitted items.
+	- ImageLoader: Performance fix: apply lazy loading for canvas element
+	- Tests: Add tests for $.imageloader
+	- SegmentControl: 2-buttons display issue (N_SE-34200)
+	- virtuallist: fix width resizing trigger
+	- Timepicker: timepicker is closed when orientationchange event fired
+	- TizenWinset : Tabbar-persist issue.(N_SE-33996)
+	- Add Flora license
+	- collapsible: Fix collapsible list animation bug
+
+* Wed Apr 10 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.23
+	- Naviframe : modify SIP down button's position
+	- Core: Performance fix for disableSelection and enableSelection
+	- Tests: Core tests for disableSelection
+	- patch: fix small mistakes on the patches
+	- virtuallist: Change demo button style
+	- Button: btn-icon only css has been changed
+	- loader: Fix screen-width option processing
+	- pagelayout: Remember back key when it is hidden
+	- Tizen Black Theme : Tizen black theme png file changed.
+	- UnitTC: tizen winset unit tc bugs have been fixed
+	- TizenWinset: Swipe list sample has been fixed
+	- Radio : remove default radio's width(N_SE-33579)
+	- Scrollview : divide x/y overflow attribute
+	- Gallery: orientation image showing issue has been fixed
+	- Gallery: remove method bug has been fixed
+	- virtualgrid : fix unit-test error and increase test items
+	- Gallery3d: Modify demo & source codes for visibility enhancement.
+	- Gallery3d: Reduce loading time of widget
+	- Gallery3d: Change files' format to unix
+	- Contextpopup: context popup close when window resize event fire
+	- Popup: reverse orientation bug has been fixed
+	- Tokentextarea: modify description
+	- Multimediaview: modify description
+	- JQM: Do not add ui-btn-icon-only class at the select button
+	- build: tizen-black theme package
+	- Tizenwinset: popup script has been removed
+	- Tizenwinset: substring split view text message
+	- Timepicker: data-changed event will be deprecated
+
+* Fri Apr 5 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.22
+	- tizen-winsets: Fix demo menu
+	- Tizenwinset: Reorder tizenwinset menu
+	- SearchBar: Header button size issue has been fixed
+	- Swipe: list item overflow: hidden has been added
+	- Tizenwinset: href has been added in grouped list
+	- Tizenwinset: Page transition page has been added
+	- Tizenwinset: Radio description has been fixed
+	- This patch fixes problem when base url is changed when site is prefetched.
+	- Entry : limit textarea's width (N_SE-28653)
+	- Naviframe : hide backbutton in case SIP up(remove backbutton makes problem in binding event)
+	- Gallery : next, prev images position bug has been fixed
+	- Multimediaview: Fix display error while handling orientationchange event.
+	- Pagelayout : modify innerHeight dpr calculation in non scrollview mode
+	- Datetimepicker: picker position has been fixed when browser resize event fired
+	- Tips: generate elements sample page javascript has been fixed
+	- Tokentextarea: Fix Tizen-winsets demo.
+
+* Wed Apr 3 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.21
+	- VirtualGrid: Fix errors on centerTo and resize methods
+	- loader: Fix default font size at device-width viewport
+	- scrollview : remove overflow-x property
+	- Naviframe : fix backbutton position/ change down button icon
+	- Naviframe : bug fix
+	- Tizenwinset : Tizen-winset demo page titles changed Tizen-winset demo page titles changed from lower case to upper case.
+
+* Fri Mar 29 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.20
+	- JQM Navigation : remove page min-height
+	- Pagelayout : add refresh to pagelayout
+	- Tokentextarea: Changes 'remove' tests to asyncTest
+	- Popup: input tag alignment has been fixed
+	- Tokentextarea: add/remove events are deprecated.
+	- Contextpopup: Support horizontal list
+	- Select: icon z-index has been deleted
+	- Tizenwinset: ui widget order has been changed
+	- Tool: make web app template disable context menu by default
+	- Tizen-winset: change tips for using listview
+	- Loader: calculate font size with mobile width
+	- Naviframe : fix header's back button position
+	- TizenWinset : move locale info to another file
+
+* Fri Mar 22 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.19
+	- Tizen-winset: Support accessibility for tizen-winset
+	- Orientation : add orientataionchange to tizen-winset
+	- Tokentextarea: Adjusts VI effect for add/remove block
+	- splitview: Support accessibility for splitview
+	- Tizen-winset: Date/time picker guide text has been fixed
+	- Popup: context popup arrow position, setTimeout open method bug have been fixed
+	- fastscroll: Add new indexString API to Fastscroll widget.
+	- splitview: Add new widget
+	- gallery3d: Add new widget
+	- Scrollview : disable VI effect for gesture event
+	- Scrollview : disable SIP outerscroll
+	- Tizen-winset: resize VirtualGrid widget in demo
+	- Tizen-winsets: Refactor searchbar subpages
+	- Tizen-winsets: Remove depracated usage of virtuallist
+	- Tizen-winsets: Move js code from main.js to subpages
+	- Tizen-winsets: Refactor virtual grid demo subpages
+	- Tizen-winsets: Move css files from index to proper subpages
+	- Tizen-winsets: Refactor list dialogue edit subpage
+	- Tizen-winsets: Refactor pagelayout subpages
+	- Tizen-winsets: Refactor tips subpages
+	- Tizen-winsets: Move subpages popup files from index.html
+	- Tizen-winsets: Move subpages javascript files from index.html
+	- virtualgrid: fix improperly merged codes
+	- ColorTheme : remove unused color value(1st)
+	- Scrollview : change scrollbar draw
+	- Popup: Apply popup background dim
+	- Tizen-winsets: Move tokentextarea demo to external page.
+	- Tizen-winsets: Move tabbar persist demo to external page.
+	- Tizen-winsets: Remove notImplemented page
+	- Tizen-winsets: Move slider demo page to external subpage
+	- Tizen-winsets: Fix ids, remove duplicated names for sliders
+	- Tizen-winsets: Remove event for changing theme
+	- tool: Fix wgt sample app generator tool to make apps be installed
+	- demos : change live to on
+	- build: Trim compiled CSS files
+	- Gallery: CSS left -> translate or translate3D
+	- Tokentextarea: Disfunctional APIs fixed.
+
+* Thu Mar 7 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.18
+	- build: Fix Makefile to add globalize to the minified lib
+	- build-tools : upgrade less to v1.3.3
+	- demos : change normal js path to minified js
+	- Theme : remove reduantant less - dayselector, optionheader, nocontents
+	- multimediaview : fix full-screen mode.
+	- multimediaview : fix 'width', 'height' and 'fullScreen' methods
+	- Extendablelist: Added min-height "load more button" in listitem
+	- virtualgrid: adjusts VI effect for an overflow action
+	- ControlGroup : change ellipsis font color (press/normal)
+	- multimediaview: Add an error message to Multimediaview
+	- virtualgrid: adjusts triple flick gesture
+	- scrollview: add function for getting width of view
+	- scrollview: adds support x axis gesture scroll
+	- multimediaview : fix audio control
+	- tabbar : tabbar slide animation change
+	- TizenWinsetDemo : 2line-text demo bug fix
+	- collapsible: Fix demo to show radio button correctly in the collapsible list
+	- collapsible: Set listitem position to relative
+	- UnitTC: added list divider unit test
+	- Style: unnecessary color codes have been deleted and modified
+	- build: Module build implementation
+	- UnitTC: Additional unit testcases have been added
+	- listview : bug fix
+	- Naviframe : remove back button's hover effect
+	- TizenDemo : remove back button
+	- Transition: added more-button vi
+	- pinch: added new event called pinch
+	- Popup: css word-wrap:break-word has been added
+	- virtualgrid: memory leak fix
+	- progress: set to init state at pending bar
+	- progress: add margin of top/bottom
+	- unit-test: split progress test and progressbar test
+	- Tizen-winset: Context popup sample page guide text has been changed
+	- multimediaview: fix the height of widget when full-screen mode
+	- JQM: performance tuning
+
+* Tue Feb 19 2013 Minkyu Kang <mk7.kang@samsung.com> 0.2.17
+	- DialogueList : delete border top value / add sample's text ellipsis
+	- Tokentextarea: Add scroll-to-top for Grouping On/Off regarding #N_SE-24877
+	- Multimediaview: Fix mute function
+	- Tizen-winset: list vi index guide textbox has been removed
+	- Tizen-winset: custom button texts have been changed
+	- slider: move popup div to out of content
+	- TizenWinset: disable context popup in multimediaview
+	- Swipe: wrong style name has been fixed
+	- demo: add the sample at dialogue list
+	- listview: Add ui-li-has-right-btn class with toggleswitch
+	- WinsetDemo : change wrong title name
+
+* Mon Jan 28 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.16
+	- demo: checkbox: reduce button's width
+	- tabbar : delete right/left tab animation color
+	- scrollview: fix the scroll position at keydown event
+	- groupControl : change footer groupControl from min-width to percentage
+	- scrollview: get height of softkeyboard correctly
+	- tizen-winset: Add name attr to all radio inputs
+	- virtualgrid: changes event binding target
+	- scrollview: skip the drag if target is textarea
+	- scrollview: skip the dragging of parent scrollview
+	- scrollview: apply the scaling ratio to the soft keyboard
+	- demos: apply disabled option in textarea
+	- demo: remove unused codes
+	- demo: datetimepicker: show selected date correctly
+	- listview: Adjust bubble listitem width and margin
+	- pagelayout : change external refresh call and ime status follow only current page
+	- toggleSwitch : bug fix
+	- unit-test: slider: fix the move test
+	- handler: fix jslint error
+	- ToggleSwitch : set image toggleswitch background attribute
+
+* Mon Jan 28 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.15
+	- slider: increase the text width(N_SE-23397)
+	- virtualgrid: DOM element leak fix
+	- header: Move button top higher in header with tabbar(N_SE-22253)
+	- datatimepicker: don't open the popup before popupafterclose event is fired(N_SE-23027)
+	- handler: bug fix (regarding enableHandler function )
+	- demo:fix syntax error
+
+* Sat Jan 26 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.14
+	- demo: fix demo using tizen device API
+	- multimediaview: reset the height of container
+	- input: modify css correctly
+	- multimediaview: fix the height of widget
+	- gallery: bind create event
+	- progress: bind create event
+	- slider: bind create event
+	- progressbar: bind create event
+	- progressbar: event trigger correctly
+	- popup: fix height of popup scroller
+	- build: add continue option to jslint
+	- ctxpopup demo : bug fix
+	- demo: fix searchbar demo to use different IDs
+	- demo: extract routine executing Tizen device API
+	- toggleswitch : set default margin, delete box padding
+
+* Thu Jan 24 2013 Youmin Ha <youmin.ha@samsung.com> 0.2.13
+	- virtuallist: Prevent replacing contents on nonexist element
+	- JQM: Trim text in listitem to get index in autodivider
+	- JQM: Remove trailing whitespace in jqm patch
+	- scrollview: get the height including margin
+	- multimediaview: bug fix ( scrolling in full-screen mode )
+	- virtuallist: set listitem width to exclude listitem left/right margin
+	- demo: fix virtuallist sample layout
+	- progress: set the position explicitly
+	- progress: rename from progressing to progress
+	- build: remove unused files
+	- searchbar: fix jslint errors
+	- src: fix file permissions
+	- button : change jump left icon
+
+* Wed Jan 23 2013 Minkyu Kang <mk7.kang@samsung.com> 0.2.12
+	- theme : button icon - scrolltop, scrolleft icon changed.
+	- build: cleanaup Makefile
+	- pagelayout: fix jslint error
+	- virtualgrid: Fix jslint errors
+	- tabbar : jslint bug error fix
+	- build: add regexp option to jslint
+	- virtuallist: fix jslint errors
+	- handler: Apply the exceptional principle for scrollbar on Handler.
+	- build: remove unused copyright
+	- loader: extract log class for tizen web, and fix jslint errors
+	- loader: Viewport width is set to document width
+	- popupwindow: fix jslint error
+	- build: fix Makefile for tizen-white theme
+	- build: remove unused libraries
+	- datetimepicker: fix jslint error
+	- slider: fix jslint error
+	- demo: remove deprecated demos
+	- pagelayout : change to call relayout with this page
+	- Tokentextarea: Block size error fixed.
+	- handler: bug fix (handler activation)
+
+* Tue Jan 22 2013 Minkyu Kang <mk7.kang@samsung.com> 0.2.11
+	- demo: clear input text value with cancel button click
+	- demo: Adjust textarea height automatically
+	- naviframe : bug fix
+	- tabbar : bug fix
+	- Fastscroll: popup position has been changed
+	- Button: custom button icon path, margin have been changed
+	- toggleswitch : bug fix
+	- slider: increase the margin
+	- datetimepicker: close the popup after select the value
+	- unit-test : add page backbutton control test
+	- Demo: added guide text and change input type in list vi
+	- remove legacy codes : jquery-geo
+	- Datetimepicker: text-main max-width has been removed
+	- Radio: control group border has been removed
+	- Demo: remove 'tab' space
+	- UnitTC: swipe unit tc has been fixed
+	- UnitTC: jQuery path has been fixed
+	- Button: bug fix when button has not a text
+	- tizen-winset: timepicker: demo title is changed
+
+* Fri Jan 18 2013 Minkyu Kang <mk7.kang@samsung.com> 0.2.10
+	- tizen-winsets: codes cleanup
+	- datetimepicker: date calibration when year is changed
+	- Demo: textarea size has been changed
+	- Demo: Naviframe morebutton demo has been changed
+	- remove unused unit test cases : gallery3d
+	- tizen-winset: remove links
+
+* Thu Jan 17 2013 Minkyu Kang <mk7.kang@samsung.com> 0.2.9
+	- gallery: use timeout function instead of interval
+	- Tokentextarea: Display error fixed.
+	- scrollview: Fix not selector to respond with jQuery1.8.2
+	- tabbar: remove the width of last element
+	- Demo: apply css 'user-select:none'
+	- Button: guide text has been shorten
+	- build: Update jQuery to 1.8.2 (JQM1.2 compliant)
+	- virtuallist: Fix mistyping
+	- demo: Fix tizen function namespace in demo
+	- virtuallist: Rewrite listitem replacing algorithm
+	- fastscroll: modify from not selector to function
+	- extendablelist: Fix unit-test
+	- tabbar : prefix to tabbar scroll event
+	- Popupwindow: removed unvalid selector in jquery 1.8.2
+	- slider: adjust handle text as length of value
+	- Demo: 3 buttons in popup text has been changed
+	- src: codes cleanup
+	- demo : remove trailing empty strings
+	- demo : rename TizenWinset list items
+	- button : change from long text list to multiline list
+	- build: Remove JQM1.1.0 patches
+	- Popup: Apply tizen style popup and attribute support
+	- JQM: Fix buttonmarkup bug keeping ui-btn-down class
+	- UnitTest: folder and file renamed, QUnit path was modified
+	- tizen-winsets: button: fix textarea width
+	- Swipe: event name error has been fixed
+
+* Tue Jan 15 2013 Minkyu Kang <mk7.kang@samsung.com> 0.2.8
+	- Button: button padding has been updated
+	- virtuallist: fix unique listitem ID bug
+	- checkbox, radio : change display attr
+	- Button: bug fix ( when data style circle button on text )
+	- handler: bug fix (when scrolling with multi selection)
+	- JQM: adjust patch number
+	- gallery: show the widget after pageshow
+	- TokenTextArea : resource add ( press image )
+	- gallery: adds function that set the index to value API
+	- configure: set TIZEN default configures
+	- footer: h tag display attribute value has been changed
+	- buttons : demo bug fix
+	- searchbar : demo page bug fix
+	- tizen demo : bug fix
+	- build: remove JQM1.1.0
+	- Tokentextarea: Fix issues
+	- scrollview: block the multi touch
+	- list : dialogue list demo change
+	- pagelayout : update dynamic control
+	- Demo: Context popup close method has been changed
+
+* Fri Jan 11 2013 Minkyu Kang <mk7.kang@samsung.com> 0.2.7
+	- slider: set text container's width as text length
+	- Timepicker: li max-width has been changed
+	- remove experimental feature - mapview.
+	- scrollview: added conditions for finding slider
+	- UnitTC: Pass,error count save method has been changed
+	- confix.xml: default config added for tizen basic applications
+	- Swipe: p tag margin value is set '0'
+	- packaging: remove unused file
+	- tabbar : bug fix
+	- list demo : bug fix
+	- tizen-winsets: gallery: move to new section
+	- tizen-winsets: autodivider: removes link of list
+	- demos: entry of number-pattern name is changed from 'number' to 'number-pattern'
+	- pagelayout : padding calculate change, ime footer check changed
+	- tizen-winsets: searchbar: scroll to the top when type the character
+	- searchbar : bug fix
+	- demo: Fix virtuallist demo following new list style
+	- demo: Add word-wrap:break-word and remove parag. width
+	- Demo: button max-width has been set( 3 buttons in popup )
+	- back button control demo : bug fix
+	- toggleswitch : demo page modify
+	- slider: add margin-top and margin-bottom
+	- tabbar demo : bug fix
+	- Popup: IME hide when popup is closed
+	- token textarea : bug fix
+	- Timepicker: change get attribute method
+	- footer demo : bug fix
+	- unit-test: gallery: add new APIs
+	- gallery: adds support new APIs
+
+* Fri Jan 04 2013 Minkyu Kang <mk7.kang@samsung.com> 0.2.6
+	- JQM: patches cleanup
+	- Button: data-corners attribute has been added
+	- unit-test: slider: fix class name of background
+	- progressbar, slider: fix less variable typo
+	- Tabbar : VI update
+	- notification: add top position at fix class
+	- demo: entry demo page change
+	- css: .ui-disabled added
+	- tizen-winset: token textarea: remove back button at demo page
+	- theme: Remove unused less file
+	- pagelayout : content min height bug fix
+	- scrollview: skip the dragging when target is slider's handle
+	- scrollview: update and refactoring the scroll effect
+	- UnitTest:JQM Unit TC helper has been added,TCs have been modified
+	- Swipe: demo page html error has been fixed
+	- listview: Add add/delete animation (VI)
+	- Popup: demo page has been modified
+	- tizen demo : bug fix
+	- searchbar : demo page change(change front button and add behaviour)
+	- pagelayout : add min height to content
+	- gallery: rename 'Image Slider' to 'Gallery' in tizen-winsets demo and tests
+	- back button control demo : change url link to data-rel="back"
+	- loader: Skip loading theme CSS with a custom css code
+	- Button: support no-text in button
+	- collapsible: Fix syntax error
+	- slider: use data-highlight attribute
+	- collapsible: Rotate animation to collapsible heading icon
+	- toggleswitch : text switch bug fix
+	- remove candidates-calendarpicker
+	- Patch: Fix misc mistakes in JQM patches
+	- searchbar : animation change
+	- gallery: get the width correctly
+	- demo: data-framework-viewport-scale attribute is changed to data-framework-viewport-width
+	- collapsible: Add collapse/expand animation (VI)
+	- datetimepicker: VI update
+	- JQM: set transition to pop as default
+	- tabbar : bug fix in case none li element case
+	- scrollview: fix the drag bug
+	- Button: Button icon scrolltop, left has beed added
+	- Swipe: VI update and swipe speed has been changed
+	- jqm: fix errors in patch files
+	- unit-test: swipe: fixed the destroy test
+
+* Wed Dec 26 2012 Youmin Ha <youmin.ha@samsung.com> 0.2.5
+	- Revert "[checkboxradio] exception handling for input"
+		This reverts commit 72478c32704fa96362db577e6cf9511777919ea8.
+		Tizen style supports no-label radio and checkbox when making lists.
+		So it ignores html input operation. Instead, it supports tizen style radio and checkbox theme.
+
+* Thu Dec 20 2012 Youmin Ha <youmin.ha@samsung.com> 0.2.4
+- Fix:
+	- modify segment background
+	- rearrange check, radio input
+	- CtxPopup: Scale up/ down popup vi(poptop, popbottom)
+	- button: style has beed added(box,circle,nobg,round)
+	- favorite resource added
+	- demo/tizen-winsets: add footer and back button
+	- remove autodividers unit test
+	- add divider for tabbar
+	- checkboxradio: exception handling for input
+	- segment control backward compatiblity
+	- Fix collapsible unit-test
+	- remove toggleswitch
+	- add patch for remove segment text
+- Spec changes:
+	- replace controlbar to tabbar
+
+* Fri Dec 14 2012 Minkyu Kang <mk7.kang@samsung.com> 0.2.3
+- FIX:
+	- slider: add image
+	- button: data-icon support, styles fix
+	- progressbar: modify the background
+	- scrollview: auto scrolling bug fix
+	- pagelayout: IME concept is changed
+- Spec changes:
+	- dialogue: add edit mode
+	- nocontents: removed
+	- pagecontrol: removed
+	- dayselector: removed
+	- expandablelist: removed
+
+* Thu Dec 10 2012 Youmin Ha <youmin.ha@samsung.com> 0.2.2
+- FIX:
+	- chang searchbar/slider images
+	- delete redundant button images
+- Spec changes:
+	- Change widget name: shortcutscroll -> fastscroll
+
+* Thu Dec 07 2012 Youmin Ha <youmin.ha@samsung.com> 0.2.1
+- FIX:
+	- jqm1.2: Change collapsible style to meet expandable list
+	- remove jquery-geo-1.0.a4
+	- unit-test: rename from imageslider to gallery
+	- nocontent: add warning message
+	- Handler: Fix issues in jqm1.2
+	- Multimediaview: modify APIs & comments
+	- Mapview: Fix issues in jqm1.2
+	- JQM: clean up patches
+	- Swipelist: refactoring swipelist
+	- Popup,Ctxpopup: Apply tizen style popup in JQM1.2
+	- rearrange button's data-icon resources
+- Spec changes:
+	- Virtualgrid: remove option ('data-itemcount')
+	- gallery: rename the widget from imageslider to gallery
+	- add new style for searchbar
+	[tokentextarea] multi-button entry renamed as token text area. API & comments modified.
+
+* Thu Dec 06 2012 Minkyu Kang <mk7.kang@samsung.com> 0.2.0
+- FIX:
+	- fix jslint error
+	- remove unused files
+	- change naviframe style
+- Spec changes:
+	- applied jQuery Mobile 1.2.0
+	- remove optionheader
+
+* Fri Nov 30 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.64
+- FIX:
+	- fix unit tests
+	- remove unused theme files
+	- timepicker: text position fix
+	- scrollview: set dragstop when mouse is out of window
+	- listview: fix margin
+- Spec changes:
+	- support data-framework-viewport-width
+
+* Fri Nov 23 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.63
+- FIX:
+	- dayselector: fix size
+	- remove unised styles
+	- divider: set non-press effect to default option
+	- popupwindow: fix window closing failure
+	- handler: GUI implementation
+	- TC: fix unit TCs
+	- scrollview: fix padding size
+- Spec changes:
+	- Remove color widgets
+	- add $.tizen.pkgVersion for SDK
+- Etc.
+	- JSDuck documents
+
+* Fri Nov 16 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.62
+- FIX:
+	- Many winsets: Fix layout
+	- Footer: fix position to bottom
+- Spec changes:
+	- Remove color widgets
+
+* Fri Nov 09 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.61
+- FIX:
+	- Many widgets: New UX 0.6 theme implementation
+	- widgetex: init speed up
+	- scrollview: fix scrollbar and scale animation
+	- scrollview: fix scroll position when updatelayout is triggered
+	- header/footer: make textselection disable, except input type="text"
+
+* Wed Nov 07 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.60
+- FIX:
+	- Remove tizen-black theme package description
+
+* Tue Nov 06 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.59
+- FIX:
+	- Fix theme name to meet the change of system theme name: white->tizen
+	- Popupwindow: fix left position
+	- Remove black theme
+	- footer: remove label, legend drawing
+- Spec changes:
+	- UX guide v0.4 : button, layout
+
+* Fri Oct 26 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.58
+- FIX:
+	- scrollview: Fix outer scroll amount
+	- tabbar: fix tapping twice
+	- popupwindow: fix left position
+
+* Wed Oct 24 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.57
+- FIX:
+	- expandablelist: icon color fix
+	- scrollview: Fix xy scroll
+	- footer: Remove dummy div
+	- Make string concatnation effective in inline-protos.sh
+- Spec changes:
+	- refresh header/footer when drag&drop event is fired in GUI builder
+	- searchbar: delete cancel button
+	- don't trigger updatelayout event when keyup event comes
+
+* Mon Oct 15 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.56
+- FIX:
+	- Toggleswitch: Change event name from 'changed' to 'change'
+	- Notification: Revert interval feature
+
+* Tue Oct 09 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.55
+- FIX:
+	- Fix SMACK manifest bug (S1-9098)
+
+* Fri Oct 05 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.54
+- FIX:
+	- handler: don't append a handler if handler is not enabled
+	- scrollview: use static value
+	- datetimepicker: fix date-format HH display error
+- ETC:
+	- provide jquery.min.js
+	- barlayout: codes clean
+	- remove unused file
+
+* Wed Sep 26 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.53
+- FIX:
+	- listview: change focused color
+	- multibuttonentry: code refactoring
+	- datetimepicker: modify date format when triggered date-changed event
+	- slider: fix the top of slider bar
+	- add event blocker when load a first page
+
+* Fri Sep 21 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.52
+- ETC.
+	- Move SMACK manifest files to the top SRCDIR
+
+* Fri Sep 21 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.51
+- FIX:
+	- Popup: Do not focus container
+	- Header: show backbutton when both tabbar and header are present together
+	- Multi button entry: text ellipsis, code refactoring
+
+* Fri Sep 21 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.50
+- ETC.
+	- Apply SMACK manifest
+
+* Thu Sep 20 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.49
+- FIX:
+	- JSLINT code clean-up
+	- scrollview: firefox support
+	- scrollview: fix finding slider handle
+	- list: tweak text ellipsis
+	- checkbox: fix selecting wrong label tag (N_SE-8370)
+	- imageslider: check parameter
+	- smallpopup: fix position
+	- searchbar: fix 'clear' button size
+- Spec changes:
+	- scrollview: support outer scroll
+	- JQM: block click event only with the element that does preventdefault on vclick(N_SE-6090)
+	- remove S/W IME control
+
+* Thu Sep 13 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.48
+- FIX:
+	- Add missing icon: controlbar
+	- scrollview: tune scrolling animatio ninterval
+	- datetimepicker: digit/triangle position
+	- datetimepicker: fix day overflow issue
+- Spec changes:
+	- scrollview: show scrollbar when page is showed
+	- scrollview: disable outer scroll
+	- extendablelist: change api with legacy support
+	- add ui-text-ellipsis class
+
+* Mon Sep 10 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.47
+- FIX:
+	- scrollveiw: fix height of view
+	- searchbar: support placeholder
+- Spec changes:
+	- add ui-text-ellipsis class
+
+* Fri Sep 07 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.46
+- FIX:
+	- scrollview: scrolling bug fix
+	- controlbar: fix width of controlbar item
+- Spec changes:
+	- searchbar: don't hide icon
+	- popup: update JQM poup widget
+
+* Fri Sep 05 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.45
+- FIX:
+	- controlbar: set correct controlbar width of last element
+	- slider: get popup enable value correctly
+	- use Date.now() instead of (new Data()).getTime()
+	- popupwindow: fix the background color of popup scroller
+	- listview: add padding-left to expandable list
+	- add ellipsis for title area support
+
+* Fri Aug 31 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.44
+- FIX:
+	- swipelist: show list items correctly
+	- datetimepicker: set last day, if day is overflowed
+- Spec changes:
+	- controlbar: update icons
+
+* Tue Aug 29 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.43
+- FIX:
+	- notification: fix typo
+- Spec changes:
+	- controlbar: update icons
+
+* Tue Aug 28 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.42
+- FIX:
+	- multimediaview: video progress bar display normally for too samll
+	- segmentcontrol: remove media query
+	- scrollview: add outer scroll condition
+	- datetimepicker: modify triangle size
+	- popupwindow: set the screen height explicitly
+	- notification: add multiline text
+- Spec changes:
+	- mutibuttonentry: support new GUI
+	- virtualgrid: support new GUI
+
+* Mon Aug 27 2012 Jinhyuk Jun <jinhyuk.jun@samsung.com> 0.1.41
+- FIX:
+	- radio/check button : button size bug fix
+
+* Fri Aug 24 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.40
+- FIX:
+	- build error fixed
+
+* Fri Aug 24 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.39
+- FIX:
+	- listview: style fix, remove filter placeholder
+	- controlbar: divide styles
+	- scrollview: don't skip dragging when click button or inputbox
+	- slider: trim the text on text slider
+- Spec changes:
+	- remove gray and blue theme
+	- add white and black theme
+	- support new GUI guide
+
+* Mon Aug 20 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.38
+- FIX:
+	- fix coment of version tag
+
+* Fri Aug 17 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.37
+- FIX :
+	- button: fix alignment
+	- listview: adjust the main text width
+	- virtualgrid: refactoring
+- Spec changes:
+	- transition: support JQM 1.1.0 transitions
+	- scrollview: support the outer scroll
+	- notification: remove interval feature
+
+* Tue Aug 14 2012 Youmin Ha <youmin.ha@samasung.com> 0.1.36
+- FIX :
+	- checkboxRadio: Add left/right padding
+	- button: custom button & icon position
+	- virtuallist: remove 'recreate' test
+- Spec changes:
+	- header/footer: enable/disable support
+
+* Fri Aug 10 2012 Minkyu Kang <mk7.kang@samsung.com> 0.1.35
+- FIX :
+	- expandablelist: modify show animation
+	- virtualgrid: Redesign programming interface
+	- popupwindow: code clean and fixed issues
+	- pagelayout: fix content height
+	- license file update
+	- virtuallist: Change programming interface
+	- datetimepicker: getting days correctly
+	- searchbar: set to hidden when cancel button is hide
+	- White theme title font tuning
+- Spec changes:
+	- default theme tizen-gray to tizen-white
+	- set default page transition to none
+
+* Mon Aug 02 2012 Jinhyuk Jun <jinhyuk.jun@samsung.com> 0.1.34
+- FIX :
+	- Back Button : enlarge backbutton click size for white theme
+- Feature :
+	- Expandable List : Add refresh api
+* Mon Aug 02 2012 Jinhyuk Jun <jinhyuk.jun@samsung.com> 0.1.33
+- FIX :
+	- click event touch threshold tuning
+
+* Mon Aug 02 2012 Jinhyuk Jun <jinhyuk.jun@samsung.com> 0.1.32
+- FIX : 
+	- Add back button highlight effect for white theme
+
+* Mon Aug 01 2012 Jinhyuk Jun <jinhyuk.jun@samsnug.com> 0.1.31
+- FIX : 
+	- IME checkroutine update, improve relayout on resize event
+	- Add highlight effect for radio button list 
+	- Scrollview : fix condition of updatelayout event
+- Feature : progressing : add show/hide api
+
+* Mon Jul 27 2012 Koeun Choi <koeun.choi@samsung.com> 0.1.30
+- FIX : virtuallist, virtualgrid: Clean up temporary jquery.template object to clear cache
+	add default theme option on buttonMarkup for tizen theme
+	[searchbar] first fix : focus/blur fixed
+	back button does not work when long press
+	scrollview: don't auto scrolling if resizing area is too large
+- Feature : notification : add api to set the icon at tickernoti
+	demo : update the list sample demo
+	Support tizen default theme
+
+* Mon Jul 23 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.29
+- Improvements & Bugfixes
+   - HOTFIX: Revert template function with jquery.template
+
+* Thu Jul 19 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.28
+- Improvements & Bugfixes
+   - Fix #WEB-1028: memory leak on virtuallist/virtualgrid
+- Spec changes
+   - $.tizen.loadTheme() function accepts theme name as arguement
+   - Scrollview supports 'updatelayout' callback
+
+* Tue Jul 17 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.27
+- Improvements & Bugfixes
+   - Revert 'preventing long-press popup' patch, to fix backbutton to work in SocialMagazine
+
+* Tue Jul 17 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.26
+- Improvements & Bugfixes
+   - Add tizen-white theme package, to make rpm build to be finished
+
+* Tue Jul 17 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.25
+- Improvements & Bugfixes
+   - Set 'slide' as default page transition effect, by JQM patch
+
+* Fri Jul 13 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.24
+- Improvements & Bugfixes
+   - Fix IME show/hide algorithm
+   - Fix error on virtualgrid: link _set_scrollbar_size() function to the one in virtuallist
+
+* Wed Jul 11 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.23
+- Improvements & Bugfixes
+   - Fix notification position
+   - Fix unit tests
+
+ Fri Jul 6 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.22
+- Spec changes
+	- JQM 1.1 upgrade
+- Improvements & Bugfixes
+	- Transform3D support on scrollview
+	- Page layout supports IME control
+	- Mapview supports pinch zoom on JQM 1.1
+	- Fix wrong character on button in minified version
+	- Virtualgrid supports scrollbar
+	- Lots of bugfixes
+
+* Fri Jun 22 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.20
+- Spec changes
+	- Support 'latest' version (by symlink) for tizen-web-ui-fw.js path.
+	- imageslider : supports 'resize' event.
+	- listview : listview has 1px padding-bottom.
+	- loader : Change global namespace, from S to $.tizen.
+	- loader : Move loadCustomGlobalizeCulture() into $.tizen.util namespace.
+- Improvements & Bugfixes
+	- Scrollview : supports 'translate3d', instead of 'translate'.
+	- notification : reset timer when 'show' or 'refresh' event.
+	- JQM patch : Fix vclick event triggered twice.
+- Etc.
+	- Add & fix unit tests.
+
+* Thu Jun 14 2012 Youmin Ha <youmin.ha@samsung.com> 0.1.19
+- Spec changes
+	- mapview : new widget.
+	- notification : add .refresh() API.
+	- pagecontrol : add .value([val]) API, and change an attribute name 'data-initVal' to 'data-value'.
+- Improvements & Bugfixes
+	- Support minified CSS.
+	- loader : Fix & refactor 'loading globalize culture file' routine.
+	- JQM Patch : Calculate min-height of window in javascript code, and remove predefined min-height value from CSS.
+	- Many more bugfixes.
+- Etc.
+	- Add many unit tests.
+	- Fix test coverage instrumentation tool to work with current source code.
