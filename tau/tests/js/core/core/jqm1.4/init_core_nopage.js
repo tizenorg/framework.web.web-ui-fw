@@ -2,7 +2,6 @@
  * mobile init tests
  */
 (function($){
-		module("core/core");
 
 		
 		test( "page element is generated when not present in initial markup", function(){

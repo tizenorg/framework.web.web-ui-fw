@@ -108,7 +108,8 @@ fieldset.ui-controlgroup {
 	.ui-btn {
 		border-radius : 0;
 		display: inline-block;
-		box-sizing: border-box;
+		margin-left : -4 * @unit_base;
+		margin-right : -3 * @unit_base;
 	}
 	.ui-checkbox, .ui-radio {
 		float: left;
@@ -119,6 +120,8 @@ fieldset.ui-controlgroup {
 	}
 
 	[data-role="button"] {
+		box-shadow : none;
+		background : none;
 		&.ui-btn-down-s, .ui-btn-active-s {
 			.ui-btn-inner {
 				.ui-btn-text {

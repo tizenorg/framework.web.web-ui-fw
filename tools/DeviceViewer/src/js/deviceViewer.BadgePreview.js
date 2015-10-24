@@ -396,9 +396,6 @@
 		// ... and mark first one as active
 		this.setActive(0);
 
-		viewportZoom = previewProperties.zoom || 100;
-		this.zoomViewport(viewportZoom);
-
 	};
 
 	deviceViewer.badgePreview = new BadgePreview();

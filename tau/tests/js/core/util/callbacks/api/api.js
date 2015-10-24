@@ -1,4 +1,4 @@
-module("core/util/callbacks", {});
+module("callbacks", {});
 
 var callbacks = ej.util.callbacks();
 

@@ -1,4 +1,4 @@
-module("core/util/deferred");
+module("API", {});
 
 var deferred = ej.util.deferred();
 

@@ -1,7 +1,5 @@
 (function (ns) {
 	'use strict';
-	module("profile/mobile/widget/mobile/Gallery");
-
 	test ( "API ns.widget.mobile.Gallery" , function () {
 		var widget, Gallery;
 		equal(typeof ns, 'object', 'Class ns exists');

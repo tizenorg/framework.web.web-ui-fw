@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+	<div data-role="page" id="navi_title_text">
+		<div data-role="header" data-position="fixed">
+			<h1>Title text</h1>
+		</div>
+		<div data-role="content">
+			<p>title text sample</p>
+		</div>
+		<script>
+		$( "#navi_title_text" ).on( "pageshow" , function() {
+			$( window ).on( "tizenhwkey", function ( ev ) {
+				if ( ev.originalEvent.keyName === "back" ) {
+					//bind callbacks to the H/W keys
+					window.history.back();
+				}
+			});
+		});
+		$( "#navi_title_text" ).on( "pagebeforehide" , function() {
+			//unbind callbacks to the H/W keys
+			$( window ).off( "tizenhwkey" );
+		});
+		</script>
+	</div>
+
+
+</body>
+</html>

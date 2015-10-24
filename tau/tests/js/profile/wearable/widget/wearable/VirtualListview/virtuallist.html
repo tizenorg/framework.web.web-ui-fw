@@ -10,9 +10,6 @@
 				type="text/javascript"></script>
 		<script src="../../../../../../libs/support.js"></script>
 		<script>
-			var tauConfig = {
-				"autorun": false
-			};
 			// workaround for touches simulate;
 			window.ontouchstart = {};
 		</script>
@@ -23,8 +20,11 @@
 		<div id="qunit"></div>
 		<div id="qunit-fixture">
 		</div>
-		<div id="vlist" style="width:360px; height:360px; overflow:hidden; visibility: hidden">
-			<div id=vlistContent" style="height:100%">
+		<div class="ui-page" id="pageTestVirtualList" style="visibility: hidden">
+			<header class="ui-header">
+				<h2 class="ui-title">Virtual List</h2>
+			</header>
+			<div class="ui-content">
 				<ul id="vlist1">
 				</ul>
 			</div>

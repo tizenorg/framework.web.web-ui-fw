@@ -1,28 +1,14 @@
-/*global window, ns, define */
-/*jslint nomen: true */
+/*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /**
  * #SelectMenu Widget
  * SelectMenu widget provide creating SelectMenu widget in the form of dropdown list and managing its operation.
  *
  * ##Default selector
- * In default all select elements with _data-role=select_ or with class .ui-select-menu
- * are changed to Tizen WebUI SelectMenu. Additionally elements with
- * _data-native-menu=false_ will use custom popups for option selection
+ * In default all select element are changed to Tizen WebUI SelectMenu.
  *
  * ###  HTML Examples
  *
@@ -143,7 +129,6 @@
 			"../../../../core/util/selectors",
 			"../../../../core/event",
 			"../../../../core/util/DOM/manipulation",
-		 	"../../../../core/widget/core/Page",
 			"../mobile",
 			"./BaseWidgetMobile"
 		],
@@ -156,7 +141,6 @@
 				eventUtils = ns.event,
 				selectors = ns.util.selectors,
 				slice = [].slice,
-				Page = ns.widget.core.Page,
 				indexOf = [].indexOf,
 				SelectMenu = function () {
 					var self = this;
@@ -191,53 +175,14 @@
 					* @property {boolean} [options.inline=false] Sets the SelectMenu widget as inline/normal type.
 					* @property {boolean} [options.label=false] Sets the SelectMenu widget as label/normal type.
 					* @property {boolean} [options.hidePlaceholderMenuItems=true] Hide/Reveal the placeholder option in dropdown list of the SelectMenu.
-					* @property {boolean} [options.backgroundLayer=true] Enable or disable background layer which close select menu after click
 					* @member ns.widget.mobile.SelectMenu
 					*/
 					self.options = {
 						nativeMenu: true,
 						inline: false,
 						label: false,
-						hidePlaceholderMenuItems: true,
-						backgroundLayer: true
+						hidePlaceholderMenuItems: true
 					};
-
-					/**
-					 * @property {Function|null} _toggleMenuBound callback for select action
-					 * @protected
-					 * @member ns.widget.mobile.SelectMenu
-					 */
-					self._toggleMenuBound =  null;
-					/**
-					 * @property {Function|null} _changeOptionBound callback for change value
-					 * @protected
-					 * @member ns.widget.mobile.SelectMenu
-					 */
-					self._changeOptionBound = null;
-					/**
-					 * @property {Function|null} _onResizeBound callback for throttledresize
-					 * @protected
-					 * @member ns.widget.mobile.SelectMenu
-					 */
-					self._onResizeBound = null;
-					/**
-					 * @property {Function|null} _nativeChangeOptionBound callback for change value
-					 * @protected
-					 * @member ns.widget.mobile.SelectMenu
-					 */
-					self._nativeChangeOptionBound = null;
-					/**
-					 * @property {Function|null} _focusBound callback for focus action
-					 * @protected
-					 * @member ns.widget.mobile.SelectMenu
-					 */
-					self._focusBound = null;
-					/**
-					 * @property {Function|null} _blurBound callback for blur action
-					 * @protected
-					 * @member ns.widget.mobile.SelectMenu
-					 */
-					self._blurBound = null;
 				},
 				/**
 				 * Dictionary for SelectMenu related css class names
@@ -260,11 +205,9 @@
 					inline : "ui-selectmenu-inline",
 					native : "ui-select-native",
 					top : "ui-selectmenu-option-top",
-					bottom : "ui-selectmenu-option-bottom",
-					focus : "ui-focus"
+					bottom : "ui-selectmenu-option-bottom"
 				},
 				prototype = new BaseWidget();
-
 			SelectMenu.prototype = prototype;
 			SelectMenu.classes = classes;
 
@@ -336,40 +279,6 @@
 			}
 
 			/**
-			 * Function adds ui-focus class on focus
-			 * @private
-			 * @static
-			 * @param {ns.widget.mobile.SelectMenu} self
-			 * @param {Event} event
-			 * @member ns.widget.mobile.SelectMenu
-			 */
-			function onFocus(self, event) {
-				var ui = self._ui,
-					target = event.target;
-				if (target === ui.elSelectWrapper ||
-						 target.parentNode === ui.elOptionContainer) {
-					target.classList.add(classes.focus);
-				}
-			}
-
-			/**
-			 * Function removes ui-focus class on focus
-			 * @private
-			 * @static
-			 * @param {ns.widget.mobile.SelectMenu} self
-			 * @param {Event} event
-			 * @member ns.widget.mobile.SelectMenu
-			 */
-			function onBlur(self, event) {
-				var ui = self._ui,
-					target = event.target;
-				if (target === ui.elSelectWrapper ||
-						 target.parentNode === ui.elOptionContainer) {
-					target.classList.remove(classes.focus);
-				}
-			}
-
-			/**
 			 * Toggle enable/disable selectmenu
 			 * @method setDisabledStatus
 			 * @private
@@ -400,11 +309,7 @@
 			 * @member ns.widget.mobile.SelectMenu
 			*/
 			function convertOptionToHTML(option, isDisabled) {
-				var className = option.className;
-				if (isDisabled) {
-					className += " " + classes.disabled;
-				}
-				return "<li data-value='" + option.value + "'" + (className ? " class='" + className + "'" : "") + (!isDisabled ?  " tabindex='0'" : "") + ">" + option.textContent + "</li>";
+				return "<li data-value='" + option.value + "'" + (isDisabled ? (" class='" + classes.disabled + "'") : "tabindex='0'" ) + ">" + option.textContent + "</li>";
 			}
 
 			/**
@@ -438,6 +343,7 @@
 			 * @method constructOption
 			 * @private
 			 * @static
+			 * @param {HTMLElement} element
 			 * @param {ns.widget.mobile.SelectMenu} self
 			 * @return {string}
 			 * @member ns.widget.mobile.SelectMenu
@@ -566,21 +472,21 @@
 					fragment,
 					elementId = element.id,
 					ui = self._ui,
+					elSelect = element,
 					elPlaceHolder,
 					elSelectWrapper,
 					elOptions,
 					screenFilter,
-					elOptionContainer,
-					pageClasses = Page.classes;
+					elOptionContainer;
 
-				ui.elSelect = element;
-				ui.page = selectors.getParentsByClass(element, pageClasses.uiPage)[0] || document.body;
-				ui.content = selectors.getParentsByClass(element, pageClasses.uiContent)[0] || selectors.getParentsByClass(element, pageClasses.uiHeader)[0];
-				ui.elDefaultOption = findDataPlaceHolder(element);
+				ui.elSelect = elSelect;
+				ui.page = selectors.getParentsByClass(elSelect, "ui-page")[0] || document.body;
+				ui.content = selectors.getParentsByClass(elSelect, "ui-content")[0];
+				ui.elDefaultOption = findDataPlaceHolder(elSelect);
 				if (!ui.elOptions) {
-					self._selectedIndex = element.selectedIndex;
+					self._selectedIndex = elSelect.selectedIndex;
 				}
-				selectedOption = ui.elDefaultOption || element[self._selectedIndex];
+				selectedOption = ui.elDefaultOption || elSelect[self._selectedIndex];
 
 				elSelectWrapper = document.getElementById(elementId + "-selectmenu");
 
@@ -596,13 +502,13 @@
 						elPlaceHolder = document.createElement("span");
 						elPlaceHolder.id = elementId + "-placeholder";
 						elPlaceHolder.className = classes.placeHolder;
-						domUtils.insertNodesBefore(element, elSelectWrapper);
+						domUtils.insertNodesBefore(elSelect, elSelectWrapper);
 						elSelectWrapper.appendChild(elPlaceHolder);
-						elSelectWrapper.appendChild(element);
+						elSelectWrapper.appendChild(elSelect);
 						elSelectWrapper.classList.add(classes.native);
 						elPlaceHolder.innerHTML = selectedOption.textContent;
 					}
-					elOptions = element.querySelectorAll("option");
+					elOptions = elSelect.querySelectorAll("option");
 				} else {
 					options = constructOption(self);
 
@@ -612,15 +518,15 @@
 						elPlaceHolder = document.createElement("span");
 						elPlaceHolder.id = elementId + "-placeholder";
 						elPlaceHolder.className = classes.placeHolder;
-						domUtils.insertNodesBefore(element, elSelectWrapper);
+						domUtils.insertNodesBefore(elSelect, elSelectWrapper);
 						elSelectWrapper.appendChild(elPlaceHolder);
-						elSelectWrapper.appendChild(element);
-						if (self.options.backgroundLayer) {
-							screenFilter = document.createElement("div");
-							screenFilter.className = classes.filterHidden;
-							screenFilter.classList.add(classes.filter);
-							screenFilter.id = elementId + "-screen";
-						}
+						elSelectWrapper.appendChild(elSelect);
+
+						screenFilter = document.createElement("div");
+						screenFilter.className = classes.filterHidden;
+						screenFilter.classList.add(classes.filter);
+						screenFilter.id = elementId + "-screen";
+
 						elOptionContainer = document.createElement("ul");
 						elOptionContainer.className = classes.optionList;
 						elOptionContainer.id = elementId + "-options";
@@ -638,9 +544,7 @@
 					 *****************************************************************************************************/
 					if (isNewBuild) {
 						fragment = document.createDocumentFragment();
-						if (screenFilter) {
-							fragment.appendChild(screenFilter);
-						}
+						fragment.appendChild(screenFilter);
 						fragment.appendChild(elOptionContainer);
 						ui.page.appendChild(fragment);
 					}
@@ -649,7 +553,7 @@
 					elOptions[self._selectedIndex].classList.add(classes.selected);
 				}
 
-				elSelectWrapper.setAttribute("tabindex", "0");
+				elSelectWrapper.setAttribute("tabindex", 0);
 
 				ui.elSelectWrapper = elSelectWrapper;
 				ui.elPlaceHolder = elPlaceHolder;
@@ -675,14 +579,17 @@
 					ui = self._ui,
 					elementId = element.id;
 				if (!ui.elSelectWrapper) {
-					ui.elSelectWrapper = document.getElementById(elementId + "-selectmenu");
-					ui.elPlaceHolder = document.getElementById(elementId + "-placeholder");
+					ui.elSelectWrapper = document.getElementById(elementId+"-selectmenu");
+					ui.elPlaceHolder = document.getElementById(elementId+"-placeholder");
 					ui.elSelect = element;
 					if (!self.options.nativeMenu) {
-						ui.screenFilter = document.getElementById(elementId + "-screen");
-						ui.elOptionContainer = document.getElementById(elementId + "-options");
+						ui.screenFilter = document.getElementById(elementId+"-screen");
+						ui.elOptionContainer = document.getElementById(elementId+"-options");
 						ui.elOptions = ui.elOptionContainer.querySelectorAll("li[data-value]");
 					}
+				}
+				if (element.disabled) {
+					self._disable();
 				}
 			};
 
@@ -693,7 +600,8 @@
 			 * @member ns.widget.mobile.SelectMenu
 			 */
 			prototype._refresh = function () {
-				this._generate(this.element);
+				var self = this;
+				self._generate(self._ui.elSelect);
 			};
 
 			/**
@@ -750,27 +658,16 @@
 			 */
 			prototype._bindEvents = function () {
 				var self = this,
-					ui = self._ui,
-					elOptionContainer = ui.elOptionContainer,
-					elSelectWrapper = ui.elSelectWrapper;
+					ui = self._ui;
 
 				self._toggleMenuBound = toggleMenu.bind(null, self);
-				self._changeOptionBound = changeOption.bind(null, self);
-				self._onResizeBound = onResize.bind(null, self);
-				self._nativeChangeOptionBound = nativeChangeOption.bind(null, self);
-				self._focusBound = onFocus.bind(null, self);
-				self._blurBound = onBlur.bind(null, self);
-
-				elSelectWrapper.addEventListener("focus", self._focusBound);
-				elSelectWrapper.addEventListener("blur", self._blurBound);
-				if (!self.options.nativeMenu) {
-					elSelectWrapper.addEventListener("vclick", self._toggleMenuBound);
-					elOptionContainer.addEventListener("vclick", self._changeOptionBound);
-					elOptionContainer.addEventListener("focusin", self._focusBound); // bubble
-					elOptionContainer.addEventListener("focusout", self._blurBound); // bubble
-					if (ui.screenFilter) {
-						ui.screenFilter.addEventListener("vclick", self._toggleMenuBound);
-					}
+				self._changeOptionBound = changeOption.bind(null,self);
+				self._onResizeBound = onResize.bind(null,self);
+				self._nativeChangeOptionBound = nativeChangeOption.bind(null,self);
+				if (!self.options.nativeMenu){
+					ui.elSelectWrapper.addEventListener("vclick", self._toggleMenuBound);
+					ui.elOptionContainer.addEventListener("vclick", self._changeOptionBound);
+					ui.screenFilter.addEventListener("vclick", self._toggleMenuBound);
 					window.addEventListener("throttledresize", self._onResizeBound, true);
 				} else {
 					ui.elSelect.addEventListener("change", self._nativeChangeOptionBound);
@@ -864,22 +761,17 @@
 					container = ui.elOptionContainer;
 
 				if (self._isOpen) {
-					if (ui.screenFilter) {
-						ui.screenFilter.classList.add(classes.filterHidden);
-					}
+					ui.screenFilter.classList.add(classes.filterHidden);
 					container.removeAttribute("style");
 					ui.elSelectWrapper.classList.remove(classes.active);
 					container.classList.remove(classes.active);
-					ui.elSelectWrapper.focus();
 				} else {
 					container.setAttribute("style", self._coordinateOption());
-					if (ui.screenFilter) {
-						ui.screenFilter.classList.remove(classes.filterHidden);
-					}
+					ui.screenFilter.classList.remove(classes.filterHidden);
 					ui.elSelectWrapper.classList.add(classes.active);
 					container.classList.add(classes.active);
 					container.setAttribute("tabindex", "0");
-					container.firstElementChild.focus();
+					container.focus();
 				}
 				self._isOpen = !self._isOpen;
 			};
@@ -919,22 +811,13 @@
 			 */
 			prototype._destroy = function () {
 				var self = this,
-					ui = self._ui,
-					elSelectWrapper = ui.elSelectWrapper,
-					elOptionContainer = ui.elOptionContainer;
-
-				elSelectWrapper.removeEventListener("focus", self._focusBound);
-				elSelectWrapper.removeEventListener("blur", self._blurBound);
+					ui = self._ui;
 				if (!self.options.nativeMenu) {
-					elSelectWrapper.removeEventListener("vclick", self._toggleMenuBound);
-					elOptionContainer.removeEventListener("vclick", self._changeOptionBound);
-					elOptionContainer.removeEventListener("focusin", self._focusBound);
-					elOptionContainer.removeEventListener("focusout", self._blurBound);
-					if (ui.screenFilter) {
-						ui.screenFilter.removeEventListener("vclick", self._toggleMenuBound);
-					}
+					ui.elSelectWrapper.removeEventListener("vclick", self._toggleMenuBound);
+					ui.elOptionContainer.removeEventListener("vclick", self._changeOptionBound);
+					ui.screenFilter.removeEventListener("vclick", self._toggleMenuBound);
 					window.removeEventListener("throttledresize", self._onResizeBound, true);
-				} else {
+				} else{
 					ui.elSelect.removeEventListener("change", self._nativeChangeOptionBound);
 				}
 			};
@@ -942,9 +825,11 @@
 			ns.widget.mobile.SelectMenu = SelectMenu;
 			engine.defineWidget(
 				"SelectMenu",
-				"select:not([data-role='slider']):not([data-role='range']):not([data-role='toggleswitch']):not(.ui-toggleswitch):not(.ui-slider)" +
-				", select.ui-select-menu:not([data-role='slider']):not([data-role='range']):not([data-role='toggleswitch'])",
-				["open", "close"],
+				"select:not([data-role='slider']):not([data-role='range']):not([data-role='toggleswitch'])",
+				[
+				 "open",
+				 "close"
+				],
 				SelectMenu,
 				"mobile"
 			);

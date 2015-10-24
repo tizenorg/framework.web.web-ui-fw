@@ -1,4 +1,4 @@
-module("mobile", {
+module("api.ej", {
 	});
 
 	test ( "API ej" , function () {

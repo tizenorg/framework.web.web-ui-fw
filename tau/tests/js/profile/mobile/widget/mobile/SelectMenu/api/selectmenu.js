@@ -1,6 +1,6 @@
 (function (ns) {
 	'use strict';
-	module("profile/mobile/widget/mobile/SelectMenu", {
+	module("api.ns.widget.selectmenu", {
 		});
 
 	test ( "API ns.widget.selectmenu" , function () {

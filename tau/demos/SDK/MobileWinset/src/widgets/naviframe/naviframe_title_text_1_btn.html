@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div data-role="page" id="navi_title_text_1">
+		<div data-role="header" data-position="fixed">
+			<h1>Title 1 button</h1>
+			<div data-role="button" data-icon="naviframe-selectall" class="naviframe-button"></div>
+		</div>
+		<div data-role="content">
+				<p>Title text Button 01 sample</p>
+			</ul>
+		</div>
+		<script>
+		$( "#navi_title_text_1" ).on( "pageshow" , function() {
+			$( window ).on( "tizenhwkey", function ( ev ) {
+				if ( ev.originalEvent.keyName === "back" ) {
+					//bind callbacks to the H/W keys
+					window.history.back();
+				}
+			});
+		});
+		$( "#navi_title_text_1" ).on( "pagebeforehide" , function() {
+			//unbind callbacks to the H/W keys
+			$( window ).off( "tizenhwkey" );
+		});
+		</script>
+	</div>
+
+
+</body>
+</html>

@@ -1,19 +1,8 @@
 /*global window, define */
 /*jslint nomen: true */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* 
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true */
 /*
@@ -189,6 +178,14 @@
 					return this;
 				},
 				prototype = {},
+				classes = {
+					focusPrefix: "ui-focus-",
+					blurPrefix: "ui-blur-",
+					up: "up",
+					down: "down",
+					left: "left",
+					right: "right"
+				},
 				/**
 				 * Property with string represent function type 
 				 * (for better minification)
@@ -197,13 +194,7 @@
 				 * @static
 				 * @readonly
 				 */
-				TYPE_FUNCTION = "function",
-				disableClass = "ui-state-disabled",
-				ariaDisabled = "aria-disabled";
-
-			BaseWidget.classes = {
-				disable: disableClass
-			};
+				TYPE_FUNCTION = "function";
 
 			/**
 			 * Protected method configuring the widget
@@ -420,20 +411,6 @@
 			};
 
 			/**
-			 * Returns base element widget
-			 * @member ns.widget.BaseWidget
-			 * @return {HTMLElement|null}
-			 * @instance
-			 */
-			prototype.getContainer = function () {
-				var self = this;
-				if (typeof self._getContainer === TYPE_FUNCTION) {
-					return self._getContainer();
-				}
-				return self.element;
-			};
-
-			/**
 			 * Bind widget events attached in init mode
 			 * @method _bindEvents
 			 * @param {HTMLElement} element Base element of widget
@@ -474,48 +451,48 @@
 				return self;
 			};
 
+			function removeAnimationClasses(element, prefix) {
+				var elementClasses = element.classList;
+				elementClasses.remove(prefix + classes.left);
+				elementClasses.remove(prefix + classes.up);
+				elementClasses.remove(prefix + classes.right);
+				elementClasses.remove(prefix + classes.down);
+			}
+
+			prototype._prepareAnimation = function(eventType, direction) {
+				var element = this.element;
+
+				switch(eventType) {
+					case "focus":
+						removeAnimationClasses(element, classes.blurPrefix);
+						removeAnimationClasses(element, classes.focusPrefix);
+						element.classList.add(classes.focusPrefix + direction);
+						break;
+					case "blur":
+						removeAnimationClasses(element, classes.focusPrefix);
+						removeAnimationClasses(element, classes.blurPrefix);
+						element.classList.add(classes.blurPrefix + direction);
+						break;
+				}
+			};
 			/**
 			 * Focus widget's element.
 			 *
 			 * This function calls function focus on element and if it is known
 			 * the direction of event, the proper css classes are added/removed.
-			 * @method focus
-			 * @param {object} options The options of event.
-			 * @param {"up"|"down"|"left"|"right"} direction
+			 * @method _focus
+			 * @param {"up"|"down"|"left"|"right} positionFrom The direction of event.
 			 * For example, if this parameter has value "down", it means that the movement
 			 * comes from the top (eg. down arrow was pressed on keyboard).
-			 * @param {HTMLElement} previousElement Element to blur
 			 * @member ns.widget.BaseWidget
 			 */
-			prototype.focus = function (options) {
-				var self = this,
-					element = self.element,
-					blurElement,
-					blurWidget;
+			prototype._focus = function (positionFrom) {
+				var element = this.element;
 
-				options = options || {};
-
-				blurElement = options.previousElement;
-				// we try to blur element, which has focus previously
-				if (blurElement) {
-					blurWidget = engine.getBinding(blurElement);
-					// call blur function on widget
-					if (blurWidget) {
-						options = objectUtils.merge({}, options, {element: blurElement});
-						blurWidget.blur(options);
-					} else {
-						// or on element, if widget does not exist
-						blurElement.blur();
-					}
+				if (typeof this._prepareAnimation === TYPE_FUNCTION) {
+					this._prepareAnimation("focus", positionFrom);
 				}
-
-				options = objectUtils.merge({}, options, {element: element});
-
-				// set focus on element
-				eventUtils.trigger(document, "taufocus", options);
-				element.focus();
-
-				return true;
+				this.element.focus();
 			};
 
 			/**
@@ -523,21 +500,17 @@
 			 *
 			 * This function calls function blur on element and if it is known
 			 * the direction of event, the proper css classes are added/removed.
-			 * @method blur
-			 * @param {object} options The options of event.
-			 * @param {"up"|"down"|"left"|"right"} direction
+			 * @method _blur
+			 * @param {"up"|"down"|"left"|"right} positionFrom
 			 * @member ns.widget.BaseWidget
 			 */
-			prototype.blur = function (options) {
-				var self = this,
-					element = self.element;
+			prototype._blur = function (positionFrom) {
+				var element = this.element;
 
-				options = objectUtils.merge({}, options, {element: element});
-
-				// blur element
-				eventUtils.trigger(document, "taublur", options);
+				if (typeof this._prepareAnimation === TYPE_FUNCTION) {
+					this._prepareAnimation("blur", positionFrom);
+				}
 				element.blur();
-				return true;
 			};
 
 			/**
@@ -590,28 +563,14 @@
 			 */
 			prototype.disable = function () {
 				var self = this,
-					args = slice.call(arguments),
-					element = self.element;
-
-				element.classList.add(disableClass);
-				element.setAttribute(ariaDisabled, true);
+					element = self.element,
+					args = slice.call(arguments);
 
 				if (typeof self._disable === TYPE_FUNCTION) {
 					args.unshift(element);
 					self._disable.apply(self, args);
 				}
 				return this;
-			};
-
-			/**
-			 * Check if widget is disabled.
-			 * @method isDisabled
-			 * @member ns.widget.BaseWidget
-			 * @return {boolean} Returns true if widget is disabled
-			 */
-			prototype.isDisabled = function () {
-				var self = this;
-				return self.element.getAttribute("disabled") || self.options.disabled === true;
 			};
 
 			/**
@@ -631,11 +590,8 @@
 			 */
 			prototype.enable = function () {
 				var self = this,
-					args = slice.call(arguments),
-					element = self.element;
-
-				element.classList.remove(disableClass);
-				element.setAttribute(ariaDisabled, false);
+					element = self.element,
+					args = slice.call(arguments);
 
 				if (typeof self._enable === TYPE_FUNCTION) {
 					args.unshift(element);

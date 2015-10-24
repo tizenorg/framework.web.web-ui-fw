@@ -1,4 +1,4 @@
-module("profile/wearable/widget/wearable/VirtualListview", {
+module("api.ej.widget.VirtualListview", {
 	});
 
 	test ( "API ej.widget.VirtualListview" , function () {

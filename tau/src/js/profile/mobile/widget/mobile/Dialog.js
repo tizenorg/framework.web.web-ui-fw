@@ -1,19 +1,8 @@
 /*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true, plusplus: true */
 
 /**
@@ -222,7 +211,7 @@
 			"../../../../core/util/DOM/attributes",
 			"../mobile", // fetch namespace
 			"./BaseWidgetMobile",
-			"../../../../core/widget/core/Button",
+			"./Button",
 			"./Page"
 		],
 		function () {
@@ -267,13 +256,13 @@
 				 */
 				events = ns.event,
 				/**
-				 * Alias to {@link ns.widget.core.Button#classes}
+				 * Alias to {@link ns.widget.mobile.Button#classes}
 				 * @property {Object} buttonClasses
 				 * @member ns.widget.mobile.Dialog
 				 * @private
 				 * @static
 				 */
-				buttonClasses = ns.widget.core.Button.classes,
+				buttonClasses = ns.widget.mobile.Button.classes,
 
 				/**
 				 * Dictionary for dialog related css class names
@@ -338,8 +327,7 @@
 						page: null // page related with this dialog
 					};
 
-				},
-				prototype = new BaseWidget();
+				};
 
 			/**
 			 * Dictionary for dialog related css class names
@@ -348,7 +336,7 @@
 			 */
 			Dialog.classes = classes;
 
-			Dialog.prototype = prototype;
+			Dialog.prototype = new BaseWidget();
 
 
 			/**
@@ -402,7 +390,7 @@
 					options = self.options,
 					elementClassList = self.element.classList,
 					dialogClasses = classes,
-					pageClasses = ns.widget.core.Page.classes;
+					pageClasses = ns.widget.mobile.Page.classes;
 				if (value) {
 					elementClassList.remove(dialogClasses.uiDialogHidden);
 					elementClassList.add(pageClasses.uiPage);
@@ -586,46 +574,6 @@
 				document.body.classList.add(classes.uiOverlayPrefix +
 						options.overlayTheme);
 			}
-
-			/**
-			 * Layouting page structure
-			 * @method layout
-			 * @member ns.widget.core.Page
-			 */
-			prototype.layout = function () {
-			};
-
-			/**
-			 * This method triggers BEFORE_SHOW event.
-			 * @method onBeforeShow
-			 * @member ns.widget.core.Page
-			 */
-			prototype.onBeforeShow = function () {
-			};
-
-			/**
-			 * This method triggers SHOW event.
-			 * @method onShow
-			 * @member ns.widget.core.Page
-			 */
-			prototype.onShow = function () {
-			};
-
-			/**
-			 * This method triggers BEFORE_HIDE event.
-			 * @methofocusd onBeforeHide
-			 * @member ns.widget.core.Page
-			 */
-			prototype.onBeforeHide = function () {
-			};
-
-			/**
-			 * This method triggers HIDE event.
-			 * @method onHide
-			 * @member ns.widget.core.Page
-			 */
-			prototype.onHide = function () {
-			};
 
 			/**
 			 * Handler function to close the dialog on click.

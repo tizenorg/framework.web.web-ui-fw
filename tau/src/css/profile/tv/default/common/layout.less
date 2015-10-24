@@ -1,9 +1,11 @@
+@page_border_radius: 10 * @virtual_px;
+
 /***************************************************************************
-									 Common Style
+                   Common Style
 ***************************************************************************/
 body {
 	height: 100vh;
-	font-size: 34 * @virtual_px;
+	font-size: 34 * @unit_base;
 	font-family: @font_family;
 	background: @color_bg;
 	background-size: 100% !important;
@@ -31,40 +33,34 @@ body {
 	&.ui-header-empty {
 		.ui-content {
 			margin-top: 59 * @virtual_px;
-			.border-top-left-radius(@fixed_layout_page_border_radius);
-			.border-top-right-radius(@fixed_layout_page_border_radius);
+			-webkit-border-top-left-radius: @page_border_radius;
+			-moz-border-top-left-radius: @page_border_radius;
+			border-top-left-radius: @page_border_radius;
+			-webkit-border-top-right-radius: @page_border_radius;
+			-moz-border-top-right-radius: @page_border_radius;
+			border-top-right-radius: @page_border_radius;
 		}
 	}
 
 	&.ui-footer-empty {
 		.ui-content {
 			margin-bottom: 59 * @virtual_px;
-			.border-bottom-left-radius(@fixed_layout_page_border_radius);
-			.border-bottom-right-radius(@fixed_layout_page_border_radius);
+			-webkit-border-bottom-left-radius: @page_border_radius;
+			-moz-border-bottom-left-radius: @page_border_radius;
+			border-bottom-left-radius: @page_border_radius;
+			-webkit-border-bottom-right-radius: @page_border_radius;
+			-moz-border-bottom-right-radius: @page_border_radius;
+			border-bottom-right-radius: @page_border_radius;
 		}
-	}
-
-	&.ui-gray-page {
-		.ui-content,
-		.ui-header {
-			background-color: @color_gray_content_bg;
-			color: @color_gray_content_text;
-		}
-
-		.ui-header {
-			h1, h2, h3, h4, h5, h6 {
-				color: inherit;
-			}
-		}
-	}
-
-	&.ui-page-blur {
-		.filter(blur(20 * @virtual_px));
 	}
 }
 
 .scrolling-mode-touch {
-	.touch-scrolling();
+	-webkit-overflow-scrolling: touch;
+	-moz-overflow-scrolling: touch;
+	-o-overflow-scrolling: touch;
+	-ms-overflow-scrolling: touch;
+	overflow-scrolling: touch;
 }
 
 .ui-content {
@@ -73,18 +69,18 @@ body {
 	overflow-y : visible;
 	background-color: @color_content_bg;
 	.scrolling-mode-touch;
-	padding: @fixed_header_content_padding;
+	padding: @fixed_header_title_padding;
 
 	.ui-column-left {
 		width: 298 * @virtual_px;
 		float: left;
-		margin: -@fixed_header_title_margin 0 -@fixed_header_title_margin -@fixed_header_title_margin;
+		margin: -@fixed_header_title_padding 0 -@fixed_header_title_padding -@fixed_header_title_padding;
 	}
 
 	.ui-column-right {
 		width: 1340 * @virtual_px;
 		float: left;
-		margin: -@fixed_header_title_margin -@fixed_header_title_margin -@fixed_header_title_margin 0;
+		margin: -@fixed_header_title_padding -@fixed_header_title_padding -@fixed_header_title_padding 0;
 	}
 
 	p:first-child {
@@ -99,8 +95,12 @@ body {
 	height: @fixed_header_height;
 	line-height: @fixed_header_line_height;
 	background-color: @color_actionbar_title_bg;
-	.border-top-left-radius(@fixed_layout_page_border_radius);
-	.border-top-right-radius(@fixed_layout_page_border_radius);
+	-webkit-border-top-left-radius: @page_border_radius;
+	-moz-border-top-left-radius: @page_border_radius;
+	border-top-left-radius: @page_border_radius;
+	-webkit-border-top-right-radius: @page_border_radius;
+	-moz-border-top-right-radius: @page_border_radius;
+	border-top-right-radius: @page_border_radius;
 
 	.ui-title {
 		color: @color_actionbar_title_text;
@@ -120,12 +120,7 @@ body {
 	}
 
 	.ui-title-text-fadeout {
-		// by hand, this is to custom for a handler
 		-webkit-mask-image: -webkit-linear-gradient(left, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 95%);
-		-moz-mask-image: -moz-linear-gradient(left, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 95%);
-		-ms-mask-image: -ms-linear-gradient(left, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 95%);
-		-o-mask-image: -o-linear-gradient(left, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 95%);
-		mask-image: linear-gradient(left, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 95%);
 	}
 
 	&.ui-has-more {
@@ -133,12 +128,7 @@ body {
 			padding-right: @fixed_header_more_title_padding;
 		}
 		.ui-title-text-fadeout {
-			// by hand, this is to custom for a handler
 			-webkit-mask-image: -webkit-linear-gradient(left, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 80%);
-			-moz-mask-image: -moz-linear-gradient(left, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 80%);
-			-ms-mask-image: -ms-linear-gradient(left, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 8 0%);
-			-o-mask-image: -o-linear-gradient(left, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 80%);
-			mask-image: linear-gradient(left, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 80%);
 		}
 	}
 
@@ -202,8 +192,7 @@ body {
 
 	.ui-btn.ui-btn-inline {
 		float: right;
-		margin: 29 * @virtual_px;
-		line-height: normal;
+		margin: 32 * @virtual_px;
 	}
 
 	.ui-btn.ui-btn-inline:nth-child(2) {
@@ -219,8 +208,13 @@ body {
 	bottom: 0;
 	left: 0;
 	background-color: @color_actionbar_title_bg;
-	.border-bottom-left-radius(@fixed_layout_page_border_radius);
-	.border-bottom-right-radius(@fixed_layout_page_border_radius);
+	-webkit-border-bottom-left-radius: @page_border_radius;
+	-moz-border-bottom-left-radius: @page_border_radius;
+	border-bottom-left-radius: @page_border_radius;
+	-webkit-border-bottom-right-radius: @page_border_radius;
+	-moz-border-bottom-right-radius: @page_border_radius;
+	border-bottom-right-radius: @page_border_radius;
+	background-color: @color_actionbar_title_bg;
 	.ui-controlgroup-controls {
 		.ui-btn {
 			float:left;
@@ -237,7 +231,7 @@ body {
 }
 
 /***************************************************************************
-									 Grid layout
+                   Grid layout
 ***************************************************************************/
 .ui-grid-col {
 	> * {
@@ -300,15 +294,7 @@ body {
 .ui-page-fullscreen {
 	.ui-header, .ui-content, .ui-footer, &.ui-footer-empty .ui-content, &.ui-header-empty .ui-content {
 		margin: 0;
-		.border-radius(0);
-	}
-}
-
-.ui-page-black {
-	.ui-header {
-		background-color: @color_page_black_header;
-	}
-	.ui-content {
-		background-color: @color_page_black_content;
+		-webkit-border-radius: 0;
+		border-radius: 0;
 	}
 }

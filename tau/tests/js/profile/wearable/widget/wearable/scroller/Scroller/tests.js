@@ -1,4 +1,4 @@
-module("profile/wearable/widget/wearable/scroller/Scroller", {});
+module("tau.widget.wearable.scroller.Scroller", {});
 
 var pageWidget = document.getElementById('first');
 
@@ -21,7 +21,7 @@ function fireEvent(el, type, props) {
 	return false;
 }
 
-window.addEventListener('load', function () {
+pageWidget.addEventListener('pageshow', function () {
 	asyncTest("tau.widget.wearable.scroller.Scroller _build method", function () {
 		var scrollerElement = document.getElementById('scroller'),
 			scrollerInner = scrollerElement.children[0],
@@ -79,8 +79,9 @@ window.addEventListener('load', function () {
 		if (bar) {
 			equal(scrollerElement.children[1].className, "ui-scrollbar-bar-type ui-scrollbar-vertical", "bar has proper classes");
 			equal(scrollerElement.children[1].children[0].className, "ui-scrollbar-indicator", "inner bar has proper classes");
+			equal(scrollerElement.children[1].children[0].style.top, "0px", "bar has proper top");
 			ok(scrollerElement.children[1].children[0].style.height !== "0px", "bar has proper height");
-			expect(16);
+			expect(17);
 		}
 		if (useBouncingEffect){
 			equal(scrollerElement.children[1].className, "ui-scrollbar-bouncing-effect ui-top", "top effect container has proper classes");
@@ -88,8 +89,14 @@ window.addEventListener('load', function () {
 			fireEvent(scrollerInner, "mousedown", {clientX: lastElementOffset.left , clientY: lastElementOffset.top + 50, which: 1});
 			fireEvent(scrollerInner, "mousemove", {clientX: lastElementOffset.left , clientY: lastElementOffset.top + 100, which: 1});
 			fireEvent(scrollerInner, "mouseup", {clientX: lastElementOffset.left , clientY: lastElementOffset.top + 100, which: 1});
-			equal(scrollerElement.children[1].className, "ui-scrollbar-bouncing-effect ui-top", "top effect container has proper classes (none)");
-			start();
+			tau.event.one(scrollerElement.children[1], "webkitAnimationEnd", function() {
+				tau.event.one(scrollerElement.children[1], "webkitAnimationEnd", function() {
+					equal(scrollerElement.children[1].className, "ui-scrollbar-bouncing-effect ui-top", "top effect container has proper classes (none)");
+					start();
+				});
+				equal(scrollerElement.children[1].className, "ui-scrollbar-bouncing-effect ui-top ui-hide", "top effect container has proper classes (hide)");
+			});
+			equal(scrollerElement.children[1].className, "ui-scrollbar-bouncing-effect ui-top ui-show", "top effect container has proper classes (show)");
 			expect(18);
 		} else {
 			start();

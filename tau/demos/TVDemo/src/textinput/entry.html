@@ -2,7 +2,7 @@
 <html>
 <head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-		<script data-build-remove="false">
+		<script build-remove="false">
 			var tauConfig = {
 				autoBuildOnPageChange: true
 			};
@@ -20,22 +20,15 @@
 		<header class="ui-header">
 			<h2 class="ui-title">Inputs</h2>
 		</header>
-		<div class="ui-content">
+		<div class="ui-content" data-role="content" data-scroll="none">
+			<div class="ui-column-left">
 				<div class="table">
 					<div class="row">
 						<div class="cell">
 							Text Input
 						</div>
 						<div class="cell">
-							<input type="text" name="name" value="" />
-						</div>
-					</div>
-					<div class="row">
-						<div class="cell">
-							Text Input (small)
-						</div>
-						<div class="cell">
-							<input type="text" name="name" value="" class="ui-textinput-small" />
+							<input type="text" name="name" value=""  />
 						</div>
 					</div>
 					<div class="row">
@@ -59,7 +52,7 @@
 							PIN
 						</div>
 						<div class="cell">
-							<input type="password" name="password" id="pin" value="" class="pin" />
+							<input type="password" name="password" id="pin" value="" class="pin" maxlength="1"/>
 						</div>
 					</div>
 					<div class="row">
@@ -86,6 +79,15 @@
 							<input type="tel" name="tel" id="tel" value="" />
 						</div>
 					</div>
+					<div class="row">
+						<div class="cell">
+							Number
+						</div>
+						<div class="cell">
+							<input type="number" placeholder="number here" name="number" id="number" value="" min="0" max="100"/>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div><!-- /content -->
 </div><!-- /page -->

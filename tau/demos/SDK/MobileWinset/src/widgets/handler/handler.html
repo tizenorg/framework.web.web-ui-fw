@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<div data-role="page" id="handler-demo">
+	<div data-role="header" data-position="fixed">
+		<h1>Handler</h1>
+	</div><!-- /header -->
+	<div data-role="content">
+		<ul data-role="listview">
+			<li><a href="handler-horizontal.html">Horizontal handler</a></li>
+			<li><a href="handler-vertical.html">Vertical handler</a></li>
+		</ul>
+	</div><!-- /content -->
+	<script>
+	$( "#handler-demo" ).on( "pageshow" , function() {
+		$( window ).on( "tizenhwkey", function ( ev ) {
+			if ( ev.originalEvent.keyName === "back" ) {
+				//bind callbacks to the H/W keys
+				window.history.back();
+			}
+		});
+	});
+	$( "#handler-demo" ).on( "pagebeforehide" , function() {
+		//unbind callbacks to the H/W keys
+		$( window ).off( "tizenhwkey" );
+	});
+	</script>
+</div><!-- /page -->

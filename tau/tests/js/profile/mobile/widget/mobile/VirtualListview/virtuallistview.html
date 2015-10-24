@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>VirtualListview - Mobile</title>
+	<title>Notification - EJ Tests</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" href="../../../../../../libs/qunit-1.11.0.css" />
 </head>
@@ -17,15 +17,16 @@
 				<h1>VirtualListview</h1>
 			</div>
 			<div data-role="content">
-                <!-- custom template -->
-				<script id="tmp-2line-star1" type="text">
-                    <span class="ui-li-text-main">${NAME}</span>
-                    <span class="ui-li-text-sub">${ACTIVE}
-                        <img src="00_winset_icon_favorite_on.png" alt="favorite" class="ui-li-icon-sub">
-                    </span>
-                    <span class="ui-li-text-sub2">${FROM}</span>
+				<script id="tmp-2line-star1" type="text/x-jquery-tmpl">
+					<li class="ui-li-has-multiline test">
+						<span class="ui-li-text-main">${NAME}</span>
+						<span class="ui-li-text-sub">${ACTIVE}
+							<img src="00_winset_icon_favorite_on.png" alt="favorite" class="ui-li-icon-sub">
+						</span>
+						<span class="ui-li-text-sub2">${FROM}</span>
+					</li>
 				</script>
-				<ul id="vlist" data-standalone="true" data-template="tmp-2line-star1" data-row="100"></ul>
+				<ul id="vlist" data-role="virtuallistview" data-standalone="true" data-template="tmp-2line-star1" data-row="100"></ul>
 			</div>
 		</div>
 	</div>
@@ -38,7 +39,7 @@
 	<!-- load demo database -->
 	<script type="text/javascript" src="virtuallist-db-demo.js"></script>
 	<script type="text/javascript">
-		module("profile/mobile/widget/mobile/VirtualListview", {
+		module("VirtualListview", {
 					teardown: function () {
 						ej.engine._clearBindings();
 					}

@@ -1,20 +1,9 @@
 
 /*jslint nomen: true, plusplus: true */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /**
  * #Page Widget
  * Page widget represents the screen of an application
@@ -277,7 +266,7 @@
  * @member ns.widget.mobile.Page
  */
 
-(function (window, ns) {
+(function (ns) {
 	"use strict";
 	//>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
 	define(
@@ -288,28 +277,30 @@
 			"../../../../core/util/DOM/css",
 			"../../../../core/util/object",
 			"../../../../core/event/orientationchange",
-			"../../../../core/widget/core/Page",
-			"../../../../core/widget/core/Button",
-			"../mobile"
+			"../mobile",
+			"../../../../core/theme",
+			"./BaseWidgetMobile",
+			"./Button"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
-			var CorePage = ns.widget.core.Page,
-				CorePagePrototype = CorePage.prototype,
+			var BaseWidget = ns.widget.mobile.BaseWidgetMobile,
 				engine = ns.engine,
 				selectors = ns.util.selectors,
 				object = ns.util.object,
 				utilsDOM = ns.util.DOM,
+				slice = [].slice,
 				Page = function () {
-					var self = this;
-					CorePage.call(self);
-					self.options = object.copy(Page.prototype.options);
-				},
-				buttonClasses = ns.widget.core.Button.classes,
-				classes,
-				prototype = new CorePage();
-
-			Page.prototype = prototype;
+					/**
+					 * @property {boolean} [pageSetHeight=false] The flag is indicates that height of the page  was set by framework
+					 * @member ns.widget.mobile.Page
+					 */
+					this.pageSetHeight = false;
+					this.contentFillCallback = null;
+					this.contentFillAfterResizeCallback = null;
+					this.destroyCallback = null;
+					this.options = object.copy(Page.prototype.options);
+				};
 
 			/**
 			 * Dictionary for page related css class names
@@ -324,10 +315,11 @@
 			 * @property {string} [classes.uiTitleMultiline='ui-title-multiline'] Title multiline class
 			 * @property {string} [classes.uiPage='ui-page'] Main page class
 			 * @property {string} [classes.uiPageActive='ui-page-active'] Page active class
-			 * @property {string} [classes.uiHeaderFullscreen='ui-page-header-fullscreen'] Page header fullscreen class
-			 * @property {string} [classes.uiFooterFullscreen='ui-page-footer-fullscreen'] Page footer fullscreen class
-			 * @property {string} [classes.uiHeaderFixed='ui-page-header-fixed'] Page header fixed class
-			 * @property {string} [classes.uiFooterFixed='ui-page-footer-fixed'] Page footer fixed class
+			 * @property {string} [classes.uiPageHeaderFullscreen='ui-page-header-fullscreen'] Page header fullscreen class
+			 * @property {string} [classes.uiPageFooterFullscreen='ui-page-footer-fullscreen'] Page footer fullscreen class
+			 * @property {string} [classes.uiPageHeaderFixed='ui-page-header-fixed'] Page header fixed class
+			 * @property {string} [classes.uiPageFooterFixed='ui-page-footer-fixed'] Page footer fixed class
+			 * @property {string} [classes.uiOverlayPrefix='ui-overlay-'] Ui overlay prefix
 			 * @property {string} [classes.uBtnLeft='ui-btn-left'] Left button class
 			 * @property {string} [classes.uiBtnRight='ui-btn-right'] Right button class
 			 * @property {string} [classes.uiBtnRightPrefix='ui-btn-right-'] Right button prefix
@@ -337,7 +329,7 @@
 			 * @static
 			 * @readonly
 			 */
-			classes = object.merge({}, CorePage.classes, {
+			Page.classes = {
 				uiPrefix: "ui-",
 				uiBarPrefix: "ui-bar-",
 				uiBodyPrefix: "ui-body-",
@@ -347,41 +339,48 @@
 				uiTitleTextSub: "ui-title-text-sub",
 				uiTitleMultiline: "ui-title-multiline",
 				uiFooterBtn: "ui-footer-btn-",
-				uiHeaderFullscreen: "ui-page-header-fullscreen",
-				uiFooterFullscreen: "ui-page-footer-fullscreen",
-				uiHeaderFixed: "ui-page-header-fixed",
-				uiFooterFixed: "ui-page-footer-fixed",
+				uiPage: "ui-page",
+				uiPageActive: "ui-page-active",
+				uiPageContent: "ui-content",
+				uiPageHeader: "ui-header",
+				uiPageFooter: "ui-footer",
+				uiPageHeaderFullscreen: "ui-page-header-fullscreen",
+				uiPageFooterFullscreen: "ui-page-footer-fullscreen",
+				uiPageHeaderFixed: "ui-page-header-fixed",
+				uiPageFooterFixed: "ui-page-footer-fixed",
 				uiOverlayPrefix: "ui-overlay-",
 				uiBtnLeft: "ui-btn-left",
 				uiBtnRight: "ui-btn-right",
 				uiBtnRightPrefix: "ui-btn-right-",
 				fixedSuffix: "-fixed",
-				fullscreenSuffix: "-fullscreen",
-				uiHeaderDivider: "ui-header-divider"
+				fullscreenSuffix: "-fullscreen"
 				// @todo put all used classes here
-			});
+			};
 
-			Page.classes = classes;
+			Page.prototype = new BaseWidget();
 
 			/**
 			 * Object with default options
 			 * @property {Object} options
 			 * @property {boolean} [options.fullscreen=false] Fullscreen page flag
-			 * @property {string} [options.theme='s'] Page theme
+			 * @property {string} [options.theme='a'] Page theme
 			 * @property {boolean} [options.domCache=false] Use DOM cache
 			 * @property {?string} [options.contentTheme=null] Page content theme
-			 * @property {string} [options.headerTheme='s'] Page header theme. If headerTheme is empty `theme` will be used
-			 * @property {string} [options.footerTheme='s'] Page footer theme. If footerTheme is empty `theme` will be used
+			 * @property {string} [options.headerTheme='a'] Page header theme. If headerTheme is empty `theme` will be used
+			 * @property {string} [options.footerTheme='a'] Page footer theme. If footerTheme is empty `theme` will be used
 			 * @member ns.widget.mobile.Page
 			 */
 			Page.prototype.options = {
-				theme: "s",
-				contentTheme: null,
-				headerTheme: "s",
-				footerTheme: "s",
 				fullscreen: false,
+				theme: "a",
 				domCache: false,
 				keepNativeDefault: ns.getConfig("keepNative"),
+				contentTheme: null,
+				headerTheme: "a",
+				footerTheme: "a",
+				// @removed
+				addBackBtn: false,
+				enhanced: false
 			};
 
 			/**
@@ -401,6 +400,59 @@
 			 */
 			Page.prototype.backBtnTheme = null;
 
+			// Sets top-bottom css attributes for content element
+			// to allow it to fill the page dynamically
+			// @method contentFill
+			// @param {ns.widget.mobile.Page} self
+			function contentFill(self) {
+				var content,
+					contentStyle,
+					element = self.element,
+					header,
+					headerDivider,
+					headerBtn,
+					headerBtnWidth = 0,
+					pageClasses = Page.classes,
+					top = 0,
+					bottom = 0,
+					i,
+					footer,
+					len;
+
+				if (element && !self.pageSetHeight && element.classList.contains(Page.classes.uiPageActive)) {
+					content = element.querySelector("[data-role=content],." + pageClasses.uiPageContent);
+					if (content) {
+						//>>excludeStart("tauDebug", pragmas.tauDebug);
+						ns.log("Page (contentFill) on ", self.id, " styles was recalculated");
+						//>>excludeEnd("tauDebug");
+						contentStyle = content.style;
+						header = element.querySelector("[data-role=header],." + pageClasses.uiPageHeader);
+
+						if (header) {
+							headerDivider = header.getElementsByClassName("ui-header-divider");
+							len = headerDivider.length;
+							if (len) {
+								headerBtn = header.getElementsByClassName("ui-btn");
+								// Header divider exist
+								for (i = 0; i < len; i++) {
+									headerBtnWidth += headerBtn[i].offsetWidth;
+									headerDivider[i].style.right = headerBtnWidth + "px";
+								}
+							}
+							top = utilsDOM.getElementHeight(header);
+						}
+
+						footer = element.querySelector("[data-role=footer],." + pageClasses.uiPageFooter);
+						bottom = utilsDOM.getElementHeight(footer);
+
+						contentStyle.top = top + "px";
+						contentStyle.bottom = bottom + "px";
+						contentStyle.height = utilsDOM.getElementHeight(content.parentNode) - top - bottom + "px";
+						self.pageSetHeight = true;
+					}
+				}
+			}
+
 			// Build header/footer/content
 			// @method buildSections
 			// @param {Object} options Object with options for widget
@@ -408,21 +460,23 @@
 			// @param {string} pageTheme page theme name
 			function buildSections(options, pageElement, pageTheme) {
 				var pageClassList = pageElement.classList,
+					pageClasses = Page.classes,
 					fullscreen = options.fullscreen;
 
 				if (fullscreen) {
 					// "fullscreen" overlay positioning
-					pageClassList.add(classes.uiHeaderFullscreen);
-					pageClassList.add(classes.uiFooterFullscreen);
+					pageClassList.add(pageClasses.uiPageHeaderFullscreen);
+					pageClassList.add(pageClasses.uiPageFooterFullscreen);
 				} else {
 					// If not fullscreen, add class to page to set top or bottom padding
-					pageClassList.add(classes.uiHeaderFixed);
-					pageClassList.add(classes.uiFooterFixed);
+					pageClassList.add(pageClasses.uiPageHeaderFixed);
+					pageClassList.add(pageClasses.uiPageFooterFixed);
 				}
 
-				[].slice.call(pageElement.querySelectorAll("." + classes.uiHeader +
-						",." + classes.uiContent +
-						",." + classes.uiFooter))
+				[].slice.call(pageElement.querySelectorAll("[data-role='header'],[data-role='content'],[data-role='footer'],." +
+						pageClasses.uiPageHeader +
+						",." + pageClasses.uiPageContent +
+						",." + pageClasses.uiPageFooter))
 					.forEach(function (section) {
 						var role = section.getAttribute("data-role"),
 							sectionTheme = section.getAttribute("data-theme"),
@@ -441,9 +495,9 @@
 							previousElementOfHeaderButton;
 
 						if (!role) {
-							if (sectionClassList.contains(classes.uiHeader)) {
+							if (sectionClassList.contains(pageClasses.uiPageHeader)) {
 								role = "header";
-							} else if (sectionClassList.contains(classes.uiContent)) {
+							} else if (sectionClassList.contains(pageClasses.uiPageContent)) {
 								role = "content";
 							} else {
 								role = "footer";
@@ -452,7 +506,7 @@
 							section.setAttribute("data-role", role);
 						}
 
-						sectionClassList.add(classes.uiPrefix + role);
+						sectionClassList.add(pageClasses.uiPrefix + role);
 
 						// Adding transition classes for all matched elements
 						// @todo support transition form config
@@ -469,17 +523,17 @@
 							section.setAttribute("role", "main");
 							currentTheme = sectionTheme || options.contentTheme;
 							if (currentTheme) {
-								sectionClassList.add(classes.uiBodyPrefix + currentTheme);
+								sectionClassList.add(pageClasses.uiBodyPrefix + currentTheme);
 							}
 						} else {
 							currentTheme = sectionTheme || (role === "header" ? options.headerTheme : options.footerTheme) || pageTheme;
-							sectionClassList.add(classes.uiBarPrefix + currentTheme);
+							sectionClassList.add(pageClasses.uiBarPrefix + currentTheme);
 
 							// We always set the ui-[header|footer]-fixed class to match Tizen design needs
-							sectionClassList.add(classes.uiPrefix + role + classes.fixedSuffix);
+							sectionClassList.add(pageClasses.uiPrefix + role + pageClasses.fixedSuffix);
 
 							if (fullscreen) {
-								sectionClassList.add(classes.uiPrefix + role + classes.fullscreenSuffix);
+								sectionClassList.add(pageClasses.uiPrefix + role + pageClasses.fullscreenSuffix);
 							}
 
 							section.setAttribute("role", role === "header" ? "banner" : "contentinfo");
@@ -488,20 +542,20 @@
 								headerAnchors = selectors.getChildrenBySelector(section, "a, div.naviframe-button, button, [data-role=button]");
 								headerAnchors.forEach(function (anchor) {
 									var anchorClassList = anchor.classList;
-									leftButton = anchorClassList.contains(classes.uiBtnLeft);
-									rightButton = anchorClassList.contains(classes.uiBtnRight);
+									leftButton = anchorClassList.contains(pageClasses.uiBtnLeft);
+									rightButton = anchorClassList.contains(pageClasses.uiBtnRight);
 								});
 
-								if (!leftButton && headerAnchors[0] && !headerAnchors[0].classList.contains(classes.uiBtnRight)) {
+								if (!leftButton && headerAnchors[0] && !headerAnchors[0].classList.contains(pageClasses.uiBtnRight)) {
 									leftButton = headerAnchors[0];
 									utilsDOM.setNSData(leftButton, "role", "button");
-									leftButton.classList.add(classes.uiBtnLeft);
+									leftButton.classList.add(pageClasses.uiBtnLeft);
 								}
 
 								if (!rightButton && headerAnchors[1]) {
 									rightButton = headerAnchors[1];
 									utilsDOM.setNSData(rightButton, "role", "button");
-									rightButton.classList.add(classes.uiBtnRight);
+									rightButton.classList.add(pageClasses.uiBtnRight);
 								}
 
 								headerButtons = selectors.getChildrenBySelector(section, "a,[data-role='button']");
@@ -514,8 +568,8 @@
 
 									});
 								}
-								if (section.querySelector("." + classes.uiTitleTextSub)) {
-									sectionClassList.add(classes.uiTitleMultiline);
+								if (section.querySelector("." + pageClasses.uiTitleTextSub)) {
+									sectionClassList.add(pageClasses.uiTitleMultiline);
 								}
 							} else if (role === "footer") {
 								footerButtons = selectors.getChildrenBySelector(section, "a,div.naviframe-button,[data-role='button'],button,[type='button'],[type='submit'],[type='reset']");
@@ -532,7 +586,7 @@
 											role: "button"
 										});
 									});
-									section.classList.add(classes.uiFooterBtn + footerButtons.length);
+									section.classList.add(pageClasses.uiFooterBtn + footerButtons.length);
 								}
 							}
 
@@ -542,7 +596,7 @@
 									width,
 									titleStyle = title.style;
 
-								title.classList.add(classes.uiTitle);
+								title.classList.add(pageClasses.uiTitle);
 								title.setAttribute("role", "heading");
 								title.setAttribute("aria-level", 1);
 								title.setAttribute("aria-label", "title");
@@ -585,19 +639,6 @@
 			}
 
 			/**
-			 * Configure widget
-			 * @method _configure
-			 * @param {HTMLElement} element
-			 * @protected
-			 * @member ns.widget.mobile.Page
-			 */
-			prototype._configure = function(element) {
-				CorePagePrototype._configure.call(this, element);
-				// in mobile header should always be build by default
-				this.options.header = true;
-			};
-
-			/**
 			 * Build page
 			 * @method _build
 			 * @param {HTMLElement} element
@@ -606,78 +647,28 @@
 			 * @member ns.widget.mobile.Page
 			 */
 			Page.prototype._build = function (element) {
-				CorePagePrototype._build.call(this, element);
 				buildStructure(this.options, element);
 				return element;
 			};
 
-			/**
-			 * Bind events to widget
-			 * @method _bindEvents
-			 * @param {HTMLElement} element
-			 * @protected
-			 * @member ns.widget.mobile.Page
-			 */
-			Page.prototype._bindEvents = function (element) {
-				var self = this;
-				CorePagePrototype._bindEvents.call(self, element);
-				element.addEventListener("pageshow", self.contentFillAfterResizeCallback, false);
-				element.addEventListener("updatelayout", self.contentFillAfterResizeCallback, false);
-			};
-
-			/**
-			 * Sets top-bottom css attributes for content element
-			 * to allow it to fill the page dynamically
-			 * @method _contentFill
-			 * @member ns.widget.mobile.Page
-			 */
-			Page.prototype._contentFill = function () {
-				var self = this,
-					content,
-					contentStyle,
-					element = self.element,
-					header,
-					headerDivider,
-					headerBtn,
-					headerBtnWidth = 0,
-					pageClasses = Page.classes,
-					top = 0,
-					bottom = 0,
-					i,
-					footer,
-					len;
-
-				CorePagePrototype._contentFill.call(self, element);
-				content = element.querySelector("." + pageClasses.uiContent);
-				if (content) {
-					//>>excludeStart("tauDebug", pragmas.tauDebug);
-					ns.log("Page (contentFill) on ", self.id, " styles was recalculated");
-					//>>excludeEnd("tauDebug");
-					contentStyle = content.style;
-					header = element.querySelector("." + pageClasses.uiHeader);
-
-					if (header) {
-						headerDivider = header.getElementsByClassName(pageClasses.uiHeaderDivider);
-						len = headerDivider.length;
-						if (len) {
-							headerBtn = header.getElementsByClassName(buttonClasses.uiBtn);
-							// Header divider exist
-							for (i = 0; i < len; i++) {
-								headerBtnWidth += headerBtn[i].offsetWidth;
-								headerDivider[i].style.right = headerBtnWidth + "px";
-							}
+			/*Page.prototype._updatePadding = function (page) {
+				var pageStyle = page.style;
+				Array.prototype.slice.call(page.querySelectorAll("[data-role='header'],[data-role='content'],[data-role='footer']")).forEach(function (section) {
+					var role = section.getAttribute("data-role"),
+						dataposition = section.getAttribute("data-position"),
+						sectionStyle = section.style;
+					if (dataposition === "fixed") {
+						sectionStyle.position = "fixed";
+						if (role === "header") {
+							pageStyle.paddingTop = section.offsetHeight + "px";
+							sectionStyle.top = 0;
+						} else if (role === "footer") {
+							pageStyle.paddingBottom = section.offsetHeight + "px";
+							sectionStyle.bottom = 0;
 						}
-						top = utilsDOM.getElementHeight(header);
 					}
-
-					footer = element.querySelector("." + pageClasses.uiFooter);
-					bottom = utilsDOM.getElementHeight(footer);
-
-					contentStyle.top = top + "px";
-					contentStyle.bottom = bottom + "px";
-					contentStyle.height = window.innerHeight - top - bottom + "px";
-				}
-			};
+				});
+			};*/
 
 			/**
 			 * Set page active / unactive
@@ -701,44 +692,38 @@
 			 */
 			Page.prototype.setActive = function (value, pageContainer) {
 				var theme = this.options.theme,
+					classes = Page.classes,
 					themeClass = classes.uiOverlayPrefix + theme,
-					bodyClassList;
-
-				bodyClassList = pageContainer.classList;
-
-				CorePagePrototype.setActive.call(this, value);
+					bodyClassList = pageContainer.classList;
 
 				if (value) {
+					this.element.classList.add(classes.uiPageActive);
+					this.focus();
 					bodyClassList.add(themeClass);
 				} else {
+					this.element.classList.remove(classes.uiPageActive);
+					this.blur();
 					bodyClassList.remove(themeClass);
 				}
 			};
 
 			/**
-			 * Refresh widget structure
-			 * @method _refresh
-			 * @protected
+			 * GUI Builder only : redesign page when user drag&drop header, footer
+			 *
+			 * !!!This method is only available through TAU API!!!
+			 *
+			 *		@example
+			 *		<div id="myPage"></div>
+			 *		<script type="text/javascript">
+			 *			var page = tau.widget.page(document.getElementById("myPage"));
+			 *			page.setToolbar();
+			 *		</script>
+			 *
+			 * @method setToolbar
 			 * @member ns.widget.mobile.Page
 			 */
-			Page.prototype._refresh = function () {
-				var self = this;
-				buildStructure(self.options, self.element);
-				CorePagePrototype._refresh.call(self);
-			};
-
-			/**
-			 * Destroy widget
-			 * @method _destroy
-			 * @protected
-			 * @member ns.widget.mobile.Page
-			 */
-			Page.prototype._destroy = function () {
-				var self = this,
-					element = self.element;
-				CorePagePrototype._destroy.call(self);
-				element.removeEventListener("updatelayout", self.contentFillAfterResizeCallback, false);
-				element.removeEventListener("pageshow", self.contentFillAfterResizeCallback, false);
+			Page.prototype.setToolbar = function () {
+				this.trigger("pagebeforeshow");
 			};
 
 			/**
@@ -762,11 +747,10 @@
 			 *		</script>
 			 *
 			 * @method removeContainerBackground
-			 * @deprecated 2.3
 			 * @member ns.widget.mobile.Page
 			 */
 			Page.prototype.removeContainerBackground = function () {
-				ns.warn("removeContainerBackground is deprecated at 2.3");
+				engine.getRouter().getContainer().classList.remove("ui-overlay-" + engine.getTheme().getInheritedTheme(this.element.parentNode));
 			};
 
 			/**
@@ -791,11 +775,11 @@
 			 *
 			 * @method setContainerBackground
 			 * @param {string} [theme]
-			 * @deprecated 2.3
 			 * @member ns.widget.mobile.Page
 			 */
 			Page.prototype.setContainerBackground = function (theme) {
-				ns.warn("setContainerBackground is deprecated at 2.3");
+				theme = theme || this.options.theme;
+				engine.getRouter().getContainer().classList.add("ui-overlay-" + theme);
 			};
 
 			/**
@@ -805,7 +789,6 @@
 			 * @member ns.widget.mobile.Page
 			 */
 			Page.prototype.addBackBtn = function () {
-				ns.warn("addBackBtn is deprecated at 2.3");
 				return null;
 			};
 
@@ -846,9 +829,157 @@
 				return optionsKeepNativeDefault;
 			};
 
-			prototype.bindEvents = function (element, onlyBuild) {
-				CorePagePrototype.bindEvents.call(this, element, onlyBuild);
-				this.trigger("pageinit");
+
+			/**
+			 * This will set the content element's top or bottom padding equal to the toolbar's height
+			 *
+			 * !!!This method is only available through TAU API!!!
+			 *
+			 *		@example
+			 *		<div id="myPage"></div>
+			 *		<script type="text/javascript">
+			 *			var page = tau.widget.page(document.getElementById("myPage"));
+			 *			page.updatePagePadding();
+			 *		</script>
+			 *
+			 * @method updatePagePadding
+			 * @member ns.widget.mobile.Page
+			 */
+			Page.prototype.updatePagePadding = function () {
+				contentFill(this);
+			};
+
+			/**
+			 * Calculate and update content height
+			 *
+			 * !!!This method is only available through TAU API!!!
+			 *
+			 *		@example
+			 *		<div id="myPage"></div>
+			 *		<script type="text/javascript">
+			 *			var page = tau.widget.page(document.getElementById("myPage"));
+			 *			page.updatePageLayout();
+			 *		</script>
+			 *
+			 * @method updatePageLayout
+			 * @member ns.widget.mobile.Page
+			 */
+			Page.prototype.updatePageLayout = function () {
+				contentFill(this);
+			};
+
+
+			/**
+			 * Sets the focus to page
+			 *
+			 * !!!This method is only available through TAU API!!
+			 *
+			 *		@example
+			 *		<div id="myPage"></div>
+			 *		<script type="text/javascript">
+			 *			var page = tau.widget.page(document.getElementById("myPage"));
+			 *			page.focus();
+			 *		</script>
+			 * @method focus
+			 * @member ns.widget.mobile.Page
+			 */
+			Page.prototype.focus = function () {
+				var autofocus = this.element.querySelector("[autofocus]");
+				if (autofocus) {
+					autofocus.focus();
+					return;
+				}
+				this.element.focus();
+			};
+
+			/**
+			 * Removes focus from page and all descendants
+			 *
+			 * !!!This method is only available through TAU API!!!
+			 *
+			 *		@example
+			 *		<div id="myPage"></div>
+			 *		<script type="text/javascript">
+			 *			var page = tau.widget.page(document.getElementById("myPage"));
+			 *			page.blur();
+			 *		</script>
+			 *
+			 * @method blur
+			 * @member ns.widget.mobile.Page
+			 */
+			Page.prototype.blur = function () {
+				slice.call(this.element.querySelectorAll(":focus")).forEach(function (element) {
+					element.blur();
+				});
+			};
+
+			/**
+			 * Bind events to widget
+			 * @method _bindEvents
+			 * @param {HTMLElement} element
+			 * @protected
+			 * @member ns.widget.mobile.Page
+			 */
+			Page.prototype._bindEvents = function (element) {
+				var self = this;
+				self.contentFillCallback = contentFill.bind(null, self);
+				self.contentFillAfterResizeCallback = function () {
+					self.pageSetHeight = false;
+					contentFill(self);
+				};
+				self.destroyCallback = self.destroy.bind(self, element);
+				/*
+				* @TODO
+				* mobile zoom and persistant toolbar
+				element.addEventListener("pagebeforehide", function (e, ui) {
+					var _updatePadding = this.getAttribute("data-update-page-padding") || true,
+						disablePageZoom = this.getAttribute("data-disable-page-zoom") || true;
+					if (disablePageZoom === true) {
+						// @TODO $.mobile.zoom.enable( true );
+					}
+					var thisFooter = $( ".ui-footer-fixed:jqmData(id)", this ),
+						thisHeader = $( ".ui-header-fixed:jqmData(id)", this ),
+						nextFooter = thisFooter.length && ui.nextPage && $( ".ui-footer-fixed:jqmData(id='" + thisFooter.jqmData( "id" ) + "')", ui.nextPage ) || $(),
+						nextHeader = thisHeader.length && ui.nextPage && $( ".ui-header-fixed:jqmData(id='" + thisHeader.jqmData( "id" ) + "')", ui.nextPage ) || $();
+					if ( nextFooter.length || nextHeader.length ) {
+						nextFooter.add( nextHeader ).appendTo( $.mobile.pageContainer );
+						ui.nextPage.one( "pageshow", function () {
+							nextFooter.add( nextHeader ).appendTo( this );
+						});
+					}
+				}, false);
+				*/
+				window.addEventListener("throttledresize", self.contentFillAfterResizeCallback, false);
+				element.addEventListener("updatelayout", self.contentFillAfterResizeCallback, false);
+				element.addEventListener("pageshow", self.contentFillCallback, true);
+				self.on("pageremove", self.destroyCallback);
+			};
+
+			/**
+			 * Refresh widget structure
+			 * @method _refresh
+			 * @protected
+			 * @member ns.widget.mobile.Page
+			 */
+			Page.prototype._refresh = function () {
+				buildStructure(this.options, this.element);
+				this.pageSetHeight = false;
+				contentFill(this);
+			};
+
+			/**
+			 * Destroy widget
+			 * @method _destroy
+			 * @protected
+			 * @member ns.widget.mobile.Page
+			 */
+			Page.prototype._destroy = function () {
+				var element = this.element;
+				window.removeEventListener("throttledresize", this.contentFillAfterResizeCallback, false);
+				this.off("pageremove", this.destroyCallback);
+				if (element) {
+					element.removeEventListener("pageshow", this.contentFillCallback, true);
+				}
 			};
 
 			// definition
@@ -857,20 +988,16 @@
 				"Page",
 				"[data-role='page'], .ui-page",
 				[
-					"focus",
-					"blur",
-					"setActive",
 					"keepNativeSelector",
 					"setContainerBackground",
 					"removeContainerBackground"
 				],
 				Page,
-				"mobile",
-				true
+				"mobile"
 			);
 			//>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
 			return Page;
 		}
 	);
 	//>>excludeEnd("tauBuildExclude");
-}(window, ns));
+}(ns));

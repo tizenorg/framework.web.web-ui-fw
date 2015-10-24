@@ -1,4 +1,4 @@
-/*global define, ns */
+/*global define */
 /**
  * #Tizen Advanced UI Framework
  *
@@ -30,25 +30,20 @@
  * @title Tizen Advanced UI Framework
  */
 //>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
-(function (ns) {
+(function () {
 	"use strict";
 	define(
 		[
 			"require",
-			//>>excludeStart("tauPerformance", pragmas.tauPerformance);
-			"./tools/performance",
-			//>>excludeEnd("tauPerformance")
 			"./core/core",
 			"./core/config",
 			"./profile/mobile/config",
 			"./core/support",
-			"./core/info",
 			"./jqm/all",
 			"./core/engine",
 			"./core/frameworkData",
 			"./core/theme",
 			"./core/theme/ThemeCommon",
-			"./core/util/anchorHighlight",
 			"./core/util/grid",
 			"./core/util/data",
 			"./core/util/array",
@@ -72,16 +67,14 @@
 			"./core/event/orientationchange",
 			"./core/event/touch",
 			// widget list
-			"./core/widget/core/Checkboxradio",
-			"./core/widget/core/Button",
 			"./profile/mobile/widget/mobile/Page",
-			"./profile/mobile/widget/mobile/PageContainer",
-			"./profile/mobile/widget/mobile/Popup",
 			"./profile/mobile/widget/mobile/Scrollview",
 			"./profile/mobile/widget/mobile/Circularview",
 			"./profile/mobile/widget/mobile/Collapsibleset",
 			"./profile/mobile/widget/mobile/Collapsible",
+			"./profile/mobile/widget/mobile/Button",
 			"./profile/mobile/widget/mobile/Dialog",
+			"./profile/mobile/widget/mobile/Checkboxradio",
 			"./profile/mobile/widget/mobile/Listview",
 			"./profile/mobile/widget/mobile/Listdivider",
 			"./profile/mobile/widget/mobile/ListviewAutodivider",
@@ -92,12 +85,14 @@
 			"./profile/mobile/widget/mobile/Fieldcontain",
 			"./profile/mobile/widget/mobile/Controlgroup",
 			"./profile/mobile/widget/mobile/Textinput",
+			"./profile/mobile/widget/mobile/Popup",
 			"./profile/mobile/widget/mobile/Datetimepicker",
 			"./profile/mobile/widget/mobile/Slider",
 			"./profile/mobile/widget/mobile/Swipe",
 			"./profile/mobile/widget/mobile/SelectMenu",
 			"./profile/mobile/widget/mobile/SearchBar",
 			"./profile/mobile/widget/mobile/Progress",
+			"./profile/mobile/widget/mobile/Navbar",
 			"./profile/mobile/widget/mobile/MultimediaView",
 			"./profile/mobile/widget/mobile/Progressbar",
 			"./profile/mobile/widget/mobile/Tokentextarea",
@@ -107,26 +102,14 @@
 			"./profile/mobile/widget/mobile/VirtualGrid",
 			"./profile/mobile/widget/mobile/Loader",
 			"./profile/mobile/widget/mobile/TizenSlider",
+			"./profile/mobile/widget/mobile/SplitView",
 			"./profile/mobile/widget/mobile/ScrollHandler",
 			"./profile/mobile/widget/mobile/Drawer",
 			"./profile/mobile/widget/mobile/ToggleSwitch",
 			"./profile/mobile/widget/mobile/Navigation",
-			"./profile/mobile/widget/mobile/IndexScrollbar",
 			"./profile/mobile/expose",
 			// default theme
 			"../css/profile/mobile/changeable/theme-changeable/theme",
-			// router modules
-			"./core/router/Router",
-			"./core/router/route/page",
-			"./core/router/route/popup",
-			"./core/router/route/drawer",
-			"./profile/mobile/router/route/dialog",
-			"./core/router/history",
-			"./profile/wearable/expose",
-			"./core/widget/core/Box",
-			"./core/layout/float",
-			"./core/layout/linear",
-			"./core/layout/relative",
 			// Modules to be loaded after
 			"./core/init",
 			//documentation pages
@@ -136,10 +119,8 @@
 			"./profile/mobile/page/pageevents"
 		],
 		function () {
-			//>>excludeEnd("tauBuildExclude");
-			ns.info.profile = "mobile";
-			//>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
+			return;
 		}
 	);
-}(ns));
+}());
 //>>excludeEnd("tauBuildExclude");

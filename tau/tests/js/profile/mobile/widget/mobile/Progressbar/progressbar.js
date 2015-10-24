@@ -4,7 +4,7 @@
  * Kamil Stepczuk <k.stepczuk@samsung.com>
  */
 
-module("profile/mobile/widget/mobile/Progressbar");
+module("ProgressBar");
 
 /**
  * Unit test widget api

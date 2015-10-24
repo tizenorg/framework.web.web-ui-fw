@@ -9,6 +9,7 @@ function listviewItemTests(listviewItem) {
 	ok(listviewItem !== undefined, 'List item instance exists');
 	ok(listviewItem.classList.contains('ui-li'), 'List item has ui-li class');
 	ok(listviewItem.classList.contains('ui-li-static'), 'List item has ui-li-static class');
+	ok(listviewItem.classList.contains('ui-btn-up-s'), 'List item has ui-btn-up-s class');
 	equal(listviewItem.getAttribute('tabindex'), '0', 'List item has tabindex=0');
 }
 
@@ -30,7 +31,7 @@ function dividerBuildTests(divider) {
 	dividerText = divider.children[0];
 	ok(dividerText !== undefined, 'divider text instance exists');
 	ok(dividerText.tagName === 'SPAN', 'divider text instance is HTML Span Element');
-	ok(dividerText.classList.contains('ui-divider-text'), 'divider text item has ui-divider-text');
+	ok(dividerText.classList.contains('ui-btn-text'), 'divider text item has ui-btn-text');
 	dividerLine = divider.children[1];
 	ok(dividerLine !== undefined, 'divider line instance exists');
 	ok(dividerText.tagName === 'SPAN', 'divider line instance is HTML Span Element');

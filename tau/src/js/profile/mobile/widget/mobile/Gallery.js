@@ -1,26 +1,12 @@
 /*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true, plusplus: true */
 /**
  * #Gallery Widget
  * The gallery widget shows images in a gallery on the screen.
- *
- * ##Default selectors
- * In default all elements with _data-role="gallery"_ or class _.ui-gallery_ are changed to gallery widget.
  *
  * @class ns.widget.mobile.Gallery
  * @extends ns.widget.BaseWidget
@@ -130,7 +116,7 @@
 			 */
 			function getHeight(element) {
 				var page = selectors.getClosestBySelectorNS(element, "role=page"),
-					content = selectors.getAllByDataNS(page, "role=content")[0],
+					content = selectors.getAllByDataNS(element, "role=content"),
 					header = selectors.getAllByDataNS(page, "role=header"),
 					footer = selectors.getAllByDataNS(page, "role=footer"),
 					headerHeight = header.length ? doms.getElementHeight(header[0]) : 0,
@@ -192,9 +178,8 @@
 					style = imageContainer.style;
 
 				style.webkitTransform = translate;
-				style.oTransform = translate;
-				style.mozTransform = translate;
-				style.msTransform = translate;
+				style.OTransform = translate;
+				style.MozTransform = translate;
 				style.transform = translate;
 
 				return imageContainer;
@@ -313,11 +298,10 @@
 			 */
 			Gallery.classes = {
 				uiGallery: "ui-gallery",
-				uiGalleryContainer: "ui-gallery-container",
 				uiGalleryBg: "ui-gallery-bg",
 				uiContent: "ui-content",
 				uiHeader: "ui-header",
-				uiFooter: "ui-footer",
+				uiFooter: "ui-footer"
 			};
 
 			/**
@@ -387,16 +371,15 @@
 					i,
 					length;
 
-				element.classList.add(classes.uiGallery);
 				images = selectors.getChildrenByTag(element, "img");
 				for (i = 0, length = images.length; i < length; i++) {
 					image = images[i];
 					doms.wrapInHTML(image, "<div class='" + classes.uiGalleryBg + "'></div>");
 				}
 				if (element.children.length) {
-					doms.wrapInHTML(element.children, "<div class='" + classes.uiGalleryContainer + "'></div>");
+					doms.wrapInHTML(element.children, "<div class='" + classes.uiGallery + "'></div>");
 				} else {
-					element.innerHTML = "<div class='" + classes.uiGalleryContainer + "'></div>";
+					element.innerHTML = "<div class='" + classes.uiGallery + "'></div>";
 				}
 				index = parseInt(options.index, 10);
 				if (!index) {
@@ -424,7 +407,7 @@
 			Gallery.prototype._init = function (element) {
 				var images = element.getElementsByTagName("img"),
 					classes = Gallery.classes;
-				this.container = selectors.getChildrenByClass(element, classes.uiGalleryContainer)[0];
+				this.container = selectors.getChildrenByClass(element, classes.uiGallery)[0];
 				this._detachAll(images);
 
 				// for "compare" test
@@ -504,16 +487,12 @@
 			 * @member ns.widget.mobile.Gallery
 			 */
 			Gallery.prototype._moveLeft = function (imageContainer, value, duration) {
-				var style;
+				var transition = "";
 
 				if (imageContainer) {
 					if (duration !== undefined) {
-						style = imageContainer.style;
-						style.webkitTransition =  "-webkit-transform " + (duration / 1000) + "s ease";
-						style.mozTransition =  "-moz-transform " + (duration / 1000) + "s ease";
-						style.msTransition =  "-ms-transform " + (duration / 1000) + "s ease";
-						style.oTransition =  "-o-transform " + (duration / 1000) + "s ease";
-						style.transition =  "transform " + (duration / 1000) + "s ease";
+						transition =  "-webkit-transform " + (duration / 1000) + "s ease";
+						imageContainer.style.webkitTransition = transition;
 					}
 					imageContainer = setTranslatePosition(imageContainer, value);
 				}
@@ -1224,7 +1203,7 @@
 			ns.widget.mobile.Gallery = Gallery;
 			engine.defineWidget(
 				"Gallery",
-				"[data-role='gallery'], .ui-gallery",
+				"[data-role='gallery'], .ui-gallery-container",
 				[
 					"add",
 					"remove",

@@ -1,19 +1,8 @@
 /*global window, define, Math, ns*/
 /*jslint bitwise: true */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* 
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /**
  * #Theme object
@@ -84,18 +73,14 @@
 					var self = this,
 						containerClassList = container.classList;
 
-					if (frameworkData) {
-						frameworkData.getParams();
-					}
+					frameworkData.getParams();
 
-					if (support && support.gradeA()) {
+					if (support.gradeA()) {
 						documentElement.classList.add("ui-mobile");
 						containerClassList.add("ui-mobile-viewport");
 					}
 
-					if (frameworkData) {
-						self.loadTheme(frameworkData.theme);
-					}
+					self.loadTheme(frameworkData.theme);
 				},
 
 				/**
@@ -335,7 +320,7 @@
 			document.addEventListener("themeinit", function (evt) {
 				var router = evt.detail;
 				if (router && ns.getConfig("autoInitializePage", true)) {
-					ns.theme.init(router.getContainer().element);
+					ns.theme.init(router.getContainer());
 				}
 			}, false);
 

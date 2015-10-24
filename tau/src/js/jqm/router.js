@@ -1,6 +1,6 @@
 /*global window, define, HTMLElement */
 /*jslint plusplus: true, nomen: true */
-/*
+/* 
  * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
  * License : MIT License V2
  */
@@ -16,6 +16,7 @@
 		[
 			"../core/engine",
 			"../core/util/path",
+			"../profile/mobile/router/urlHistory",
 			"./namespace"
 		],
 		function () {
@@ -41,8 +42,9 @@
 								if (!container instanceof HTMLElement) {
 									container = document.body;
 								}
-								ns.setConfig('pageContainer', container);
+								ns.setConfig('container', container);
 								$.mobile.pageContainer = $(container);
+								router.setContainer(container);
 							}
 							if ($.mobile.autoInitializePage !== undefined) {
 								ns.setConfig('autoInitializePage', $.mobile.autoInitializePage);
@@ -58,15 +60,11 @@
 								}
 								return router.open(toPage, options);
 							};
-							document.addEventListener('pagechange', function () {
-								var route = router.getRoute("page"),
-									activePage = route && route.getActive(),
-									target = activePage && activePage.element;
-								$.mobile.activePage = $(target);
+							document.addEventListener('pageshow', function (ev) {
+								$.mobile.activePage = $(ev.target);
 							}, true);
-							$.mobile.activePage = $();
 							$.mobile.firstPage = $(router.getFirstPage());
-							$.mobile.pageContainer = $();
+							$.mobile.pageContainer = $(router.getContainer());
 							$.mobile.subPageUrlKey = ns.widget.mobile.Page.classes.uiPage;
 							$.mobile.ajaxEnabled = true;
 							$.mobile.hashListeningEnabled = true;
@@ -88,7 +86,7 @@
 							$.mobile.transitionFallbacks = {};
 							$.mobile._maybeDegradeTransition = null;
 							$.mobile.focusPage = null;
-							//$.mobile.urlHistory = ns.router.urlHistory;
+							$.mobile.urlHistory = ns.router.urlHistory;
 							$.mobile.dialogHashKey = "&ui-state=dialog";
 							$.mobile.allowCrossDomainPages = false;
 							$.mobile.getDocumentUrl = ns.util.path.getDocumentUrl;
@@ -112,8 +110,7 @@
 					var transitions,
 						name,
 						container,
-						router = engine.getRouter(),
-						containerWidget;
+						router = engine.getRouter();
 					if ($) {
 						$.mobile.defaultPageTransition = "none";
 
@@ -140,12 +137,10 @@
 							pageWidget.focus();
 						};
 
+						$.mobile._bindPageRemove = $.mobile._bindPageRemove || router._bindPageRemove.bind(router);
 						$.mobile.initializePage = router.init.bind(router);
 						container = router.getContainer();
-						containerWidget = router.getContainer();
-						if (containerWidget) {
-							$.mobile.pageContainer = $(containerWidget.element);
-						}
+						$.mobile.pageContainer = $(container);
 					}
 				}
 			};

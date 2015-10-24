@@ -1,20 +1,9 @@
-/*global window, define, ns */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/*global window, define */
+/* 
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
-/*jslint nomen: true, plusplus: true */
+/*jslint nomen: true */
 /**
  * # Listview Widget
  * Shows a list view.
@@ -76,28 +65,21 @@
 	define(
 		[
 			"../core",
-			"../../util/selectors",
 			"../BaseWidget"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
 			var BaseWidget = ns.widget.BaseWidget,
 				engine = ns.engine,
-				selectorUtils = tau.util.selectors,
 				Listview = function () {
 					return this;
 				},
 				classes = {
-					LISTVIEW: "ui-listview",
-					LISTITEM_HAS_RADIO: "li-has-radio",
-					LISTITEM_HAS_CHECKBOX: "li-has-checkbox"
+					LISTVIEW: "ui-listview"
 				},
 				prototype = new BaseWidget();
 
 			Listview.events = {};
-			Listview.classes = classes;
-
-			Listview.classes = classes;
 
 			prototype._changeLinksToButton = function(item) {
 				engine.instanceWidget(
@@ -169,14 +151,11 @@
 				var items = element.children,
 					itemsLength = items.length,
 					item,
-					i,
-					background = document.createElement("div");
-
-				background.className = classes.LISTITEM_BACKGROUND;
+					i;
 
 				element.classList.add(classes.LISTVIEW);
 
-				for (i = 0; i < itemsLength; i++) {
+				for (i=0; i<itemsLength; i++) {
 					item = items[i];
 					if (item.firstElementChild && item.firstElementChild.tagName === "A") {
 						self._changeLinksToButton(item.firstElementChild);
@@ -190,21 +169,7 @@
 			* @member ns.widget.core.Listview
 			*/
 			prototype._destroy = function () {
-				var items = this.element.children,
-					itemsLength = items.length,
-					item,
-					i,
-					widget;
-
-				for (i = 0; i < itemsLength; i++) {
-					item = items[i];
-					if (item.firstElementChild && item.firstElementChild.tagName === "A") {
-						widget = engine.getBinding(item.firstElementChild, "Button");
-						if (widget !== null) {
-							widget.destroy();
-						}
-					}
-				}
+				return null;
 			};
 
 			Listview.prototype = prototype;

@@ -1,6 +1,6 @@
 $( document ).ready( function () {
 
-	module( "profile/mobile/widget/mobile/Searchbar" );
+	module( "Searchbar" );
 
 	// trigger pagecreate
 	$( "#searchbar-unit-test" ).page();

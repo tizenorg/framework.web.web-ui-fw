@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		videoElement,
 		audioElement;
 
-	module('profile/mobile/widget/mobile/MultimediaView', {
+	module('ns.widget.MultimediaView for video element', {
 		setup: function () {
 			multimediaView = new MultimediaView();
 			videoElement = document.getElementById('video-1');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 
-	module('profile/mobile/widget/mobile/MultimediaView', {
+	module('ns.widget.MultimediaView for audio element', {
 		setup: function () {
 			multimediaView = new MultimediaView();
 			audioElement = document.getElementById('audio-1');

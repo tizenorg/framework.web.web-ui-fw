@@ -1,5 +1,5 @@
 Name:       web-ui-fw
-Version:     0.10.29_6
+Version:     0.9.28
 Release:    0
 VCS:        magnolia/framework/web/web-ui-fw#web-ui-fw_0.2.59-4-ge6c6c9d348559057a2b3d4ade5c021b0a28cbc7d
 Summary:    Tizen Web UI Framework Library
@@ -7,6 +7,7 @@ Group:      Development/Other
 License:    MIT
 BuildArch:  noarch
 BuildRequires:  make
+BuildRequires: nodejs
 
 Source0:    %{name}-%{version}.tar.gz
 
@@ -52,3 +53,4 @@ Summary:    Tizen Web UI Framework Theme : tizen-black
 /usr/share/tizen-web-ui-fw/*/themes/tizen-black
 /usr/share/tizen-web-ui-fw/*/themes/tizen-tizen
 /usr/share/tizen-web-ui-fw/latest
+

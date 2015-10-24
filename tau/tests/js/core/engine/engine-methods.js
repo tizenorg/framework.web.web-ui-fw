@@ -3,7 +3,8 @@
 	"use strict";
 	var engine = ns.engine,
 		BaseWidget = ns.widget.BaseWidget,
-		WidgetPage = (ns.widget.core && ns.widget.core.Page) || ns.widget.mobile.Page,
+		WidgetPage = (ns.widget.mobile && ns.widget.mobile.Page) || ns.widget.wearable.Page,
+		isMobile = !!(ns.widget.mobile && ns.widget.mobile.Page),
 		testElement;
 
 	function _manualClean(elementId) {
@@ -21,7 +22,7 @@
 		newElement.id = elementId;
 	}
 
-	module("core/engine", {
+	module("ej.engine methods", {
 		setup: function () {
 			testElement = document.getElementById("page1");
 			engine.run();
@@ -29,8 +30,7 @@
 		teardown: function () {
 			_manualClean("non-widget");
 			_manualClean("future-widget");
-			engine.destroyAllWidgets(document.body);
-			engine.removeAllBindings(document.body);
+
 			engine.stop();
 		}
 	});
@@ -68,11 +68,20 @@
 	});
 
 	test('Checking .instanceWidget method with empty element', function() {
-		var widget = engine.instanceWidget('Button');
+		var oldErrorLog = console.error,
+			logSpy = function() {
+				ok(true, "Error was thrown");
+			};
 
-		ok(widget, "Widget was created");
-		ok(widget.element, "Widget has element");
+		// Change internal method (used inside instanceWidget) into spy function
+		console.error = logSpy;
+
+		engine.instanceWidget(null, 'Button');
+
+		// Restore real method
+		console.error = oldErrorLog;
 	});
+
 	test("Checking .getBinding method - one parameter", function () {
 		var tempBinding,
 			tempBinding2;
@@ -112,12 +121,12 @@
 		tempBinding = engine.getBinding(testElement, "Test2");
 		ok(tempBinding === null, "'null' should be returned when a HTMLElement (that is bound) does not have a widget binding of a proper type");
 
-		tempBinding = engine.getBinding(testElement, "Page");
+		tempBinding = engine.getBinding(testElement, (isMobile && "Page") || "page");
 		ok(!!tempBinding, "Widget reference was returned");
 		ok(tempBinding instanceof BaseWidget, "Widget is a instanceof BaseWidget");
 		ok(tempBinding instanceof WidgetPage, "Widget is a instanceof Page");
 
-		tempBinding2 = engine.getBinding("page1", "Page");
+		tempBinding2 = engine.getBinding("page1", (isMobile && "Page") || "page");
 		ok(tempBinding === tempBinding2, "Passing HTMLElement reference and string ID returns that same object reference");
 	});
 
@@ -133,11 +142,19 @@
 
 		tempBindings = engine.getAllBindings(testElement);
 		equal(typeof tempBindings, "object", "Passing a proper reference gives a object");
-		ok(!!tempBindings.Page, "Returned object contains proper widget property");
-		ok(tempBindings.Page instanceof WidgetPage, "Widget property is a proper reference to a widget object");
+		if (isMobile) {
+			ok(!!tempBindings.Page, "Returned object contains proper widget property");
+			ok(tempBindings.Page instanceof WidgetPage, "Widget property is a proper reference to a widget object");
 
-		tempBindings2 = engine.getAllBindings("page1");
-		ok(tempBindings.Page === tempBindings2.Page, "Same widget references are returned while calling method with ID as parameter");
+			tempBindings2 = engine.getAllBindings("page1");
+			ok(tempBindings.Page === tempBindings2.Page, "Same widget references are returned while calling method with ID as parameter");
+		} else {
+			ok(!!tempBindings.page, "Returned object contains proper widget property");
+			ok(tempBindings.page instanceof WidgetPage, "Widget property is a proper reference to a widget object");
+
+			tempBindings2 = engine.getAllBindings("page1");
+			ok(tempBindings.page === tempBindings2.page, "Same widget references are returned while calling method with ID as parameter");
+		}
 	});
 
 	test("Checking .getAllBindings method - after manually adding instances", function () {

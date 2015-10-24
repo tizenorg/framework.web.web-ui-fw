@@ -1,5 +1,6 @@
 (function() {
-	window.addEventListener("load", function() {
+	var page = document.getElementById("pageTestVirtualList");
+	page.addEventListener("pageshow", function() {
 		var listElement = document.getElementById("vlist1"),
 			config = {
 				//Declare total number of items
@@ -19,5 +20,13 @@
 		});
 		// Draw child elements
 		virtualList.draw();
+	});
+	page.addEventListener("pagehide", function() {
+		var listElement = document.getElementById("vlist1"),
+			// Remove all children in the vList
+			virtualList = tau.widget.VirtualListview(listElement);
+		if (virtualList) {
+			virtualList.destroy();
+		}
 	});
 }());

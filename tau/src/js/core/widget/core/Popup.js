@@ -1,18 +1,7 @@
 /*global window, define, ns */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* 
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true, plusplus: true */
 /**
@@ -28,7 +17,6 @@
 	define(
 		[
 			"../../engine",
-			"../../event",
 			"../../util/object",
 			"../../util/deferred",
 			"../../util/selectors",
@@ -72,13 +60,6 @@
 				 * @private
 				 */
 				utilSelector = ns.util.selectors,
-				/**
-				 * Alias for class ns.event
-				 * @property {Object} eventUtils
-				 * @member ns.widget.core.Popup
-				 * @private
-				 */
-				eventUtils = ns.event,
 
 				Popup = function () {
 					var self = this,
@@ -86,7 +67,6 @@
 
 					self.selectors = selectors;
 					self.options = objectUtils.merge({}, Popup.defaults);
-					self.storedOptions = null;
 					/**
 					 * Popup state flag
 					 * @property {0|1|2|3} [state=null]
@@ -100,7 +80,6 @@
 					ui.footer = null;
 					ui.content = null;
 					ui.container = null;
-					ui.wrapper = null;
 					self._ui = ui;
 
 					// event callbacks
@@ -115,9 +94,7 @@
 				 * @property {boolean} [options.overlay=true] Sets whether to show overlay when a popup is open.
 				 * @property {boolean|string} [options.header=false] Sets content of header.
 				 * @property {boolean|string} [options.footer=false] Sets content of footer.
-				 * @property {string} [options.content=null] Sets content of popup.
-				 * @property {string} [options.overlayClass=""] Sets the custom class for the popup background, which covers the entire window.
-				 * @property {string} [options.closeLinkSelector="a[data-rel='back']"] Sets selector for close buttons in popup.
+				 * @property {string} [overlayClass=""] Sets the custom class for the popup background, which covers the entire window.
 				 * @property {boolean} [options.history=true] Sets whether to alter the url when a popup is open to support the back button.
 				 * @member ns.widget.core.Popup
 				 * @static
@@ -128,9 +105,7 @@
 					overlay: true,
 					header: false,
 					footer: false,
-					content: null,
 					overlayClass: "",
-					closeLinkSelector: "[data-rel='back']",
 					history: true
 				},
 				states = {
@@ -152,10 +127,14 @@
 					overlay: CLASSES_PREFIX + "-overlay",
 					header: CLASSES_PREFIX + "-header",
 					footer: CLASSES_PREFIX + "-footer",
-					content: CLASSES_PREFIX + "-content",
-					wrapper: CLASSES_PREFIX + "-wrapper",
-					build: "ui-build"
+					content: CLASSES_PREFIX + "-content"
 				},
+				selectors = {
+					header: "." + classes.header,
+					content: "." + classes.content,
+					footer: "." + classes.footer
+				},
+				EVENTS_PREFIX = "popup",
 				/**
 				 * Dictionary for popup related selectors
 				 * @property {Object} selectors
@@ -167,7 +146,6 @@
 					content: "." + classes.content,
 					footer: "." + classes.footer
 				},
-				EVENTS_PREFIX = "popup",
 				/**
 				 * Dictionary for popup related events
 				 * @property {Object} events
@@ -218,7 +196,6 @@
 				var self = this,
 					ui = self._ui,
 					selectors = self.selectors,
-					options = self.options,
 					content = ui.content || element.querySelector(selectors.content),
 					footer = ui.footer || element.querySelector(selectors.footer),
 					elementChildren = [].slice.call(element.childNodes),
@@ -234,9 +211,6 @@
 						if (node !== ui.footer && node !== ui.header) {
 							content.appendChild(node);
 						}
-					}
-					if (typeof options.content === "string") {
-						content.innerHTML = options.content;
 					}
 					element.insertBefore(content, footer);
 				}
@@ -350,30 +324,12 @@
 			 */
 			prototype._build = function (element) {
 				var self = this,
-					ui = self._ui,
-					wrapper,
-					child = element.firstChild;
-
-				// set class for element
-				element.classList.add(classes.popup);
-
-				// create wrapper
-				wrapper = document.createElement("div");
-				wrapper.classList.add(classes.wrapper);
-				ui.wrapper = wrapper;
-				ui.container = wrapper;
-				// move all children to wrapper
-				while (child) {
-					wrapper.appendChild(child);
-					child = element.firstChild;
-				}
-				// add wrapper and arrow to popup element
-				element.appendChild(wrapper);
+					container = self._ui.container || element;
 
 				// build header, footer and content
-				this._buildHeader(ui.container);
-				this._buildFooter(ui.container);
-				this._buildContent(ui.container);
+				this._buildHeader(container);
+				this._buildFooter(container);
+				this._buildContent(container);
 
 				// set overlay
 				this._setOverlay(element, this.options.overlay);
@@ -395,24 +351,17 @@
 					ui = self._ui,
 					overlay = ui.overlay;
 
-				// if this popup is not connected with slider,
-				// we create overlay, which is invisible when
-				// the value of option overlay is false
-				/// @TODO: get class from widget
-				if (!element.classList.contains("ui-slider-popup")) {
-					// create overlay
+				// create overlay
+				if (enable) {
 					if (!overlay) {
 						overlay = document.createElement("div");
 						element.parentNode.insertBefore(overlay, element);
 						ui.overlay = overlay;
 					}
 					overlay.className = classes.overlay + (overlayClass ? " " + overlayClass : "");
-					if (enable) {
-						overlay.style.opacity = "";
-					} else {
-						// if option is set on "false", the overlay is not visible
-						overlay.style.opacity = 0;
-					}
+				} else if (overlay) {
+					overlay.parentNode.removeChild(overlay);
+					ui.overlay = null;
 				}
 			};
 
@@ -452,9 +401,7 @@
 				ui.header = ui.header || element.querySelector(selectors.header);
 				ui.footer = ui.footer || element.querySelector(selectors.footer);
 				ui.content = ui.content || element.querySelector(selectors.content);
-				ui.wrapper = ui.wrapper || element.querySelector("." + classes.wrapper);
-				ui.container = ui.wrapper || element;
-
+				ui.container = element;
 				// @todo - use selector from page's definition in engine
 				ui.page = utilSelector.getClosestByClass(element, "ui-page") || window;
 			};
@@ -471,11 +418,13 @@
 					activeClass = classes.active,
 					elementClassList = self.element.classList,
 					route = engine.getRouter().getRoute("popup"),
-					options;
+					options = self.options;
 
 				// NOTE: popup's options object is stored in window.history at the router module,
 				// and this window.history can't store DOM element object.
-				options =  objectUtils.merge({}, self.options, {positionTo: null, link: null});
+				if (typeof options.positionTo !== "string") {
+					options.positionTo = null;
+				}
 
 				// set state of popup and add proper class
 				if (active) {
@@ -502,13 +451,11 @@
 			 * @protected
 			 * @member ns.widget.core.Popup
 			 */
-			prototype._bindEvents = function () {
-				var self = this,
-					closeButtons = self.element.querySelectorAll(self.options.closeLinkSelector);
+			prototype._bindEvents = function (element) {
+				var self = this;
 
 				self._ui.page.addEventListener("pagebeforehide", self, false);
 				window.addEventListener("resize", self, false);
-				eventUtils.on(closeButtons, "click", self, false);
 				self._bindOverlayEvents();
 			};
 
@@ -545,20 +492,11 @@
 			 * @protected
 			 * @member ns.widget.core.Popup
 			 */
-			prototype._unbindEvents = function () {
+			prototype._unbindEvents = function (element) {
 				var self = this;
-
 				self._ui.page.removeEventListener("pagebeforehide", self, false);
 				window.removeEventListener("resize", self, false);
 				self._unbindOverlayEvents();
-			};
-
-			/**
-			 * Layouting popup structure
-			 * @method layout
-			 * @member ns.widget.core.Popup
-			 */
-			prototype._layout = function (element) {
 			};
 
 			/**
@@ -570,18 +508,8 @@
 			 */
 			prototype.open = function (options) {
 				var self = this,
-					newOptions;
-
-				if (!self._isActive()) {
-					/*
-					 * Some passed options on open need to be kept until popup closing.
-					 * For example, trasition parameter should be kept for closing animation.
-					 * On the other hand, fromHashChange or x, y parameter should be removed.
-					 * We store options and restore them on popup closing.
-					 */
-					self._storeOpenOptions(options);
-
 					newOptions = objectUtils.merge(self.options, options);
+				if (!self._isActive()) {
 					if (!newOptions.dismissible) {
 						engine.getRouter().lock();
 					}
@@ -609,45 +537,6 @@
 			};
 
 			/**
-			 * Store Open options.
-			 * @method _storeOpenOptions
-			 * @param {object} options
-			 * @protected
-			 * @member ns.widget.core.Popup
-			 */
-			prototype._storeOpenOptions = function (options) {
-				var self = this,
-					oldOptions = self.options,
-					storedOptions = {},
-					key;
-
-				for (key in options) {
-					if (options.hasOwnProperty(key)) {
-						storedOptions[key] = oldOptions[key];
-					}
-				}
-
-				self.storedOptions = storedOptions;
-			};
-
-			/**
-			 * Restore Open options and remove some unnecessary ones.
-			 * @method _storeOpenOptions
-			 * @protected
-			 * @member ns.widget.core.Popup
-			 */
-			prototype._restoreOpenOptions = function () {
-				var self = this,
-					options = self.options,
-					propertiesToRemove = ["x", "y", "fromHashChange"];
-
-				// we restore opening values of all options
-				options = objectUtils.merge(options, self.storedOptions);
-				// and remove all values which should not be stored
-				objectUtils.removeProperties(options, propertiesToRemove);
-			};
-
-			/**
 			 * Show popup.
 			 * @method _show
 			 * @param {object} options
@@ -657,11 +546,7 @@
 			prototype._show = function (options) {
 				var self = this,
 					transitionOptions = objectUtils.merge({}, options),
-					overlay = self._ui.overlay,
 					deferred;
-
-				// layouting
-				self._layout(self.element);
 
 				// change state of popup
 				self.state = states.DURING_OPENING;
@@ -669,10 +554,6 @@
 				transitionOptions.ext = " in ";
 
 				self.trigger(events.before_show);
-				// show overlay
-				if (overlay) {
-					overlay.style.display = "block";
-				}
 				// start opening animation
 				self._transition(transitionOptions, self._onShow.bind(self));
 			};
@@ -684,7 +565,11 @@
 			 * @member ns.widget.core.Popup
 			 */
 			prototype._onShow = function() {
-				var self = this;
+				var self = this,
+					overlay = self._ui.overlay;
+				if (overlay) {
+					overlay.style.display = "block";
+				}
 				self._setActive(true);
 				self.trigger(events.show);
 			};
@@ -698,8 +583,7 @@
 			 */
 			prototype._hide = function (options) {
 				var self = this,
-					isOpened = self._isOpened(),
-					callbacks = self._callbacks;
+					isOpened = self._isOpened();
 
 				// change state of popup
 				self.state = states.DURING_CLOSING;
@@ -713,12 +597,8 @@
 				} else {
 					// popup is active, but not opened yet (DURING_OPENING), so
 					// we stop opening animation
-					if (callbacks.transitionDeferred) {
-						callbacks.transitionDeferred.reject();
-					}
-					if (callbacks.animationEnd) {
-						callbacks.animationEnd();
-					}
+					self._callbacks.transitionDeferred.reject();
+					self._callbacks.animationEnd();
 					// and set popup as inactive
 					self._onHide();
 				}
@@ -733,12 +613,10 @@
 			prototype._onHide = function() {
 				var self = this,
 					overlay = self._ui.overlay;
-
 				if (overlay) {
 					overlay.style.display = "";
 				}
 				self._setActive(false);
-				self._restoreOpenOptions();
 				self.trigger(events.hide);
 			};
 
@@ -752,8 +630,7 @@
 				var self = this;
 				switch(event.type) {
 					case "pagebeforehide":
-						// we need close active popup if exists
-						engine.getRouter().close(null, {transition: "none", rel: "popup"});
+						self.close({transition: "none"});
 						break;
 					case "resize":
 						self._onResize(event);
@@ -793,7 +670,7 @@
 				event.stopPropagation();
 
 				if (options.dismissible) {
-					engine.getRouter().close();
+					this.close();
 				}
 			};
 
@@ -818,9 +695,6 @@
 				// remove callbacks on animation events
 				element.removeEventListener("animationend", animationEndCallback, false);
 				element.removeEventListener("webkitAnimationEnd", animationEndCallback, false);
-				element.removeEventListener("mozAnimationEnd", animationEndCallback, false);
-				element.removeEventListener("oAnimationEnd", animationEndCallback, false);
-				element.removeEventListener("msAnimationEnd", animationEndCallback, false);
 
 				// clear classes
 				transitionClass.split(" ").forEach(function (currentClass) {
@@ -865,6 +739,7 @@
 					transition = options.transition || self.options.transition || "none",
 					transitionClass = transition + options.ext,
 					element = self.element,
+					overlay = self._ui.overlay,
 					elementClassList = element.classList,
 					deferred,
 					animationEndCallback;
@@ -879,14 +754,14 @@
 					// add animation callbacks
 					element.addEventListener("animationend", animationEndCallback, false);
 					element.addEventListener("webkitAnimationEnd", animationEndCallback, false);
-					element.addEventListener("mozAnimationEnd", animationEndCallback, false);
-					element.addEventListener("oAnimationEnd", animationEndCallback, false);
-					element.addEventListener("msAnimationEnd", animationEndCallback, false);
 					// add transition classes
 					transitionClass.split(" ").forEach(function (currentClass) {
 						currentClass = currentClass.trim();
 						if (currentClass.length > 0) {
 							elementClassList.add(currentClass);
+							if (overlay) {
+								overlay.classList.add(currentClass);
+							}
 						}
 					});
 				} else {
@@ -903,28 +778,10 @@
 			 */
 			prototype._destroy = function() {
 				var self = this,
-					element = self.element,
-					ui = self._ui,
-					wrapper = ui.wrapper,
-					child;
-
-				if (wrapper) {
-					// restore all children from wrapper
-					child = wrapper.firstChild;
-					while (child) {
-						element.appendChild(child);
-						child = wrapper.firstChild;
-					}
-
-					if (wrapper.parentNode) {
-						wrapper.parentNode.removeChild(wrapper);
-					}
-				}
+					element = self.element;
 
 				self._unbindEvents(element);
 				self._setOverlay(element, false);
-
-				ui.wrapper = null;
 			};
 
 			Popup.prototype = prototype;

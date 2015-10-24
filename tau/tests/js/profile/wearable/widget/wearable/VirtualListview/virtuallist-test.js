@@ -45,10 +45,9 @@
 	// Set listener
 	elList.addEventListener('draw', drawListener, false);
 
-	module("profile/wearable/widget/wearable/VirtualList");
 
 	// RUN TEST 1
-	test("VirtualList draw method", 9, function () {
+	test("ej.widget.micro.VirtualList draw method", 9, function () {
 		var children = elList.children,
 			nextDiv = elList.nextElementSibling,
 			li = children[0];
@@ -66,7 +65,7 @@
 
 
 	// RUN TEST 2
-	test("VirtualList scrollToIndex method", 6, function () {
+	test("ej.widget.micro.VirtualList scrollToIndex method", 6, function () {
 		var scrollview = elList.parentNode,
 			vList = tau.widget.VirtualListview(elList),
 			height = elList.firstElementChild.offsetHeight,
@@ -88,7 +87,7 @@
 	});
 
 	// RUN TEST 3
-	test("VirtualList on scroll action", 2, function () {
+	test("ej.widget.micro.VirtualList on scroll action", 2, function () {
 		var scrollview = elList.parentNode,
 			li,
 			vList = tau.widget.VirtualListview(elList),
@@ -104,7 +103,7 @@
 	});
 
 	// RUN TEST 4
-	asyncTest("VirtualList tap methods", 3, function () {
+	asyncTest("ej.widget.micro.VirtualList tap methods", 3, function () {
 		var li = elList.children[0],
 			tapholdThreshold = 300;
 
@@ -146,7 +145,7 @@
 
 
 	// RUN TEST 5
-	test("VirtualList scrollTo method",  function () {
+	test("ej.widget.micro.VirtualList scrollTo method",  function () {
 		var scrollview = elList.parentNode,
 			vList = tau.widget.VirtualListview(elList),
 			height = elList.firstElementChild.offsetHeight,
@@ -188,7 +187,7 @@
 	});
 
 	// RUN TEST 6
-	test("VirtualList destroy method", 4, function () {
+	test("ej.widget.micro.VirtualList destroy method", 4, function () {
 		var children = elList.children,
 			nextDiv = elList.nextElementSibling,
 			vList = tau.widget.VirtualListview(elList);
@@ -201,7 +200,7 @@
 	});
 
 	// RUN TEST 7
-	test("VirtualList buffer sizing",  function () {
+	test("ej.widget.micro.VirtualList buffer sizing",  function () {
 		var vList,
 			config;
 

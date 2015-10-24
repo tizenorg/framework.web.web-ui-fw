@@ -1,19 +1,8 @@
 /*global window, define, ns */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true */
 /**
 * #Multimedia View widget
@@ -38,9 +27,9 @@
 			'../../../../core/util/selectors',
 			'../../../../core/util/object',
 			'../../../../core/event',
-			"../../../../core/widget/core/Page",
-			"../../../../core/widget/core/Button",
 			'./BaseWidgetMobile',
+			"./Button",
+			'./Page',
 			'./Scrollview',
 			'./Slider',
 			'./Progressbar'
@@ -113,14 +102,14 @@
 				utilsSelectors = ns.util.selectors,
 				/**
 				 * Local alias for classes of Page widget
-				 * @property {Object} Page Alias for {@link ns.widget.core.Page}
+				 * @property {Object} Page Alias for {@link ns.widget.mobile.Page}
 				 */
-				pageClasses = ns.widget.core.Page.classes,
+				pageClasses = ns.widget.mobile.Page.classes,
 				/**
 				 * Local alias for classes of Button widget
-				 * @property {Object} Button Alias for {@link ns.widget.core.Button}
+				 * @property {Object} Button Alias for {@link ns.widget.mobile.Button}
 				 */
-				buttonClasses = ns.widget.core.Button.classes,
+				buttonClasses = ns.widget.mobile.Button.classes,
 				/**
 				 * Local alias for classes of Scrollview widget
 				 * @property {Object} Scrollview Alias for {@link ns.widget.mobile.Scrollview}
@@ -503,9 +492,6 @@
 				};
 				self.element = element;
 				self._isVideo = isVideo;
-
-				// INFO: since 2.3, we decided to use standard HTML <video> and <audio> tag.
-				ns.warn("TAU based Multimediaview widget will be deprecated. Please use <video> / <audio> tag with standard HTML.");
 
 				viewClasslist.add(classes.VIEW);
 

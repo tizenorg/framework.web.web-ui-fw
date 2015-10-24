@@ -4,7 +4,7 @@
 	define(
 		[
 			"../../core/engine",
-			"./widget/wearable/IndexScrollbar",
+			"./widget/wearable/indexscrollbar/IndexScrollbar",
 			"./widget/wearable/SectionChanger",
 			"./widget/wearable/SwipeList",
 			"./widget/wearable/VirtualListview",

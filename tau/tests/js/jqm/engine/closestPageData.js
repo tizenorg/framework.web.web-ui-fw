@@ -1,4 +1,4 @@
-module("jqm/engine", {});
+module("ej.jqm.engine", {});
 
 test ( "closestPageData" , function () {
 	var elem1 = document.getElementById("elem1"),

@@ -10,8 +10,7 @@
 		separator = environment["file.separator"],
 		userHome = environment["user.home"],
 		source = (args["source"] || environment["user.dir"]).replace(/^~/i, userHome).replace(new RegExp(separator + "$", "gi"), ""),
-		destination = (args["destination"] || source +  separator + "build").replace(/^~/i, userHome).replace(new RegExp(separator + "$", "gi"), ""),
-		mode = args["mode"];
+		destination = (args["destination"] || source +  separator + "build").replace(/^~/i, userHome).replace(new RegExp(separator + "$", "gi"), "");
 
 	config.set("binary-suffix", os === 'win' ? '.exe' : '');
 	config.set("os", os);
@@ -21,7 +20,6 @@
 	config.set("current-dir", environment["user.dir"]);
 	config.set("source", source);
 	config.set("destination", destination);
-	config.set("mode", mode);
 
 	if (!builder.start()) {
 		quit(1);

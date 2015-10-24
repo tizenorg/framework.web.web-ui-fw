@@ -2,7 +2,7 @@
 (function (tau, $) {
 	"use strict";
 
-	module('profile/mobile/widget/mobile/Checkboxradio', {
+	module('Checkboxradio', {
 		teardown: function () {
 			tau.engine._clearBindings();
 		}

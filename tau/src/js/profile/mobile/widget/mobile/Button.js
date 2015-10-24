@@ -1,19 +1,8 @@
 /*global window, define, ns, setTimeout, clearTimeout */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true, plusplus: true */
 /**
  * # Button Widget
@@ -21,7 +10,7 @@
  *
  * ## Default selectors
  * In default all **BUTTON** tags and all **INPUT** tags with type equals _button_, _submit_ or _reset_ are change to Tizen WebUI buttons.
- * In addition all elements with _data-role=button_ and class _ui-button_ are changed to Tizen Web UI buttons.
+ * In addition all elements with _data-role=button_ and class _ui-btn_ are changed to Tizen Web UI buttons.
  * To prevent auto enhance element to Tizen Web UI buttons you can use _data-role=none_ attribute on **BUTTON** or **INPUT** element.
  *
  * ###HTML Examples
@@ -34,7 +23,7 @@
  * ####Create simple button from link using class selector
  *
  *		@example
- *		<a href="#page2" class="ui-button">Link button</a>
+ *		<a href="#page2" class="ui-btn">Link button</a>
  *
  * ####Create simple button using button's tag
  *
@@ -218,11 +207,10 @@
 					uiSubmit: "ui-submit",
 					uiBtnActive: "ui-btn-active",
 					uiBtnIconNotext: "ui-btn-icon-notext",
-					uiBtnIconRight: "ui-btn-icon-right"
+					uiBtnIconRight: 'ui-btn-icon-right'
 				},
 				eventsAdded = false,
-				prototype = new BaseWidget(),
-				ICON_FILE_REGEXP = /[.]/;
+				prototype = new BaseWidget();
 
 			prototype.options = {
 				theme: null,
@@ -235,8 +223,7 @@
 				mini: null,
 				bar: false,
 				style: null,
-				wrapperEls: "span",
-				text: null
+				wrapperEls: "span"
 			};
 
 				Button.prototype = prototype;
@@ -278,14 +265,14 @@
 			}
 
 			// Return not disabled button element which is the closest to element
-			// @method closestButton
+			// @method closestEnabledButton
 			// @param {HTMLElement} element
 			// @return {HTMLElement}
 			// @private
 			// @static
 			// @member ns.widget.mobile.Button
-			function closestButton(element) {
-				return selectorsUtils.getClosestBySelector(element, "." + classes.uiBtn);
+			function closestEnabledButton(element) {
+				return selectorsUtils.getClosestBySelector(element, "." + classes.uiBtn + ":not(." + classes.uiDisabled + ")");
 			}
 
 			/**
@@ -330,7 +317,7 @@
 			// @static
 			// @member ns.widget.mobile.Button
 			function onFocus(event) {
-				var button = closestButton(event.target);
+				var button = closestEnabledButton(event.target);
 				if (button) {
 					button.classList.add(classes.uiFocus);
 					button.classList.remove(classes.uiBlur);
@@ -344,7 +331,7 @@
 			// @static
 			// @member ns.widget.mobile.Button
 			function onBlur(event) {
-				var button = closestButton(event.target);
+				var button = closestEnabledButton(event.target);
 				if (button) {
 					button.classList.add(classes.uiBlur);
 					button.classList.remove(classes.uiFocus);
@@ -495,7 +482,6 @@
 				 * @property {boolean} [options.bar=false] if button is part of bar then you should set true
 				 * @property {"circle"|"nobg"|null} [options.style=null] style of button
 				 * @property {"span"|"div"} [options.wrapperEls="span"] wrapper tag name of button
-				 * @property {string} [options.text=null] text for button
 				 * @member ns.widget.mobile.Button
 				 */
 				ns.util.object.merge(this.options, prototypeOptions);
@@ -626,9 +612,7 @@
 			prototype._createIcon = function mobileButtonCreateIcon(element) {
 				var iconElement = document.createElement("span"),
 					iconElementClassList = iconElement.classList,
-					ui = this.ui,
-					icon = this.options.icon,
-					iconAsSourceFile = ICON_FILE_REGEXP.test(icon);
+					ui = this.ui;
 
 				// Due to visibility non-breaking space on button cancel
 				// in SearchBar widget
@@ -637,15 +621,11 @@
 				}
 				// Set icon classes
 				iconElementClassList.add(classes.uiIcon);
-				if (!iconAsSourceFile) {
-					iconElementClassList.add(classes.uiIconPrefix + icon);
-				} else {
-					iconElement.style["background-image"] = "url(" + icon + ")";
-				}
+				iconElementClassList.add(classes.uiIconPrefix + this.options.icon);
 
 				//set icon information on container
-				if (element && !iconAsSourceFile) {
-					element.classList.add(classes.uiBtnIconPrefix + icon);
+				if (element) {
+					element.classList.add(classes.uiBtnIconPrefix + this.options.icon);
 				}
 
 				// Add icon element to DOM
@@ -709,34 +689,6 @@
 			};
 
 			/**
-			 * Returns element containing the widget
-			 * @member ns.widget.mobile.BaseWidgetMobile
-			 * @return {HTMLElement|null}
-			 * @instance
-			 */
-			prototype._getContainer = function () {
-				var self = this;
-
-				if (self._ui && self._ui.container) {
-					return self._ui.container;
-				}
-				return self.element;
-			};
-			/**
-			 * Set text on button before build
-			 * @method _buildText
-			 * @param {HTMLElement|HTMLInputElement|HTMLButtonElement} element
-			 * @protected
-			 * @member ns.widget.mobile.Button
-			 */
-			prototype._buildText = function(element) {
-				var text = this.options.text;
-				if (text) {
-					element.textContent = text;
-				}
-			};
-
-			/**
 			* Build structure of button widget
 			* @method _build
 			* @param {HTMLElement|HTMLInputElement} element
@@ -752,6 +704,7 @@
 					},
 					buttonInner,
 					buttonText,
+					buttonIcon,
 					buttonStyle,
 					buttonClassList,
 					buttonClassArray = [],
@@ -759,15 +712,15 @@
 					elementTypeName,
 					innerClass = classes.uiBtnInner,
 					textClass = classes.uiBtnText,
-					options = self.options,
+					options = this.options,
 					buttonValue,
 					buttonInnerHTML,
 					container,
 					innerTextLength,
 					label,
+					prototypeOptions = prototype.options,
 					i;
 
-				self._buildText(element);
 				// Create default structure of button
 				buttonInner = document.createElement(options.wrapperEls);
 				buttonInner.id = element.id + "-div-inner";
@@ -823,7 +776,7 @@
 				}
 
 				container.setAttribute("tabindex", 0);
-				if ( (!options.bar) ||
+				if ( (element.getAttribute("data-role") === "button" && !options.bar) ||
 					(elementTagName === "input" && ((elementTypeName === "submit") || (elementTypeName === "reset") || (elementTypeName === "button")) ) ||
 					(elementTagName === "button") ) {
 					buttonClassArray.push(classes.uiBtnBoxThemePrefix + options.theme);
@@ -869,6 +822,13 @@
 				// Used to control styling in headers/footers, where buttons default to `inline` style.
 				if (options.inline !== null) {
 					buttonClassArray.push(options.inline ? classes.uiBtnInline : classes.uiBtnBlock);
+				}
+
+				// Default disable element
+				if (attributes.disabled) {
+					disableElement(element, container);
+				} else {
+					enableElement(element, container);
 				}
 
 				innerClass += options.corners ? " "  + classes.uiBtnCornerAll : "";
@@ -1155,7 +1115,7 @@
 			ns.widget.mobile.Button = Button;
 			engine.defineWidget(
 				"Button",
-				"[data-role='button'], button, [type='button'], [type='submit'], [type='reset'], .ui-button",
+				"[data-role='button'], button, [type='button'], [type='submit'], [type='reset']",
 				[],
 				Button,
 				"mobile"

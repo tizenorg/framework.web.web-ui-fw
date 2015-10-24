@@ -1,18 +1,7 @@
-/*global ns */
+/*global window, define, ns */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true */
 /*
@@ -103,6 +92,7 @@
 					BaseKeyboardSupport.call(self);
 					self._pageWidget = null;
 					self._callbacks = {};
+					self.status = false;
 				},
 				engine = ns.engine,
 				selectors = ns.util.selectors,
@@ -110,8 +100,7 @@
 				// Slider inherits TizenSlider classes with additional
 				// "ui-focus".
 				classes = objectUtils.merge({}, BaseSlider.classes, {
-					focus: "ui-focus",
-					disabled: ns.widget.BaseWidget.classes.disable
+					focus: "ui-focus"
 				}),
 				FUNCTION_TYPE = "function",
 				prototype = new BaseSlider(),
@@ -145,19 +134,34 @@
 			 * @member ns.widget.tv.Slider
 			 */
 			function onKeyup(self, event) {
-				var keyCode = event.keyCode;
+				var status = self.status;
 
-				switch (keyCode) {
-					case KEY_CODES.up:
-					case KEY_CODES.down:
-						self.saveKeyboardSupport();
-						self.disableKeyboardSupport();
-						break;
-					case KEY_CODES.left:
-					case KEY_CODES.right:
-						self.enableKeyboardSupport();
-						self.restoreKeyboardSupport();
-						break;
+				if (event.keyCode === KEY_CODES.enter) {
+					if (status) {
+						self._ui.container.focus();
+						self._pageWidget.enableKeyboardSupport();
+					} else {
+						self._ui.handle.focus();
+						showPopup(self);
+						self._pageWidget.disableKeyboardSupport();
+					}
+					self.status = !status;
+				}
+			}
+
+			/**
+			 * Keydown event-handling method.
+			 * @method onKeydown
+			 * @param {ns.widget.tv.Slider} self
+			 * @param {Event} event
+			 * @private
+			 * @static
+			 * @member ns.widget.tv.Slider
+			 */
+			function onKeydown(self, event) {
+				if (event.keyCode !== KEY_CODES.enter && !self.status) {
+					event.preventDefault();
+					event.stopPropagation();
 				}
 			}
 
@@ -170,11 +174,7 @@
 			 * @member ns.widget.tv.Slider
 			 */
 			function onFocus(self) {
-				if (!self.isDisabled()) {
-					self.enableKeyboardSupport();
-					self._ui.container.classList.add(classes.focus);
-					showPopup(self);
-				}
+				self._ui.container.classList.add("ui-focus");
 			}
 
 			/**
@@ -186,31 +186,8 @@
 			 * @member ns.widget.tv.Slider
 			 */
 			function onBlur(self) {
-				if (!self.isDisabled()) {
-					self._ui.container.classList.remove(classes.focus);
-					self._hidePopup();
-				}
+				self._ui.container.classList.remove("ui-focus");
 			}
-
-			/**
-			 * Configure slider widget
-			 * @method _configure
-			 * @param {HTMLInputElement|HTMLSelectElement} element
-			 * @protected
-			 * @member ns.widget.tv.Slider
-			 */
-			prototype._configure = function(element) {
-				var options;
-				BaseSliderPrototype._configure.call(this, element);
-
-				options = this.options;
-				options.popup = true;
-
-				if (options.textLeft === null && options.textRight === null) {
-					options.textLeft = element.getAttribute("min");
-					options.textRight = element.getAttribute("max");
-				}
-			};
 
 			/**
 			 * Build structure of slider widget
@@ -226,11 +203,10 @@
 					container,
 					containerStyle,
 					handler;
-				this._pageWidget = engine.getBinding(pageElement, "Page");
+				this._pageWidget = engine.getBinding(pageElement, "page");
 
 				element = BaseSliderPrototype._build.call(this, element);
-				// focus is enabled only on container, because the position of whole slider (not only handler)
-				// is important for setting focus by BaseKeyboardSupport
+				// focus is enabled only on container
 				container = ui.container;
 				container.classList.add(BaseKeyboardSupport.classes.focusEnabled);
 				container.setAttribute("tabindex", 0);
@@ -266,40 +242,7 @@
 				BaseSliderPrototype._init.call(this, element);
 
 				this.enableKeyboardSupport();
-				this._pageWidget = this._pageWidget || engine.getBinding(pageElement, "Page");
-			};
-
-			/**
-			 * Enable slider
-			 * @method _enable
-			 * @param {HTMLInputElement|HTMLSelectElement} element
-			 * @protected
-			 * @member ns.widget.tv.Slider
-			 */
-			prototype._enable = function (element) {
-				var self = this,
-					container = self._ui.container;
-
-				BaseSliderPrototype._enable.call(self, element);
-				container.classList.remove(classes.disabled);
-				container.setAttribute("aria-disabled", false);
-			};
-
-			/**
-			 * Disable slider
-			 * @method _disable
-			 * @param {HTMLInputElement|HTMLSelectElement} element
-			 * @protected
-			 * @member ns.widget.tv.Slider
-			 */
-			prototype._disable = function (element) {
-				var self = this,
-					container = self._ui.container;
-
-				BaseSliderPrototype._disable.call(self, element);
-				// set disability on container
-				container.classList.add(classes.disabled);
-				container.setAttribute("aria-disabled", true);
+				this._pageWidget = this._pageWidget || engine.getBinding(pageElement, "page");
 			};
 
 			/**
@@ -316,12 +259,14 @@
 				BaseSliderPrototype._bindEvents.call(this, element);
 
 				callbacks.onKeyup = onKeyup.bind(null, this);
+				callbacks.onKeydown = onKeydown.bind(null, this);
 				callbacks.onFocus = onFocus.bind(null, this);
 				callbacks.onBlur = onBlur.bind(null, this);
 
 				this._bindEventKey();
 
-				container.addEventListener("keyup", callbacks.onKeyup, true);
+				container.addEventListener("keyup", callbacks.onKeyup, false);
+				container.addEventListener("keydown", callbacks.onKeydown, true);
 				container.addEventListener("focus", callbacks.onFocus, true);
 				container.addEventListener("blur", callbacks.onBlur, true);
 			};
@@ -344,16 +289,16 @@
 				popup = document.createElement("div");
 				pageElement = (this._pageWidget && this._pageWidget.element) || document.body;
 				pageElement.appendChild(popup);
-				popup.classList.add(classes.uiSliderPopup);
 				// Create widget instance out of popup element
 				popupInstance = engine.instanceWidget(popup, "Popup", {
-					positionTo: "origin",
-					link: this._ui.handle.id, // positioned to slider's element
+					positionTo: "#" + this._ui.handle.id, // positioned to slider's element
 					transition: "none",
 					overlay: false,
 					arrow: "b,t",
-					changeContext: false
+					distance: 10,
+					specialContainerClass: classes.uiSliderPopupContainer
 				});
+				popup.classList.add(classes.uiSliderPopup);
 
 				return popupInstance;
 			};
@@ -398,7 +343,7 @@
 
 					self.trigger("update", newValue);
 				} else {
-					// If text doesn"t change reposition only popup
+					// If text doesn't change reposition only popup
 					// no need to run full refresh
 					if (self._popup) {
 						self._popup.reposition();
@@ -419,6 +364,7 @@
 
 				this._destroyEventKey();
 				container.removeEventListener("keyup", callbacks.onKeyup, false);
+				container.removeEventListener("keydown", callbacks.onKeydown, false);
 				ui.handle.removeEventListener("focus", callbacks.onFocus, true);
 				container.removeEventListener("blur", callbacks.onBlur, true);
 

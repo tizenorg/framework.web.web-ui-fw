@@ -1,4 +1,4 @@
-/*global define, ns */
+/*global define */
 /**
  * #Tizen Advanced UI Framework
  *
@@ -56,18 +56,15 @@
  * @title Tizen Advanced UI Framework
  */
 //>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
-(function (ns) {
+(function () {
 	"use strict";
 	define(
 		[
 			"require",
-			//>>excludeStart("tauPerformance", pragmas.tauPerformance);
-			"./tools/performance",
-			//>>excludeEnd("tauPerformance")
 			"./core/core",
 			"./core/config",
 			"./profile/tv/config",
-			"./core/info",
+			"./profile/wearable/defaults",
 			"./core/engine",
 			// widget list
 			"./core/util/anchorHighlight",
@@ -79,27 +76,18 @@
 			"./profile/wearable/widget/wearable/VirtualGrid",
 			"./profile/tv/widget/PageContainer",
 			"./profile/tv/widget/Drawer",
-			"./core/router/Router",
-			"./core/router/route/page",
-			"./core/router/route/popup",
-			"./core/router/route/drawer",
+			"./profile/wearable/router/Router",
+			"./profile/wearable/router/route/page",
+			"./profile/wearable/router/route/popup",
 			"./profile/tv/router/route/dynamic",
-			"./core/router/history",
+			"./profile/wearable/router/history",
 			"./profile/wearable/expose",
 			"./profile/tv/widget/TextInput",
-			"./profile/tv/widget/SpinControl",
-			"./profile/tv/widget/TimeInput",
-			"./profile/tv/widget/DateInput",
 			"./profile/tv/widget/Listdivider",
 			"./profile/tv/widget/Checkboxradio",
-			"./profile/tv/widget/SearchBar",
 			"./profile/tv/widget/Progress",
-			"./profile/tv/widget/SelectMenu",
 			"./profile/mobile/widget/mobile/TabBar",
 			"./profile/tv/widget/ControlGroup",
-			"./profile/tv/widget/ScrollHandler",
-			"./profile/tv/widget/HomeBar",
-			"./profile/tv/widget/ContextualMenu",
 			// Modules to be loaded after
 			"./core/init",
 			//documentation pages
@@ -113,15 +101,11 @@
 			"./profile/tv/page/design/elements",
 			"./profile/tv/page/design/navigation",
 			// tv differences
-			"./profile/tv/page/differences/introduction",
-			"./core/decorator/focusAnimation",
-			"./core/decorator/marquee"
+			"./profile/tv/page/differences/introduction"
 		],
-		function () {
-			//>>excludeEnd("tauBuildExclude");
-			ns.info.profile = "tv";
-			//>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
+		function ( ) {
+			return;
 		}
 	);
-}(ns));
+}());
 //>>excludeEnd("tauBuildExclude");

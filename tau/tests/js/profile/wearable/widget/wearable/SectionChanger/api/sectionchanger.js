@@ -1,4 +1,4 @@
-module("profile/wearable/widget/wearable/SectionChanger", {});
+module("tau.widget.SectionChanger", {});
 
 test("API" , function () {
 	var widget;

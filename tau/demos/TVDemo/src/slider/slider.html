@@ -20,31 +20,28 @@
 </head>
 
 <body class="ui-pagecontainer">
-	<div class="ui-page">
-		<header>
+	<div class="ui-page" data-role="page">
+		<header class="ui-header">
 		<h2 class="ui-title">Slider</h2>
 	</header>
-		<div class="ui-content content-padding">
-			<label>Normal slider
-				<input id="mySlider1" name="mySlider1" type="range" value="5" min="0" max="10" />
+		<div class="ui-content" data-role="content">
+			<label style="display: block; margin: 30px 0 30px 30px">Normal slider
+				<input id="mySlider1" name="mySlider1" data-popup='false' type="range" value="5" min="0" max="10" />
 			</label>
-			<label>Disabled slider
-				<input id="mySlider_disable" name="mySlider1" disabled="disabled" type="range" value="3" min="0" max="10" />
-			</label>
-			<label>Slider without popup
+			<label style="display: block; margin: 30px 0 30px 30px">Popup slider
 				<input id="mySlider2" name="mySlider2" type="range" value="50" min="0" max="100"
-					data-popup="false" data-icon="text" data-text-left="0" data-text-right="100"/>
+					data-popup="true" data-icon='text' data-text-left='0' data-text-right='100'/>
 			</label>
 
-			<label>Icon slider
-				<input id="mySlider3" name="mySlider3" type="range" value="5"
-					min="0" max="10" data-icon="bright"/>
-				<input id="mySlider4" name="mySlider4" type="range" value="5"
-				min="0" max="10" data-icon="volume"/>
+			<label style="display: block; margin: 30px 0 30px 30px">Icon slider
+				<input id="mySlider3" name="mySlider3" data-popup='false' type="range" value="5"
+					min="0" max="10" data-icon='bright'/>
+				<input id="mySlider4" name="mySlider4" data-popup='false' type="range" value="5"
+				min="0" max="10" data-icon='volume'/>
 			</label>
 
-			<label>data-highlight="false"
-				<input id="mySlider9" name="mySlider9" type="range" value="5" min="0"
+			<label style="display: block; margin: 30px 0 30px 30px">data-highlight="false"
+				<input id="mySlider9" name="mySlider9" data-popup='false' type="range" value="5" min="0"
 					max="10" data-highlight="false" />
 			</label>
 		</div>

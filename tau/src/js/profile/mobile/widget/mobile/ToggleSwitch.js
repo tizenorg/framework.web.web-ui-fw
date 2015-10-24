@@ -1,19 +1,8 @@
-/*global window, define, ns */
+/*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true */
 /**
  * # Toggle Switch Widget
@@ -91,7 +80,7 @@
 			"../../../../core/util/DOM/attributes",
 			"../../../../core/util/DOM/manipulation",
 			"../../../../core/event",
-			"../../../../core/widget/core/Button",
+			"./Button",
 			"../mobile", // fetch namespace
 			"./BaseWidgetMobile"
 		],
@@ -130,7 +119,7 @@
 				engine = ns.engine,
 				events = ns.event,
 				DOMutils = ns.util.DOM,
-				Button = ns.widget.core.Button,
+				Button = ns.widget.mobile.Button,
 				themes = ns.theme,
 				/**
 				* @property {Object} selectors Alias for class ns.util.selectors
@@ -226,8 +215,8 @@
 				var getElementWidth = DOMutils.getElementWidth,
 					handlePercent = getElementWidth(self._ui.handle, "outer") /
 							getElementWidth(self._ui.slider, "outer") * 100,
-					aPercent = percent && handlePercent +
-							(100 - handlePercent) * percent / 100,
+					aPercent = percent && handlePercent + (100 - handlePercent)
+							* percent / 100,
 					bPercent = percent === 100 ? 0 : Math.min(handlePercent +
 							100 - aPercent, 100),
 					i = self._labels.length,
@@ -236,8 +225,8 @@
 				while (i--) {
 					label = self._labels[i];
 					label.style.width =
-							(label.classList.contains(classes.sliderLabelA) ?
-								aPercent : bPercent) + "%";
+							(label.classList.contains(classes.sliderLabelA)
+									? aPercent : bPercent) + "%";
 				}
 			}
 
@@ -333,7 +322,7 @@
 				// If changes came from input value change
 				} else {
 					if (value === null) {
-						value = getInitialValue(controlType, control);
+						value = getInitialValue(tagName, control);
 					}
 					if (isNaN(value)) {
 						return;
@@ -494,9 +483,6 @@
 			*/
 			function onChangeValue(self){
 				self.element.selectedIndex = (self._ui.input.checked) ? 1 :0;
-				if (self.element.nodeName.toLowerCase() === "select") {
-					events.trigger(self.element, "change");
-				}
 			}
 
 			/**
@@ -550,10 +536,6 @@
 				event.preventDefault();
 			}
 
-			function onLabelVclick(input, ev) {
-				input.checked = (input.type === "checkbox") ? !input.checked : true;
-				events.preventDefault(ev);
-			}
 			/**
 			 * Manage intearaction of widget with key down events
 			 * @method onKeydown
@@ -628,7 +610,7 @@
 			function onKeyupHandle (self) {
 				if (self._keySliding) {
 					self._keySliding = false;
-					self._ui.handle.classList.remove(classes.sliderStateActive);
+					handle.classList.remove(classes.sliderStateActive);
 				}
 			}
 
@@ -767,8 +749,7 @@
 			*/
 			function createWrapper(domSlider) {
 				var wrapper,
-					domSliderChildNode = domSlider.childNodes,
-					j, length;
+					domSliderChildNode = domSlider.childNodes;
 
 				wrapper = createElement("div");
 				wrapper.className = classes.sliderInneroffset;
@@ -871,7 +852,6 @@
 			/**
 			* Remove events from Slider which is based on Select Tag
 			* @method removeEventsFromToggleBasedOnSelect
-			* @param {ns.widget.mobile.ToggleSwitch} self
 			* @param {HTMLElement} element
 			* @param {HTMLElement} handle
 			* @param {HTMLElement} slider
@@ -879,9 +859,9 @@
 			* @static
 			* @member ns.widget.mobile.ToggleSwitch
 			*/
-			function removeEventsFromToggleBasedOnSelect(self, element, handle, slider) {
-
-				element.removeEventListener("change", self._onChange, false);
+			function removeEventsFromToggleBasedOnSelect(element, handle, slider) {
+				element.removeEventListener("change", self._onChange,
+						false);
 				element.removeEventListener("keyup", self._onKeyupElement, false);
 				element.removeEventListener("blur", self._onBlur, false);
 
@@ -901,7 +881,7 @@
 
 			/**
 			* Build Slider based on Select Tag
-			* @method buildSliderBasedOnSelectTag
+			* @method removeEventsFromToggleBasedOnSelect
 			* @param {ns.widget.mobile.ToggleSwitch} self
 			* @param {HTMLElement} element
 			* @param {HTMLElement} sliderContainer
@@ -923,7 +903,7 @@
 					theme = options.theme = options.theme || parentTheme;
 
 				trackTheme = options.trackTheme = options.trackTheme ||
-				parentTheme;
+				parentTheme
 
 				domSlider.setAttribute("id", elementId + "-slider");
 				sliderBtnDownTheme = btnClasses.uiBtnDownThemePrefix +
@@ -934,6 +914,14 @@
 				domHandle.className = classes.sliderHandle;
 				domSlider.appendChild(domHandle);
 				domHandle.setAttribute("id", elementId + "-handle");
+
+				engine.instanceWidget(domHandle, "Button", {
+					corners: true,
+					theme: theme,
+					shadow: true,
+					inline: false,
+					bar: true
+				});
 
 				domSlider.appendChild(createWrapper(domSlider));
 				// make the handle move with a smooth transition
@@ -965,7 +953,7 @@
 				ns.warn("Please use input[data-role='toggleswitch'] " +
 						"selector in order to define button like " +
 						"toggle, select[data-role='slider'] is " +
-						"deprecated");
+						"depreciated");
 
 				label.className = classes.toggleInputLabel;
 				sliderContainer.className = classes.toggle;
@@ -980,7 +968,6 @@
 
 				element.parentNode.insertBefore(label,
 						element.nextSibling);
-				label.appendChild(element);
 			}
 
 			/**
@@ -1026,13 +1013,13 @@
 			ToggleSwitch.prototype._build = function (element) {
 				var roleType,
 					elementsOption,
+					options = this.options,
 					label = createElement("label"),
 					divHandler = createElement("div"),
 					divInneroffset = createElement("div"),
 					controlType = element.nodeName.toLowerCase(),
 					sliderContainer = createElement("div");
 
-				this._ui.label = label;
 				//when the input with input[data-role='toggleswitch'],
 				//button like toggle
 				if (controlType === "input") {
@@ -1076,7 +1063,7 @@
 				//because the select with empty options is replaced with
 				//input I just need and input on widget instance
 				if (controlType === "input" || elementsOption.innerText === "") {
-					self._ui.input = element.parentElement.firstChild;
+					self._ui.input = element.nextSibling.firstChild;
 				} else {
 					elementId = element.id;
 					self._ui.slider = document.getElementById(elementId +
@@ -1311,8 +1298,7 @@
 			 * @member ns.widget.mobile.ToggleSwitch
 			 */
 			ToggleSwitch.prototype._disable = function (element) {
-				var self = this,
-					btnClasses = Button.classes,
+				var btnClasses = Button.classes,
 					slider = self._ui.slider;
 
 				if (slider) {
@@ -1332,19 +1318,16 @@
 			*/
 			ToggleSwitch.prototype._bindEvents = function () {
 				var self = this,
-					ui = self._ui,
 					element = self.element,
-					handle = ui.handle,
+					handle = self._ui.handle,
 					tagName = element.nodeName.toLowerCase(),
-					slider = ui.slider,
+					slider = self._ui.slider,
 					elementsOption = element.querySelector("option") || "";
 
-				if (tagName === "input" || elementsOption.innerText === "") {
+				if (tagName === "input" || elementsOption.innerText === ""){
 					self._onChangeValue = onChangeValue.bind(null, self);
-					self._onLabelVclick = onLabelVclick.bind(null, ui.input);
-
-					ui.input.addEventListener("change", self._onChangeValue, true);
-					ui.label.addEventListener("vclick", self._onLabelVclick, true);
+					self._ui.input.addEventListener('change',
+							self._onChangeValue, true);
 				} else {
 					bindCallbacksForSelectTag(self);
 
@@ -1382,34 +1365,33 @@
 			 * @member ns.widget.mobile.ToggleSwitch
 			 */
 			ToggleSwitch.prototype._destroy = function () {
-				var self = this,
+				var label,
+					self = this,
 					element = self.element,
-					ui = self._ui,
-					handle = ui.handle,
-					slider = ui.slider,
-					label = ui.label,
+					handle = self._ui.handle,
+					slider = self._ui.slider,
 					tagName = element.nodeName.toLowerCase(),
 					elementsOption = element.querySelector("option") || "";
 
 				if (tagName === "input" || elementsOption.innerText === "") {
-					ui.input.removeEventListener("change", self._onChangeValue, true);
-					label.addEventListener("vclick", self._onLabelVclick, true);
+					self._ui.input.removeEventListener('change',
+							self._onChangeValue, true);
 
 					//cleaning toggle based on input type
 					if (tagName === "input") {
+						label = element.parentElement;
+
+						label.innerHTML = '';
 						label.classList.remove(classes.toggleInputLabel);
-						if (label.parentElement) {
-							label.parentElement.insertBefore(element, label);
-						}
-						label.innerHTML = "";
+						label.parentElement.insertBefore(element,label);
 
 						element.removeAttribute("aria-disabled");
 						element.classList.remove(classes.toggleSwitchInput);
 
 					//cleaning toggle based on select type
 					} else {
-						if (element.nextElementSibling &&
-							element.nextElementSibling.tagName.toLowerCase() === "label") {
+						if (element.nextElementSibling.tagName.toLowerCase()
+								=== "label") {
 							//remove attributes
 							removeAttributesWhenDestroy(element);
 							//remove classes
@@ -1420,7 +1402,7 @@
 						}
 					}
 				} else {
-					removeEventsFromToggleBasedOnSelect(self, element, handle, slider);
+					removeEventsFromToggleBasedOnSelect(element, handle, slider);
 
 					removeAttributesWhenDestroy(element);
 					element.classList.remove(classes.sliderSwitch);
@@ -1438,8 +1420,7 @@
 				"ToggleSwitch",
 				"select[data-role='toggleswitch']," +
 				"input[data-role='toggleswitch']," +
-				"select[data-role='slider']," +
-				"select.ui-toggleswitch, input.ui-toggleswitch",
+				"select[data-role='slider']",
 				[],
 				ToggleSwitch,
 				"mobile"

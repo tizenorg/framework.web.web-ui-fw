@@ -4,7 +4,7 @@
 	var engine = ej.engine,
 		_tempSaveSequence;
 
-	module("core/engine", {
+	module("Engine - tree build", {
 		teardown: function () {
 			engine.stop();
 			if (typeof _tempSaveSequence === "function") {
@@ -17,21 +17,20 @@
 	asyncTest("Build sequence", function () {
 		var expectedSequence = [
 			"page1",
-				"el-25",
-					"el-1",
-						"el-2",
-							"el-3",
-								"el-4",
-									"el-5", "el-6", "el-7", "el-8",
-						"el-9",
-							"el-10",
-								"el-11",
-									"el-12", "el-13", "el-14", "el-15",
-						"el-16",
-							"el-17", "el-18", "el-19", "el-20",
-						"el-21",
-							"el-22", "el-23",
-					"el-24"
+				"el-1",
+					"el-2",
+						"el-3",
+							"el-4",
+								"el-5", "el-6", "el-7", "el-8",
+					"el-9",
+						"el-10",
+							"el-11",
+								"el-12", "el-13", "el-14", "el-15",
+					"el-16",
+						"el-17", "el-18", "el-19", "el-20",
+					"el-21",
+						"el-22", "el-23",
+				"el-24"
 			],
 			receivedSequence = [],
 			eventCount = 0;
@@ -60,7 +59,7 @@
 		// not the most elegant way of handling this but very convenient
 		_tempSaveSequence = saveSequence;
 
-		document.getElementById("page1").addEventListener("widgetbound", saveSequence, true);
+		document.addEventListener("widgetbound", saveSequence, true);
 
 		engine.run();
 	});

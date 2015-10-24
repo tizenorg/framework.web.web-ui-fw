@@ -1,13 +1,9 @@
-/**
- * All disabled;
- */
-/*
 .ui-fastscroll {
 	position: absolute;
 	right: 0;
 	width: 33 * @unit_base;
 	height: 100%;
-	.user-select(none);
+	-webkit-user-select: none;
 	user-select:none;
 	margin:0;
 	padding-top: 3 * @unit_base;
@@ -16,7 +12,9 @@
 	background: @color_fastscroll_rollover_bg;
 	z-index: 1000;
 
-	.border-box();
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+
 	ul {
 		list-style-type: none;
 		margin: 0;
@@ -52,7 +50,8 @@ li.ui-fastscroll-hover-first-item {
 	font-size: @font_size_fastscroll_popup_text;
 	font-weight: bold;
 	display:none;
-	.border-box();
+	-webkit-box-sizing: border-box;
+	box-sizing:border-box;
 	left: 50%;
 	top: 50%;
 	width: 92 * @unit_base;
@@ -60,4 +59,3 @@ li.ui-fastscroll-hover-first-item {
 	box-shadow: 0 2px 1px @color_fastscroll_popup_border;
 	z-index: 1000;
 }
-*/

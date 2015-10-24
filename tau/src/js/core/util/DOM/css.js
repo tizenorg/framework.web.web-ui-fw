@@ -1,21 +1,9 @@
 /*global window, define */
 /*jslint plusplus: true */
 /*jshint -W069 */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/* Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*
  * @author Jadwiga Sosnowska <j.sosnowska@partner.samsung.com>
  * @author Krzysztof Antoszek <k.antoszek@samsung.com>
@@ -32,8 +20,7 @@
 		function () {
 			//>>excludeEnd("tauBuildExclude");
 
-			var DOM = ns.util.DOM,
-				DASH_TO_UPPER_CASE_REGEXP = /-([a-z])/gi;
+			var DOM = ns.util.DOM;
 
 			/**
 			 * Returns css property for element
@@ -183,11 +170,7 @@
 						}
 					}
 
-					height += props["height"];
-
-					if (props["box-sizing"] !== 'border-box') {
-						height += props["padding-top"] + props["padding-bottom"];
-					}
+					height += props["height"] + props["padding-top"] + props["padding-bottom"];
 
 					if (includeOffset) {
 						height = offsetHeight;
@@ -273,10 +256,7 @@
 						}
 					}
 
-					width += props["width"];
-					if (props["box-sizing"] !== 'border-box') {
-						width += props["padding-left"] + props["padding-right"];
-					}
+					width += props["width"] + props["padding-left"] + props["padding-right"];
 
 					if (includeOffset) {
 						width = offsetWidth;
@@ -326,87 +306,6 @@
 				return !(element.offsetWidth <= 0 && element.offsetHeight <= 0);
 			}
 
-			function toUpperCaseFn(match, value) {
-				return value.toLocaleUpperCase();
-			}
-
-			function dashesToCamelCase(str) {
-				return str.replace(DASH_TO_UPPER_CASE_REGEXP, toUpperCaseFn);
-			}
-
-			function firstToUpperCase(str) {
-				return str.charAt(0).toLocaleUpperCase() + str.substring(1);
-			}
-
-			/**
-			 * Set values for element with prefixes for browsers
-			 * @method setPrefixedStyle
-			 * @param {HTMLElement} element
-			 * @param {string} property
-			 * @param {string|Object|null} value
-			 * @member ns.util.DOM
-			 * @static
-			 */
-			function setPrefixedStyle(element, property, value) {
-				var style = element.style,
-					propertyForPrefix = firstToUpperCase(dashesToCamelCase(property)),
-					values = (typeof value === "string") ? {
-						webkit: value,
-						moz: value,
-						o: value,
-						ms: value,
-						normal: value
-					} : value;
-
-				style[property] = values.normal;
-				style["webkit" + propertyForPrefix] = values.webkit;
-				style["moz" + propertyForPrefix] = values.moz;
-				style["o" + propertyForPrefix] = values.o;
-				style["ms" + propertyForPrefix] = values.ms;
-			}
-
-			/**
-			 * Get value from element with prefixes for browsers
-			 * @method getCSSProperty
-			 * @param {string} value
-			 * @return {Object}
-			 * @member ns.util.DOM
-			 * @static
-			 */
-			function getPrefixedValue(value) {
-				return {
-					webkit: "-webkit-" + value,
-					moz: "-moz-" + value,
-					o: "-ms-" + value,
-					ms: "-o-" + value,
-					normal: value
-				};
-			}
-
-			/**
-			 * Returns style value for css property with browsers prefixes
-			 * @method getPrefixedStyle
-			 * @param {HTMLStyle} styles
-			 * @param {string} property
-			 * @return {Object}
-			 * @member ns.util.DOM
-			 * @static
-			 */
-			function getPrefixedStyleValue(styles, property) {
-				var prefixedProperties = getPrefixedValue(property),
-					value,
-					key;
-
-				for (key in prefixedProperties) {
-					value = styles[prefixedProperties[key]];
-					if (value && value !== "none") {
-						return value;
-					}
-				}
-				return value;
-			}
-
-
 			// assign methods to namespace
 			DOM.getCSSProperty = getCSSProperty;
 			DOM.extractCSSProperties = extractCSSProperties;
@@ -414,9 +313,6 @@
 			DOM.getElementWidth = getElementWidth;
 			DOM.getElementOffset = getElementOffset;
 			DOM.isOccupiedPlace = isOccupiedPlace;
-			DOM.setPrefixedStyle = setPrefixedStyle;
-			DOM.getPrefixedValue = getPrefixedValue;
-			DOM.getPrefixedStyleValue = getPrefixedStyleValue;
 
 			//>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
 			return ns.util.DOM;

@@ -1,19 +1,8 @@
 /*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true, plusplus: true */
 /**
  * # Swipe Widget
@@ -223,13 +212,13 @@
 					uiSwipeItemCoverInner: classPrefix + "-item-cover-inner"
 				},
 				selectorRoleSwipe = "[data-role='swipe']",
-				selectorRoleSwipeItemCover = "[data-role='swipe-item-cover']" +
-					', .' + classes.uiSwipeItemCover,
-				selectorRoleSwipeItem = "[data-role='swipe-item']" +
-					', .' + classes.uiSwipeItem,
+				selectorRoleSwipeItemCover = "[data-role='swipe-item-cover']",
+				selectorRoleSwipeItem = "[data-role='swipe-item']",
 				classUiBtn = ".ui-btn",
 				swipeLeftEvent = "swipeleft",
-				swipeRightEvent = "swiperight";
+				swipeRightEvent = "swiperight",
+				webkitTransitionEndEvent = "webkitTransitionEnd";
+
 
 			Swipe.prototype = new BaseWidget();
 
@@ -369,12 +358,12 @@
 				//animations change item opacity in order to show items under cover
 				opacityAnimation = new Animation({
 					element: item,
-					duration: "400ms",
+					duration: "600ms",
 					from: {
 						"opacity": itemStyle.opacity
 					},
 					to: {
-						"opacity": (self.opened()) ? "1" : "0"
+						"opacity": (itemStyle.opacity === 0) ? "0" : "1"
 					},
 					onEnd: handleAnimationEnd
 				});
@@ -445,11 +434,7 @@
 			prototype._build = function (element) {
 				var options = this.options,
 					protoOptions = Swipe.prototype.options;
-				options.theme = options.theme ||
-						ns.theme.getInheritedTheme(
-							element,
-							(protoOptions && protoOptions.theme) || "s"
-						);
+				options.theme = options.theme || ns.theme.getInheritedTheme(element, (protoOptions && protoOptions.theme) || "s");
 				refresh(this, element);
 				return element;
 			};
@@ -480,8 +465,7 @@
 			function addEvents(self) {
 				var ui = self._ui,
 					covers = ui.covers,
-					item = ui.item,
-					buttonSelector = engine.getWidgetDefinition("Button").selector;
+					item = ui.item;
 
 					/*
 					* @todo good support multicovers
@@ -494,7 +478,7 @@
 					item.addEventListener(swipeLeftEvent, cover.swipeAnimateLeft, false);
 					cover.addEventListener(swipeRightEvent, cover.swipeAnimateRight, false);
 
-					[].forEach.call(item.querySelectorAll(buttonSelector), function (button) {
+					slice.call(item.querySelectorAll(classUiBtn)).forEach(function (button) {
 						button.addEventListener("vclick", cover.swipeAnimateLeft, false);
 					});
 				});

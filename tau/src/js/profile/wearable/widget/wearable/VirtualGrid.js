@@ -1,19 +1,7 @@
 /*global window, define */
 /*jslint nomen: true, plusplus: true */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /**
  * #VirtualGrid Widget
@@ -78,8 +66,6 @@
 				 * @static
 				 */
 				VERTICAL = "y",
-				FOCUS_SELECTOR = "::virtualgrid",
-				FOCUS_SELECTOR_PATTERN = /(::virtualgrid\((\d+)\))/gi,
 				/**
 				 * Alias for class VirtualGrid
 				 * @method VirtualGrid
@@ -111,7 +97,6 @@
 							return null;
 						}
 					};
-					this._onFocusQuery = null;
 					return this;
 				},
 
@@ -139,9 +124,7 @@
 				 * @private
 				 * @static
 				 */
-				parent_refreshScrollbar = VirtualListPrototype._refreshScrollbar,
-				parent_bindEvents = VirtualListPrototype._bindEvents,
-				parent_destroy = VirtualListPrototype._destroy;
+				parent_refreshScrollbar = VirtualListPrototype._refreshScrollbar;
 
 			/**
 			 * This method draws item.
@@ -151,7 +134,7 @@
 			prototype.draw = function () {
 				var self = this,
 					element = self.element,
-					ui = self._ui,
+					ui = self.ui,
 					newDiv = null,
 					newDivStyle = null;
 
@@ -169,41 +152,6 @@
 				parent_draw.call(self);
 			};
 
-			function onFocusQuery(self, event) {
-				var data = event.detail,
-					selector = data.selector,
-					index = -1;
-				if (selector.indexOf(FOCUS_SELECTOR) > -1) {
-					data.selector = selector = selector.replace(FOCUS_SELECTOR_PATTERN,
-							function (match, widgetMatch, indexMatch) {
-						if (widgetMatch && indexMatch) {
-							index = indexMatch | 0;
-							return "#" + self.id + " [data-index='" + index + "']";
-						}
-						return match;
-					});
-
-					if (index > -1) {
-						self.scrollToIndex(index);
-						data.nextElement = document.querySelector(selector);
-						event.preventDefault(); // consume
-					}
-				}
-			}
-
-			prototype._bindEvents = function (element) {
-				var self = this;
-				parent_bindEvents.call(self, element);
-				self._onFocusQuery = onFocusQuery.bind(null, self);
-				self.element.addEventListener("focusquery", self._onFocusQuery);
-			};
-
-			prototype._destroy = function (element) {
-				var self = this;
-				parent_destroy.call(self, element);
-				self.element.removeEventListener("focusquery", self._onFocusQuery);
-			};
-
 			/**
 			 * Sets proper scrollbar size: width (horizontal)
 			 * @method _refreshScrollbar
@@ -212,7 +160,7 @@
 			 */
 			prototype._refreshScrollbar = function () {
 				var width = 0,
-					ui = this._ui;
+					ui = this.ui;
 				parent_refreshScrollbar.call(this);
 				if (ui.container) {
 					width = this.element.clientWidth + ui.spacer.clientWidth;
@@ -292,7 +240,6 @@
 					elementI = document.createElement("div");
 					elementIStyle = elementI.style;
 					elementIStyle.overflow = "hidden";
-					elementI.setAttribute("data-index", count * index + i);
 
 					if (options.orientation === VERTICAL) {
 						elementI.style.float = "left";
@@ -302,7 +249,7 @@
 					}
 
 					if (count * index + i < options.originalDataLength) {
-						this.options.listItemUpdater(elementI, count * index + i, count);
+						this.options.listItemUpdater(elementI, count * index + i);
 					}
 					element.appendChild(elementI);
 				}

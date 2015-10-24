@@ -1,19 +1,8 @@
-/*global window, define, ns */
+/*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true */
 /**
  * # Slider Widget
@@ -22,7 +11,7 @@
  * ## Default selectors
  * In default all **INPUT** tags with type equals _range_ are changed
  * to Tizen WebUI sliders.
- * In addition all **INPUT** elements with _data-role=range_ and _data-role=slider_
+ * In addition all elements with _data-role=range_ and _data-role=slider_
  * and class _ui-tizenslider_ are changed to Tizen Web UI sliders.
  *
  * ###HTML Examples
@@ -116,17 +105,34 @@
 			"../../../../core/util/DOM/css",
 			"../mobile",
 			"./Slider",
-			"../../../../core/widget/core/Popup",
-			"../../../../core/widget/core/Button"
+			"./Button",
+			"./Popup"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
 			var Slider = ns.widget.mobile.Slider,
-				Button = ns.widget.core.Button,
+				Button = ns.widget.mobile.Button,
 				engine = ns.engine,
 				events = ns.event,
 				objectUtils = ns.util.object,
 				DOM = ns.util.DOM,
+				POPUP_WIDTH = {
+					"SMALL": "2.3rem",
+					"MEDIUM": "2.8rem",
+					"LARGE": "3.0rem"
+				},
+				FONT_SIZE = {
+					"SMALL": "0.95rem",
+					"MEDIUM": "0.85rem",
+					"LARGE": "0.65rem",
+					"DEFAULT": "0.45rem"
+				},
+				FONT_TOP = {
+					"SMALL": "0",
+					"MEDIUM": "-0.01rem",
+					"LARGE": "-0.1rem",
+					"DEFAULT": "-0.15rem"
+				},
 				TizenSlider = function () {
 					Slider.call(this);
 					// Some properties for example .popup must be defined once per slider
@@ -163,9 +169,7 @@
 				uiSliderLeftText: "ui-slider-left-text",
 				uiSliderRightText: "ui-slider-right-text",
 				uiSliderHandlePress: "ui-slider-handle-press",
-				uiSliderCenter: "ui-slider-center",
-				uiSliderTextPrefix: "ui-slider-text-",
-				uiSliderIcon: "ui-slider-icon"
+				uiSliderCenter: "ui-slider-center"
 			};
 
 			TizenSlider.prototype = new Slider();
@@ -173,8 +177,8 @@
 			sliderBuild = TizenSlider.prototype._build;
 			sliderInit = TizenSlider.prototype._init;
 			sliderBindEvents = TizenSlider.prototype._bindEvents;
-			slider_refresh = TizenSlider.prototype._refresh;
-			slider_setValue = TizenSlider.prototype._setValue;
+			slider_refresh = TizenSlider.prototype._refresh,
+			slider_setValue = TizenSlider.prototype._setValue
 			slider_getValue = TizenSlider.prototype._getValue;
 
 			/**
@@ -187,28 +191,39 @@
 				/**
 				 * All possible widget options
 				 * @property {Object} options
-				 * @property {boolean} [options.popup=false] enables popup
+				 * @property {boolean} [options.popup=true] enables popup
 				 * @property {boolean} [options.center=false] creates additional markup to pointing center of the slider
 				 * @property {string} [options.icon=""] icon type
 				 * @property {string} [options.innerLabel=false] Displays the value inside the handler
-				 * @property {?string} [options.textLeft] text attached to left
-				 * @property {?string} [options.textRight] text attached to right
+				 * @property {string} [options.textLeft=""] text attached to left
+				 * @property {string} [options.textRight=""] text attached to right
 				 * @member ns.widget.mobile.TizenSlider
 				 */
-				var options;
+				var options = this.options;
 
 				if (typeof sliderConfigure === "function") {
 					sliderConfigure.call(this);
 				}
-
-				options = this.options;
 				options.popup = false;
 				options.center = false;
 				options.innerLabel = false;
 				options.icon = "";
-				options.textLeft = null;
-				options.textRight = null;
+				options.textLeft = "";
+				options.textRight = "";
 			};
+
+			/**
+			 * Check if value is not empty
+			 * @method getValueLength
+			 * @param {number} value
+			 * @return {number}
+			 * @private
+			 * @static
+			 * @member ns.widget.mobile.TizenSlider
+			 */
+			function getValueLength(value) {
+				return (new String(value)).length;
+			}
 
 			/**
 			 * Creates popup element and appends it container passed as argument
@@ -220,23 +235,26 @@
 			 */
 			TizenSlider.prototype._createPopup = function (container) {
 				var classes = TizenSlider.classes,
-					ui = this._ui,
 					popup,
 					popupInstance;
 
 				// Create element and append it to slider
 				popup = document.createElement("div");
-				popup.className = "ui-slider-popup";
 				container.appendChild(popup);
-				popup.classList.add(classes.uiSliderPopup);
 				// Create widget instance out of popup element
 				popupInstance = engine.instanceWidget(popup, "Popup", {
-					positionTo: "origin",
-					link: ui.handle.id, // popup with arrow
+					positionTo: "origin", // popup with arrow
+					link: this._ui.handle.id, // positioned to slider's element
 					transition: "none",
-					overlay: false,
-					arrow: "b,t"
+					noScreen: true,
+					directionPriority: [
+						"top",
+						"bottom"
+					],
+					tolerance: "10,0,10,0",
+					specialContainerClass: classes.uiSliderPopupContainer
 				});
+				popup.classList.add(classes.uiSliderPopup);
 
 				return popupInstance;
 			};
@@ -265,6 +283,7 @@
 			TizenSlider.prototype._updateSlider = function () {
 				var self = this,
 					newValue,
+					options = self.options,
 					element = self.element,
 					popupElement;
 
@@ -275,7 +294,7 @@
 						self._popup = self._createPopup(self._ui.container);
 					}
 
-					popupElement = self._popup.element.children[0];
+					popupElement = self._popup.element;
 				}
 
 				self._ui.handle.removeAttribute("title");
@@ -309,11 +328,10 @@
 			 * @protected
 			 */
 			TizenSlider.prototype._showPopup = function () {
-				var self = this,
-					router = engine.getRouter();
+				var self = this;
 
 				if (self.options.popup && !self.popupVisible) {
-					router.open(self._popup.id, {rel: "popup", history: false});
+					self._popup.open();
 					self.popupVisible = true;
 				}
 			};
@@ -325,11 +343,10 @@
 			 * @protected
 			 */
 			TizenSlider.prototype._hidePopup = function () {
-				var self = this,
-					router = engine.getRouter();
+				var self = this;
 
 				if (self.options.popup && self.popupVisible) {
-					router.close(self._popup.id, {rel: "popup", history: false});
+					self._popup.close();
 					self.popupVisible = false;
 				}
 			};
@@ -426,6 +443,13 @@
 				// to determine current popup status
 				self.popupVisible = false;
 
+				slider.classList.remove(btnClasses.uiBtnCornerAll);
+				if (ui && ui.background) {
+					ui.background.classList.remove(btnClasses.uiBtnCornerAll);
+				}
+				self._ui.handle.classList.remove(btnClasses.uiBtnCornerAll);
+				slider.querySelector('.' + btnClasses.uiBtnInner).classList.remove(btnClasses.uiBtnCornerAll);
+
 				switch (icon) {
 				case "bright":
 				case "volume":
@@ -436,44 +460,54 @@
 
 					marginLeft = (DOM.getElementWidth(elemLeft) + 16) + "px";
 					marginRight = "";
-					sliderContainerStyle.marginLeft = marginLeft;
-					sliderContainerStyle.marginRight = marginRight;
-					sliderContainer.classList.add(classes.uiSliderIcon);
-
 					break;
 
-				default:
+				case "text":
 					textLeft = (textLeft && textLeft.substring(0, 3)) || "";
 					textRight = (textRight && textRight.substring(0, 3)) || "";
 
-					if (textLeft || textRight) {
-						options.icon = icon = "text";
-						elemLeft = document.createElement("div");
-						elemLeft.classList.add(classes.uiSliderLeftText);
+					elemLeft = document.createElement("div");
+					elemLeft.classList.add(classes.uiSliderLeftText);
 
-						elemRight = document.createElement("div");
-						elemRight.classList.add(classes.uiSliderRightText);
+					elemRight = document.createElement("div");
+					elemRight.classList.add(classes.uiSliderRightText);
 
-						textLength = Math.max(textLeft.length, textRight.length) + 1;
-						sliderContainer.classList.add(classes.uiSliderTextPrefix + textLength);
+					textLength = Math.max(textLeft.length, textRight.length) + 1;
 
-						inner = document.createElement("span");
-						inner.innerHTML = textLeft;
+					marginLeft = textLength + "rem";
+					marginRight = textLength + "rem";
 
-						// Second element is same as first one
-						elemLeft.appendChild(inner.cloneNode(true));
+					// Properties set before appending to element in DOM
+					elemLeft.style.left = "-" + marginLeft;
+					elemLeft.style.width = marginLeft;
 
-						inner.innerHTML = textRight;
+					elemRight.style.right = "-" + marginRight;
+					elemRight.style.width = marginRight;
 
-						elemRight.appendChild(inner);
+					inner = document.createElement("span");
+					inner.style.position = "relative";
+					inner.style.top = "0.4em";
+					inner.innerHTML = textLeft;
 
-						slider.parentNode.insertBefore(elemLeft, slider);
-						slider.parentNode.appendChild(elemRight);
-						ui.elemLeft = elemLeft;
-						ui.elemRight = elemRight;
-					}
+					// Second element is same as first one
+					elemLeft.appendChild(inner.cloneNode(true));
+
+					inner.innerHTML = textRight;
+
+					elemRight.appendChild(inner);
+
+					slider.parentNode.insertBefore(elemLeft, slider);
+					slider.parentNode.appendChild(elemRight);
+
 					break;
 				}
+
+				if (icon) {
+					sliderContainerStyle.marginLeft = marginLeft;
+					sliderContainerStyle.marginRight = marginRight;
+				}
+
+				self.handleText = slider.querySelector("." + btnClasses.uiBtnText);
 
 				self.element = element;
 				self._updateSlider(element);
@@ -606,8 +640,7 @@
 			ns.widget.mobile.TizenSlider = TizenSlider;
 			engine.defineWidget(
 				"TizenSlider",
-				"input[type='range'], input[data-role='slider'], input[data-role='range']," +
-				"input.ui-tizenslider",
+				"input[type='range'], :not(select)[data-role='slider'], :not(select)[data-type='range'], .ui-tizenslider",
 				[],
 				TizenSlider,
 				"tizen"

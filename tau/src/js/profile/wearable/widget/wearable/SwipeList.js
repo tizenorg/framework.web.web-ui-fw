@@ -1,18 +1,6 @@
 /*global window, define, Event, console */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true, plusplus: true */
 /**
@@ -82,8 +70,8 @@
 			"../../../../core/util/selectors",
 			"../../../../core/util/DOM",
 			"../../../../core/widget/BaseWidget",
-			"../../../../core/widget/core/Page",
-			"../wearable"
+			"../wearable",
+			"./Page"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
@@ -231,7 +219,7 @@
 			};
 
 			prototype._init = function (element) {
-				var page = selectors.getClosestBySelector(element, "." + ns.widget.core.Page.classes.uiPage),
+				var page = selectors.getClosestBySelector(element, "." + ns.widget.wearable.Page.classes.uiPage),
 					options = this.options,
 					swipeLeftElementBg,
 					swipeRightElementBg,
@@ -240,13 +228,11 @@
 				if (options.container) {
 					this.container = page.querySelector(options.container);
 				} else {
-					this.container = element.parentNode;
+					this.container = this._findScrollableElement(this.element);
 				}
 
-				this.scrollableElement = selectors.getScrollableParent(element);
-				if (!this.scrollableElement) {
-					this.scrollableElement = this.container;
-				}
+				this.container.style.position = "relative";
+
 				this.swipeElement = page.querySelector(options.swipeElement);
 				this.swipeLeftElement = options.swipeLeftElement ? page.querySelector(options.swipeLeftElement) : undefined;
 				this.swipeRightElement = options.swipeRightElement ? page.querySelector(options.swipeRightElement) : undefined;
@@ -255,8 +241,8 @@
 					this.swipeElementStyle = this.swipeElement.style;
 					this.swipeElementStyle.display = "none";
 					this.swipeElementStyle.background = "transparent";
-					this.swipeElementStyle.width = this.scrollableElement.offsetWidth + "px";
-					this.swipeElementStyle.height = this.scrollableElement.offsetHeight + "px";
+					this.swipeElementStyle.width = this.container.offsetWidth + "px";
+					this.swipeElementStyle.height = this.container.offsetHeight + "px";
 				}
 
 				if (this.swipeLeftElement) {
@@ -403,6 +389,13 @@
 				}());
 			};
 
+			prototype._findScrollableElement = function (elem) {
+				while ((elem.scrollHeight <= elem.offsetHeight) && (elem.scrollWidth <= elem.offsetWidth)) {
+					elem = elem.parentNode;
+				}
+				return elem;
+			};
+
 			prototype._findSwipeTarget = function (element) {
 				var selector = this.options.swipeTarget;
 
@@ -419,7 +412,7 @@
 
 			prototype._start = function (e) {
 				var gesture = e.detail,
-					width, height, top;
+					containerTop, width, height, top;
 
 				this._dragging = false;
 				this._cancelled = false;
@@ -430,7 +423,10 @@
 
 					width = this.activeTarget.offsetWidth;
 					height = this.activeTarget.offsetHeight;
-					top = this.activeTarget.offsetTop - this.scrollableElement.scrollTop;
+					containerTop = this.container.scrollTop;
+					top = this.activeTarget.offsetTop - containerTop;
+
+					this.swipeElementStyle.top = containerTop + "px";
 
 					if (this.swipeLeftElementStyle) {
 						this.swipeLeftElementStyle.width = width + "px";

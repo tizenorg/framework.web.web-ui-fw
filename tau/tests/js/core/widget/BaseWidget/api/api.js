@@ -1,4 +1,4 @@
-module("core/widget/BaseWidget", {
+module("api.ej.widget", {
 	});
 
 	test ( "API ej.widget" , function () {

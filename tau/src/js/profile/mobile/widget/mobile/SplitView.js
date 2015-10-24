@@ -1,26 +1,12 @@
 /*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true, plusplus: true */
 /**
  * #Split View Widget
  * SplitView is a widget, which displays two children separated with a movable divider.
- *
- * ##Default selectors
- * In default all elements with _data-role="splitview"_ or class _.ui-splitview_ are changed to Split View widget.
  *
  * It allows to change the size ratio of its children and supports two orientations.
  * @class ns.widget.mobile.SplitView
@@ -364,7 +350,7 @@
 			 */
 			prototype._refresh = function () {
 				var self = this,
-					element = self.element;
+					element = self.widget();
 
 				self._measureSplitter();
 				if (self._getContainerSize(element)) {
@@ -575,7 +561,7 @@
 			prototype.maximize = function(id) {
 				var self = this,
 					ratio = self.options.ratio,
-					element = selectors.getChildrenBySelector(self.element, id);
+					element = selectors.getChildrenBySelector(self.widget(), id);
 
 				if (element) {
 					self.panes.forEach(function(pane, i) {

@@ -1,18 +1,6 @@
 /*global window, define, Event, console, ns */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true, plusplus: true */
 /**
@@ -41,34 +29,66 @@
 
 			type.bar = utilsObject.merge({}, typeInterface, {
 				options: {
+					wrapperClass: "ui-scrollbar-bar-type",
+					barClass: "ui-scrollbar-indicator",
+					orientationClass: "ui-scrollbar-",
+					margin: 2,
 					animationDuration: 500
 				},
 
 				/**
-				 * @method setScrollbar
-				 * @param viewLayout
-				 * @param firstChildLayout
-				 * @param clipLayout
+				 *
+				 * @method insertAndDecorate
+				 * @param data
 				 * @static
 				 * @member ns.widget.wearable.scroller.scrollbar.type.bar
 				 */
+				insertAndDecorate: function( data ) {
+					var scrollbarElement = data.wrapper,
+						barElement = data.bar,
+						container = data.container,
+						clip = data.clip,
+						orientation = data.orientation,
+						margin = this.options.margin,
+						clipSize = orientation === Scroller.Orientation.VERTICAL ? clip.offsetHeight : clip.offsetWidth,
+						containerSize = orientation === Scroller.Orientation.VERTICAL ? container.offsetHeight : container.offsetWidth,
+						orientationClass = this.options.orientationClass + (orientation === Scroller.Orientation.VERTICAL ? "vertical" : "horizontal"),
+						barStyle = barElement.style;
 
-				setScrollbar: function(viewLayout, firstChildLayout, clipLayout) {
-					this._viewLayout = viewLayout;
-					this._clipLayout = clipLayout;
-					this._firstChildLayout = firstChildLayout;
-					this._ratio = clipLayout / firstChildLayout;
+					this.containerSize = containerSize;
+					this.maxScrollOffset = clipSize - containerSize;
+					this.scrollZoomRate = containerSize / clipSize;
+					this.barSize = window.parseInt( containerSize / (clipSize/containerSize) ) - ( margin * 2 );
+
+					scrollbarElement.className = this.options.wrapperClass + " " + orientationClass;
+					barElement.className = this.options.barClass;
+
+					if ( orientation === Scroller.Orientation.VERTICAL ) {
+						barStyle.height = this.barSize + "px";
+						barStyle.top = "0px";
+					} else {
+						barStyle.width = this.barSize + "px";
+						barStyle.left = "0px";
+					}
+
+					container.appendChild(scrollbarElement);
 				},
 
 				/**
-				 * @method getScrollbarSize
-				 * @return scrollbar size
+				 * @method insertAndDecorate
+				 * @param data
 				 * @static
 				 * @member ns.widget.wearable.scroller.scrollbar.type.bar
 				 */
-				getScrollbarSize: function() {
-					return this._firstChildLayout / this._viewLayout * this._firstChildLayout * this._ratio;
+				remove: function (data) {
+					var scrollbarElement = data.wrapper,
+						container = data.container;
+
+					if ( container && scrollbarElement) {
+						container.removeChild(scrollbarElement);
+					}
 				},
+
 				/**
 				 * @method offset
 				 * @param orientation
@@ -79,7 +99,9 @@
 				offset: function( orientation, offset ) {
 					var x, y;
 
-					offset = offset * this._clipLayout / this._viewLayout;
+					offset = offset !== this.maxScrollOffset ?
+						offset * this.scrollZoomRate :
+						this.containerSize - this.barSize - this.options.margin * 2;
 
 					if ( orientation === Scroller.Orientation.VERTICAL ) {
 						x = 0;
@@ -104,11 +126,7 @@
 				start: function( scrollbarElement/*, barElement */) {
 					var style = scrollbarElement.style,
 						duration = this.options.animationDuration;
-					style["-webkit-transition"] =
-							style["-moz-transition"] =
-							style["-ms-transition"] =
-							style["-o-transition"] =
-							style.transition = "opacity " + duration / 1000 + "s ease";
+					style["-webkit-transition"] = "opacity " + duration / 1000 + "s ease";
 					style.opacity = 1;
 				},
 
@@ -121,11 +139,7 @@
 				end: function( scrollbarElement/*, barElement */) {
 					var style = scrollbarElement.style,
 						duration = this.options.animationDuration;
-					style["-webkit-transition"] =
-							style["-moz-transition"] =
-							style["-ms-transition"] =
-							style["-o-transition"] =
-							style.transition = "opacity " + duration / 1000 + "s ease";
+					style["-webkit-transition"] = "opacity " + duration / 1000 + "s ease";
 					style.opacity = 0;
 				}
 			});

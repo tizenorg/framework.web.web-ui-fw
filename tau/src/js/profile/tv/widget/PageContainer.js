@@ -1,18 +1,7 @@
 /*global window, define, ns */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* 
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true, plusplus: true */
 /**
@@ -29,7 +18,7 @@
  *
  *
  * @class ns.widget.tv.PageContainer
- * @extends ns.widget.core.PageContainer
+ * @extends ns.widget.wearable.PageContainer
  * @author Maciej Urbanski <m.urbanski@samsung.com>
  */
 (function (document, ns) {
@@ -38,21 +27,19 @@
 	define(
 		[
 			"../tv",
-			"../../../core/widget/core/PageContainer",
+			"../../../profile/wearable/widget/wearable/PageContainer",
 			"../../../core/engine"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
-			var CorePageContainer = ns.widget.core.PageContainer,
-				CorePageContainerPrototype = CorePageContainer.prototype,
+			var WearablePageContainer = ns.widget.wearable.PageContainer,
+				WearablePageContainerPrototype = WearablePageContainer.prototype,
 				PageContainer = function () {
 				},
 				engine = ns.engine,
-				prototype = new CorePageContainer(),
-				classes = CorePageContainer.classes;
+				prototype = new WearablePageContainer();
 
-			PageContainer.events = CorePageContainer.events;
-			PageContainer.classes = CorePageContainer.classes;
+			PageContainer.events = WearablePageContainer.events;
 
 			/**
 			 * Build structure of PageContainer widget
@@ -64,8 +51,8 @@
 			 */
 			prototype._build = function ( element ) {
 				var optionsBackground = this.options.background;
-				if (CorePageContainerPrototype._build) {
-					element = CorePageContainerPrototype._build(element);
+				if (WearablePageContainerPrototype._build) {
+					element = WearablePageContainerPrototype._build(element);
 				}
 
 				if (optionsBackground) {

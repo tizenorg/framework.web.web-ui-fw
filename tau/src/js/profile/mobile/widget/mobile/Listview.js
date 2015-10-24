@@ -1,19 +1,8 @@
 /*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true, plusplus: true */
 /**
  * # Listview Widget
@@ -735,10 +724,10 @@
 			"../../../../core/event",
 			"../../../../core/event/vmouse",
 			"../../../../core/util/colors",
-			"../../../../core/widget/core/Page",
-			"../../../../core/widget/core/Button",
 			"../mobile",
 			"./BaseWidgetMobile",
+			"./Button",
+			"./Page"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
@@ -768,21 +757,21 @@
 				 */
 				DOM = ns.util.DOM,
 				/**
-				 * Alias for class ns.widget.core.Button
+				 * Alias for class ns.widget.mobile.Button
 				 * @property {Function} Button
 				 * @member ns.widget.mobile.Listview
 				 * @static
 				 * @private
 				 */
-				Button = ns.widget.core.Button,
+				Button = ns.widget.mobile.Button,
 				/**
-				 * Alias for class ns.widget.core.Page
+				 * Alias for class ns.widget.mobile.Page
 				 * @property {Function} Page
 				 * @member ns.widget.mobile.Listview
 				 * @static
 				 * @private
 				 */
-				Page = ns.widget.core.Page,
+				Page = ns.widget.mobile.Page,
 				/**
 				 * Alias for class {@link ns.util.color}
 				 * @property {Function} Page
@@ -820,9 +809,7 @@
 				 * @property {string} classes.uiLiIcon class of icon included in li element
 				 * @property {string} classes.uiLiHasIcon class of li element which has icon
 				 * @property {string} classes.uiLiHasCheckbox class of li element which has checkbox
-				 * @property {string} classes.uiLiHasCheckboxDisabled class of li element which has checkbox disabled
 				 * @property {string} classes.uiLiHasRadio class of li element which has radio button
-				 * @property {string} classes.uiLiHasRadioDisabled class of li element which has radio button disabled
 				 * @property {string} classes.uiLiHasRightCircleBtn class of li element which has circle button
 				 * @property {string} classes.uiLiHasRightBtn class of li element which has button allign to right
 				 * @property {string} classes.uiLiCount class of count included in li element
@@ -854,19 +841,16 @@
 					uiLiIcon: "ui-li-icon",
 					uiLiHasIcon: "ui-li-has-icon",
 					uiLiHasCheckbox: "ui-li-has-checkbox",
-					uiLiHasCheckboxDisabled: "ui-li-has-checkbox-disabled",
 					uiLiHasRadio: "ui-li-has-radio",
-					uiLiHasRadioDisabled: "ui-li-has-radio-disabled",
 					uiLiHasRightCircleBtn: "ui-li-has-right-circle-btn",
 					uiLiHasRightBtn: "ui-li-has-right-btn",
 					uiLiCount: "ui-li-count",
 					uiLiHasCount: "ui-li-has-count",
-					uiLiAnchor: "ui-li-anchor",
 					uiLiStatic: "ui-li-static",
 					uiLiHeading: "ui-li-heading"
 				},
 				/**
-				 * Alias for object ns.widget.core.Button.classes
+				 * Alias for object ns.widget.mobile.Button.classes
 				 * @property {Object} buttonClasses
 				 * @member ns.widget.mobile.Listview
 				 * @static
@@ -910,9 +894,6 @@
 					 * @property {?string} [options.theme=null] theme of widget
 					 * @property {?string} [options.dividerTheme="s"] theme of listview divider
 					 * @property {boolean} [options.inset=false] inset option - listview is wrapped by additionally layer
-					 * @property {"colored"|null} [options.type=null] set type of list, colored or not
-					 * @property {number} [options.coloredListNumber=18] max number of colored items
-					 * @property {number} [options.diffLightness=3] difference between colored items
 					 * @member ns.widget.mobile.Listview
 					 */
 					options = self.options || {};
@@ -920,13 +901,89 @@
 				options.theme = null;
 				options.dividerTheme = "s";
 				options.inset = false;
-				options.type = null;
-				options.coloredListNumber = 18;
+				options.coloredListNumber = 12;
 				options.diffLightness = 3;
 
 				self.options = options;
 				ui.page = null;
 			};
+
+			/**
+			 * Change links to button widget
+			 * @method changeLinksToButton
+			 * @param {HTMLElement} item
+			 * @param {Array} links
+			 * @param {string} itemTheme
+			 * @private
+			 * @static
+			 * @member ns.widget.mobile.Listview
+			 */
+			function changeLinksToButton(item, links, itemTheme) {
+				var icon = DOM.getNSData(item, "icon"),
+					linkClassList = links[0].classList,
+					linksLength = links.length,
+					last = links[linksLength - 1],
+					span;
+				DOM.setNSData(item, "theme", itemTheme);
+				engine.instanceWidget(
+					item,
+					"Button",
+					{
+						wrapperEls: "div",
+						shadow: false,
+						corners: false,
+						iconpos: "right",
+						icon: false
+					}
+				);
+
+				if (linksLength === 1) {
+					item.classList.add(classes.uiLiHasArrow);
+					if (icon !== false) {
+						item.classList.add(buttonClasses.uiBtnIconRight);
+					}
+				} else if (linksLength > 1) {
+					item.classList.add(classes.uiLiHasAlt);
+					item.appendChild(last);
+					last.classList.add(classes.uiLiLinkAlt);
+					last.setAttribute("title", last.innerText);
+					last.innerText = "";
+					engine.instanceWidget(
+						last,
+						"Button",
+						{
+							wrapperEls: "span",
+							shadow: false,
+							corners: false,
+							iconpos: "right",
+							icon: false
+						}
+					);
+					last.classList.add(buttonClasses.uiBtnIconNotext);
+
+					span = document.createElement("span");
+					engine.instanceWidget(
+						span,
+						"Button",
+						{
+							wrapperEls: "span",
+							shadow: true,
+							corners: false,
+							iconpos: "notext",
+							icon: "arrow-r"
+						}
+					);
+					last.querySelector("." + buttonClasses.uiBtnInner)
+							.appendChild(span);
+				}
+				linkClassList.remove(classes.uiLink);
+				linkClassList.add(classes.uiLinkInherit);
+
+				selectors.getChildrenByClass(item, buttonClasses.uiBtnInner)
+					.forEach(function (element) {
+						element.classList.add(classes.uiLi);
+					});
+			}
 
 			/**
 			 * Add thumb classes img
@@ -975,22 +1032,13 @@
 			function addCheckboxRadioClasses(container) {
 				var inputAttr = container.querySelector("input"),
 					typeOfInput,
-					contenerClassList = container.classList,
-					disabled = false;
-
+					contenerClassList = container.classList;
 				if (inputAttr) {
 					typeOfInput = inputAttr.getAttribute("type");
-					disabled = inputAttr.hasAttribute("disabled");
 					if (typeOfInput === "checkbox") {
 						contenerClassList.add(classes.uiLiHasCheckbox);
-						if (disabled) {
-							contenerClassList.add(classes.uiLiHasCheckboxDisabled);
-						}
 					} else if (typeOfInput === "radio") {
 						contenerClassList.add(classes.uiLiHasRadio);
-						if (disabled) {
-							contenerClassList.add(classes.uiLiHasRadioDisabled);
-						}
 					}
 				}
 			}
@@ -1129,26 +1177,26 @@
 				self._coloredListHandler = self._scrollHandler.bind(self); // This variable will be used when event handler remove.
 				if (parentElement){
 					// List in scrollview
-					element.parentNode.insertBefore(dummyElement, element.parentNode.firstChild);
+					parentElement.parentNode.appendChild(dummyElement);
 					parentElement.addEventListener("scroll", self._coloredListHandler);
 					if (self._scrollTop) {
 						// It was scrolled before that means listview element made before and don't need to init more.
 						return;
 					}
 
-
+					dummyElement.style.top = parentElement.offsetTop + "px";
 				} else {
 					parentElement = element.parentNode;
 					parentElement.appendChild(dummyElement);
 					parentElement.addEventListener("scroll", self._coloredListHandler);
-
+					dummyElement.style.top = "0";
 				}
 				self._changeColoredPosition(0); // Init linear-gradient
 
 				parentElement.style.backgroundColor = "transparent";
 
 				dummyElement.style.width = element.offsetWidth + "px";
-				dummyElement.style.height = parentElement.offsetHeight * 2 + "px";
+				dummyElement.style.height = parentElement.offsetHeight + "px";
 
 			};
 
@@ -1216,7 +1264,6 @@
 					gradientValue,
 					gradient;
 
-				self._dummyElement.style.top = scrollTop + "px";
 				if (!direction) {
 					// move up
 					colorRatio = -colorRatio; // redRatio = -4 / listTopOffsetHeight
@@ -1266,13 +1313,10 @@
 			 * @member ns.widget.mobile.Listview
 			 */
 			Listview.prototype._clickCheckboxRadio = function (element) {
-				var checkboxRadio = slice.call(element.querySelectorAll(".ui-checkbox, .ui-radio, .ui-slider-switch-input")),
-					i = checkboxRadio.length,
-					input;
-
+				var checkboxRadio = slice.call(element.querySelectorAll(".ui-checkbox label, .ui-radio label")),
+					i = checkboxRadio.length;
 				while (--i >= 0) {
-					input = checkboxRadio[i];
-					input.checked = (input.type === "checkbox") ? !input.checked : true;
+					eventUtils.trigger(checkboxRadio[i], "vclick");
 				}
 			};
 
@@ -1288,20 +1332,19 @@
 					page = selectors.getClosestByClass(element, Page.classes.uiPage);
 
 				element.addEventListener("vclick", function (event) {
-					var target = event.target;
+					var target = event.target,
+						parentTarget = target.parentNode;
 
-					if (target.classList.contains(classes.uiLiHasCheckbox) ||
-						target.classList.contains(classes.uiLiHasRadio) ||
-						target.classList.contains(classes.uiLiHasRightBtn)) {
+					if (target.classList.contains(classes.uiLiHasCheckbox) || target.classList.contains(classes.uiLiHasRadio)) {
 						self._clickCheckboxRadio(target);
-					} else if (target.type === "checkbox" || target.type === "radio") {
-						event.stopPropagation();
-						event.preventDefault();
+					} else if (parentTarget.classList.contains(classes.uiLiHasCheckbox) || parentTarget.classList.contains(classes.uiLiHasRadio)) {
+						self._clickCheckboxRadio(parentTarget);
 					}
 				}, false);
 
-				if (self.options.type !== "colored") {
+				if (element.getAttribute("data-type") !== "colored") {
 					element.classList.add("ui-listview-default");
+					return;
 				} else {
 					if (!element.classList.contains(classes.uiListviewColored)) {
 						element.classList.add(classes.uiListviewColored);
@@ -1417,10 +1460,11 @@
 			 * @member ns.widget.mobile.Listview
 			 */
 			Listview.prototype._refreshCorners = function (ul, create) {
-				var self = this,
-					items = selectors.getChildrenByTag(ul, "li"),
+				var items,
+					self = this,
 					last;
 
+				items = selectors.getChildrenByTag(ul, "li");
 				if (items.length) {
 					// clean previous corners
 					items.forEach(function (item) {
@@ -1448,94 +1492,7 @@
 			};
 
 			/**
-			 * Adds checkboxradio, thumb and right button classes
-			 * if it is essential.
-			 * @method addItemClasses
-			 * @param {HTMLElement} item Element to add classes to
-			 * @static
-			 * @private
-			 * @member ns.widget.mobile.Listview
-			 */
-			function addItemClasses(item) {
-				addCheckboxRadioClasses(item);
-				addThumbClasses(item);
-				addRightBtnClasses(item);
-			}
-
-			/**
-			 * Refreshes item elements with "a" tag
-			 * @method refreshLinks
-			 * @param {HTMLElement} element HTML LI element
-			 * @static
-			 * @private
-			 * @member ns.widget.mobile.Listview
-			 */
-			function refreshLinks(item) {
-				var links = selectors.getChildrenByTag(item, "a"),
-					itemClassList = item.classList;
-				if (links.length) {
-					addItemClasses(links[0]);
-					itemClassList.add(classes.uiLiAnchor);
-				} else {
-					itemClassList.add(classes.uiLiStatic);
-					item.setAttribute("tabindex", "0");
-				}
-			}
-
-			/**
-			 * Refreshes single item of a list
-			 * @method refreshItem
-			 * @param {HTMLElement} element HTML LI element
-			 * @param {boolean} create True if item is forced to be created
-			 * @param {string} dividerTheme List divider theme
-			 * @static
-			 * @private
-			 * @member ns.widget.mobile.Listview
-			 */
-			function refreshItem(item, create, dividerTheme) {
-				var itemClassList = item.classList;
-
-				if (create || (!itemClassList.contains(classes.uiLi) && DOM.isOccupiedPlace(item))) {
-					itemClassList.add(classes.uiLi);
-
-					if (item.querySelector("." + classes.uiLiCount)) {
-						itemClassList.add(classes.uiLiHasCount);
-					}
-
-					if (item.hasAttribute("tabindex") === false) {
-						item.setAttribute("tabindex", 0);
-					}
-
-					if (selectors.matchesSelector(item, engine.getWidgetDefinition("ListDivider").selector)) {
-						engine.instanceWidget(item, "ListDivider", {theme: dividerTheme});
-					} else {
-						refreshLinks(item);
-						addHeadingClasses(item);
-					}
-				}
-				addItemClasses(item);
-			}
-
-			/**
-			 * Refreshes list images
-			 * @method refreshImages
-			 * @param {HTMLElement} ul HTML UL element
-			 * @static
-			 * @private
-			 * @member ns.widget.mobile.Listview
-			 */
-			function refreshImages(ul) {
-				var imgs = ul.querySelectorAll("." + classes.uiLinkInherit + " > img:first-child"),
-					i,
-					length = imgs.length;
-
-				for (i = 0; i < length; i++) {
-					addThumbClassesToImg(imgs[i]);
-				}
-			}
-
-			/**
-			 * Refreshes items of list
+			 * Refresh items of list
 			 * @method _refreshItems
 			 * @param {HTMLElement} ul HTML UL element
 			 * @param {boolean} create
@@ -1543,25 +1500,70 @@
 			 * @member ns.widget.mobile.Listview
 			 */
 			Listview.prototype._refreshItems = function (ul, create) {
-				var self = this,
-					items,
-					options = self.options,
+				var items,
+					options = this.options,
 					theme,
+					last,
+					imgs,
 					dividerTheme;
 
 				eventUtils.trigger(ul, "beforerefreshitems");
-
 				items = selectors.getChildrenByTag(ul, "li");
 				theme = DOM.getNSData(ul, "theme") || options.theme || "s";
 				dividerTheme = DOM.getNSData(ul, "divider-theme") || options.dividerTheme || theme;
+				last = items.length - 1;
 
-				items.forEach(function (item) {
-					refreshItem(item, create, dividerTheme);
-				}, self);
+				//@todo filter only visible
+				items.forEach(function (item, index) {
+					var itemTheme,
+						links,
+						link,
+						itemClassList = item.classList;
+					if (create || !item.classList.contains(classes.uiLi)) {
+						itemClassList.add(classes.uiLi);
+						links = selectors.getChildrenByTag(item, "a");
+						itemTheme = DOM.getNSData(item, "theme") || theme;
 
-				refreshImages(ul);
+						if (!!item.querySelector("." + classes.uiLiCount)) {
+							itemClassList.add(classes.uiLiHasCount);
+						}
 
-				self._refreshCorners(ul, create);
+						//becasue ListDivider is attached later then Listview I cannot make reference to ListDivider classes
+						if (selectors.matchesSelector(item, '[data-role="list-divider"],.ui-list-divider')) {
+							DOM.setNSData(item, "theme", dividerTheme);
+							engine.instanceWidget(item, "ListDivider");
+						} else {
+							if (links.length) {
+								changeLinksToButton(item, links, itemTheme);
+								link = links[0];
+								addCheckboxRadioClasses(link);
+								addThumbClasses(link);
+								addRightBtnClasses(link);
+							} else {
+								itemClassList.add(classes.uiLiStatic);
+								itemClassList.add(buttonClasses.uiBtnUpThemePrefix + itemTheme);
+								item.setAttribute("tabindex", "0");
+							}
+							addHeadingClasses(item);
+						}
+					}
+					addCheckboxRadioClasses(item);
+					addThumbClasses(item);
+					addRightBtnClasses(item);
+					if (index === last) {
+						itemClassList.add(classes.uiLiLast);
+					} else {
+						itemClassList.remove(classes.uiLiLast);
+					}
+				}, this);
+
+				imgs = ul.querySelectorAll("." + classes.uiLinkInherit + " > img:first-child");
+				if (imgs.length !== 0) {
+					slice.call(imgs).forEach(function (img) {
+						addThumbClassesToImg(img);
+					});
+				}
+				this._refreshCorners(ul, create);
 			};
 
 			/**
@@ -1624,7 +1626,7 @@
 			ns.widget.mobile.Listview = Listview;
 			engine.defineWidget(
 				"Listview",
-				"ul[data-role='listview'], ul.ui-listview, ol[data-role='listview'], ol.ui-listview",
+				"[data-role='listview'], .ui-listview",
 				["addItem", "removeItem"],
 				Listview,
 				"mobile"

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div data-role="page" id="tabbar_segment">
+	<div data-role="header" data-position="fixed">
+		<h1>Segment tab - text only</h1>
+	</div>
+
+	<div data-role="content"></div>
+
+	<div data-role="footer">
+		<div data-role="controlgroup" data-type="horizontal">
+			<a href="#" data-role="button">Yes</a>
+			<a href="#" data-role="button">No</a>
+			<a href="#" data-role="button">Maybe</a>
+		</div>
+	</div>
+	<script>
+	$( "#tabbar_segment" ).on( "pageshow" , function() {
+		$(window).on("tizenhwkey", function (event) {
+			if (event.originalEvent.keyName === "back") {
+				//bind callbacks to the H/W keys
+				window.history.back();
+			}
+		});
+	}).on("pagebeforehide", function () {
+		//unbind callbacks to the H/W keys
+		$(window).off("tizenhwkey");
+	});
+	</script>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 $().ready(function() {
-	module("core/theme");
+	module("ej.theme");
 
 	test ( "API ej.theme" , function () {
 		var element = document.body;

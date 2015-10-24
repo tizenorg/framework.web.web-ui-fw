@@ -21,21 +21,18 @@ var unit_virtuallistview = function (element, templateName) {
 		ok(element.classList.contains(listviewClasses.uiListview), "[HTML] UL was created with Listview class");
 		ok(element.classList.contains('ui-virtual-list-container'), "[HTML] UL was created with VirtualListview class");
 
-		widget.setListItemUpdater(function (listElement, rowIndex) {
-			var template = document.getElementById("tmp-2line-star1").innerHTML;
-
-			template = template.replace(/\$\{([\w]+)\}/ig, function (pattern, field) {
-				return JSON_DATA[rowIndex][field];
-			});
-
-			listElement.classList.add('test');
-			listElement.classList.add('ui-li-has-multiline');
-			listElement.innerHTML = template;
-		});
-		widget.draw();
-
 		//Check children
-		equal(widget.options.bufferSize, 100, '[HTML] Option.bufferSize set is correct');
+		equal(widget.options.row, 100, '[HTML] Option.row set is correct');
+
+		//Binding data with widget
+		//NOTE: JSON_DATA it's global variable declared in file with demo database
+		widget.create({
+			itemData: function (idx) {
+				return JSON_DATA[idx];
+			},
+			numItemData: JSON_DATA.length
+		});
+
 		equal(element.childElementCount, 100, '[HTML] Number of children in result set is correct');
 
 		//Check LI structure with Template
@@ -81,15 +78,10 @@ var unit_virtuallistview = function (element, templateName) {
 		scrollViewStyle;
 
 	/* Create */
-	virtuallistview = tau.widget.VirtualListview(element, {
-		dataLength: JSON_DATA.length,
-		bufferSize: 100
-	});
-
-
+	virtuallistview = ej.engine.getBinding(element);
 	ok(virtuallistview.name === 'VirtualListview', "Create VirtualListview object");
 
-	scrollViewStyle = virtuallistview._ui.scrollview.style;
+	scrollViewStyle = virtuallistview._ui.scrollview.element.style;
 
 	/* Check widget structure */
 	checkWidgetStructure(virtuallistview, element, templateName);

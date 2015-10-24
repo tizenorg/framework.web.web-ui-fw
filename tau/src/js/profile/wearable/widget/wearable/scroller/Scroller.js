@@ -1,18 +1,6 @@
 /*global window, define, Event, console, ns */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true, plusplus: true */
 /**
@@ -94,6 +82,9 @@
 				this.bouncingEffect = null;
 				this.scrollbar = null;
 
+				this.width = 0;
+				this.height = 0;
+
 				this.scrollerWidth = 0;
 				this.scrollerHeight = 0;
 				this.scrollerOffsetX = 0;
@@ -127,7 +118,7 @@
 				 */
 				this.options = utilsObject.merge({}, this.options, {
 					scrollDelay: 0,
-					threshold: 30,
+					threshold: 10,
 					scrollbar: "",
 					useBouncingEffect: false,
 					orientation: "vertical"	// vertical or horizontal,
@@ -135,22 +126,16 @@
 			};
 
 			prototype._init = function () {
-				var options = this.options,
-					scrollerChildren = this.scroller.children,
-					elementStyle = this.element.style,
-					scrollerStyle = this.scroller.style,
-					elementHalfWidth =  this.element.offsetWidth / 2,
-					elementHalfHeight = this.element.offsetHeight / 2;
+				this.width = this.element.offsetWidth;
+				this.height = this.element.offsetHeight;
 
-				this.orientation = this.orientation ? this.orientation :
-					(options.orientation === "horizontal" ? Scroller.Orientation.HORIZONTAL : Scroller.Orientation.VERTICAL);
 				this.scrollerWidth = this.scroller.offsetWidth;
 				this.scrollerHeight = this.scroller.offsetHeight;
 
-				this.maxScrollX = elementHalfWidth - this.scrollerWidth + scrollerChildren[scrollerChildren.length - 1].offsetWidth / 2;
-				this.maxScrollY = elementHalfHeight - this.scrollerHeight + scrollerChildren[scrollerChildren.length - 1].offsetHeight / 2;
-				this.minScrollX = elementHalfWidth - scrollerChildren[0].offsetWidth / 2;
-				this.minScrollY = elementHalfHeight - scrollerChildren[0].offsetHeight / 2;
+				this.maxScrollX = this.width - this.scrollerWidth;
+				this.maxScrollY = this.height - this.scrollerHeight;
+
+				this.orientation = this.options.orientation === "horizontal" ? Scroller.Orientation.HORIZONTAL : Scroller.Orientation.VERTICAL;
 
 				this.scrolled = false;
 				this.touching = true;
@@ -161,15 +146,24 @@
 				} else {
 					this.maxScrollX = 0;
 				}
+
+				this._initLayout();
+				this._initScrollbar();
+				this._initBouncingEffect();
+			};
+
+			prototype._initLayout = function () {
+				var elementStyle = this.element.style,
+					scrollerStyle = this.scroller.style;
+
 				elementStyle.overflow = "hidden";
 				elementStyle.position = "relative";
+
 				scrollerStyle.position = "absolute";
 				scrollerStyle.top = "0px";
 				scrollerStyle.left = "0px";
 				scrollerStyle.width = this.scrollerWidth + "px";
 				scrollerStyle.height = this.scrollerHeight + "px";
-				this._initScrollbar();
-				this._initBouncingEffect();
 			};
 
 			prototype._initScrollbar = function () {
@@ -216,10 +210,7 @@
 					scrollerStyle.height = "";
 
 					scrollerStyle["-webkit-transform"] = "";
-					scrollerStyle["-moz-transition"] = "";
-					scrollerStyle["-ms-transition"] = "";
-					scrollerStyle["-o-transition"] = "";
-					scrollerStyle["transition"] = "";
+					scrollerStyle["-webkit-transition"] = "";
 				}
 			};
 
@@ -305,34 +296,18 @@
 
 			prototype._translate = function (x, y, duration) {
 				var translate,
-					transition = {
-						normal: "none",
-						webkit: "none",
-						moz: "none",
-						ms: "none",
-						o: "none"
-					},
+					transition,
 					scrollerStyle = this.scrollerStyle;
 
-				if (duration) {
-					transition.normal = "transform " + duration / 1000 + "s ease-out";
-					transition.webkit = "-webkit-transform " + duration / 1000 + "s ease-out";
-					transition.moz = "-moz-transform " + duration / 1000 + "s ease-out";
-					transition.ms = "-ms-transform " + duration / 1000 + "s ease-out";
-					transition.o = "-o-transform " + duration / 1000 + "s ease-out";
+				if ( !duration ) {
+					transition = "none";
+				} else {
+					transition = "-webkit-transform " + duration / 1000 + "s ease-out";
 				}
 				translate = "translate3d(" + x + "px," + y + "px, 0)";
 
-				scrollerStyle["-webkit-transform"] =
-						scrollerStyle["-moz-transform"] =
-						scrollerStyle["-ms-transform"] =
-						scrollerStyle["-o-transform"] =
-						scrollerStyle.transform = translate;
-				scrollerStyle.transition = transition.normal;
-				scrollerStyle["-webkit-transition"] = transition.webkit;
-				scrollerStyle["-moz-transition"] = transition.moz;
-				scrollerStyle["-ms-transition"] = transition.ms;
-				scrollerStyle["-o-transition"] = transition.o;
+				scrollerStyle["-webkit-transform"] = translate;
+				scrollerStyle["-webkit-transition"] = transition;
 
 				this.scrollerOffsetX = window.parseInt(x, 10);
 				this.scrollerOffsetY = window.parseInt(y, 10);
@@ -369,11 +344,11 @@
 					newY += e.detail.estimatedDeltaY;
 				}
 
-				if ( newX > this.minScrollX || newX < this.maxScrollX ) {
-					newX = newX > this.minScrollX ? this.minScrollX : this.maxScrollX;
+				if ( newX > 0 || newX < this.maxScrollX ) {
+					newX = newX > 0 ? 0 : this.maxScrollX;
 				}
-				if ( newY > this.minScrollY || newY < this.maxScrollY ) {
-					newY = newY > this.minScrollY ? this.minScrollY : this.maxScrollY;
+				if ( newY > 0 || newY < this.maxScrollY ) {
+					newY = newY > 0 ? 0 : this.maxScrollY;
 				}
 
 				if ( newX !== this.scrollerOffsetX || newY !== this.scrollerOffsetY ) {

@@ -4,7 +4,7 @@
  $:false, console:false */
 (function (document, ej) {
 	'use strict';
-	module('profile/mobile/widget/mobile/Listview', {
+	module('Listview', {
 		teardown: function () {
 			ej.engine._clearBindings();
 		}

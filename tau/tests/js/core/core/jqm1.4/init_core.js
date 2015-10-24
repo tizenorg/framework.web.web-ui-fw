@@ -10,7 +10,7 @@ define([
 	require( [
 		"init"
 	], function() {
-		var libName = 'core/core',
+		var libName = 'init',
 			coreLib = 'core',
 			extendFn = $.extend,
 			setGradeA = function(value) { $.mobile.gradeA = function(){ return value; }; },

@@ -3,8 +3,7 @@
 @popup-btn-area-margin: 30 * @unit_base;
 @popup-btn-middle-margin: 12 * @unit_base;
 
-.ui-popup-overlay {
-	display:none;
+.ui-popup-screen {
 	background-color: @color_popup_dim_screen_bg;
 	position: absolute;
 	top: 0;
@@ -12,29 +11,6 @@
 	width: 100%;
 	height: 100%;
 	z-index: @z_base_popup;
-
-	&.in {
-		display:block;
-	}
-	&.out {
-		display:block;
-	}
-	div&.in {
-		-webkit-animation-name: fadein;
-		-moz-animation-name: fadein;
-		-webkit-animation-duration: 100ms;
-		-moz-animation-duration: 100ms;
-		-webkit-animation-fill-mode: forwards;
-		-moz-animation-fill-mode: forwards;
-	}
-	div&.out {
-		-webkit-animation-name: fadeout;
-		-moz-animation-name: fadeout;
-		-webkit-animation-duration: 100ms;
-		-moz-animation-duration: 100ms;
-		-webkit-animation-fill-mode: forwards;
-		-moz-animation-fill-mode: forwards;
-	}
 }
 
 .ui-popup-scroller-bg {
@@ -48,37 +24,26 @@
 	}
 }
 
-.ui-popup {
-	display: none;
+.ui-popup-container {
 	position: absolute;
 	width: 100%;
 	z-index: (@z_base_popup + 1) !important;
 	text-align: center;
-	outline-color: @color_popup_outline;
+	outline-color: @color_list_bg;
+	.LESSdisplaybox();
 	.LESSbox-orient(vertical);
 	.LESSbox-align(center);
 	.LESSbox-pack(center);
 	outline : none;
-	background: @color_popup_bg;
-	width : 100%;
-	> .ui-popup-title,
-	> .ui-popup-button-bg {
+	.ui-popup {
+		background: @color_popup_bg;
 		width : 100%;
-	}
-	word-wrap : break-word;
-	border: 0;
-
-	&.ui-popup-active {
-		display:block;
-	}
-
-	&.in {
-		display:block;
-	}
-
-	&.ui-build {
-		display:block;
-		visibility: hidden;
+		> .ui-popup-title,
+		> .ui-popup-button-bg {
+			width : 100%;
+		}
+		word-wrap : break-word;
+		border: 0;
 	}
 
 	.ui-popup-title,
@@ -163,56 +128,73 @@
 				margin: 0 auto;
 				color: @color_popup_button_text;
 				box-sizing : border-box;
-				line-height: 72 * @unit_base;
+			}
+
+			.ui-btn-inner {
+				height: 100%;
+				vertical-align: middle;
+				padding: 0;
+				.ui-btn-text {
+					display: block;
+					line-height: 48 * @unit_base;
+					margin: 18 * @unit_base auto;
+				}
 			}
 	}
 
 
 /***** Normal Samples *****/
-	&.center_info,
-	&.center_title {}
+	.center_info,
+	.center_title {}
 
-	&.center_basic_1btn,
-	&.center_title_1btn,
-	&.center_liststyle_1btn {
+	.center_basic_1btn,
+	.center_title_1btn,
+	.center_liststyle_1btn {
 		.ui-popup-button-bg {
 			.ui-btn {
-				.calc-width(~"100% - "@popup-btn-area-margin);
+				width: ~"-webkit-calc(100% - @{popup-btn-area-margin})";
 				padding: 0;
 				margin: 17 * @unit_base auto;
 			}
 		}
 	}
 
-	&.center_basic_2btn,
-	&.center_title_2btn,
-	&.center_liststyle_2btn {
+	.center_basic_2btn,
+	.center_title_2btn,
+	.center_liststyle_2btn {
 		.ui-popup-button-bg {
 			.ui-btn {
-				.calc-width(~"50% - "@popup-btn-area-margin - @popup-btn-middle-margin);
+				width: ~"-webkit-calc((100% - @{popup-btn-area-margin} - @{popup-btn-middle-margin}) / 2)";
 				padding: 0;
 				margin: 17 * @unit_base auto;
 				float: left;
 			}
 			.ui-btn:first-child {
-				.calc-margin-left(@popup-btn-area-margin / 2);
+				margin-left: ~"-webkit-calc(@{popup-btn-area-margin} / 2)";
 				margin-right: @popup-btn-middle-margin;
 			}
 		}
 	}
 
-	&.center_basic_3btn,
-	&.center_title_3btn {
+	.center_basic_3btn,
+	.center_title_3btn {
 		.ui-btn {
 			width: 33.33%;
 			padding: 0;
 			margin: 0;
 			float: left;
+			.ui-btn-inner {
+				padding: 0;
+				.ui-btn-text {
+					display: block;
+					line-height: 48 * @unit_base;
+				}
+		   }
 		}
 	}
 
 
-	&.center_checkbox {
+	.center_checkbox {
 		.ui-popup-check-bg {
 			font-size: @font_size_popup_text;
 			display: inline-block;
@@ -224,12 +206,15 @@
 				.ui-btn {
 					text-align: center;
 					border: 0;
+					.ui-btn-inner {
+						border: 0;
+					}
 				}
 			}
 		}
 	}
 
-	&.center_progressbar {
+	.center_progressbar {
 		text-align: center;
 
 		.ui-popup-text {
@@ -279,7 +264,7 @@
 		}
 	}
 
-	&.centertext_progressbar {
+	.centertext_progressbar {
 		text-align: center;
 
 		.ui-popup-text {
@@ -330,7 +315,7 @@
 }
 
 @media all and (orientation:landscape) and (device-aspect-ratio : 16/9) {
-	.ui-popup.pop.in {
+	.ui-popup-container, .ui-popup-container.pop.in {
 		width: 60%;
 		max-height: 432 * @unit_base;
 		left: 20%;

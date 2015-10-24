@@ -1,4 +1,4 @@
-module("profile/wearable/widget/wearable/VirtualGrid", {
+module("api.ej.widget.VirtualGrid", {
 	});
 
 	test ( "API ej.widget.VirtualGrid" , function () {

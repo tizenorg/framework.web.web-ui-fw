@@ -1,6 +1,6 @@
 /*global window, define, console */
 /*jslint plusplus: true, nomen: true */
-/*
+/* 
  * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
  * License : MIT License V2
  */
@@ -21,8 +21,7 @@
 			"../core/util/object",
 			"../core/event",
 			"../core/util/zoom",
-			"../core/util/load",
-			"../core/frameworkData"
+			"../core/util/load"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
@@ -115,9 +114,9 @@
 								nsNormalizeDict[prop] = nsNormalizeDict[prop] || $.camelCase($.mobile.ns + prop);
 								return nsNormalizeDict[prop];
 							},
-							activeBtnClass : ns.widget.core.Button.classes.uiBtnActive,
+							activeBtnClass : ns.widget.mobile.Button.classes.uiBtnActive,
 							activePageClass : ns.widget.mobile.Page.classes.uiPageActive,
-							focusClass : ns.widget.core.Button.classes.uiFocus,
+							focusClass : ns.widget.mobile.Button.classes.uiFocus,
 							version: "1.2.0",
 							getAttrFixed: function (element, key) {
 								var value = element.getAttribute(key);
@@ -382,18 +381,17 @@
 						 */
 						document.addEventListener(ns.engine.eventType.WIDGET_BOUND, function (event) {
 							var originalEvent = event.originalEvent || event,
-								widget = originalEvent.detail,
-								widgetName  = widget && widget.widgetName;
-							widgetName = widgetName && widgetName.toLowerCase();
-							if (widgetName && widget.element) {
+								widget = originalEvent.detail;
+							if (widget && widget.element && widget.widgetName) {
 								try {
 									//>>excludeStart("tauDebug", pragmas.tauDebug);
-									ns.log("Running jqm constructor for " + widgetName);
+									ns.log("Running jqm constructor for " + widget.wigdetName);
 									//>>excludeEnd("tauDebug");
+									$(widget.element)[widget.widgetName]();
 								} catch(e) {
 									// suppress errors in not debug mode
 									//>>excludeStart("tauDebug", pragmas.tauDebug);
-									ns.warning("could not call jqm constructor for " + widgetName, widget, e);
+									ns.warning("could not call jqm constructor for " + widget.widgetName, widget, e);
 									//>>excludeEnd("tauDebug");
 								}
 

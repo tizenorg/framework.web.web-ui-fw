@@ -1,19 +1,8 @@
-/*global window, define, ns */
+/*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true, plusplus: true */
 /**
  * #Flip Toggle Switch Widget
@@ -22,15 +11,15 @@
  * handle like a slider or tap one side of the switch.
  *
  * ## Default selectors
- * all **SELECT** tags with _data-type=range_ or class _ui-slider_ are changed
- * to toggle switch.
+ * all **SELECT** tags with _data-role=slider_ or with _data-type=range_ are
+ * changed to toggle switch
  *
  * ###HTML Examples
  *
  * ####Create simple toggle switch from select using data-role
  *
  *		@example
- *		<select name="flip-11" id="flip-11" data-role="range">
+ *		<select name="flip-11" id="flip-11" data-role="slider">
  *			<option value="off"></option>
  *			<option value="on"></option>
  *		</select>
@@ -40,7 +29,7 @@
  * widget from **tau** namespace:
  *
  *		@example
- *		<select id="toggle" name="flip-11" id="flip-11" data-role="range"
+ *		<select id="toggle" name="flip-11" id="flip-11" data-role="slider"
  *		data-mini="true">
  *			<option value="off"></option>
  *			<option value="on"></option>
@@ -57,7 +46,7 @@
  * ####If jQuery library is loaded, its method can be used:
  *
  *		@example
- *		<select id="toggle" name="flip-11" id="flip-11" data-role="range"
+ *		<select id="toggle" name="flip-11" id="flip-11" data-role="slider"
  *		data-mini="true">
  *			<option value="off"></option>
  *			<option value="on"></option>
@@ -82,7 +71,7 @@
  * as the standard version and has a smaller text size.
  *
  *		@example
- *		<select name="flip-11" id="flip-11" data-role="range"
+ *		<select name="flip-11" id="flip-11" data-role="slider"
  *		data-mini="true">
  *			<option value="off"></option>
  *			<option value="on"></option>
@@ -95,23 +84,11 @@
  * and icons inside, add the data-inline="true" attribute to the slider.
  *
  *		@example
- *		<select name="flip-11" id="flip-11" data-role="range"
+ *		<select name="flip-11" id="flip-11" data-role="slider"
  *		data-inline="true">
  *			<option value="off"></option>
  *			<option value="on"></option>
  *		</select>
- *
- * ###Vertical Slider
- * To implement verticcal slider, add _vertical_ option to *input* element.
- * The value of vertical property is designed to set the height of vertical slider.
- * If the vertical value is set to simply "true", the height of vertical slider
- * is set to pixel value as 5 time of its max value by default. So, to change one value
- * in veritcal slider with "true" option, handle is needed to move 5px.
- * The below example would create a vertical slider with 300px of height.
- *
- * 		@example
- *		<input id="vSlider" name="vSlider" type="range"
- *			value="5" min="0" max="10" data-vertical="300" />
  *
  * ##Methods
  *
@@ -120,7 +97,7 @@
  * First API is from tau namespace:
  *
  *		@example
- *		<select name="flip-11" id="toggle" data-role="range"
+ *		<select name="flip-11" id="toggle" data-role="slider"
  *		data-mini="true">
  *			<option value="off"></option>
  *			<option value="on"></option>
@@ -136,7 +113,7 @@
  * Second API is jQuery Mobile API and for call _methodName_ you can use:
  *
  *		@example
- *		<select name="flip-11" id="toggle" data-role="range"
+ *		<select name="flip-11" id="toggle" data-role="slider"
  *		data-mini="true">
  *			<option value="off"></option>
  *			<option value="on"></option>
@@ -165,13 +142,12 @@
 			"../../../../core/theme",
 			"../../../../core/util/DOM/attributes",
 			"../../../../core/util/DOM/css",
-			"../../../../core/util/DOM/manipulation",
 			"../../../../core/event",
 			"../../../../core/util/selectors",
 			"../../../../core/event/vmouse",
 			"../mobile", // fetch namespace
 			"./BaseWidgetMobile",
-			"../../../../core/widget/core/Button",
+			"./Button",
 			"./Textinput"
 		],
 		function () {
@@ -193,8 +169,6 @@
 					 * "true" then toggle switch has css property
 					 * display = "inline"
 					 * @property {string} [options.theme=null] theme of widget
-					 * @property {boolean | number} [options.vertical=false] sets
-					 * height of vertical slider
 					 * @member ns.widget.mobile.Slider
 					 */
 					self.options = {
@@ -203,11 +177,9 @@
 						mini: null,
 						highlight: true,
 						inline: null,
-						theme: null,
-						vertical: false
+						theme: null
 					};
 					self._ui = {};
-					self._callbacks = {};
 					//container background
 					self.valueBackGround = null;
 					self.dragging = false;
@@ -217,7 +189,7 @@
 				},
 				BaseWidget = ns.widget.mobile.BaseWidgetMobile,
 				TextInput = ns.widget.mobile.TextInput,
-				Button = ns.widget.core.Button,
+				Button = ns.widget.mobile.Button,
 				engine = ns.engine,
 				events = ns.event,
 				themes = ns.theme,
@@ -231,10 +203,8 @@
 					sliderInline: "ui-slider-inline",
 					sliderMini: "ui-slider-mini",
 					slider: "ui-slider",
-					sliderVertical: "ui-vertical-slider",
 					sliderHandle: "ui-slider-handle",
 					sliderBg: "ui-slider-bg",
-					sliderBgVertical: "ui-vertical-slider-bg",
 					sliderToggle: "ui-toggle-switch",
 					sliderToggleOn: "ui-toggle-on",
 					sliderToggleOff: "ui-toggle-off",
@@ -243,7 +213,6 @@
 					sliderLabel: "ui-slider-label",
 					sliderLabelTheme: "ui-slider-label-",
 					sliderContainer: "ui-slider-container",
-					sliderContainerVertical: "ui-vertical-slider-container",
 					sliderLabelA: "ui-slider-label-a",
 					sliderStateActive: "ui-state-active"
 				},
@@ -301,8 +270,8 @@
 			 * @member ns.widget.mobile.Slider
 			 */
 			function findLabel(element) {
-				return element.parentNode.querySelector("label[for='" +
-						element.id + "']");
+				return element.parentNode.querySelector('label[for="' +
+						element.id + '"]');
 			}
 
 			/**
@@ -320,8 +289,8 @@
 					getElementWidth = DOMutils.getElementWidth.bind(DOMutils),
 					handlePercent = getElementWidth(shandle, "outer") /
 							getElementWidth(ui.slider, "outer") * 100,
-					aPercent = percent && handlePercent + (100 - handlePercent) *
-							percent / 100,
+					aPercent = percent && handlePercent + (100 - handlePercent)
+							* percent / 100,
 					bPercent = percent === 100 ? 0 : Math.min(handlePercent +
 							100 - aPercent, 100),
 					labels = ui.labels,
@@ -331,8 +300,8 @@
 				while (i--) {
 					label = labels[i];
 					label.style.width = 
-							(label.classList.contains(classes.sliderLabelA) ?
-									aPercent : bPercent) + "%";
+							(label.classList.contains(classes.sliderLabelA)
+									? aPercent : bPercent) + "%";
 				}
 			}
 
@@ -360,14 +329,12 @@
 			 * @static
 			 * @member ns.widget.mobile.Slider
 			 */
-			function createBackground(domSlider, self) {
+			function createBackground(domSlider) {
 				var background = document.createElement("div"),
 					cList = background.classList,
 					btnClasses = Button.classes;
 
-				cList.add(self.options.vertical ? classes.sliderBgVertical :
-					classes.sliderBg);
-
+				cList.add(classes.sliderBg);
 				cList.add(btnClasses.uiBtnActive);
 				cList.add(btnClasses.uiBtnCornerAll);
 
@@ -380,8 +347,8 @@
 			 * @method refresh
 			 * @param {ns.widget.mobile.Slider} self
 			 * @param {Object|number|null} val
-			 * @param {boolean} [isfromControl = false]
-			 * @param {boolean} [preventInputUpdate = false]
+			 * @param {boolean} isfromControl
+			 * @param {boolean} preventInputUpdate
 			 * @private
 			 * @static
 			 * @member ns.widget.mobile.Slider
@@ -406,14 +373,12 @@
 					touchThreshold,
 					localClasses = shandle.classList,
 					slider = ui.slider,
-					isVertical = self.options.vertical,
 					newval,
 					valModStep,
 					alignValue,
 					valueChanged,
 					newValueOption,
-					sliderOffsetLeft,
-					sliderOffsetTop;
+					sliderOffsetLeft;
 
 				if (cType === "input") {
 					min = DOMutils.getNumberFromAttribute(control,
@@ -435,54 +400,47 @@
 					data = val;
 					// @TODO take parameter out to config
 					touchThreshold = 8;
-					isVertical ?
-					sliderOffsetTop =
-						DOMutils.getElementOffset(slider).top :
 					sliderOffsetLeft =
-						DOMutils.getElementOffset(slider).left;
+							DOMutils.getElementOffset(slider).left;
 
 					// If refreshing while not dragging
 					// or movement was within threshold
 					if (!self.dragging ||
-						data.pageX < sliderOffsetLeft - touchThreshold ||
-						data.pageX > sliderOffsetLeft +
-						slider.offsetWidth + touchThreshold) {
+							data.pageX < sliderOffsetLeft - touchThreshold ||
+							data.pageX > sliderOffsetLeft + 
+							slider.offsetWidth + touchThreshold) {
 						return;
 					}
 
-					// Calculate new left or top side percent
-					if (isVertical) {
-						percent = ((data.pageY - sliderOffsetTop +
-							selectors.getClosestByClass(slider, "ui-content").scrollTop) /
-							slider.offsetHeight) * 100;
-					} else {
-						percent = ((data.pageX - sliderOffsetLeft) /
+					// Calculate new left side percent
+					percent = ((data.pageX - sliderOffsetLeft) /
 							slider.offsetWidth) * 100;
-					}
+
+				// If changes came from input value change
 				} else {
 					if (val === null) {
 						val = (cType === "input") ? parseFloat(control.value) :
-							control.selectedIndex;
+								control.selectedIndex;
 					}
 					if (isNaN(val)) {
 						return;
 					}
 					// While dragging prevent jumping by assigning
 					// last percentage value
-					if (self.dragging && self._lastPercent) {
+					if(self.dragging && self._lastPercent) {
 						percent = self._lastPercent;
 					} else {
-						percent = isVertical ?
-						100 - ((parseFloat(val) - min) / (max - min) * 100) :
-						(parseFloat(val) - min) / (max - min) * 100;
+						percent = (parseFloat(val) - min) / (max - min) * 100;
 					}
 				}
+
 				// Make sure percent is a value between 0 - 100;
 				percent = Math.max(0, Math.min(percent, 100));
 				self._lastPercent = percent;
 				centerPercent = halfPercent - percent;
 
 				newval = (percent / 100) * (max - min) + min;
+
 				//from jQuery UI slider, the following source will round
 				// to the nearest step
 				valModStep = (newval - min) % step;
@@ -496,14 +454,9 @@
 				// (see jQueryUI: #4124)
 				newval = parseFloat(alignValue.toFixed(5));
 
-				if (isVertical) {
-					shandle.style.top = percent + "%";
-					newval = max - Math.max(min, Math.min(newval, max));
-				} else {
-					shandle.style.left = percent + "%";
-					newval = Math.max(min, Math.min(newval, max));
-				}
+				newval = Math.max(min, Math.min(newval, max));
 
+				shandle.style.left = percent + "%";
 				newValueOption = control.querySelectorAll("option")[newval];
 				shandle.setAttribute("aria-valuenow", cType === "input" ?
 						newval : newValueOption && newValueOption.value);
@@ -526,35 +479,17 @@
 					sliderBackgroundStyle = sliderBackground.style;
 					if (self.options.center) {
 						if (centerPercent >= 0) {
-							if (isVertical) {
-								sliderBackgroundStyle.top = "initial";
-								sliderBackgroundStyle.bottom = "50%";
-								sliderBackgroundStyle.height = centerPercent + "%";
-							} else {
-								sliderBackgroundStyle.right = "50%";
-								sliderBackgroundStyle.left = "initial";
-								sliderBackgroundStyle.width = centerPercent + "%";
-							}
+							sliderBackgroundStyle.right = "50%";
+							sliderBackgroundStyle.left = "initial";
+							sliderBackgroundStyle.width = centerPercent + "%";
 						} else {
-							if (isVertical) {
-								sliderBackgroundStyle.top = "50%";
-								sliderBackgroundStyle.bottom = "initial";
-								sliderBackgroundStyle.height =
+							sliderBackgroundStyle.right = "initial";
+							sliderBackgroundStyle.left = "50%";
+							sliderBackgroundStyle.width =
 									Math.abs(centerPercent) + "%";
-							} else {
-								sliderBackgroundStyle.right = "initial";
-								sliderBackgroundStyle.left = "50%";
-								sliderBackgroundStyle.width =
-									Math.abs(centerPercent) + "%";
-							}
 						}
 					} else {
-						if (isVertical) {
-							sliderBackgroundStyle.height = 100 - percent + "%";
-							sliderBackgroundStyle.top = percent + "%";
-						} else {
-							sliderBackgroundStyle.width = percent + "%";
-						}
+						sliderBackgroundStyle.width = percent + "%";
 					}
 				}
 
@@ -707,10 +642,10 @@
 					initValue,
 					sliderBtnDownTheme,
 					elementsOption = element.querySelector("option"),
-					btnClasses = Button.classes,
-					isVertical = options.vertical;
+					btnClasses = Button.classes;
+
 				if (options.highlight && tagName !== "select") {
-					this._ui.background = createBackground(domSlider, this);
+					this._ui.background = createBackground(domSlider);
 				}
 				if (isNaN(min)) {
 					min = 0;
@@ -731,12 +666,7 @@
 
 				domSlider.setAttribute("role", "application");
 				domSlider.id = elementId + "-slider";
-
-				if (isVertical) {
-					domSliderClassList.add(classes.sliderVertical);
-				} else {
-					domSliderClassList.add(classes.slider);
-				}
+				domSliderClassList.add(classes.slider);
 
 				if (selectClass) {
 					domSliderClassList.add(selectClass);
@@ -760,25 +690,27 @@
 				initValue = getInitialValue(tagName, element);
 				if (initValue !== 1) {
 					domHandle.classList.add(classes.sliderToggleOff);
-					if (isVertical) {
-						domHandle.style.top = "0px";
-					} else {
-						domHandle.style.left = "0px";
-					}
+					domHandle.style.left = "0px";
 				}
 
 				domSlider.appendChild(domHandle);
 
 				//temporary way to send initial parameters
 				//to the instanceWidget method
+				domHandle.setAttribute("data-corners", "true");
+				domHandle.setAttribute("data-theme", theme);
+				domHandle.setAttribute("data-shadow", "true");
 
-				domHandle.setAttribute("role", "range");
+				domHandle.setAttribute("role", "slider");
 				domHandle.setAttribute("aria-valuemin", min);
 				domHandle.setAttribute("aria-valuemax", max);
 				domHandle.setAttribute("aria-valuenow", initValue);
 				domHandle.setAttribute("aria-valuetext", initValue);
 				domHandle.setAttribute("title", initValue);
 				domHandle.setAttribute("aria-labelledby", "labelID");
+				domHandle.setAttribute("data-role", "button");
+				domHandle.setAttribute("inline", "false");
+				domHandle.setAttribute("data-bar", "true");
 				domHandle.setAttribute("id", elementId + "-handle");
 
 				if (tagName === "select") {
@@ -819,23 +751,7 @@
 
 				if (tagName === "input") {
 					sliderContainer = document.createElement("div");
-
-					if (isVertical) {
-						sliderContainer.classList.add(classes.sliderContainerVertical);
-						if (isNaN(isVertical)) {
-							ns.warn("data-vetical has inappropriate value.",
-							"please use 'true' or proper 'number'.");
-							isVertical = max * 5;
-						}
-						if (typeof isVertical === "boolean") {
-							isVertical = max * 5;
-						}
-
-						sliderContainer.style.height = isVertical + "px";
-					} else {
-						sliderContainer.classList.add(classes.sliderContainer);
-					}
-
+					sliderContainer.classList.add(classes.sliderContainer);
 					sliderContainer.appendChild(domSlider);
 					sliderContainer.id = elementId + "-container";
 					elementClassList = element.classList;
@@ -860,7 +776,7 @@
 				element.parentNode.insertBefore(sliderContainer,
 						element.nextSibling);
 
-				sliderContainer.appendChild(element);
+				engine.instanceWidget(domHandle, "Button");
 
 				return element;
 			};
@@ -882,15 +798,14 @@
 				ui.handle = document.getElementById(elementId + "-handle");
 				ui.container = document.getElementById(elementId +
 						"-container") || element;
-				ui.background = ui.slider.querySelector(self.options.vertical ?
-					"." + classes.sliderBgVertical :
-					"." + classes.sliderBg);
+				ui.background = ui.slider.querySelector("." +
+						Slider.classes.sliderBg);
 				self._type = element.tagName.toLowerCase();
 				ui.labels = selectors.getChildrenByClass(ui.slider,
-						classes.sliderLabel);
-				if ( self.options.center && ui.background ) {
-					ui.background.classList.add(classes.sliderBgHasCenter);
-				}
+						Slider.classes.sliderLabel);
+				if ( self.options.center && ui.background )
+					ui.background.classList.add(
+							Slider.classes.sliderBgHasCenter);
 				refresh(self, self._getValue());
 			};
 
@@ -1019,29 +934,55 @@
 			};
 
 			/**
-			 * Callback for event keydown
-			 * @method onKeyDown
-			 * @param {ns.widget.mobile.Slider} self
-			 * @param {Event} event
-			 * @private
-			 * @static
+			 * Bind events to widget
+			 * @method _bindEvents
+			 * @protected
 			 * @member ns.widget.mobile.Slider
 			 */
-			function onKeyDown(self, event) {
-				var element = self.element,
+			Slider.prototype._bindEvents = function (element) {
+				var self = this,
+					ui = self._ui,
+					handle = ui.handle,
 					tagName = element.nodeName.toLowerCase(),
-					index = getInitialValue(tagName, element),
-					keyCode = Slider.keyCode,
-					classList = event.target.classList,
-					step = parseFloat( self.element.getAttribute( "step" ) || "1" ),
+					slider = ui.slider,
+					step = parseFloat( self.element.getAttribute( "step" ) ||
+							1 ),
 					min = tagName === "input" ?
-						parseFloat(element.getAttribute("min")) : 0,
-					max = tagName === "input" ?
-						parseFloat(element.getAttribute("max")) :
-					element.getElementsByTagName("option").length - 1;
+							parseFloat(element.getAttribute("min")) : 0,
+					max = tagName === "input"
+							? parseFloat(element.getAttribute("max")) :
+									element.getElementsByTagName(
+											"option").length - 1;
 
+				element.addEventListener("change", function () {
+					if (!self.mouseMoved) {
+						refresh(self, self._getValue(), true);
+					}
+				}, false);
 
-				if (!self.options.disabled) {
+				element.addEventListener("keyup", function () {
+					refresh(self, self._getValue(), true, true);
+				}, false);
+
+				element.addEventListener("blur", function () {
+					refresh(self, self._getValue(), true);
+				}, false);
+
+				handle.addEventListener("vmousedown", function (event) {
+					events.trigger(event.target, "focus");
+				}, false);
+				handle.addEventListener("vclick", function (event) {
+					event.stopPropagation();
+					event.preventDefault();
+				}, false);
+				handle.addEventListener("keydown", function (event) {
+					var index = getInitialValue(tagName, element),
+						keyCode = Slider.keyCode,
+						classList = event.target.classList;
+
+					if (self.options.disabled) {
+						return;
+					}
 
 					// In all cases prevent the default and mark the handle
 					// as active
@@ -1050,7 +991,9 @@
 						case keyCode.END:
 						case keyCode.PAGE_UP:
 						case keyCode.PAGE_DOWN:
+						case keyCode.UP:
 						case keyCode.RIGHT:
+						case keyCode.DOWN:
 						case keyCode.LEFT:
 							event.preventDefault();
 
@@ -1069,92 +1012,20 @@
 							refresh(self, max);
 							break;
 						case keyCode.PAGE_UP:
+						case keyCode.UP:
 						case keyCode.RIGHT:
 							refresh(self, index + step);
 							break;
 						case keyCode.PAGE_DOWN:
+						case keyCode.DOWN:
 						case keyCode.LEFT:
 							//self.refresh(index - step);
 							refresh(self, index - step);
 							break;
 					}
-				}
-			}
 
-			/**
-			 * Callback for event keyup
-			 * @method onKeyUp
-			 * @param {ns.widget.mobile.Slider} self
-			 * @private
-			 * @static
-			 * @member ns.widget.mobile.Slider
-			 */
-			function onKeyUp (self) {
-				refresh(self, self._getValue(),	true, true);
-			}
 
-			/**
-			 * Callback for event change
-			 * @method onChangeEvent
-			 * @param {ns.widget.mobile.Slider} self
-			 * @private
-			 * @static
-			 * @member ns.widget.mobile.Slider
-			 */
-			function onChangeEvent (self) {
-				if (!self.mouseMoved) {
-					refresh(self, self._getValue(), true);
-				}
-			}
-
-			/**
-			 * Callback for event blur
-			 * @method onBlur
-			 * @param {ns.widget.mobile.Slider} self
-			 * @private
-			 * @static
-			 * @member ns.widget.mobile.Slider
-			 */
-			function onBlur (self) {
-				refresh(self, self._getValue(), true);
-			}
-
-			/**
-			 * Bind events to widget
-			 * @method _bindEvents
-			 * @protected
-			 * @member ns.widget.mobile.Slider
-			 */
-			Slider.prototype._bindEvents = function (element) {
-				var self = this,
-					ui = self._ui,
-					handle = ui.handle,
-					callbacks = self._callbacks,
-					tagName = element.nodeName.toLowerCase(),
-					slider = ui.slider;
-
-				callbacks.changeEvent = onChangeEvent.bind(null, self);
-				callbacks.blur = onBlur.bind(null, self);
-
-				element.addEventListener("change", callbacks.changeEvent, false);
-
-				callbacks.keyUp = onKeyUp.bind(null,self);
-				callbacks.keyDown = onKeyDown.bind(null, self);
-
-				ui.container.addEventListener("keyup", callbacks.keyUp, false);
-
-				element.addEventListener("blur", callbacks.blur, false);
-
-				handle.addEventListener("vmousedown", function (event) {
-					events.trigger(event.target, "focus");
 				}, false);
-				handle.addEventListener("vclick", function (event) {
-					event.stopPropagation();
-					event.preventDefault();
-				}, false);
-
-				ui.container.addEventListener("keydown", callbacks.keyDown, false);
-
 				handle.addEventListener("keyup", function () {
 					if (self._keySliding) {
 						self._keySliding = false;
@@ -1183,20 +1054,23 @@
 					refresh(self, event);
 					return false;
 				}, false);
+				/*TODO - add vmousemove support*/
 
-				callbacks.vmouseMove = onVmouseMove.bind(null, self);
-				document.addEventListener("vmousemove", callbacks.vmouseMove, false);
+				this._onVmouseMove = onVmouseMove.bind(null, this);
+				slider.addEventListener("vmousemove", this._onVmouseMove,
+						false);
 
 				slider.addEventListener("vclick", function (event) {
 					event.stopPropagation();
 					event.preventDefault();
 				}, false);
-
 				//prevent scrolling when slider is in use
-				document.addEventListener("touchmove", onTouchMove, false);
+				slider.addEventListener("touchmove", onTouchMove, false);
 
-				callbacks.mouseUp = sliderMouseUp.bind(null, self);
-				document.addEventListener("vmouseup", callbacks.mouseUp, false);
+				this._sliderMouseUp = sliderMouseUp.bind(null, this);
+				slider.addEventListener("vmouseup", this._sliderMouseUp,
+						false);
+
 			};
 
 			/**
@@ -1240,15 +1114,13 @@
 			 * @member ns.widget.mobile.Slider
 			 */
 			Slider.prototype._enable = function (element) {
-				var self = this,
-					btnClasses = Button.classes,
-					slider = self._ui.slider;
+				var btnClasses = Button.classes,
+					slider = this._ui.slider;
 
-				element = element || self.element;
 				element.removeAttribute("disabled");
 				slider.classList.remove( btnClasses.uiDisabled );
 				slider.setAttribute("aria-disabled", false);
-				self.options.disabled = false;
+				this.options.disabled = false;
 			};
 
 			/**
@@ -1292,38 +1164,21 @@
 			 * @member ns.widget.mobile.Slider
 			 */
 			Slider.prototype._disable = function (element) {
-				var self = this,
-					btnClasses = Button.classes,
-					slider = self._ui.slider;
+				var btnClasses = Button.classes,
+					slider = this._ui.slider;
 
-				element = element || self.element;
 				element.setAttribute("disabled", "disabled");
 				slider.classList.add( btnClasses.uiDisabled );
 				slider.setAttribute( "aria-disabled", true );
-				self.options.disabled = true;
+				this.options.disabled = true;
 			};
 
-			/**
-			 * Destroy slider
-			 * @method _destroy
-			 * @protected
-			 * @member ns.widget.mobile.Slider
-			 */
-			Slider.prototype._destroy = function () {
-				var self = this,
-					callbacks = self._callbacks;
-				document.removeEventListener("touchmove", onTouchMove);
-				document.removeEventListener("vmouseup", callbacks.mouseUp);
-				self.element.removeEventListener("change", callbacks.changeEvent);
-				self.element.removeEventListener("blur", callbacks.blur);
-				DOMutils.replaceWithNodes(self._ui.container, self.element);
-				self._ui = null;
-			};
+			// @TODO add destroy() method
 
 			ns.widget.mobile.Slider = Slider;
 			engine.defineWidget(
 				"Slider",
-				"select[data-role='range'], select.ui-slider",
+				"select[data-type='range']",
 				[],
 				Slider,
 				"mobile"

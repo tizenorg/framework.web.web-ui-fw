@@ -1,19 +1,8 @@
 /*global window, define, ns */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true, plusplus: true */
 /**
  * #Text Input Widget
@@ -26,7 +15,7 @@
  *    "tel" or "month" or "week" or "datetime-local" or "color" or without any
  *    type
  *  - TEXTAREA
- *  - HTML elements with class _ui-textinput_
+ *  - HTML elements with class ui-TextInput
  *
  * ###HTML Examples
  *
@@ -142,7 +131,7 @@
 			"../mobile",
 			"../../../../core/util/DOM/manipulation",
 			"./BaseWidgetMobile",
-			"../../../../core/widget/core/Button"
+			"./Button"
 		],
 		function () {
 //>>excludeEnd("tauBuildExclude");
@@ -161,12 +150,12 @@
 						clearSearchButtonText: "clear text",
 						disabled: false,
 						mini: null,
-						theme: 'a',
+						theme: 's',
 						clearBtn: false
 					};
 
 					this._ui = {};
-					this._callbacks = {};
+					this._handlers = {};
 				},
 				/**
 				 * Alias for {ns.widget.BaseWidget}
@@ -212,7 +201,6 @@
 				classes = {
 					uiBodyTheme: "ui-body-",
 					uiMini: "ui-mini",
-					uiTextinput: "ui-textinput",
 					uiInputText: "ui-input-text",
 					clear: "ui-input-clear",
 					clearHidden: "ui-input-clear-hidden",
@@ -230,14 +218,14 @@
 				 */
 				CLEAR_BUTTON_SELECTOR = '.' + classes.clear,
 				/**
-				 * Alias for {ns.widget.core.Button.classes.uiDisabled}
+				 * Alias for {ns.widget.mobile.Button.classes.uiDisabled}
 				 * @property {string} CLASS_DISABLED
 				 * @member ns.widget.mobile.TextInput
 				 * @static
 				 * @private
 				 * @readonly
 				 */
-				CLASS_DISABLED = ns.widget.core.Button.classes.DISABLED;
+				CLASS_DISABLED = ns.widget.mobile.Button.classes.uiDisabled;
 
 			TextInput.prototype = new BaseWidget();
 
@@ -328,47 +316,13 @@
 			 * @param {HTMLElement} element
 			 * @member ns.widget.mobile.TextInput
 			 */
-			function _resize(element) {
+			function _resize(element){
 				if (element.nodeName.toLowerCase() === "textarea") {
-					if (element.clientHeight < element.scrollHeight) {
+					if(element.clientHeight < element.scrollHeight){
 						element.style.height = element.scrollHeight + "px";
 					}
 				}
 			}
-
-			/**
-			* Get element value
-			* @method _getValue
-			* @return {?string}
-			* @member ns.widget.mobile.TextInput
-			* @chainable
-			* @protected
-			* @since 2.3.1
-			*/
-			TextInput.prototype._getValue = function ()  {
-				var element = this.element;
-				if (element) {
-					return element.value;
-				}
-				return null;
-			};
-
-			/**
-			* Set element value
-			* @method _setValue
-			* @param {string} value
-			* @member ns.widget.mobile.TextInput
-			* @chainable
-			* @protected
-			* @since 2.3.1
-			*/
-			TextInput.prototype._setValue = function (value) {
-				var element = this.element;
-				if (element) {
-					element.value = value;
-				}
-				return this;
-			};
 
 			/**
 			 * Toggle visibility of the clear button
@@ -394,15 +348,16 @@
 
 			/**
 			 * Method finds label tag for element.
-			 * @method _findLabel
+			 * @method findLabel
 			 * @param {HTMLElement} element
 			 * @member ns.widget.mobile.TextInput
 			 * @return {HTMLElement}
-			 * @protected
+			 * @static
+			 * @private
 			 */
-			TextInput.prototype._findLabel = function(element) {
-				return element.parentNode.querySelector("label[for='" + element.id + "']");
-			};
+			function findLabel(element) {
+				return element.parentNode.querySelector('label[for="' + element.id + '"]');
+			}
 
 			/**
 			 * Method returns not disabled TextInput element which is the closest
@@ -587,12 +542,10 @@
 					elementClassList = element.classList,
 					options = self.options,
 					themeClass,
-					labelFor = self._findLabel(element),
+					labelFor = findLabel(element),
 					clearButton,
 					type = element.type,
 					ui;
-
-				elementClassList.add(classes.uiTextinput);
 
 				ui = self._ui;
 
@@ -622,6 +575,7 @@
 				default:
 					if (element.tagName.toLowerCase() === "textarea") {
 						setAria(element);
+						ui.textLine = createDecorationLine(element);
 					}
 				}
 
@@ -729,65 +683,13 @@
 				elementClassList.remove(classes.uiBodyTheme + this.options.theme);
 			};
 
-			/**
-			 * Returns label value
-			 * @method getLabel
-			 * @return {string} Label value or null
-			 * @member ns.widget.mobile.TextInput
-			 */
-			TextInput.prototype.getLabel = function () {
-				var label = this._findLabel(this.element);
-				if (label !== null) {
-					return label.innerHTML;
-				}
-				return null;
-			};
-
-			/**
-			 * Sets label value
-			 * @method setLabel
-			 * @param {string} Label text
-			 * @member ns.widget.mobile.TextInput
-			 */
-			TextInput.prototype.setLabel = function (text) {
-				var self = this,
-					element = self.element,
-					label;
-
-				if (typeof text === "string") {
-					label = self._findLabel(element);
-					if (label === null) {
-						// create new label
-						label = document.createElement("label");
-						label.setAttribute("for", element.id);
-
-						// add to parent
-						element.parentElement.appendChild(label);
-					}
-					label.innerHTML = text;
-				}
-			};
-
 			ns.widget.mobile.TextInput = TextInput;
 			engine.defineWidget(
 				"TextInput",
-				"input[type='text']:not([data-role])" +
-					", input[type='number']:not([data-role])" +
-					", input[type='password']:not([data-role])" +
-					", input[type='email']:not([data-role])" +
-					", input[type='url']:not([data-role])" +
-					", input[type='tel']:not([data-role])" +
-					", input[type='month']:not([data-role])" +
-					", input[type='week']:not([data-role])" +
-					", input[type='datetime-local']:not([data-role])" +
-					", input[type='color']:not([data-role])" +
-					", input:not([type]):not([data-role]):not(.ui-checkbox):not(.ui-tizenslider)" +
-					", textarea" +
-					", ." + classes.uiTextinput,
-				[
-					"getLabel",
-					"setLabel"
-				],
+				"input[type='text'], input[type='number'], input[type='password'], input[type='email']," +
+					"input[type='url'], input[type='tel'], textarea, input[type='month'], input[type='week']," +
+					"input[type='datetime-local'], input[type='color'], input:not([type]), .ui-textinput",
+				[],
 				TextInput,
 				"mobile"
 			);

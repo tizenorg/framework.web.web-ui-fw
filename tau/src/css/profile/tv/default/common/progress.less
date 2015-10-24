@@ -2,197 +2,125 @@
  * Progressbar
  */
 
-.tv-progress-indeterminate() {
-	from {
-		.mask-image('./images/Progress/tw_progressbar_indeterminate1_holo_dark.png');
-		.mask-position(0);
-	}
-
-	to {
-		.mask-image('./images/Progress/tw_progressbar_indeterminate1_holo_dark.png');
-		.mask-position(20 * @virtual_px);
-	}
-}
-
 @-webkit-keyframes indeterminate {
-	.tv-progress-indeterminate();
+        from {background-image: url('./images/Progress/tw_progressbar_indeterminate1_holo_dark.png');}
+        to {background-image: url('./images/Progress/tw_progressbar_indeterminate2_holo_dark.png');}
 }
-
-@-moz-keyframes indeterminate {
-	.tv-progress-indeterminate();
-}
-
-@-ms-keyframes indeterminate {
-	.tv-progress-indeterminate();
-}
-
-@-o-keyframes indeterminate {
-	.tv-progress-indeterminate();
-}
-
-@keyframes indeterminate {
-	.tv-progress-indeterminate();
-}
-
-.tv-progress-rotating() {
-	from {
-		-webkit-transform: rotate(360deg);
-	}
-	to {
-		-webkit-transform: rotate(0deg);
-	}
-}
-
 @-webkit-keyframes rotating {
-	.tv-progress-rotating();
-}
-
-@-moz-keyframes rotating {
-	.tv-progress-rotating();
-}
-
-@-ms-keyframes rotating {
-	.tv-progress-rotating();
-}
-
-@-o-keyframes rotating {
-	.tv-progress-rotating();
-}
-
-@keyframes rotating {
-	.tv-progress-rotating();
+        from { -webkit-transform: rotate(0deg); }
+        to { -webkit-transform: rotate(360deg); }
 }
 
 progress {
-	position: relative;
-	padding-left: 16 * @virtual_px;
-	padding-right:16 * @virtual_px;
-	margin-top: 14 * @virtual_px;
-	margin-bottom: 14 * @virtual_px;
-	width: 100%;
-	height: 4 * @virtual_px;
-	.appearance(none);
-	border: none;
+        position: relative;
+        padding-left: 16 * @virtual_px;
+        padding-right:16 * @virtual_px;
+        margin-top: 14 * @virtual_px;
+        margin-bottom: 14 * @virtual_px;
+        color: @color_progressbar_text;
+        width: 100%;
+        height: 6 * @virtual_px;
+        -webkit-appearance: none;
+        border: none;
 }
 
 progress::-webkit-progress-bar {
-	position: relative;
-	background-color: @color_progressbar_normal_bg;
-	overflow: hidden;
+        position: relative;
+        background-color: @color_progressbar_normal_bg;
+        border-radius: 2 * @virtual_px;
+        overflow: hidden;
 }
 
-progress {
-	&:not(.ui-progress-color)::-webkit-progress-value {
-		background-color: @color_progressbar_value_bg;
-	}
-	&.ui-progress-color::-webkit-progress-value {
-		background-color: @default_color;
-	}
-	&::-webkit-progress-value {
-		height: 100%;
-		overflow: hidden;
-	}
-	&.ui-progress-big {
-		height: 8 * @virtual_px;
-	}
+progress::-webkit-progress-value {
+        background-color: @color_progressbar_value_bg;
+        height:6 * @virtual_px;
+        border-radius: 2 * @virtual_px;
+        overflow: hidden;
 }
 progress.ui-progress-indeterminate::-webkit-progress-value {
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	// this has no sense because we are styling a webkit prop but leave it
-	// nonetheless
-	.animation(indeterminate 300ms linear infinite);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        -webkit-animation: indeterminate 150ms infinite;
 }
 
 .ui-progress-proportion {
-	display: inline-block;
-	float: left;
-	font-size: @fixed_progress_proportion_font_size;
-	padding-left: 16 * @virtual_px;
-	padding-right: 16 * @virtual_px;
-	color: @color_progressbar_text;
-	width: 34 * @virtual_px;
-}
-
-//when left right text is given
-.ui-progress-text-container {
-	padding-left: 16 * @virtual_px;
-	padding-right:16 * @virtual_px;
-	display: flex;
-	margin-top: 14 * @virtual_px;
-	margin-bottom: 14 * @virtual_px;
-
-	progress {
-		padding: 0;
-		margin: 0;
-		display: block;
-		flex: 1;
-		width: inherit;
-		margin-top: 10 * @virtual_px;
-		&.ui-progress-big {
-			margin-top: 15 * @virtual_px;
-		}
-	}
-
-	.ui-progress-ratio {
-		padding-right: 10 * @virtual_px;
-		padding-left: 20 * @virtual_px;
-		width: inherit;
-		font-size: 22 * @virtual_px;
-	}
-
-	.ui-progress-proportion {
-		padding-right: 20 * @virtual_px;
-		padding-left: 10 * @virtual_px;
-		width: inherit;
-		font-size: 22 * @virtual_px;
-	}
-
-	&.ui-progress-big {
-		progress {
-			height: 8 * @virtual_px;
-			margin-top: 15 * @virtual_px;
-		}
-		.ui-progress-ratio, .ui-progress-proportion {
-			font-size: 34 * @virtual_px;
-		}
-	}
+        display: inline-block;
+        float: left;
+        font-size: @fixed_progress_proportion_font_size;
+        padding-left: 16 * @virtual_px;
+        padding-right: 16 * @virtual_px;
+        margin-top: -10 * @virtual_px;
 }
 
 .ui-progress-ratio {
-	display: inline-block;
-	float: right;
-	font-size: @fixed_progress_ratio_font_size;
-	padding-left: 16 * @virtual_px;
-	padding-right: 16 * @virtual_px;
-	color: @color_progressbar_text;
-	width: 34 * @virtual_px;
+        display: inline-block;
+        float: right;
+        font-size: @fixed_progress_ratio_font_size;
+        padding-left: 16 * @virtual_px;
+        padding-right: 16 * @virtual_px;
+        margin-top: -10 * @virtual_px;
 }
 
 .ui-progress-processing {
-	background-color: @color_default;
-	.mask-image("./images/Progress/progress_wheel.png");
-	.mask-size(50 * @virtual_px  50 * @virtual_px);
-	.mask-repeat(no-repeat);
-	width: 50 * @virtual_px;
-	height: 50 * @virtual_px;
-	margin: (34 * @virtual_px) auto  (14 * @virtual_px) auto;
-	.animation(rotating 1s linear infinite);
-	// @TODO animation delay causes "Blink" to pause before loading mask, may need a workaround
+        background-image: url("./images/Progress/tw_widget_popup_activity.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        -webkit-animation: rotating 1s linear infinite;
+        width:80 * @virtual_px;
+        height:80 * @virtual_px;
+        margin: 0 auto;
+        margin-top: 34 * @virtual_px;
+        margin-bottom: 14 * @virtual_px;
 }
-
 .ui-processing-text {
-	margin: 0 auto;
-	text-align: center;
-	width: 168 * @virtual_px;
-	font-size: 24 * @virtual_px;
-	color: @color_progressbar_text;
+        margin: 0 auto;
+        text-align: center;
+        width: 168 * @virtual_px;
+        font-size: 24 * @virtual_px;
 }
 
-progress.ui-progress-color + .ui-progress-ratio {
-	color: @default_color;
-}
+progress.ui-progress-controllable {
+        -webkit-appearance: none;
+        border: none;
+        height: 6 * @virtual_px;
+        position: relative;
+        width: 100%;
 
-progress.ui-progress-big + .ui-progress-ratio {
-	font-size: 34 * @virtual_px;
+        &::-webkit-progress-bar {
+                background-color: rgba(255, 255, 255, 0.25);
+                overflow: visible;
+        }
+
+        &::-webkit-progress-value {
+                background-color: rgba(255, 255, 255, 1.0);
+                overflow: visible;
+                position: relative;
+        }
+
+        &::-webkit-progress-value:after {
+                content: url('images/Progress/progressbar_thumb_nor.png');
+                height: 38 * @virtual_px;
+                position: absolute;
+                right: -18 * @virtual_px;
+                top: -16 * @virtual_px;
+                width: 38 * @virtual_px;
+        }
+
+        &.disabled {
+                opacity: 0.4;
+        }
+
+        &.ui-focus {
+                &::-webkit-progress-bar {
+                        background-color: @color_progressbar_normal_bg;
+                }
+
+                &::-webkit-progress-value {
+                        background-color: @color_progressbar_value_bg;
+                }
+
+                &::-webkit-progress-value:after {
+                        content: url('images/Progress/progressbar_thumb_foc.png');
+                }
+        }
 }

@@ -1,6 +1,6 @@
 /*global module, test, expect, stop, start, ej, ok, strictEqual, equal */
 /*jslint plusplus: true, nomen: true */
-module("core/util/object");
+module("Object");
 
 (function (ns) {
 	var SimpleObject = function (prop1) {
@@ -135,26 +135,5 @@ module("core/util/object");
 		strictEqual(objectUtils.hasPropertiesOfValue(objectPropsMixedReferenceNull, null), false, "Object mixed (reference, null) asked for `null` returns false");
 		strictEqual(objectUtils.hasPropertiesOfValue(objectPropsMixedReferenceNull, reference), false, "Object mixed (reference, null) asked for `reference` returns false");
 		strictEqual(objectUtils.hasPropertiesOfValue(objectPropsMixedReferenceNull, undefined), false, "Object mixed (reference, null) asked for `undefined` returns false");
-	});
-
-	test("ns.util.object.removeProperties - checking removeProperties function", function () {
-		var data = ns.util.object,
-			object;
-
-		object = {
-			a: 1,
-			b: 2,
-			c: 3
-		};
-
-		equal(Object.keys(object).length, 3, "Object has 3 properties before removing");
-		equal(object.a, 1, "Property a has value 1");
-		data.removeProperties(object, []);
-		equal(Object.keys(object).length, 3, "Object has 3 properties after not removing anything");
-		data.removeProperties(object, ["a"]);
-		equal(Object.keys(object).length, 2, "Object has 2 properties after removing property a");
-		equal(object.a, undefined, "Property a is undefined after removing");
-		data.removeProperties(object, ["a", "b", "c"]);
-		equal(Object.keys(object).length, 0, "Object has no property");
 	});
 }(window.tau));

@@ -1,19 +1,8 @@
 /*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true */
 /**
  * #Collapsible Widget
@@ -123,9 +112,9 @@
 			"../../../../core/util/selectors",
 			"../../../../core/util/DOM/attributes",
 			"../../../../core/util/DOM/manipulation",
-			"../../../../core/widget/core/Button",
 			"../mobile",
-			"./BaseWidgetMobile"
+			"./BaseWidgetMobile",
+			"./Button"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
@@ -140,7 +129,7 @@
 				 * @private
 				 * @static
 				 */
-				Button = ns.widget.core.Button,
+				Button = ns.widget.mobile.Button,
 				/**
 				 * @property {Object} engine alias variable
 				 * @private
@@ -246,7 +235,6 @@
 					uiCornerTop: "ui-corner-top",
 					uiCornerBottom: "ui-corner-bottom",
 					uiIcon: "ui-icon",
-					uiLiActive: "ui-li-active",
 					// Prefixes
 					uiBodyPrefix: "ui-body-",
 					uiIconPrefix: "ui-icon-",
@@ -292,6 +280,8 @@
 					headerLink,
 					headerLinkClassList,
 					headerStatus,
+					btnInner,
+					btnInnerClassList,
 					content,
 					alterHeader,
 					parentCollapsibleSet = selectors.getClosestBySelector(element, "[data-role='collapsible-set']"),
@@ -391,8 +381,15 @@
 				headerLink = header.firstElementChild;
 				headerLinkClassList = headerLink.classList;
 
-				headerLinkClassList.add(classes.uiIconPrefix + options.iconpos);
-				headerLinkClassList.add(classes.uiIconPrefix + options.collapsedIcon);
+				// Make headerLink button-like
+				engine.instanceWidget(headerLink, "Button", {
+					shadow: false,
+					corners: false,
+					iconpos: options.iconpos,
+					icon: options.collapsedIcon,
+					mini: options.mini,
+					theme: options.theme
+				});
 
 				headerLink.removeAttribute("role");
 
@@ -401,8 +398,16 @@
 
 				if (options.inset) {
 					elementClassList.add(classes.uiCollapsibleInset);
-					header.classList.add(classes.uiCornerTop);
-					header.classList.add(classes.uiCornerBottom);
+
+					headerLinkClassList.add(classes.uiCornerTop);
+					headerLinkClassList.add(classes.uiCornerBottom);
+
+					btnInner = headerLink.firstElementChild;
+					if (btnInner) {
+						btnInnerClassList = btnInner.classList;
+						btnInnerClassList.add(classes.uiCornerTop);
+						btnInnerClassList.add(classes.uiCornerBottom);
+					}
 				}
 
 				Collapsible.prototype.options = options;
@@ -421,8 +426,9 @@
 					header = selectors.getChildrenByClass(element, classes.uiCollapsibleHeading)[0],
 					headerClassList = header.classList,
 					headerStatus = header.querySelector("." + classes.uiCollapsibleHeadingStatus),
+					headerIcon = header.querySelector("." + classes.uiIcon),
+					headerIconClassList = headerIcon.classList,
 					headerLink = header.firstElementChild,
-					headerLinkClassList = headerLink.classList,
 					content = selectors.getChildrenByClass(element, classes.uiCollapsibleContent)[0],
 					parentCollapsibleSet = selectors.getClosestBySelector(element, "[data-role='collapsible-set']"),
 					isCollapse = event.type === "collapse";
@@ -443,14 +449,14 @@
 				//Toggle functions switched to if/else statement due to toggle bug on Tizen
 				if (isCollapse) {
 					headerClassList.add(classes.uiCollapsibleHeadingCollapsed);
-					headerLinkClassList.remove(classes.uiIconPrefix + options.expandedIcon);
-					headerLinkClassList.add(classes.uiIconPrefix + options.collapsedIcon);
+					headerIconClassList.remove(classes.uiIconPrefix + options.expandedIcon);
+					headerIconClassList.add(classes.uiIconPrefix + options.collapsedIcon);
 					elementClassList.add(classes.uiCollapsibleCollapsed);
 					content.classList.add(classes.uiCollapsibleContentCollapsed);
 				} else {
 					headerClassList.remove(classes.uiCollapsibleHeadingCollapsed);
-					headerLinkClassList.add(classes.uiIconPrefix + options.expandedIcon);
-					headerLinkClassList.remove(classes.uiIconPrefix + options.collapsedIcon);
+					headerIconClassList.add(classes.uiIconPrefix + options.expandedIcon);
+					headerIconClassList.remove(classes.uiIconPrefix + options.collapsedIcon);
 					elementClassList.remove(classes.uiCollapsibleCollapsed);
 					content.classList.remove(classes.uiCollapsibleContentCollapsed);
 				}
@@ -458,13 +464,13 @@
 				headerStatus.innerHTML = isCollapse ? options.expandCueText : options.collapseCueText;
 
 				if(options.expandedIcon === options.collapsedIcon) {
-					headerLinkClassList.add(classes.uiIconPrefix + options.collapsedIcon);
+					headerIconClassList.add(classes.uiIconPrefix + options.collapsedIcon);
 				}
 
 				content.setAttribute("aria-hidden", isCollapse);
 
 				if (options.contentTheme && options.inset && (!parentCollapsibleSet || domUtils.getNSData(element, "collapsible-last"))) {
-					slice.call(header.querySelectorAll("." + classes.uiCollapsibleHeadingToggle)).forEach(function (value) {
+					slice.call(header.querySelectorAll("." + Button.classes.uiBtnInner)).forEach(function (value) {
 
 						if (isCollapse) {
 							value.classList.add(classes.uiCornerBottom);
@@ -501,12 +507,12 @@
 					removeActiveClass,
 					header = selectors.getChildrenByClass(element, classes.uiCollapsibleHeading)[0],
 					setActiveHeaderLinkClass = function (setClass) {
-						var headerClassList = header.classList;
-
+						var link = header.querySelector("a");
+						// @todo change to method called on button object
 						if (setClass) {
-							headerClassList.add(classes.uiLiActive);
+							link.classList.add(Button.classes.uiBtnActive);
 						} else {
-							headerClassList.remove(classes.uiLiActive);
+							link.classList.remove(Button.classes.uiBtnActive);
 						}
 					};
 

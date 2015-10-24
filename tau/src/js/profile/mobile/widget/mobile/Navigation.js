@@ -1,131 +1,56 @@
 /*global window, define */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* Copyright (c) 2013 - 2014 Samsung Electronics Co., Ltd
+ * License : MIT License V2
  */
 /**
- * #Navigation Bar
+ * #Navigation Widget
  * Navigation Bar inside header to navigate back and forth according to
- *  navigational history array, which is created by application.
+ * navigational history array, which is created by application.
  * By clicking horizontally listed element on the Navigation Bar,
- *  a page is possible to navigate to the target page.
+ * page is possible to be changed to the target page.
  *
  * ##Default selector
  * You can make the navigation widget as data-role="navigation".
- * To use *NAV* tag is recommended for semantic understanding.
+ * On creation, to use *NAV* tag is recommended for semantic understanding.
+ *
+ * ###  HTML Examples
  *
  * ####  Create Navigation Bar using data-role
  *
  * 		@example
- *		<div data-role="page" id="pageid">
+ *		<div data-role="page">
  *			<div data-role="header" data-position="fixed">
  *				<h1>title</h1>
- *				<nav data-role="navigation" id="navigation"></nav>
- *			</div>
- *			<div data-role="content"></div>
- *		</div>
- *
- * ##HTML Examples
- *
- * ####How to use Navigation Bar in your code
- *
- * To create a navigation bar, an array containing history is required.
- * And also, each value of the array is recommended
- * to have identifiable value such as pageId.
- * In the example below, the array is named as navigationHistory.
- *
- * This widget only provides creation of navigation bar visually,
- * not functional navigation. So, it is required to implement the
- * navigational function in application by using other
- * method such as history.go() or something.
- *
- * - First, in your HTMl code, you can declare navigation by using date-role.
- *
- * 		@example
- *		<div data-role="page" id="navigation-bar">
- *			<!-- declare navigation in header -->
- *			<div data-role="header" data-position="fixed">
- *				<h1>Navigation Bar</h1>
  *				<nav data-role="navigation" id="navigation">
  *				</nav>
  *			</div>
- *			<!-- you can put several pages to move -->
  *			<div data-role="content">
- *				<ul data-role="listveiw">
- *					<li><a href="navigation1.html">Move to Navigation1</a></li>
- *					<li><a href="navigation2.html">Move to Navigation2</a></li>
- *				</ul>
  *			</div>
  *		</div>
  *
- * - Second, you can make history array and create navigation bar
- * by using javascript code.
+ * ##Navigation methods
  *
- *		@example
- *		var historyMaker = function(event) {
- *			//make browsing history be stored in navigationHistory array.
- *			var iteration = window.navigationHistory.length,
- *				i = 0,
- *				targetId = event.target.id;
- *			if (!iteration) {
- *				navigationHistory.push({
- *					pageId : targetId
- *				});
- *			} else {
- *				for (i = 0; i < iteration; i++){
- *					if (targetId === navigationHistory[i].pageId) {
- *						navigationHistory.splice(i + 1, iteration - i - 1);
- *						break;
- *					}
- *				}
- *				if (i >= iteration) {
- *					navigationHistory.push({
- *						pageId : targetId
- *					});
- *				}
- *			}
- *		},
+ * You can use method of navigation widget.
  *
- *		historyDrawer = function(event) {
- *			var navi = document.getElementById("navigation"),
- *				naviWidget = tau.widget.Navigation(navi);
- *			if (document.getElementsByClassName("ui-navigation-ul")[0]
- *				.childElementCount) {
- *				tau.warn("Create method should be called only once in a page");
- *			} else {
- *				//Create Navigation widget with navigationHistory
- *				naviWidget.create(navigationHistory);
- *			}
- *		},
+ * - "create" - create navigation bar according to history array.
+ * - To create a naviagtion bar, an array containing history is required.
+ * And also, each value of the array is recommended to have identifiable value such as name.
+ * In the example below, the array is named as historyArraytoUse.
  *
- *		historyMove = function(event) {
- *			var selectedIndex = event.originalEvent.detail,
- *				barLength = navigationHistory.length;
- *			//clear unnecessary array of history out
- *			navigationHistory.splice(selectedIndex + 1, barLength - selectedIndex );
- *			history.go(- (barLength - selectedIndex) + 1);
- *		};
+ * - This widget only provides creation of navigation bar visually, not funtional navigation.
+ * So, it is required to implement the navigational function in application by using other
+ * method such as history.go() or something.
  *
- *		window.navigationHistory = window.navigationHistory || [];
- *		//When page created and showed, following event handlers need to bind only once.
- *		$(document).one("pagebeforeshow", historyMaker);
- *		$(document).one("pageshow", historyDrawer);
- *		$("nav").one("navigate", historyMove);
+ *		@examples
+ *		<script>
+ *			var navigation = document.getElementById("navigation"),
+ *			navigationBar = tau.widget.Navigation(navigation);
+ *
+ *			navigationBar.create(historyArraytoUse);
+ *		</script>
  *
  * @class ns.widget.mobile.Navigation
  * @extends ns.widget.BaseWidget
- * @author Junhyeon Lee <juneh.lee@samsung.com>
  * @author Maciej Moczulski <m.moczulsku@samsung.com>
  * @author Hyunkook Cho <hk0713.cho@samsung.com>
  * @author Hyeoncheol Choi <hc7.choi@samsung.com>
@@ -134,6 +59,7 @@
  * @author Koeun Choi <koeun.choi@samsung.com>
  * @author Piort Karny <p.karny@samsung.com>
  * @author Krzysztof Antonszek <k.antonszek@samsung.com>
+ * @author Junhyeon Lee <juneh.lee@samsung.com>
  */
 (function (document, ns) {
 	"use strict";
@@ -157,7 +83,6 @@
 
 					self._navigateTrigger = null;
 					self._ui = {
-						page: null,
 						container: null
 					};
 					self._barLength = null;
@@ -169,7 +94,6 @@
 				 * @member ns.widget.mobile.Navigation
 				 */
 				classes = {
-					page : "ui-page",
 					header : "ui-header",
 					titleNavigation : "ui-title-navigation",
 					navigation: "ui-navigation",
@@ -211,7 +135,7 @@
 			 * @member ns.widget.mobile.Navigation
 			 */
 			prototype.create = function (navigationHistory) {
-				if (!this.element.querySelector("." + classes.navigationUl + " > *:first-child")) {
+				if (!document.querySelector("." + classes.navigationUl + " > *:first-child")) {
 					this._make(navigationHistory);
 				} else {
 					ns.warn("Navigation Bar should be created only once.");
@@ -281,7 +205,6 @@
 			 * @member ns.widget.mobile.Navigation
 			 */
 			prototype._init = function (element){
-				this._ui.page = selectors.getParentsByClass(element, classes.page)[0];
 				this._ui.container = selectors.getChildrenByClass(element, classes.navigationUl)[0];
 			};
 
@@ -303,11 +226,10 @@
 			/**
 			 * Destroy Navigation widget
 			 * @method _destroy
-			 * @param {HTMLElement} element
 			 * @protected
 			 * @member ns.widget.mobile.Navigation
 			 */
-			prototype._destroy = function (element) {
+			prototype._destroy = function () {
 				element.removeEventListener("vclick", this._navigateTrigger, false);
 			};
 

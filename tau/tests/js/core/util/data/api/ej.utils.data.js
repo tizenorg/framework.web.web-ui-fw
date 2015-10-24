@@ -1,7 +1,5 @@
 var data = ej.util.data;
 
-module("core/util/data");
-
 test("ej.util.data - check the existence of objects/functions", function () {
 	equal(typeof ej, "object", "ej exists");
 	equal(typeof ej.util, "object", "ej.util exists");

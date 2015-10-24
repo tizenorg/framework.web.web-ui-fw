@@ -2,7 +2,7 @@
 (function (ns) {
 	"use strict";
 
-	module('profile/mobile/widget/mobile/Dialog', {
+	module('Dialog', {
 		setup: function () {
 			ns.engine._clearBindings();
 		}

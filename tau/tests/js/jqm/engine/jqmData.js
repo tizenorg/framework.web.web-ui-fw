@@ -1,4 +1,4 @@
-module("jqm/engine", {});
+module("ej.jqm.engine", {});
 
 test ( "jqmData" , function () {
 	var elem2 = document.getElementById("elem2");

@@ -1,4 +1,4 @@
-module("core/theme", {});
+module("ej.theme", {});
 
 test ( "contextMenu" , function () {
 	var elem1 = document.getElementById("elem1"),

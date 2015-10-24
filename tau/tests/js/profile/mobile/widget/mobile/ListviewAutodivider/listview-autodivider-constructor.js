@@ -5,7 +5,7 @@
 (function (document, ej) {
 	'use strict';
 
-	module('profile/mobile/widget/mobile/ListviewAutodivider', {
+	module('Listview autodividers - constructor', {
 		teardown: function () {
 			ej.engine._clearBindings();
 		}

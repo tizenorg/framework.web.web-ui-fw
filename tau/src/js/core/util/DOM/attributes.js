@@ -1,20 +1,8 @@
 /*global window, define */
 /*jslint plusplus: true */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/* Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*
  * @author Jadwiga Sosnowska <j.sosnowska@partner.samsung.com>
  * @author Krzysztof Antoszek <k.antoszek@samsung.com>
@@ -75,15 +63,15 @@
 				var value = element.getAttribute(attribute),
 					result = defaultValue;
 
-				if (!isNaN(value)) {
+				if (value) {
 					if (type === "float") {
 						value = parseFloat(value);
-						if (!isNaN(value)) {
+						if (value) {
 							result = value;
 						}
 					} else {
 						value = parseInt(value, 10);
-						if (!isNaN(value)) {
+						if (value) {
 							result = value;
 						}
 					}
@@ -94,20 +82,6 @@
 			function getDataName(name) {
 				var namespace = ns.getConfig(namespace);
 				return "data-" + (namespace ? namespace + "-" : "") + name;
-			}
-
-			/**
-			 * Special function to set attribute and property in the same time
-			 * @method setAttribute
-			 * @param {HTMLElement} element
-			 * @param {string} name
-			 * @param {Mixed} value
-			 * @member ns.util.DOM
-			 * @static
-			 */
-			function setAttribute(element, name, value) {
-				element[name] = value;
-				element.setAttribute(name, value);
 			}
 
 			/**
@@ -237,26 +211,18 @@
 				element[name] = false;
 			};
 
-			DOM.setAttribute = setAttribute;
 			/**
-			 * Special function to set attributes and propertie in the same time
+			 * Special function to set attribute and property in the same time
 			 * @method setAttribute
 			 * @param {HTMLElement} element
-			 * @param {Object} name
+			 * @param {string} name
 			 * @param {Mixed} value
 			 * @member ns.util.DOM
 			 * @static
 			 */
-			DOM.setAttributes = function (element, values) {
-				var i,
-					names = Object.keys(values),
-					name,
-					len;
-
-				for (i = 0, len = names.length; i < len; i++) {
-					name = names[i];
-					setAttribute(element, name, values[name]);
-				}
+			DOM.setAttribute = function (element, name, value) {
+				element[name] = value;
+				element.setAttribute(name, value);
 			};
 			//>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
 			return ns.util.DOM;

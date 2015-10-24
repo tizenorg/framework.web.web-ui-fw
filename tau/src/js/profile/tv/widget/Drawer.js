@@ -1,18 +1,7 @@
 /*global window, define, ns */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /**
  * #Drawer Widget
@@ -130,7 +119,7 @@
 		[
 			"../tv",
 			"../../../core/widget/core/Drawer",
-			"../../../core/widget/core/Page",
+			"../../wearable/widget/wearable/Page",
 			"../../../core/engine",
 			"./BaseKeyboardSupport"
 		],
@@ -151,7 +140,19 @@
 				 * @static
 				 */
 				CoreDrawerPrototype = CoreDrawer.prototype,
-				Page = ns.widget.core.Page,
+				/**
+				 * {Object} Widget Alias for {@link ns.widget.wearable.Page}
+				 * @member ns.widget.tv.Drawer
+				 * @private
+				 * @static
+				 */
+				Page = ns.widget.wearable.Page,
+				/**
+				 * {Object} Alias for {@link ns.widget.tv.BaseKeyboardSupport}
+				 * @member ns.widget.tv.Drawer
+				 * @private
+				 * @static
+				 */
 				BaseKeyboardSupport = ns.widget.tv.BaseKeyboardSupport,
 				/**
 				 * {Object} Alias for {@link ns.engine}
@@ -216,53 +217,47 @@
 			/**
 			 * Opens drawer widget
 			 * @method open
-			 * @param {number} [duration]
 			 * @member ns.widget.tv.Drawer
 			 */
-			prototype.open = function(duration) {
+			prototype.open = function() {
 				var self = this,
 					CorePrototypeOpen = CoreDrawerPrototype.open;
 				if (typeof CorePrototypeOpen === FUNCTION_TYPE) {
-					CorePrototypeOpen.call(self, duration);
+					CorePrototypeOpen.call(self);
 				}
-				self.saveKeyboardSupport();
-				self.enableKeyboardSupport();
+				self._supportKeyboard = true;
+				self._pageWidget._supportKeyboard = false;
 			};
 
 			/**
 			 * Closes drawer widget
 			 * @method close
-			 * @param {number} [duration]
 			 * @member ns.widget.tv.Drawer
 			 */
-			prototype.close = function(duration) {
+			prototype.close = function() {
 				var self = this,
 					CorePrototypeClose = CoreDrawerPrototype.close;
 				if (typeof CorePrototypeClose === FUNCTION_TYPE) {
-					CorePrototypeClose.call(self, duration);
+					CorePrototypeClose.call(self);
 				}
-				self.disableKeyboardSupport();
-				self.restoreKeyboardSupport();
+				self._supportKeyboard = false;
+				self._pageWidget._supportKeyboard = true;
 			};
 
 			/**
 			 * Method implements opening Drawer by focus mechanism
 			 * @method _openActiveElement
-			 * @param {HTMLElement} element Link element which show element which should be open
-			 * @param {string?} [id=null] id of element to open
 			 * @member ns.widget.tv.Drawer
 			 * @protected
 			 */
-			prototype._openActiveElement = function(element, id) {
+			prototype._openActiveElement = function(element) {
 				var self = this,
+					id = element.href,
 					ui = self._ui,
 					dynamicListElement;
-				if ((element && element.dataset.rel === "dynamic") || id) {
+				if (element.parentElement.classList.contains(classes.uiBlock)) {
 					if (ui.currentDynamic) {
 						ui.currentDynamic.classList.remove(classes.uiDynamicBoxActive);
-					}
-					if (!id) {
-						id = element.href;
 					}
 					if (id) {
 						dynamicListElement = document.getElementById(id.split("#")[1]);
@@ -275,42 +270,6 @@
 						self.option("width", NARROW_SIZE);
 					}
 				}
-			};
-
-			/**
-			 * Method implements opening Drawer by focus mechanism
-			 * @method _closeActiveElement
-			 * @member ns.widget.tv.Drawer
-			 * @protected
-			 */
-			prototype._closeActiveElement = function() {
-				var self = this,
-					ui = self._ui;
-				if (ui.currentDynamic) {
-					ui.currentDynamic.classList.remove(classes.uiDynamicBoxActive);
-				}
-				self.option("width", NARROW_SIZE);
-			};
-
-			/**
-			 * Close dynamic box and ser size od drawer to narrow
-			 * @method _closeActiveElement
-			 * @member ns.widget.tv.Drawer
-			 * @protected
-			 */
-			prototype.closeDynamic = function() {
-				this._closeActiveElement();
-			};
-
-			/**
-			 * Open dynamic box and ser size of drawer to wide.
-			 * @method openDynamic
-			 * @param {string} id
-			 * @member ns.widget.tv.Drawer
-			 * @protected
-			 */
-			prototype.openDynamic = function(id) {
-				this._openActiveElement(null, id);
 			};
 
 			/**
@@ -337,6 +296,20 @@
 				}
 
 				self._translateRight();
+			};
+
+			/**
+			 * Initializes Drawer widget
+			 * @method _init
+			 * @member ns.widget.tv.Drawer
+			 * @protected
+			 */
+			prototype._init = function(element) {
+				var CorePrototypeInit = CoreDrawerPrototype._init;
+				if (typeof CorePrototypeInit === FUNCTION_TYPE) {
+					CorePrototypeInit.call(this, element);
+				}
+				this._pageWidget = engine.instanceWidget(element.parentElement, "page");
 			};
 
 			/**

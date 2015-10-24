@@ -1,19 +1,8 @@
 /*global window, define, ns, console */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true */
 /**
  * # Scroll Handler
@@ -294,9 +283,9 @@
 			"../../../../core/engine",
 			"../../../../core/util/DOM/css",
 			"../../../../core/util/selectors",
-			"../../../../core/widget/core/Page",
-			"../../../../core/widget/core/Scrollview",
-			"../mobile"
+			"../mobile",
+			"./Scrollview",
+			"./Page"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
@@ -309,15 +298,13 @@
 					 * @property {string} [options.handlerTheme="s"] Handler theme
 					 * @property {"x"|"y"} [options.direction="y"] The direction of the handler
 					 * @property {"x"|"y"|"xy"} [options.scroll="y"] The direction of scrolling
-					 * @property {number} [options.delay=1500] Time in ms after which the scrollhandler disappears.
 					 * @member ns.widget.mobile.ScrollHandler
 					 */
 					self.options = {
 						handler: true,
 						handlerTheme: "s",
 						direction: "y",
-						scroll: "y",
-						delay: 1500
+						scroll: "y"
 					};
 					/**
 					 * A collection of handler UI elements
@@ -415,8 +402,8 @@
 				engine = ns.engine,
 				CSSUtils = ns.util.DOM,
 				selectors = ns.util.selectors,
-				PageClasses = ns.widget.core.Page.classes,
-				Scrollview = ns.widget.core.Scrollview,
+				PageClasses = ns.widget.mobile.Page.classes,
+				Scrollview = ns.widget.mobile.Scrollview,
 				ScrollviewPrototype = Scrollview.prototype,
 				ScrollviewBuild = ScrollviewPrototype._build,
 				ScrollviewInit = ScrollviewPrototype._init,
@@ -474,8 +461,6 @@
 
 					style.webkitTransform = translateString;
 					style.mozTransform = translateString;
-					style.msTransform = translateString;
-					style.oTransform = translateString;
 					style.transform = translateString;
 				}
 			}
@@ -560,7 +545,7 @@
 					}
 					self._hideTimer = window.setTimeout(function () {
 						self.ui.handler.classList.remove(classes.visible);
-					}, self.options.delay);
+					}, 1500);
 				}
 			}
 
@@ -685,7 +670,7 @@
 					}
 					self._hideTimer = window.setTimeout(function () {
 						self.ui.handler.classList.remove(classes.visible);
-					}, self.options.delay);
+					}, 1500);
 				}
 			}
 
@@ -717,6 +702,7 @@
 				thumb.className = classes.thumb;
 				track.className = classes.track;
 
+				handle.setAttribute("tabindex", 0);
 				handle.setAttribute("aria-label", (options.direction === "y" ? "Vertical" : "Horizontal") + " handler, double tap and move to scroll");
 
 				handle.appendChild(thumb);
@@ -802,20 +788,30 @@
 					ui = self.ui,
 					handle = ui.handle,
 					handleStyle = handle.style,
-					handlerStyle = ui.handler.style,
+					parent = element.parentNode,
+					childrenHeight = 0,
 					clipHeight = CSSUtils.getElementHeight(element, "inner", true),
 					clipWidth = CSSUtils.getElementWidth(element, "inner", true),
 					view = element.querySelector("." + Scrollview.classes.view),
 					viewHeight = CSSUtils.getElementHeight(view, "inner", true),
 					viewWidth = CSSUtils.getElementWidth(view, "inner", true),
-					clipOffset = CSSUtils.getElementOffset(element),
-					offsetTop = clipOffset.top || 0,
-					marginRight = window.innerWidth - clipWidth - clipOffset.left || 0;
+					marginTop = null,
+					child = parent.firstElementChild;
 
+				while (child) {
+					// filter out current scrollview
+					if (child !== element) {
+						childrenHeight += CSSUtils.getElementHeight(child, "inner", true);
+					} else if (marginTop === null) {
+						marginTop = childrenHeight;
+					}
+					child = child.nextElementSibling;
+				}
+
+				marginTop = marginTop || 0;
 
 				if (self.options.direction === 'y') {
 					handleStyle.height = floor(clipHeight / viewHeight * clipHeight) + 'px';
-					handlerStyle.marginTop = offsetTop + "px";
 				} else {
 					handleStyle.width = floor(clipWidth / viewWidth * clipWidth) + 'px';
 				}
@@ -825,9 +821,7 @@
 
 				self._availableOffsetX = max(0, viewWidth - clipWidth);
 				self._availableOffsetY = max(0, viewHeight - clipHeight);
-
-				// set handler to be on the right side of clip
-				handlerStyle.marginRight = marginRight + "px";
+				ui.handler.style.marginTop = marginTop + "px";
 			};
 
 			/**

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	var path = ej.util.path,
         pageSelector = '.ui-page';
 
-	module('core/util/path');
+	module('ej.util.path');
 	test('getDocumentUrl', function () {
         var urlObject = {
 
@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	test('addSearchParams', function () {
 		equal(path.addSearchParams('', {}), "?", 'addSearchParams for {}');
 		equal(path.addSearchParams('index.html', {a: 'b', c: 'd'}), "index.html?a=b&c=d", 'addSearchParams for {a: "b", c:"d"}');
-		equal(path.addSearchParams('index.html?a=b#embeded', {c: 'd'}), "index.html?a=b#embeded?c=d", 'addSearchParams test for {c:"d"}');
 	});
 
 	test('addHashSearchParams', function () {
@@ -131,7 +130,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		equal(path.isEmbedded('localhost#'), false, 'isEmbedded for "localhost#"');
 		equal(path.isEmbedded('#page'), true, 'isEmbedded for "#page"');
 		equal(path.isEmbedded('http://localhost'), false, 'isEmbedded for "http://localhost"');
-		equal(path.isEmbedded('/index.html?a=1#page'), true, 'isEmbedded for "/index.html?s=query#page"');
 	});
 
 	test('squash', function () {
@@ -164,12 +162,5 @@ document.addEventListener('DOMContentLoaded', function () {
 			window.location.origin + window.location.pathname,
 			'Return the substring of a filepath before the sub-page key, for making a server request'
 		);
-	});
-
-	test("getLocation", function(){
-		var popupUrl = "http://localhost/something/index.html#?popup=true";
-		equal(path.getLocation(popupUrl), popupUrl, "Popup url.");
-		popupUrl = "http://jblas:password@mycompany.com:8080/mail/inbox?msg=1234&type=unread#msg-content?param1=true&param2=123";
-		equal(path.getLocation(popupUrl), "http://mycompany.com:8080/mail/inbox?msg=1234&type=unread#msg-content?param1=true&param2=123", "Abstract url.");
 	});
 });

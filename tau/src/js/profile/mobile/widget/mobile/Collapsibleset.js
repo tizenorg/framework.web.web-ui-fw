@@ -1,26 +1,15 @@
 /*global window, define */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /*jslint nomen: true */
 /**
  * #Collapsible Set Widget
  * Collapsible Set Widget groups many Collapsible Widgets in one container.
  *
  * ##Default selectors
- * In default all elements with _data-role="collapsible-set"_ or class _.ui-collapsible-set_ are changed to collapsibleset widget.
+ * In default all elements with _data-role="collapsible-set"_ or clas _.ui-collapsible-set_ are changed to collapsibleset widget.
  *
  * ##HTML Examples
  *
@@ -189,6 +178,7 @@
 				uiCollapsibleHeading: "ui-collapsible-heading",
 				uiCornerTop: "ui-corner-top",
 				uiCornerBottom: "ui-corner-bottom",
+				uiBtnInner: "ui-btn-inner",
 				uiCollapsibleContent : "ui-collapsible-content"
 			};
 
@@ -230,23 +220,34 @@
 						classes = CollapsibleSet.classes,
 						dataAttributes = CollapsibleSet.attributes,
 						firstCollapsibleHeading = selectors.getChildrenByClass(firstCollapsible, classes.uiCollapsibleHeading)[0],
+						firstCollapsibleLink = selectors.getChildrenByTag(firstCollapsibleHeading, "a")[0],
+						firstCollapsibleButtonInner = selectors.getChildrenByClass(firstCollapsibleLink, classes.uiBtnInner)[0],
 
 						lastCollapsible = collapsiblesInSet[collapsiblesInSet.length-1],
-						lastCollapsibleHeading = selectors.getChildrenByClass(lastCollapsible, classes.uiCollapsibleHeading)[0];
+						lastCollapsibleHeading = selectors.getChildrenByClass(lastCollapsible, classes.uiCollapsibleHeading)[0],
+						lastCollapsibleLink = selectors.getChildrenByTag(lastCollapsibleHeading, "a")[0],
+						lastCollapsibleButtonInner = selectors.getChildrenByClass(lastCollapsibleLink, classes.uiBtnInner)[0];
 
 					//clean up borders
 					collapsiblesInSet.forEach(function(collapsibleElement) {
 						var heading = selectors.getChildrenByClass(collapsibleElement, classes.uiCollapsibleHeading)[0],
-							headingClassList = heading.classList;
+							link = selectors.getChildrenByTag(heading, "a")[0],
+							linkClassList = link.classList,
+							buttonInner = selectors.getChildrenByClass(link, classes.uiBtnInner)[0],
+							buttonInnerClassList = buttonInner.classList;
 
 						domUtils.removeNSData(collapsibleElement, dataAttributes.last);
-						headingClassList.remove(classes.uiCornerBottom);
-						headingClassList.remove(classes.uiCornerTop);
+						linkClassList.remove(classes.uiCornerBottom);
+						linkClassList.remove(classes.uiCornerTop);
+						buttonInnerClassList.remove(classes.uiCornerBottom);
+						buttonInnerClassList.remove(classes.uiCornerTop);
 					});
 
-					firstCollapsibleHeading.classList.add(classes.uiCornerTop);
+					firstCollapsibleLink.classList.add(classes.uiCornerTop);
+					firstCollapsibleButtonInner.classList.add(classes.uiCornerTop);
 
-					lastCollapsibleHeading.classList.add(classes.uiCornerBottom);
+					lastCollapsibleLink.classList.add(classes.uiCornerBottom);
+					lastCollapsibleButtonInner.classList.add(classes.uiCornerBottom);
 					domUtils.setNSData(lastCollapsible, dataAttributes.last, true);
 				}
 				return collapsiblesInSet;
@@ -266,16 +267,21 @@
 					dataAttributes = CollapsibleSet.attributes,
 					firstCollapsible = element.firstChild,
 					collapsibleHeading = selectors.getChildrenByClass(collapsible, classes.uiCollapsibleHeading)[0],
-					collapsibleHeadingClassList = collapsibleHeading.classList,
+					headingLink = selectors.getChildrenByTag(collapsibleHeading, "a")[0],
+					headingLinkClassList = headingLink.classList,
+					buttonInner = selectors.getChildrenByClass(headingLink, classes.uiBtnInner)[0],
+					buttonInnerClassList = buttonInner.classList,
 					collapsibleContent = selectors.getChildrenByClass(collapsible, classes.uiCollapsibleContent)[0],
 					collapsibleContentClassList =  collapsibleContent.classList;
 
 				if(domUtils.hasNSData(collapsible, dataAttributes.last) && !!options.inset) {
 					if(isCollapse) {
-						collapsibleHeadingClassList.add(classes.uiCornerBottom);
+						headingLinkClassList.add(classes.uiCornerBottom);
+						buttonInnerClassList.add(classes.uiCornerBottom);
 						collapsibleContentClassList.remove(classes.uiCornerBottom);
 					} else {
-						collapsibleHeadingClassList.remove(classes.uiCornerBottom);
+						headingLinkClassList.remove(classes.uiCornerBottom);
+						buttonInnerClassList.remove(classes.uiCornerBottom);
 						collapsibleContentClassList.add(classes.uiCornerBottom);
 					}
 				}
@@ -766,7 +772,7 @@
 			widget.mobile.CollapsibleSet = CollapsibleSet;
 			engine.defineWidget(
 				"CollapsibleSet",
-				"[data-role='collapsible-set'], .ui-collapsible-set",
+				"[data-role='collapsible-set'],.ui-collapsible-set",
 				[],
 				CollapsibleSet,
 				"mobile"

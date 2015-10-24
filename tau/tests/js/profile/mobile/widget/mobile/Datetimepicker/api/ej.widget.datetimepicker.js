@@ -1,6 +1,5 @@
 (function (ns) {
 	'use strict';
-	module("profile/mobile/widget/mobile/Datetimepicker");
 	test("ns.widget.datetimepicker - check the existence of objects/functions", function () {
 		var datetimepicker;
 		equal(typeof ns, "object", "ns exists");

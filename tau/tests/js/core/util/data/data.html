@@ -4,6 +4,7 @@
 		<title>ej.util.data</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" href="../../../../libs/qunit-1.11.0.css">
+		<script src="../../../../libs/jquery.js"></script>
 		<script src="../../../../libs/qunit-1.11.0.js" type="text/javascript"></script>
 	</head>
 	<body>
@@ -27,8 +28,6 @@
 					"foobar": 2
 				},
 				dataUtils = ej.util.data;
-
-			module("core/util/data");
 
 			test("ej.util.data", function () {
 				equal(testData1, dataUtils.set(e1, "testData", testData1), "setting data to element 1");

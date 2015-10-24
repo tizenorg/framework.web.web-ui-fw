@@ -127,7 +127,7 @@
 				"profile" +
 				sep +
 				themes[theme];
-			themeIn = themeBase + sep + "theme.less";
+			themeIn = themeBase + sep + "style.less";
 			themeOutBase = profileDestination +
 				sep +
 				profile +

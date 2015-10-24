@@ -1,19 +1,7 @@
 /*global window, define */
-/*jslint nomen: true */
 /*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /**
  * #Drawer Widget
@@ -48,12 +36,7 @@
 		[
 			"../../theme",
 			"../../util/selectors",
-			"../../util/DOM/css",
-			"../../event",
-			"../../event/gesture",
-			"../../router/history",
 			"../core", // fetch namespace
-			"./Page",
 			"../BaseWidget"
 		],
 
@@ -66,7 +49,6 @@
 			 * @static
 			 */
 			var BaseWidget = ns.widget.BaseWidget,
-				engine = ns.engine,
 				/**
 				 * @property {Object} selectors Alias for class ns.util.selectors
 				 * @member ns.widget.core.Drawer
@@ -75,29 +57,6 @@
 				 * @readonly
 				 */
 				selectors = ns.util.selectors,
-				utilDOM = ns.util.DOM,
-				events = ns.event,
-				history = ns.router.history,
-				Gesture = ns.event.gesture,
-				Page = ns.widget.core.Page,
-				STATE = {
-					CLOSED: "closed",
-					OPENED: "opened",
-					SLIDING: "sliding",
-					SETTLING: "settling"
-				},
-				CUSTOM_EVENTS = {
-					OPEN: "draweropen",
-					CLOSE: "drawerclose"
-				},
-				/**
-				 * Default values
-				 */
-				DEFAULT = {
-					WIDTH: 240,
-					DURATION: 300,
-					POSITION: "left"
-				},
 				/**
 				 * Drawer constructor
 				 * @method Drawer
@@ -106,36 +65,31 @@
 					var self = this;
 					/**
 					 * Drawer field containing options
-					 * @property options.position {string} Position of Drawer ("left" or "right")
-					 * @property options.width {number} Width of Drawer
-					 * @property options.duration {number} Duration of Drawer entrance animation
-					 * @property options.closeOnClick {boolean} If true Drawer will be closed on overlay
-					 * @property options.overlay {boolean} Sets whether to show an overlay when Drawer is open.
-					 * @property options.drawerTarget {string} Set drawer target element as the css selector
-					 * @property options.enable {boolean} Enable drawer component
-					 * @property options.dragEdge {number} Set the area that can open the drawer as drag gesture in drawer target element
+					 * @property {number} Position of Drawer ("left" or "right")
+					 * @property {number} Width of Drawer
+					 * @property {number} Duration of Drawer entrance animation
+					 * @property {boolean} If true Drawer will be closed on arrow click
+					 * @property {boolean} Sets whether to show an overlay when Drawer is open.
 					 */
 					self.options = {
-						position : DEFAULT.POSITION,
-						width : DEFAULT.WIDTH,
-						duration : DEFAULT.DURATION,
+						position : "left",
+						width : 240,
+						duration : 100,
 						closeOnClick: true,
-						overlay: true,
-						drawerTarget: "." + Page.classes.uiPage,
-						enable: true,
-						dragEdge: 1
+						overlay: true
 					};
+
+					self._onOverlayClickBound = null;
+					self._onTransitionEndBound = null;
+					self._onResizeBound = null;
+					self._onPageshowBound = null;
 
 					self._pageSelector = null;
 
-					self._isDrag = false;
-					self._state = STATE.CLOSED;
-					self._settlingType = STATE.CLOSED;
-					self._traslatedX = 0;
+					self._isOpen = false;
 
 					self._ui = {};
 
-					self._eventBoundElement = null;
 					self._drawerOverlay = null;
 				},
 				/**
@@ -147,8 +101,8 @@
 				 * @readonly
 				 */
 				classes = {
-					page : Page.classes.uiPage,
 					drawer : "ui-drawer",
+					header : "ui-drawer-header",
 					left : "ui-drawer-left",
 					right : "ui-drawer-right",
 					overlay : "ui-drawer-overlay",
@@ -167,279 +121,68 @@
 			Drawer.classes = classes;
 
 			/**
-			 * Unbind drag events
-			 * @method unbindDragEvents
-			 * @param {Object} self
-			 * @param {HTMLElement} element
-			 * @member ns.widget.core.Drawer
-			 * @private
-			 * @static
-			 */
-			function unbindDragEvents(self, element) {
-				var overlayElement = self._ui.drawerOverlay;
-
-				events.disableGesture(element);
-				events.off(element, "drag dragstart dragend dragcancel swipe swipeleft swiperight vmouseup", self, false);
-				events.prefixedFastOff(self.element, "transitionEnd", self, false);
-				events.off(window, "resize", self, false);
-				if (overlayElement) {
-					events.off(overlayElement, "vclick", self, false);
-				}
-			}
-
-			/**
-			 * Bind drag events
-			 * @method bindDragEvents
-			 * @param {Object} self
-			 * @param {HTMLElement} element
-			 * @member ns.widget.core.Drawer
-			 * @private
-			 * @static
-			 */
-			function bindDragEvents(self, element) {
-				var overlayElement = self._ui.drawerOverlay;
-				self._eventBoundElement = element;
-
-				events.enableGesture(
-					element,
-
-					new Gesture.Drag(),
-					new Gesture.Swipe({
-						orientation: Gesture.Orientation.HORIZONTAL
-					})
-				);
-
-				events.on(element, "drag dragstart dragend dragcancel swipe swipeleft swiperight vmouseup", self, false);
-				events.prefixedFastOn(self.element, "transitionEnd", self, false);
-				events.on(window, "resize", self, false);
-				if (overlayElement) {
-					events.on(overlayElement, "vclick", self, false);
-				}
-			}
-			/**
-			 * Handle events
-			 * @method handleEvent
-			 * @param {Event} event
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype.handleEvent = function (event) {
-				var self = this;
-				switch (event.type) {
-					case "drag":
-						self._onDrag(event);
-						break;
-					case "dragstart":
-						self._onDragStart(event);
-						break;
-					case "dragend":
-						self._onDragEnd(event);
-						break;
-					case "dragcancel":
-						self._onDragCancel(event);
-						break;
-					case "vmouseup":
-						self._onMouseup(event);
-						break;
-					case "swipe":
-					case "swipeleft":
-					case "swiperight":
-						self._onSwipe(event);
-						break;
-					case "vclick":
-						self._onClick(event);
-						break;
-					case "transitionend":
-					case "webkitTransitionEnd":
-					case "mozTransitionEnd":
-					case "oTransitionEnd":
-					case "msTransitionEnd":
-						self._onTransitionEnd(event);
-						break;
-					case "resize":
-						self._onResize(event);
-						break;
-				}
-			};
-
-			/**
-			 * MouseUp event handler
-			 * @method _onMouseup
-			 * @param {Event} event
-			 * @member ns.widget.core.Drawer
-			 * @protected
-			 */
-			prototype._onMouseup = function (event) {
-				var self = this;
-				if (self._state === STATE.SLIDING) {
-					self.close();
-				}
-			};
-			/**
 			 * Click event handler
-			 * @method _onClick
-			 * @param {Event} event
+			 * @method onClick
+			 * @param {ns.widget.core.Drawer} self
 			 * @member ns.widget.core.Drawer
-			 * @protected
+			 * @private
+			 * @static
 			 */
-			prototype._onClick = function (event) {
-				var self = this;
-				if (self._state === STATE.OPENED) {
+			function onClick(self) {
+				// vclick event handler
+				if (self._isOpen) {
 					self.close();
 				}
-			};
-
-			/**
-			 * Resize event handler
-			 * @method _onResize
-			 * @param {Event} event
-			 * @member ns.widget.core.Drawer
-			 * @protected
-			 */
-			prototype._onResize = function (event) {
-				var self = this;
-				// resize event handler
-				self._refresh();
-			};
+			}
 
 			/**
 			 * webkitTransitionEnd event handler
-			 * @method _onTransitionEnd
-			 * @param {Event} event
+			 * @method onTransitionEnd
+			 * @param {ns.widget.core.Drawer} self
 			 * @member ns.widget.core.Drawer
-			 * @protected
+			 * @private
+			 * @static
 			 */
-			prototype._onTransitionEnd = function (event) {
-				var self = this,
-					position = self.options.position,
-					drawerOverlay = self._drawerOverlay;
-
-				if (self._state === STATE.SETTLING) {
-					if (self._settlingType === STATE.OPENED) {
-						self.trigger(CUSTOM_EVENTS.OPEN, {
-							position: position
-						});
-						self._setActive(true);
-						self._state = STATE.OPENED;
-					} else {
-						self.close();
-						self.trigger(CUSTOM_EVENTS.CLOSE, {
-							position: position
-						});
-						self._setActive(false);
-						self._state = STATE.CLOSED;
-						if (drawerOverlay) {
-							drawerOverlay.style.visibility = "hidden";
-						}
-					}
-				}
-			};
-
-			/**
-			 * Swipe event handler
-			 * @method _onSwipe
-			 * @protected
-			 * @param {Event} event
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype._onSwipe = function (event) {
-				var self = this,
-					direction,
-					options = self.options;
-
-				// Now mobile has two swipe event
-				if (event.detail) {
-					direction = event.detail.direction === "left" ? "right" : "left";
-				} else if (event.type === "swiperight") {
-					direction = "left";
-				} else if (event.type === "swipeleft") {
-					direction = "right";
-				}
-				if (options.enable && self._isDrag && options.position === direction) {
-					self.open();
-					self._isDrag = false;
-				}
-			};
-			/**
-			 * Dragstart event handler
-			 * @method _onDragStart
-			 * @protected
-			 * @param {Event} event
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype._onDragStart = function (event) {
-				var self = this;
-				if (self._state === STATE.OPENED) {
-					return;
-				}
-				if (self.options.enable && !self._isDrag && self._state !== STATE.SETTLING && self._checkSideEdge(event)) {
-					self._isDrag = true;
+			function onTransitionEnd(self) {
+				var drawerOverlay = self._drawerOverlay;
+				// webkitTransitionEnd event handler
+				if (!self._isOpen) {
+					// not open -> transition -> open
+					self._isOpen = true;
 				} else {
-					self.close();
-				}
-			};
-			/**
-			 * Drag event handler
-			 * @method _onDrag
-			 * @protected
-			 * @param {Event} event
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype._onDrag = function (event) {
-				var self = this,
-					deltaX = event.detail.deltaX,
-					options = self.options,
-					translatedX = self._traslatedX,
-					movedX;
-
-				if (options.enable && self._isDrag && self._state !== STATE.SETTLING) {
-					if (options.position === "left") {
-						movedX = -options.width + deltaX + translatedX;
-						if (movedX < 0) {
-							self._translate(movedX, 0);
-						}
-					} else {
-						movedX = window.innerWidth + deltaX - translatedX;
-						if (movedX > 0 && movedX > window.innerWidth - options.width) {
-							self._translate(movedX, 0);
-						}
+					// open -> transition -> close
+					self._isOpen = false;
+					if (drawerOverlay) {
+						drawerOverlay.style.visibility = "hidden";
 					}
 				}
-			};
-			/**
-			 * DragEnd event handler
-			 * @method _onDragEnd
-			 * @protected
-			 * @param {Event} event
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype._onDragEnd = function (event) {
-				var self = this,
-					options = self.options,
-					detail = event.detail;
-				if (options.enable && self._isDrag) {
-					if (Math.abs(detail.deltaX) > options.width / 2) {
-						self.open();
-					} else if (self._state !== STATE.SETTLING) {
-						self.close();
-					}
-				}
-				self._isDrag = false;
-			};
+			}
 
 			/**
-			 * DragCancel event handler
-			 * @method _onDragCancel
-			 * @protected
-			 * @param {Event} event
+			 * Resize event handler
+			 * @method onResize
+			 * @param {ns.widget.core.Drawer} self
 			 * @member ns.widget.core.Drawer
+			 * @private
+			 * @static
 			 */
-			prototype._onDragCancel = function (event) {
-				var self = this;
-				if (self.options.enable && self._isDrag) {
-					self.close();
-				}
-				self._isDrag = false;
-			};
+			function onResize(self) {
+				// resize event handler
+				self._refresh();
+			}
+
+			/**
+			 * Pageshow event handler
+			 * @method onPageshow
+			 * @param {ns.widget.core.Drawer} self
+			 * @member ns.widget.core.Drawer
+			 * @private
+			 * @static
+			 */
+			function onPageshow(self) {
+				self._refresh();
+			}
+
 			/**
 			 * Drawer translate function
 			 * @method _translate
@@ -449,67 +192,16 @@
 			 * @protected
 			 */
 			prototype._translate = function (x, duration) {
-				var self = this,
-					element = self.element;
-
-				if (self._state !== STATE.SETTLING) {
-					self._state = STATE.SLIDING;
-				}
+				var element = this.element,
+					elementStyle = element.style,
+					transition = "none";
 
 				if (duration) {
-					utilDOM.setPrefixedStyle(element, "transition", utilDOM.getPrefixedValue("transform " + duration / 1000 + "s ease-out"));
+					transition =  "-webkit-transform " + duration / 1000 + "s ease-out";
 				}
 
-				// there should be a helper for this :(
-				utilDOM.setPrefixedStyle(element, "transform", "translate3d(" + x + "px, 0px, 0px)");
-				if (self.options.overlay) {
-					self._setOverlay(x);
-				}
-				if (!duration) {
-					self._onTransitionEnd();
-				}
-
-			};
-
-			/**
-			 * Set overlay opacity and visibility
-			 * @method _setOverlay
-			 * @param {number} x
-			 * @member ns.widget.core.Drawer
-			 * @protected
-			 */
-			prototype._setOverlay = function (x) {
-				var self = this,
-					options = self.options,
-					overlay = self._ui.drawerOverlay,
-					overlayStyle = overlay.style,
-					absX = Math.abs(x),
-					ratio = options.position === "right" ? absX / window.innerWidth : absX / options.width;
-
-				if (ratio < 1) {
-					overlayStyle.visibility = "visible";
-				} else {
-					overlayStyle.visibility = "hidden";
-				}
-				overlayStyle.opacity = 1 - ratio;
-			};
-
-			/**
-			 * Set active status in drawer router
-			 * @method _setActive
-			 * @param {boolean} active
-			 * @member ns.widget.core.Drawer
-			 * @protected
-			 */
-			prototype._setActive = function (active) {
-				var self = this,
-					route = engine.getRouter().getRoute("drawer");
-
-				if (active) {
-					route.setActive(self);
-				} else {
-					route.setActive(null);
-				}
+				elementStyle.webkitTransform = "translate3d(" + x + "px, 0px, 0px)";
+				elementStyle.webkitTransition = transition;
 			};
 
 			/**
@@ -522,28 +214,30 @@
 			 */
 			prototype._build = function (element) {
 				var self = this,
-					ui = self._ui,
-					options = self.options,
-					targetElement;
+					headerElement;
 				element.classList.add(classes.drawer);
-				element.style.top = 0;
-				targetElement = selectors.getClosestBySelector(element, options.drawerTarget);
+				self._drawerPage = selectors.getClosestByClass(element, this._pageSelector);
+				self._drawerPage.style.overflow = "hidden";
 
-				if (targetElement) {
-					targetElement.appendChild(element);
-					targetElement.style.overflowX = "hidden";
+				headerElement = element.nextElementSibling;
+				while (headerElement) {
+					if (headerElement.classList.contains("ui-header")) {
+						break;
+					}
+					headerElement = headerElement.nextElementSibling;
 				}
+
+				if (headerElement) {
+					headerElement.classList.add(classes.header);
+				}
+
+				self._headerElement = headerElement;
 
 				if (self.options.overlay) {
-					ui.drawerOverlay = self._createOverlay(element);
-					ui.drawerOverlay.style.visibility = "hidden";
+					self._createOverlay(element);
+					self._drawerOverlay.style.visibility = "hidden";
 				}
 
-				if (!ui.placeholder) {
-					ui.placeholder = document.createComment(element.id + "-placeholder");
-					element.parentNode.insertBefore(ui.placeholder, element);
-				}
-				ui.targetElement = targetElement;
 				return element;
 			};
 
@@ -556,37 +250,8 @@
 			 */
 			prototype._init = function (element) {
 				var self = this,
-					ui = self._ui;
-				ui.drawerPage = selectors.getClosestByClass(element, classes.page);
-				ui.drawerPage.style.overflowX = "hidden";
-				self._initLayout();
-				return element;
-			};
+					options = self.options;
 
-			/**
-			 * init Drawer widget layout
-			 * @method _initLayout
-			 * @protected
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype._initLayout = function () {
-				var self = this,
-					options = self.options,
-					element = self.element,
-					elementStyle = element.style,
-					ui = self._ui,
-					overlayStyle = ui.drawerOverlay ? ui.drawerOverlay.style : false;
-
-				options.width = options.width || ui.targetElement.offsetWidth;
-
-				elementStyle.width = options.width + "px";
-				elementStyle.height = ui.targetElement.offsetHeight + "px";
-
-				if (overlayStyle) {
-					overlayStyle.width = window.innerWidth + "px";
-					overlayStyle.height = window.innerHeight + "px";
-					overlayStyle.top = 0;
-				}
 				if (options.position === "right") {
 					element.classList.add(classes.right);
 					self._translate(window.innerWidth, 0);
@@ -595,7 +260,6 @@
 					element.classList.add(classes.left);
 					self._translate(-options.width, 0);
 				}
-				self._state = STATE.CLOSED;
 			};
 
 			/**
@@ -604,12 +268,12 @@
 			 * @member ns.widget.core.Drawer
 			 * @protected
 			 */
-			prototype._translateRight = function () {
+			prototype._translateRight = function() {
 				var self = this,
 					options = self.options;
 				if (options.position === "right") {
 					// If drawer position is right, drawer should be moved right side
-					if (self._state === STATE.OPENED) {
+					if (self._isOpen) {
 						// drawer opened
 						self._translate(window.innerWidth - options.width, 0);
 					} else {
@@ -620,40 +284,32 @@
 			};
 
 			/**
-			 * Check dragstart event whether triggerred on side edge area or not
-			 * @method _checkSideEdge
-			 * @protected
-			 * @param {Event} event
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype._checkSideEdge = function (event) {
-				var self = this,
-					detail = event.detail,
-					eventClientX = detail.pointer.clientX - detail.estimatedDeltaX,
-					options = self.options,
-					position = options.position,
-					boundElement = self._eventBoundElement,
-					boundElementOffsetWidth = boundElement.offsetWidth,
-					boundElementRightEdge = boundElement.offsetLeft + boundElementOffsetWidth,
-					dragStartArea = boundElementOffsetWidth * options.dragEdge;
-
-				return ((position === "left" && eventClientX > 0 && eventClientX < dragStartArea) ||
-				(position === "right" && eventClientX > boundElementRightEdge - dragStartArea &&
-				eventClientX < boundElementRightEdge));
-			};
-			/**
 			 * Refreshes Drawer widget
 			 * @method _refresh
 			 * @member ns.widget.core.Drawer
 			 * @protected
 			 */
-			prototype._refresh = function () {
+			prototype._refresh = function() {
 				// Drawer layout has been set by parent element layout
-				var self = this;
+				var self = this,
+					options = self.options,
+					drawerElementParent = self.element.parentNode,
+					drawerHeight = drawerElementParent.clientHeight,
+					drawerStyle = self.element.style,
+					drawerOverlay = self._drawerOverlay,
+					overlayStyle = drawerOverlay && drawerOverlay.style;
+
+				drawerStyle.width = options.width + "px";
+				drawerStyle.height = drawerHeight + "px";
+
+				if (overlayStyle) {
+					overlayStyle.width = window.innerWidth + "px";
+					overlayStyle.height = drawerHeight + "px";
+				}
 
 				self._translateRight();
-				self._initLayout();
 			};
+
 			/**
 			 * Creates Drawer overlay element
 			 * @method _createOverlay
@@ -661,13 +317,13 @@
 			 * @member ns.widget.core.Drawer
 			 * @protected
 			 */
-			prototype._createOverlay = function (element) {
-				var overlayElement = document.createElement("div");
+			prototype._createOverlay = function(element) {
+				var self = this,
+					overlayElement = document.createElement("div");
 
 				overlayElement.classList.add(classes.overlay);
 				element.parentNode.insertBefore(overlayElement, element);
-
-				return overlayElement;
+				self._drawerOverlay = overlayElement;
 			};
 
 			/**
@@ -676,31 +332,22 @@
 			 * @member ns.widget.core.Drawer
 			 * @protected
 			 */
-			prototype._bindEvents = function () {
+			prototype._bindEvents = function() {
 				var self = this,
-					targetElement = self._ui.targetElement;
+					options = self.options,
+					drawerOverlay = self._drawerOverlay;
+				self._onClickBound = onClick.bind(null, self);
+				self._onTransitionEndBound = onTransitionEnd.bind(null, self);
+				self._onResizeBound = onResize.bind(null, self);
+				self._onPageshowBound = onPageshow.bind(null, self);
 
-				bindDragEvents(self, targetElement);
-			};
-
-			/**
-			 * Enable Drawer widget
-			 * @method _enable
-			 * @protected
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype._enable = function () {
-				this._oneOption("enable", true);
-			};
-
-			/**
-			 * Disable Drawer widget
-			 * @method _disable
-			 * @protected
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype._disable = function () {
-				this._oneOption("enable", false);
+				if (options.overlay && options.closeOnClick && drawerOverlay) {
+					drawerOverlay.addEventListener("vclick", self._onClickBound, false);
+				}
+				self.element.addEventListener("webkitTransitionEnd", self._onTransitionEndBound, false);
+				self.element.addEventListener("transitionEnd", self._onTransitionEndBound, false);
+				window.addEventListener("resize", self._onResizeBound, false);
+				self._drawerPage.addEventListener("pageshow", self._onPageshowBound, false);
 			};
 
 			/**
@@ -709,132 +356,69 @@
 			 * @member ns.widget.core.Drawer
 			 * @return {boolean} Returns true if Drawer is open
 			 */
-			prototype.isOpen = function () {
-				return (this._state === STATE.OPENED);
+			prototype.isOpen = function() {
+				return this._isOpen;
 			};
 
 			/**
 			 * Opens Drawer widget
 			 * @method open
-			 * @param {number} [duration] Duration for opening, if is not set then method take value from options
 			 * @member ns.widget.core.Drawer
 			 */
-			prototype.open = function (duration) {
+			prototype.open = function() {
 				var self = this,
 					options = self.options,
 					drawerClassList = self.element.classList,
-					drawerOverlay = self._ui.drawerOverlay;
-				if (self._state !== STATE.OPENED) {
-					self._state = STATE.SETTLING;
-					self._settlingType = STATE.OPENED;
-					duration = duration !== undefined ? duration : options.duration;
-					if (drawerOverlay) {
-						drawerOverlay.style.visibility = "visible";
-					}
-					drawerClassList.remove(classes.close);
-					drawerClassList.add(classes.open);
-					if (options.position === "left") {
-						self._translate(0, duration);
-					} else {
-						self._translate(window.innerWidth - options.width, duration);
-					}
+					drawerOverlay = self._drawerOverlay;
+				if (drawerOverlay) {
+					drawerOverlay.style.visibility = "visible";
+				}
+				drawerClassList.remove(classes.close);
+				drawerClassList.add(classes.open);
+				if (options.position === "left") {
+					self._translate(0, options.duration);
+				} else {
+					self._translate(window.innerWidth - options.width, options.duration);
 				}
 			};
 
 			/**
 			 * Closes Drawer widget
 			 * @method close
-			 * @param {object} options This value is router options whether reverse or not.
-			 * @param {number} [duration] Duration for closing, if is not set then method take value from options
 			 * @member ns.widget.core.Drawer
 			 */
-			prototype.close = function (options, duration) {
+			prototype.close = function() {
 				var self = this,
-					reverse = options ? options.reverse : false,
-					selfOptions = self.options,
+					options = self.options,
 					drawerClassList = self.element.classList;
-				if (self._state !== STATE.CLOSED) {
-					if (!reverse && self._state === STATE.OPENED) {
-						// This method was fired by JS code or this widget.
-						history.back();
-						return;
-					}
-					self._state = STATE.SETTLING;
-					self._settlingType = STATE.CLOSED;
-					duration = duration !== undefined ? duration : selfOptions.duration;
-					drawerClassList.remove(classes.open);
-					drawerClassList.add(classes.close);
-					if (selfOptions.position === "left") {
-						self._translate(-selfOptions.width, duration);
-					} else {
-						self._translate(window.innerWidth, duration);
-					}
-				}
-			};
-
-			/**
-			 * Set Drawer drag handler.
-			 * If developer use handler, drag event is bound at handler only.
-			 * @method setDragHandler
-			 * @param {HTMLElement} element
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype.setDragHandler = function (element) {
-				var self = this;
-				self.options.dragEdge = 1;
-				unbindDragEvents(self, self._eventBoundElement);
-				bindDragEvents(self, element);
-			};
-
-			/**
-			 * Transition Drawer widget.
-			 * This method use only positive integer number.
-			 * @method transition
-			 * @param {number} position
-			 * @member ns.widget.core.Drawer
-			 */
-			prototype.transition = function (position) {
-				var self = this,
-					options = self.options;
-				if (options.position === "left"){
-					self._translate(-options.width + position, options.duration);
+				drawerClassList.remove(classes.open);
+				drawerClassList.add(classes.close);
+				if (options.position === "left") {
+					self._translate(-options.width, options.duration);
 				} else {
-					self._translate(options.width - position , options.duration);
+					self._translate(window.innerWidth, options.duration);
 				}
-				self._traslatedX = position;
 			};
 
-			/**
-			 * Get state of Drawer widget.
-			 */
-			prototype.getState = function () {
-				return this._state;
-			};
 			/**
 			 * Destroys Drawer widget
 			 * @method _destroy
 			 * @member ns.widget.core.Drawer
 			 * @protected
 			 */
-			prototype._destroy = function () {
+			prototype._destroy = function() {
 				var self = this,
-					ui = self._ui,
-					drawerOverlay = ui.drawerOverlay,
-					placeholder = ui.placeholder,
-					placeholderParent = placeholder.parentNode,
-					element = self.element;
-
-				placeholderParent.insertBefore(element, placeholder);
-				placeholderParent.removeChild(placeholder);
-
+					drawerOverlay = self._drawerOverlay;
 				if (drawerOverlay) {
 					drawerOverlay.removeEventListener("vclick", self._onClickBound, false);
 				}
-				unbindDragEvents(self, self._eventBoundElement);
-				ui = null;
+				self.element.removeEventListener("webkitTransitionEnd", self._onTransitionEndBound, false);
+				window.removeEventListener("resize", self._onResizeBound, false);
+				self._drawerPage.removeEventListener("pageshow", self._onPageshowBound, false);
 			};
 
 			ns.widget.core.Drawer = Drawer;
+
 
 			//>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
 			return ns.widget.core.Drawer;

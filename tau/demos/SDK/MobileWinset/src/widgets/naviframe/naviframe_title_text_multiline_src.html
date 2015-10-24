@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div data-role="page" id="navi_title_multi_src">
+		<div data-role="header" data-position="fixed">
+			<img src="icon-tizen.png"/>
+			<h1>Title demo</h1>
+			<span class="ui-title-text-sub">Title image multiline</span>
+		</div>
+		<div data-role="content">
+			<p>Image Title text Multiline sample</p>
+		</div>
+		<script>
+		$( "#navi_title_multi_src" ).on( "pageshow" , function() {
+			$( window ).on( "tizenhwkey", function ( ev ) {
+				if ( ev.originalEvent.keyName === "back" ) {
+					//bind callbacks to the H/W keys
+					window.history.back();
+				}
+			});
+		});
+		$( "#navi_title_multi_src" ).on( "pagebeforehide" , function() {
+			//unbind callbacks to the H/W keys
+			$( window ).off( "tizenhwkey" );
+		});
+		</script>
+	</div>
+
+
+</body>
+</html>

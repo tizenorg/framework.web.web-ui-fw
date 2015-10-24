@@ -1,19 +1,7 @@
 /*global window, define */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/* Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+* License : MIT License V2
+*/
 /**
  * #Array Utility
  * Utility helps work with arrays.
@@ -114,117 +102,10 @@
 				return false;
 			}
 
-			/**
-			 * Faster version of standard forEach method in array
-	 		 * Confirmed that this method is 20 times faster then native
-			 * @method forEach
-			 * @param {Array} array
-			 * @param {Function} callback
-			 * @member ns.util.array
-			 * @static
-			 */
-			function forEach(array, callback) {
-				var i,
-					length;
-				if (!(array instanceof Array)) {
-					array = [].slice.call(array);
-				}
-				length = array.length;
-				for (i = 0; i < length; i++) {
-					callback(array[i], i, array);
-				}
-			}
-
-
-			/**
-			 * Faster version of standard filter method in array
-			 * @method filter
-			 * @param {Array} array
-			 * @param {Function} callback
-			 * @member ns.util.array
-			 * @static
-			 */
-			function filter(array, callback) {
-				var result = [],
-					i,
-					length,
-					value;
-				if (!(array instanceof Array)) {
-					array = [].slice.call(array);
-				}
-				length = array.length;
-				for (i = 0; i < length; i++) {
-					value = array[i];
-					if (callback(value, i, array)) {
-						result.push(value);
-					}
-				}
-				return result;
-			}
-
-			/**
-			 * Faster version of standard map method in array
-			 * Confirmed that this method is 60% faster then native
-			 * @method map
-			 * @param {Array} array
-			 * @param {Function} callback
-			 * @member ns.util.array
-			 * @static
-			 */
-			function map(array, callback) {
-				var result = [],
-					i,
-					length;
-				if (!(array instanceof Array)) {
-					array = [].slice.call(array);
-				}
-				length = array.length;
-				for (i = 0; i < length; i++) {
-					result.push(callback(array[i], i, array));
-				}
-				return result;
-			}
-
-			/**
-			 * Faster version of standard reduce method in array
-			 * Confirmed that this method is 60% faster then native
-			 * @method reduce
-			 * @param {Array} array
-			 * @param {Function} callback
-			 * @param {*} [initialValue]
-			 * @member ns.util.array
-			 * @return {*}
-			 * @static
-			 */
-			function reduce(array, callback, initialValue) {
-				var i,
-					length,
-					value,
-					result = initialValue;
-				if (!(array instanceof Array)) {
-					array = [].slice.call(array);
-				}
-				length = array.length;
-				for (i = 0; i < length; i++) {
-					value = array[i];
-					if (result === undefined && i === 0) {
-						result = value;
-					} else {
-						result = callback(result, value, i, array);
-					}
-				}
-				return result;
-			}
-
 			ns.util.array = {
 				range: range,
-				isArrayLike: isArrayLike,
-				forEach: forEach,
-				filter: filter,
-				map: map,
-				reduce: reduce
+				isArrayLike: isArrayLike
 			};
-
 			//>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
 			return ns.util.array;
 		}

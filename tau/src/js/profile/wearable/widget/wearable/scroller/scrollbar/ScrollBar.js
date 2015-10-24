@@ -1,18 +1,6 @@
 /*global window, define, Event, console, ns */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true, plusplus: true */
 /**
@@ -32,7 +20,7 @@
 			"../scrollbar",
 			"./type/bar",
 			"../../../../../../core/widget/BaseWidget",
-			"../../../../../../core/widget/core/Page",
+			"../../Page",
 			"../Scroller"
 		],
 		function () {
@@ -44,11 +32,6 @@
 				utilsObject = ns.util.object,
 				selectors = ns.util.selectors,
 				scrollbarType = ns.widget.wearable.scroller.scrollbar.type,
-				Classes = {
-					wrapperClass: "ui-scrollbar-bar-type",
-					barClass: "ui-scrollbar-indicator",
-					orientationClass: "ui-scrollbar-"
-				},
 
 				Scroller = ns.widget.wearable.scroller.Scroller,
 				ScrollerScrollBar = function () {
@@ -57,7 +40,7 @@
 					this.barElement = null;
 
 					this.container = null;
-					this.view = null;
+					this.clip = null;
 
 					this.options = {};
 					this.type = null;
@@ -70,9 +53,8 @@
 				};
 
 			prototype._build = function (scrollElement) {
-				this.clip = scrollElement;
-				this.view = scrollElement.children[0];
-				this.firstChild = this.view.children[0];
+				this.container = scrollElement;
+				this.clip = scrollElement.children[0];
 				return scrollElement;
 			};
 
@@ -107,33 +89,30 @@
 			prototype._createScrollbar = function () {
 				var orientation = this.options.orientation,
 					wrapper = document.createElement("DIV"),
-					bar = document.createElement("span"),
-					view = this.view,
-					clip = this.clip,
-					firstChild = this.firstChild,
-					type = this.type;
+					bar = document.createElement("span");
 
-				clip.appendChild(wrapper);
 				wrapper.appendChild(bar);
-				wrapper.classList.add(Classes.wrapperClass);
-				bar.className = Classes.barClass;
 
-				if (orientation === Scroller.Orientation.HORIZONTAL) {
-					type.setScrollbar(view.offsetWidth, firstChild.offsetWidth, clip.offsetWidth);
-					bar.style.width = type.getScrollbarSize() + "px";
-					wrapper.classList.add(Classes.orientationClass + "horizontal");
-				} else {
-					type.setScrollbar(view.offsetHeight, firstChild.offsetHeight, clip.offsetHeight);
-					bar.style.height = type.getScrollbarSize() + "px";
-					wrapper.classList.add(Classes.orientationClass + "vertical");
-				}
+				this.type.insertAndDecorate({
+					orientation: orientation,
+					wrapper: wrapper,
+					bar: bar,
+					container: this.container,
+					clip: this.clip
+				});
 
 				this.wrapper = wrapper;
 				this.barElement = bar;
 			};
 
 			prototype._removeScrollbar = function () {
-				this.clip.removeChild(this.wrapper);
+				this.type.remove({
+					orientation: this.options.orientation,
+					wrapper: this.wrapper,
+					bar: this.barElement,
+					container: this.container,
+					clip: this.clip
+				});
 
 				this.wrapper = null;
 				this.barElement = null;
@@ -156,13 +135,7 @@
 			prototype.translate = function (offset, duration, autoHidden) {
 				var orientation = this.options.orientation,
 					translate,
-					transition = {
-						normal: "none",
-						webkit: "none",
-						moz: "none",
-						ms: "none",
-						o: "none"
-					},
+					transition,
 					barStyle,
 					endDelay;
 
@@ -177,26 +150,16 @@
 				offset = this.type.offset( orientation, offset );
 
 				barStyle = this.barElement.style;
-				if (duration) {
-					transition.normal = "transform " + duration / 1000 + "s ease-out";
-					transition.webkit = "-webkit-transform " + duration / 1000 + "s ease-out";
-					transition.moz = "-moz-transform " + duration / 1000 + "s ease-out";
-					transition.ms = "-ms-transform " + duration / 1000 + "s ease-out";
-					transition.o = "-o-transform " + duration / 1000 + "s ease-out";
+				if ( !duration ) {
+					transition = "none";
+				} else {
+					transition = "-webkit-transform " + duration / 1000 + "s ease-out";
 				}
 
 				translate = "translate3d(" + offset.x + "px," + offset.y + "px, 0)";
 
-				barStyle["-webkit-transform"] =
-					barStyle["-moz-transform"] =
-					barStyle["-ms-transform"] =
-					barStyle["-o-transform"] =
-					barStyle.transform = translate;
-				barStyle["-webkit-transition"] = transition.webkit;
-				barStyle["-moz-transition"] = transition.moz;
-				barStyle["-ms-transition"] = transition.ms;
-				barStyle["-o-transition"] = transition.o;
-				barStyle.transition = transition.normal;
+				barStyle["-webkit-transform"] = translate;
+				barStyle["-webkit-transition"] = transition;
 
 				if ( !this.started ) {
 					this._start();
@@ -244,7 +207,7 @@
 
 				switch(event.type) {
 				case "visibilitychange":
-					page = selectors.getClosestBySelector(this.container, "." + ns.widget.core.Page.classes.uiPage);
+					page = selectors.getClosestBySelector(this.container, "." + ns.widget.wearable.Page.classes.uiPage);
 					if (document.visibilityState === "visible" && page === ns.activePage) {
 						this.refresh();
 					}
@@ -266,8 +229,8 @@
 				document.removeEventListener("visibilitychange", this);
 
 				this.options = null;
+				this.container = null;
 				this.clip = null;
-				this.view = null;
 			};
 
 			ScrollerScrollBar.prototype = prototype;

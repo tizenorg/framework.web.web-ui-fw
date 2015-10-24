@@ -3,8 +3,6 @@
 
 	var list = document.getElementById("vgrid2");
 
-	module("profile/wearable/widget/wearable/VirtualGrid");
-
 	list.addEventListener("draw", function drawHandler() {
 		list.removeEventListener("draw", drawHandler);
 

@@ -4,7 +4,7 @@
  * @author Kamil Stepczuk <k.stepczuk@samsung.com>
  */
 'use strict';
-module("profile/mobile/widget/mobile/Tokentextarea");
+module("Tokentextarea");
 
 
 var createTest = function (element) {

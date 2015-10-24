@@ -1,19 +1,8 @@
 /*global window, ns, define, CustomEvent */
 /*jslint nomen: true */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* 
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /**
  * #Events
@@ -276,46 +265,6 @@
 				 */
 				fastOff: function(element, type, listener, useCapture) {
 					element.removeEventListener(type, listener, useCapture || false);
-				},
-
-				/**
-				 * Add event listener to element with prefixes for all browsers
-				 * @method fastPrefixedOn
-				 * @param {HTMLElement} element
-				 * @param {string} type
-				 * @param {Function} listener
-				 * @param {boolean} [useCapture=false]
-				 * @member ns.event
-				 * @static
-				 */
-				prefixedFastOn: function(element, type, listener, useCapture) {
-					var nameForPrefix = type.charAt(0).toLocaleUpperCase() + type.substring(1);
-
-					element.addEventListener(type.toLowerCase(), listener, useCapture || false);
-					element.addEventListener("webkit" + nameForPrefix, listener, useCapture || false);
-					element.addEventListener("moz" + nameForPrefix, listener, useCapture || false);
-					element.addEventListener("ms" + nameForPrefix, listener, useCapture || false);
-					element.addEventListener("o" + nameForPrefix.toLowerCase(), listener, useCapture || false);
-				},
-
-				/**
-				 * Remove event listener to element with prefixes for all browsers
-				 * @method fastPrefixedOff
-				 * @param {HTMLElement} element
-				 * @param {string} type
-				 * @param {Function} listener
-				 * @param {boolean} [useCapture=false]
-				 * @member ns.event
-				 * @static
-				 */
-				prefixedFastOff: function(element, type, listener, useCapture) {
-					var nameForPrefix = type.charAt(0).toLocaleUpperCase() + type.substring(1);
-
-					element.removeEventListener(type.toLowerCase(), listener, useCapture || false);
-					element.removeEventListener("webkit" + nameForPrefix, listener, useCapture || false);
-					element.removeEventListener("moz" + nameForPrefix, listener, useCapture || false);
-					element.removeEventListener("ms" + nameForPrefix, listener, useCapture || false);
-					element.removeEventListener("o" + nameForPrefix.toLowerCase(), listener, useCapture || false);
 				},
 
 				/**

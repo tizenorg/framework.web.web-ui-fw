@@ -1,6 +1,6 @@
 /*global window, define */
 /*
-* Copyright (c) 2015 Samsung Electronics Co., Ltd
+* Copyright (c) 2013 - 2014 Samsung Electronics Co., Ltd
 *
 * Licensed under the Flora License, Version 1.1 (the "License");
 * you may not use this file except in compliance with the License.
@@ -315,19 +315,15 @@
 				 * then arrow will be placed at the top of popup container and the whole popup will be placed under cliced element.
 				 * @property {string} [options.positionTo="window"] Sets the element relative to which the popup will be centered.
 				 * @property {number} [options.distance=0] Sets the extra distance in px from clicked element.
-				 * @property {HTMLElement|string} [options.link=null] Set the element or its id, under which popup should be placed.
-				 * It only works with option positionTo="origin".
 				 * @member ns.widget.core.ContextPopup
 				 * @static
 				 * @private
 				 */
-				defaults = {
+				defaults = objectUtils.merge({}, Popup.defaults, {
 					arrow: "l,b,r,t",
 					positionTo: "window",
-					positionOriginCenter: false,
-					distance: 0,
-					link: null
-				},
+					distance: 0
+				}),
 
 				ContextPopup = function () {
 					var self = this,
@@ -340,6 +336,7 @@
 
 					// set ui
 					ui = self._ui || {};
+					ui.wrapper = null;
 					ui.arrow = null;
 					self._ui = ui;
 				},
@@ -351,9 +348,11 @@
 				 */
 				CLASSES_PREFIX = "ui-popup",
 				classes = objectUtils.merge({}, Popup.classes, {
+					wrapper: CLASSES_PREFIX + "-wrapper",
 					context: "ui-ctxpopup",
 					arrow: "ui-arrow",
-					arrowDir: CLASSES_PREFIX + "-arrow-"
+					arrowDir: CLASSES_PREFIX + "-arrow-",
+					build: "ui-build"
 				}),
 
 				/**
@@ -365,18 +364,16 @@
 					before_position: "beforeposition"
 				}),
 
-				positionTypes = {
+				positionType = {
 					WINDOW: "window",
-					ORIGIN: "origin",
-					ABSOLUTE: "absolute"
+					ORIGIN: "origin"
 				},
 
 				prototype = new Popup();
 
-			ContextPopup.defaults = objectUtils.merge({}, Popup.defaults, defaults);
+			ContextPopup.defaults = defaults;
 			ContextPopup.classes = classes;
 			ContextPopup.events = events;
-			ContextPopup.positionTypes = positionTypes;
 
 			/**
 			 * Build structure of Popup widget
@@ -389,13 +386,24 @@
 			prototype._build = function (element) {
 				var self = this,
 					ui = self._ui,
-					arrow;
-
-				// build elements of popup
-				PopupPrototype._build.call(self, element);
+					wrapper,
+					arrow,
+					child = element.firstChild;
 
 				// set class for element
 				element.classList.add(classes.popup);
+
+				// create wrapper
+				wrapper = document.createElement("div");
+				wrapper.classList.add(classes.wrapper);
+				ui.wrapper = wrapper;
+				ui.container = wrapper;
+
+				// move all children to wrapper
+				while (child) {
+					wrapper.appendChild(child);
+					child = element.firstChild;
+				}
 
 				// create arrow
 				arrow = document.createElement("div");
@@ -403,8 +411,12 @@
 				arrow.classList.add(classes.arrow);
 				ui.arrow = arrow;
 
-				// add arrow to popup element
+				// add wrapper and arrow to popup element
+				element.appendChild(wrapper);
 				element.appendChild(arrow);
+
+				// build elements of popup
+				PopupPrototype._build.call(self, element);
 
 				return element;
 			};
@@ -422,18 +434,11 @@
 
 				PopupPrototype._init.call(this, element);
 
+				ui.wrapper = ui.wrapper || element.querySelector("." + classes.wrapper);
 				ui.arrow = ui.arrow || element.querySelector("." + classes.arrow);
-			};
 
-			/**
-			 * Layouting popup structure
-			 * @method layout
-			 * @member ns.widget.core.ContextPopup
-			 */
-			prototype._layout = function (element) {
-				var self = this;
-				this._reposition();
-				PopupPrototype._layout.call(self, element);
+				// set container of popup elements
+				ui.container = ui.wrapper;
 			};
 
 			/**
@@ -456,7 +461,6 @@
 
 				// set height of content
 				self._setContentHeight();
-
 				// set position of popup
 				self._placementCoords(options);
 
@@ -478,8 +482,8 @@
 					element = self.element,
 					windowWidth = window.innerWidth,
 					windowHeight = window.innerHeight,
-					popupWidth = domUtils.getElementWidth(element, "outer"),
-					popupHeight = domUtils.getElementHeight(element, "outer"),
+					popupWidth = element.offsetWidth,
+					popupHeight = element.offsetHeight,
 					// offset coordinates of clicked element
 					clickElementRect = clickedElement.getBoundingClientRect(),
 					clickElementOffsetX = clickElementRect.left,
@@ -551,10 +555,6 @@
 						(popupHeight + clickElementOffsetHeight) * direction.fixedPositionFactor)
 						/ 2 + options.distance * direction.fixedPositionFactor;
 
-				// fix min/max position
-				bestOffsetInfo.x = bestOffsetInfo.x < 0 ? 0 : bestOffsetInfo.x + bestOffsetInfo.w > windowWidth ? windowWidth - bestOffsetInfo.w : bestOffsetInfo.x;
-				bestOffsetInfo.y = bestOffsetInfo.y < 0 ? 0 : bestOffsetInfo.y + bestOffsetInfo.h > windowHeight ? windowHeight - bestOffsetInfo.h : bestOffsetInfo.y;
-
 				return bestOffsetInfo;
 			}
 
@@ -582,10 +582,7 @@
 						"padding-top": 0,
 						"padding-bottom": 0,
 						"padding-left": 0,
-						"padding-right": 0,
-						"border-top-width": 0,
-						"border-left-width": 0,
-						"box-sizing": null
+						"padding-right": 0
 					},
 					wrapperProperties = {
 						"margin-top": 0,
@@ -605,12 +602,10 @@
 						"r": {pos: y, min: "top", max: "bottom", posField: "y", valField: "h", styleField: "top"}
 					},
 					param = params[bestRectangle.dir],
-					surplus,
-					addPadding;
+					surplus;
 
 				domUtils.extractCSSProperties(popupElement, popupProperties);
 				domUtils.extractCSSProperties(wrapper, wrapperProperties);
-				addPadding = popupProperties["box-sizing"] === "border-box";
 				margins	= {
 					"t": popupProperties["padding-top"] + wrapperProperties["margin-top"] + wrapperProperties["padding-top"],
 					"b": popupProperties["padding-bottom"] + wrapperProperties["margin-bottom"] + wrapperProperties["padding-bottom"],
@@ -649,7 +644,7 @@
 					}
 				}
 
-				arrowStyle[param.styleField] = (param.pos - arrowHalfWidth - bestRectangle[param.posField] - (addPadding ? popupProperties["border-" + param.styleField + "-width"] : 0)) + "px";
+				arrowStyle[param.styleField] = (param.pos - arrowHalfWidth - bestRectangle[param.posField]) + "px";
 
 				return bestRectangle;
 			}
@@ -668,26 +663,6 @@
 
 				elementStyle.top = (window.innerHeight - elementHeight) + "px";
 				elementStyle.left = "50%";
-				elementStyle.marginLeft = -(elementWidth / 2) + "px";
-			};
-
-			/**
-			 * Set top, left and margin for popup's container.
-			 * @method _placementCoordsAbsolute
-			 * @param {HTMLElement} element
-			 * @param {number} x
-			 * @param {number} y
-			 * @protected
-			 * @member ns.widget.core.ContextPopup
-			 */
-			prototype._placementCoordsAbsolute = function(element, x, y) {
-				var elementStyle = element.style,
-					elementWidth = element.offsetWidth,
-					elementHeight = element.offsetHeight;
-
-				elementStyle.top = y + "px";
-				elementStyle.left = x + "px";
-				elementStyle.marginTop = -(elementHeight / 2) + "px";
 				elementStyle.marginLeft = -(elementWidth / 2) + "px";
 			};
 
@@ -743,64 +718,6 @@
 				return position;
 			}
 
-			prototype._placementCoordsOrigin = function (clickedElement, options) {
-				var self = this,
-					element = self.element,
-					elementStyle = element.style,
-					elementClassList = element.classList,
-					x = options.x,
-					y = options.y,
-					bestRectangle,
-					emulatedPosition,
-					arrowType,
-					elementHeight;
-
-				elementClassList.add(classes.context);
-
-				elementHeight = element.offsetHeight;
-				bestRectangle = findBestPosition(self, clickedElement);
-
-				arrowType = bestRectangle.dir;
-				elementClassList.add(classes.arrowDir + arrowType);
-				self._ui.arrow.setAttribute("type", arrowType);
-
-				if ((typeof x !== "number" && typeof y !== "number") || self.options.positionOriginCenter) {
-					// if we found element, which was clicked, but the coordinates of event
-					// was not available, we have to count these coordinates to the center of proper edge of element.
-					emulatedPosition = emulatePositionOfClick(arrowType, clickedElement);
-					x = emulatedPosition.x;
-					y = emulatedPosition.y;
-				}
-				bestRectangle = adjustedPositionAndPlacementArrow(self, bestRectangle, x, y);
-
-				if (elementHeight > bestRectangle.h) {
-					self._setContentHeight(bestRectangle.h);
-				}
-
-				elementStyle.left = bestRectangle.x + "px";
-				elementStyle.top = bestRectangle.y + "px";
-			};
-
-			prototype._placementCoordsElement = function (clickedElement, options) {
-				var self = this,
-					element = self.element,
-					elementStyle = element.style,
-					bestRectangle,
-					elementHeight;
-
-				element.classList.add(classes.context);
-
-				elementHeight = element.offsetHeight;
-				bestRectangle = findBestPosition(self, clickedElement);
-
-				if (elementHeight > bestRectangle.h) {
-					self._setContentHeight(bestRectangle.h);
-				}
-
-				elementStyle.left = bestRectangle.x + "px";
-				elementStyle.top = bestRectangle.y + "px";
-			};
-
 			/**
 			 * Find and set the best position for popup.
 			 * @method _placementCoords
@@ -814,56 +731,54 @@
 					x = options.x,
 					y = options.y,
 					element = self.element,
+					elementStyle = element.style,
+					elementClassList = element.classList,
+					emulatedPosition,
 					elementHeight,
 					clickedElement,
-					link;
+					bestRectangle;
 
-				switch (positionTo) {
-					case positionTypes.ORIGIN:
-						// if we know x-coord and y-coord, we open the popup with arrow
-						link = options.link;
-						if (link) {
-							if (typeof link === "string") {
-								clickedElement = document.getElementById(link);
-							} else if (typeof link === "object") {
-								clickedElement = link;
-							}
-						} else if (typeof x === "number" && typeof y === "number") {
-							clickedElement = self._findClickedElement(x, y);
-						}
-						if (clickedElement) {
-							self._placementCoordsOrigin(clickedElement, options);
-							return;
-						}
-						break;
-					case positionTypes.WINDOW:
-						self._placementCoordsWindow(element);
-						return;
-						break;
-					case positionTypes.ABSOLUTE:
-						if (typeof x === "number" && typeof y === "number") {
-							self._placementCoordsAbsolute(element, x, y);
-							return;
-						}
-						break;
-					default:
-						// there is posible, that element or its id was given
-						if (typeof positionTo === "string") {
-							try {
-								clickedElement = document.querySelector(options.positionTo);
-							} catch(e) {}
-						} else if (typeof positionTo === "object") {
-							clickedElement = positionTo;
-						}
-						if (clickedElement) {
-							self._placementCoordsElement(clickedElement, options);
-							return;
-						}
-						break;
+				if (typeof positionTo === "string") {
+					if (positionTo === positionType.ORIGIN && typeof x === "number" && typeof y === "number") {
+						clickedElement = self._findClickedElement(x, y);
+					} else if (positionTo !== positionType.WINDOW) {
+						try {
+							clickedElement = document.querySelector(options.positionTo);
+						} catch(e) {}
+					}
+				} else {
+					clickedElement = positionTo;
 				}
 
-				// if there was problem with setting position of popup, we set its position to window
-				self._placementCoordsWindow(element);
+				if (clickedElement) {
+
+					elementClassList.add(classes.context);
+
+					elementHeight = element.offsetHeight;
+					bestRectangle = findBestPosition(self, clickedElement);
+
+					elementClassList.add(classes.arrowDir + bestRectangle.dir);
+
+					if (typeof x !== "number" && typeof y !== "number") {
+						// if we found element, which was clicked, but the coordinates of event
+						// was not available, we have to count these coordinates to the center of proper edge of element.
+						emulatedPosition = emulatePositionOfClick(bestRectangle.dir, clickedElement);
+						x = emulatedPosition.x;
+						y = emulatedPosition.y;
+					}
+					bestRectangle = adjustedPositionAndPlacementArrow(self, bestRectangle, x, y);
+
+					if (elementHeight > bestRectangle.h) {
+						self._setContentHeight(bestRectangle.h);
+					}
+
+					elementStyle.left = bestRectangle.x + "px";
+					elementStyle.top = bestRectangle.y + "px";
+
+				} else {
+					self._placementCoordsWindow(element);
+				}
+
 			};
 
 			/**
@@ -900,6 +815,7 @@
 						contentStyle.minHeight = contentHeight + "px";
 					}
 				}
+
 			};
 
 			/**
@@ -939,15 +855,30 @@
 				var self = this,
 					element = self.element,
 					ui = self._ui,
-					arrow = ui.arrow;
+					wrapper = ui.wrapper;
 
 				PopupPrototype._destroy.call(self);
 
-				if (arrow && arrow.parentNode) {
-					arrow.parentNode.removeChild(arrow);
-				}
+				[].forEach.call(wrapper.children, function(child) {
+					element.appendChild(child);
+				});
 
+				wrapper.parentNode.removeChild(wrapper);
+				ui.arrow.parentNode.removeChild(ui.arrow);
+
+				ui.wrapper = null;
 				ui.arrow = null;
+			};
+
+			/**
+			 * Show popup.
+			 * @method _destroy
+			 * @protected
+			 * @member ns.widget.core.ContextPopup
+			 */
+			prototype._show = function(options) {
+				this._reposition(options);
+				PopupPrototype._show.call(this, options);
 			};
 
 			/**
@@ -962,19 +893,6 @@
 			prototype.reposition = function(options) {
 				if (this._isActive()) {
 					this._reposition(options);
-				}
-			};
-
-			/**
-			 * Refresh structure
-			 * @method _refresh
-			 * @protected
-			 * @member ns.widget.core.ContextPopup
-			 */
-			prototype._refresh = function() {
-				if (this._isActive()) {
-					PopupPrototype._refresh.call(this);
-					this.reposition(this.options);
 				}
 			};
 

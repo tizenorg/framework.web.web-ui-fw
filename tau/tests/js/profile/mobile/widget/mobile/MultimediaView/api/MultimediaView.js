@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	'use strict';
 	var MultimediaView = ns.widget.mobile.MultimediaView;
 
-	module('profile/mobile/widget/mobile/MultimediaView');
+	module('ns.widget.MultimediaView create instance');
 	test('instance', function () {
 		var multimediaView = new MultimediaView();
 		ok(typeof multimediaView, 'multimediaView is object');

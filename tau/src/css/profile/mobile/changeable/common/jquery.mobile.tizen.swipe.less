@@ -6,7 +6,11 @@
 }
 
 .ui-swipe-item {
-	.user-select(none);
+	-ms-user-select: none;
+	-o-user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-user-select: none;
 
 	min-height: 38 * @unit_base;
 	opacity: 0;

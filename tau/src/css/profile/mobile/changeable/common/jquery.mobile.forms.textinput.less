@@ -19,7 +19,8 @@ textarea::-webkit-input-placeholder {
 
 	input&,
 	textarea& {
-		.appearance(none);
+		appearance: none;
+		-webkit-appearance: none;
 		background-color: @color_editfield_bg;
 		box-sizing: border-box;
 		color: @color_editfield_text;
@@ -51,7 +52,7 @@ textarea::-webkit-input-placeholder {
 			box-sizing: border-box;
 			height: 2px;
 			position: relative;
-			top: -19 * @unit_base;
+			top: -10 * @unit_base;
 			margin: 0 * @unit_base 15 * @unit_base -2 * @unit_base;
 		}
 
@@ -79,13 +80,13 @@ textarea::-webkit-input-placeholder {
 			float: right;
 			// Move to top by - input's padding-bottom + clear height
 			margin-top: -(36 + 29) * @unit_base;
-			background-color: @color_searchbar_clear_icon;
-			.mask-size(contain);
-			.mask-image('images/controls/00_core_button_icon_clear.png');
+			background: @color_editfield_clear_icon;
+			-webkit-mask-size: contain;
+			-webkit-mask-image: url(images/controls/00_core_button_icon_clear.png);
 
-			&:active::after,
-			&:hover::after {
-				background-color: @color_searchbar_clear_icon_press;
+			&:active,
+			&:hover {
+				background-color: @color_editfield_clear_icon_press;
 			}
 		}
 
@@ -119,7 +120,9 @@ textarea::-webkit-input-placeholder {
 		padding: 10 * @unit_base 15 * @unit_base 14 * @unit_base;
 		resize: none;
 		white-space: normal;
-		.transition(height 200ms linear);
+
+		-webkit-transition: height 200ms linear;
+		transition: height 200ms linear;
 	}
 }
 
@@ -150,6 +153,32 @@ textarea.ui-input-text.ui-focus {
 	.ui-input-clear.ui-input-clear-hidden.ui-btn-icon-notext {
 		left: auto;
 	}
+	.ui-btn {
+
+		&.ui-btn-box-s.ui-btn-up-s,
+		&.ui-btn-box-s.ui-btn-hover-s {
+			.core_button_bg();
+			background-color: @color_button_bg;
+			top : 15 * @unit_base;
+			.ui-btn-inner.ui-btn-icon-only .ui-icon {
+				width: 30 * @unit_base;
+				height: 30 * @unit_base;
+				margin-left: -13.5 * @unit_base;
+				margin-top: -12 * @unit_base;
+				background-color: @color_button_icon;
+			}
+		}
+		.ui-icon {
+			margin: 0;
+		}
+	}
+	.ui-btn.ui-btn-box-s.ui-btn-down-s {
+		.core_button_bg_pressed();
+		background-color: @color_button_bg_press;
+		.ui-icon {
+			margin: 0;
+		}
+	}
 }
 
 .ui-input-search {
@@ -160,23 +189,23 @@ textarea.ui-input-text.ui-focus {
 		margin-right: (46 + 15) * @unit_base;
 	}
 
-	.ui-btn.ui-input-clear.ui-icon-deleteSearch {
+	.ui-btn-icon-notext.ui-input-clear {
 		display: inline-block;
 		width: 36 * @unit_base;
-		height: 36 * @unit_base;
-		background-color: transparent;
+		height: 34 * @unit_base;
 
-		&::after {
-			top: 0;
-			left: 0;
-			width: 36 * @unit_base;
-			height: 36 * @unit_base;
-			background-color: @color_searchbar_clear_icon;
+		.ui-btn-inner {
+			padding: 14 * @unit_base
+				16 * @unit_base
+				9 * @unit_base
+				16 * @unit_base;
 		}
-
-		&:active::after,
-		&:hover::after {
-			background-color: @color_searchbar_clear_icon_press;
+	}
+	.ui-btn-inner {
+		.ui-icon-deleteSearch {
+			margin: -2 * @unit_base;
+			width: 45 * @unit_base;
+			height: 45 * @unit_base;
 		}
 	}
 }
@@ -196,10 +225,6 @@ textarea.ui-input-text.ui-focus {
 		font-size: @font_size_searchbar_text;
 		display: block;
 		position: relative;
-		background-color: @color_searchbar_bg;
-	}
-
-	.ui-input-text {
 		background-color: @color_searchbar_bg;
 	}
 
@@ -245,15 +270,25 @@ textarea.ui-input-text.ui-focus {
 			visibility: visible;
 		}
 	}
-	.ui-btn.ui-btn-search-front-icon {
+	.ui-btn-search-front-icon {
 		position: absolute;
 		top: ((96 - 46) / 2) * @unit_base;
 		right: 15 * @unit_base;
+		width: 46 * @unit_base;
+		height: 46 * @unit_base;
 	}
 }
 
-.ui-icon-deleteSearch::after {
-	.mask-image('images/controls/00_field_btn_clear.png');
+.ui-icon-deleteSearch {
+	background-repeat: no-repeat;
+	background-size: 45 * @unit_base 45 * @unit_base;
+	background-color: @color_searchbar_clear_icon;
+	-webkit-mask-image: url(images/controls/00_field_btn_clear.png);
+	-webkit-mask-size: 45 * @unit_base 45 * @unit_base;
+
+	&:active {
+		background-color: @color_searchbar_clear_icon_press;
+	}
 }
 
 .ui-input-clear-hidden {

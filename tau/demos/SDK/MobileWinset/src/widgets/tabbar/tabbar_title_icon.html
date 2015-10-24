@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div data-role="page" id="tabbar_title_icon">
+	<div data-role="header" data-position="fixed">
+		<h1>Tabbar icon with title</h1>
+		<div data-role="tabbar">
+			<ul>
+				<li><a href="#" data-icon="naviframe-delete" class="ui-btn-active"></a></li>
+				<li><a href="#" data-icon="naviframe-edit" ></a></li>
+				<li><a href="#" data-icon="naviframe-search" ></a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div data-role="content">
+	</div>
+
+	<script>
+	$( "#tabbar_title_icon" ).on( "pageshow" , function() {
+		$(window).on("tizenhwkey", function (event) {
+			if (event.originalEvent.keyName === "back") {
+				//bind callbacks to the H/W keys
+				window.history.back();
+			}
+		});
+	}).on("pagebeforehide", function () {
+		//unbind callbacks to the H/W keys
+		$(window).off("tizenhwkey");
+	});
+	</script>
+</div>
+
+</body>
+</html>

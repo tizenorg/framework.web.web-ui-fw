@@ -9,9 +9,6 @@
 		<script src="../../../../../../libs/qunit-1.11.0.js"></script>
 		<script src="../../../../../../libs/support.js"></script>
 		<script>
-			var tauConfig = {
-				"autorun": false
-			};
 			// workaround for touches simulate;
 			window.ontouchstart = {};
 		</script>
@@ -37,10 +34,16 @@
 				</section>
 			</div>
 		</div>
-		<div id="sectiontest" style="width:360px; height:360px; visibility: hidden;">
-			<div id="sectionchanger" style="width:360px; height:360px;">
+
+		<div id="page" class="ui-page" style="visibility: hidden;">
+			<header class="ui-header">
+				<h2 class="ui-title">SectionChanger</h2>
+			</header>
+			<div class="ui-content">
 			</div>
 		</div>
+
+
 	<script type="text/javascript" src="sectionchanger-suites.js"></script>
 	<script type="text/javascript" src="sectionchanger.js"></script>
 	</body>

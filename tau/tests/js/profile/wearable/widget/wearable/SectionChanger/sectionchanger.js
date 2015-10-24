@@ -8,10 +8,10 @@ QUnit.config.reorder = false;
 (function (ns) {
 	"use strict";
 
-	var sectionTest = document.querySelector("#sectiontest"),
-		testContent = document.querySelector("#testContent"),
+	var page = document.getElementById("page"),
+		testContent = document.getElementById("testContent"),
 		tapholdThreshold = 200,
-		sectionContent = sectionTest.querySelector("#sectionchanger"),
+		sectionContent = page.querySelector(".ui-content"),
 		i = 1, j = 1,
 
 		CSS_ACTIVE = "ui-section-active";
@@ -83,11 +83,12 @@ QUnit.config.reorder = false;
 		j = j + 1;
 	}
 
-	window.addEventListener("load", function() {
+	page.addEventListener("pageshow", function pageShow() {
+
 
 		suites.orientation.forEach(function each(suite) {
 
-			module("profile/wearable/widget/wearable/SectionChanger", {
+			module("tau.widget.SectionChanger orientation " + suite.name, {
 				setup: function setup() {
 					setupModule(this, suite.options);
 				},
@@ -136,7 +137,9 @@ QUnit.config.reorder = false;
 			});
 
 		});
-		module("profile/wearable/widget/wearable/SectionChanger", {
+
+
+		module("tau.widget.SectionChanger circular", {
 			setup: function setup() {
 				setupModule(this, suites.circular.options, true);
 			},
@@ -183,10 +186,10 @@ QUnit.config.reorder = false;
 
 		});
 
-		module("profile/wearable/widget/wearable/SectionChanger", {
+		module("tau.widget.SectionChanger bouncing", {
 			setup: function setup() {
 				setupModule(this, suites.bouncing.options, true);
-				this.scrollbars = sectionTest.querySelectorAll(".ui-scrollbar-bouncing-effect");
+				this.scrollbars = page.querySelectorAll(".ui-scrollbar-bouncing-effect");
 			},
 			teardown: function teardown() {
 				teardownModule(this, suites.bouncing.moves.length + 1);
@@ -247,7 +250,7 @@ QUnit.config.reorder = false;
 
 		suites.scrollbar.forEach(function each(suite) {
 
-			module("profile/wearable/widget/wearable/SectionChanger", {
+			module("tau.widget.SectionChanger scrollbar " + suite.name, {
 				setup: function setup() {
 					setupModule(this, suite.options);
 				},
@@ -263,7 +266,7 @@ QUnit.config.reorder = false;
 					expect(i);
 
 				while (i--) {
-					ok(sectionTest.querySelectorAll(contains[i]).length > 0, "Element " + contains[i] + " exists");
+					ok(page.querySelectorAll(contains[i]).length > 0, "Element " + contains[i] + " exists");
 				}
 
 			});
@@ -271,7 +274,7 @@ QUnit.config.reorder = false;
 		});
 
 
-		module("profile/wearable/widget/wearable/SectionChanger", {
+		module("tau.widget.SectionChanger active section", {
 			setup: function setup() {
 				setupModule(this, suites.def.options);
 			},

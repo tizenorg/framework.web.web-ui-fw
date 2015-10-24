@@ -1,18 +1,6 @@
-/*global window, define, ns */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/*global window, define */
+/* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true */
 /**
@@ -20,11 +8,11 @@
  * Page is main element of application's structure.
  *
  * ## Default selectors
- * In the Tizen Web UI framework the application page structure is based on a header, content and footer elements:
+ * In the Tizen Wearable Web UI framework the application page structure is based on a header, content and footer elements:
  *
  * - **The header** is placed at the top, and displays the page title and optionally buttons.
  * - **The content** is the section below the header, showing the main content of the page.
- * - **The footer** is a bottom part of page which can display for example buttons
+ * - **The footer** is abottom part of page which can display for example buttons
  *
  * The following table describes the specific information for each section.
  *
@@ -56,7 +44,9 @@
  *          <td>Header</td>
  *          <td>ui-header</td>
  *          <td>No</td>
- *          <td>Defines the element as a header.</td>
+ *          <td>Defines the element as a header.
+ *
+ * As the Tizen Wearable device screen size is small, avoid using the header element.</td>
  *      </tr>
  *      <tr>
  *          <td>Content</td>
@@ -147,7 +137,7 @@
  *
  * When changing the active page, you can use a page transition.
  *
- * Tizen Web UI Framework does not apply transitions by default. To set a custom transition effect, you must add the data-transition attribute to a link:
+ * Tizen Wearable Web UI framework does not apply transitions by default. To set a custom transition effect, you must add the data-transition attribute to a link:
  *
  *      @example
  *      <a href="index.html" data-transition="slideup">I'll slide up</a>
@@ -213,8 +203,10 @@
  *		page.methodName(methodArgument1, methodArgument2, ...);
  *
  * @class ns.widget.wearable.Page
- * @extends ns.widget.core.Page
- * @author hyunkook cho <hk0713.cho@samsung.com>
+ * @extends ns.widget.BaseWidget
+ * @author Maciej Urbanski <m.urbanski@samsung.com>
+ * @author Piotr Karny <p.karny@samsung.com>
+ * @author Damian Osipiuk <d.osipiuk@samsung.com>
  */
 (function (document, ns) {
 	"use strict";
@@ -223,25 +215,19 @@
 		[
 			"../../../../core/engine",
 			"../../../../core/util/DOM/css",
-			"../../../../core/util/object",
-			"../../../../core/util/selectors",
-			"../../../../core/util/DOM/attributes",
-			"../../../../core/util/DOM/manipulation",
-			"../../../../core/event",
-			"../../../../core/event/gesture",
-			"../../../../core/widget/core/Page",
-			"../wearable"
+			"../wearable",
+			"../../../../core/widget/BaseWidget"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
 			/**
 			 * Alias for {@link ns.widget.BaseWidget}
 			 * @property {Object} BaseWidget
-			 * @member ns.widget.core.Page
+			 * @member ns.widget.wearable.Page
 			 * @private
 			 * @static
 			 */
-			var CorePage = ns.widget.core.Page,
+			var BaseWidget = ns.widget.BaseWidget,
 				/**
 				 * Alias for {@link ns.util}
 				 * @property {Object} util
@@ -259,38 +245,6 @@
 				 */
 				doms = util.DOM,
 				/**
-				 * Alias for {@link ns.util.selectors}
-				 * @property {Object} selectors
-				 * @member ns.widget.wearable.Page
-				 * @private
-				 * @static
-				 */
-				selectors = util.selectors,
-				/**
-				 * Alias for {@link ns.util.object}
-				 * @property {Object} object
-				 * @member ns.widget.wearable.Page
-				 * @private
-				 * @static
-				 */
-				object = ns.util.object,
-				/**
-				 * Alias for {@link ns.event}
-				 * @property {Object} object
-				 * @member ns.widget.wearable.Page
-				 * @private
-				 * @static
-				 */
-				utilsEvents = ns.event,
-				/**
-				 * Alias for {@link ns.event.gesture}
-				 * @property {Object} object
-				 * @member ns.widget.wearable.Page
-				 * @private
-				 * @static
-				 */
-				Gesture = utilsEvents.gesture,
-				/**
 				 * Alias for {@link ns.engine}
 				 * @property {Object} engine
 				 * @member ns.widget.wearable.Page
@@ -301,34 +255,93 @@
 
 				Page = function () {
 					var self = this;
-					CorePage.call(self);
-					self._contentStyleAttributes = ["height", "width", "minHeight", "marginTop", "marginBottom"];
+					/**
+					 * Callback on resize
+					 * @property {?Function} contentFillAfterResizeCallback
+					 * @private
+					 * @member ns.widget.wearable.Page
+					 */
+					self.contentFillAfterResizeCallback = null;
+					/**
+					 * Options for widget.
+					 * It is empty object, because widget Page does not have any options.
+					 * @property {Object} options
+					 * @member ns.widget.wearable.Page
+					 */
+					self.options = {};
+				},
+				/**
+				 * Dictionary for page related event types
+				 * @property {Object} EventType
+				 * @member ns.widget.wearable.Page
+				 * @static
+				 */
+				EventType = {
+					/**
+					 * Triggered on the page we are transitioning to,
+					 * after the transition animation has completed.
+					 * @event pageshow
+					 * @member ns.widget.wearable.Page
+					 */
+					SHOW: "pageshow",
+					/**
+					 * Triggered on the page we are transitioning away from,
+					 * after the transition animation has completed.
+					 * @event pagehide
+					 * @member ns.widget.wearable.Page
+					 */
+					HIDE: "pagehide",
+					/**
+					 * Triggered when the page has been created in the DOM
+					 * (for example, through Ajax) but before all widgets
+					 * have had an opportunity to enhance the contained markup.
+					 * @event pagecreate
+					 * @member ns.widget.wearable.Page
+					 */
+					CREATE: "pagecreate",
+					/**
+					 * Triggered when the page is being initialized,
+					 * before most plugin auto-initialization occurs.
+					 * @event pagebeforecreate
+					 * @member ns.widget.wearable.Page
+					 */
+					BEFORE_CREATE: "pagebeforecreate",
+					/**
+					 * Triggered on the page we are transitioning to,
+					 * before the actual transition animation is kicked off.
+					 * @event pagebeforeshow
+					 * @member ns.widget.wearable.Page
+					 */
+					BEFORE_SHOW: "pagebeforeshow",
+					/**
+					 * Triggered on the page we are transitioning away from,
+					 * before the actual transition animation is kicked off.
+					 * @event pagebeforehide
+					 * @member ns.widget.wearable.Page
+					 */
+					BEFORE_HIDE: "pagebeforehide"
 				},
 				/**
 				 * Dictionary for page related css class names
 				 * @property {Object} classes
-				 * @member ns.widget.core.Page
+				 * @member ns.widget.wearable.Page
 				 * @static
 				 * @readonly
 				 */
-				classes = object.merge({
+				classes = {
+					uiPage: "ui-page",
+					uiPageActive: "ui-page-active",
+					uiSection: "ui-section",
 					uiHeader: "ui-header",
-					uiPageScroll: "ui-scroll-on",
-					uiScroller: "ui-scroller",
-					uiFixed: "ui-fixed"
-				}, CorePage.classes),
+					uiFooter: "ui-footer",
+					uiContent: "ui-content",
+					uiPageScroll: "ui-page-scroll"
+				},
+				prototype = new BaseWidget();
 
-				prototype = new CorePage();
+			Page.classes = classes;
+			Page.events = EventType;
 
-			/**
-			 * Configure Page Widget
-			 * @method _configure
-			 * @member ns.widget.wearable.Page
-			 */
-			prototype._configure = function () {
-				CorePage.prototype._configure.call(this);
-				this.options.enablePageScroll = ns.getConfig("enablePageScroll");
-			};
 			/**
 			 * Sets top-bottom css attributes for content element
 			 * to allow it to fill the page dynamically
@@ -337,46 +350,173 @@
 			 */
 			prototype._contentFill = function () {
 				var self = this,
-					option = self.options,
 					element = self.element,
 					screenWidth = window.innerWidth,
 					screenHeight = window.innerHeight,
-					pageScrollSelector = classes.uiPageScroll,
+					contentSelector = classes.uiContent,
+					headerSelector = classes.uiHeader,
+					footerSelector = classes.uiFooter,
+					extraHeight = 0,
 					children = [].slice.call(element.children),
+					childrenLength = children.length,
 					elementStyle = element.style,
-					scroller,
-					fragment,
-					firstChild;
+					i,
+					node,
+					contentStyle,
+					marginTop,
+					marginBottom,
+					nodeStyle;
 
 				elementStyle.width = screenWidth + "px";
 				elementStyle.height = screenHeight + "px";
 
-				if (option.enablePageScroll === true && !element.querySelector("." + classes.uiScroller)) {
-					element.classList.add(pageScrollSelector);
-					scroller = document.createElement("div");
-					scroller.classList.add(classes.uiScroller);
-					fragment = document.createDocumentFragment();
-
-					children.forEach( function(value) {
-						if ( selectors.matchesSelector(value, ".ui-header:not(.ui-fixed), .ui-content, .ui-footer:not(.ui-fixed)")) {
-							fragment.appendChild(value);
-						}
-					});
-
-					if (element.children.length > 0 && element.children[0].classList.contains(classes.uiHeader)) {
-						doms.insertNodeAfter(element.children[0], scroller);
-					} else {
-						element.insertBefore(scroller, element.firstChild);
+				for (i = 0; i < childrenLength; i++) {
+					node = children[i];
+					if (node.classList.contains(headerSelector) ||
+								node.classList.contains(footerSelector)) {
+						extraHeight += doms.getElementHeight(node);
 					}
-
-					firstChild = fragment.firstChild;
-
-					scroller.appendChild(fragment);
+				}
+				for (i = 0; i < childrenLength; i++) {
+					node = children[i];
+					nodeStyle = node.style;
+					if (node.classList.contains(contentSelector)) {
+						contentStyle = window.getComputedStyle(node);
+						marginTop = parseFloat(contentStyle.marginTop);
+						marginBottom = parseFloat(contentStyle.marginBottom);
+						nodeStyle.height = (screenHeight - extraHeight - marginTop - marginBottom) + "px";
+						nodeStyle.width = screenWidth + "px";
+					}
 				}
 			};
 
+			/**
+			 * Build page
+			 * @method _build
+			 * @param {HTMLElement} element
+			 * @return {HTMLElement}
+			 * @protected
+			 * @member ns.widget.wearable.Page
+			 */
+			prototype._build = function (element) {
+				element.classList.add(classes.uiPage);
+				return element;
+			};
+
+			/**
+			 * This method sets page active or inactive.
+			 * It sets ui-overlay-... class on `body` depending on current theme.
+			 * @method setActive
+			 * @param {boolean} value If true, then page will be active.
+			 * Otherwise, page will be inactive.
+			 * @member ns.widget.wearable.Page
+			 */
+			prototype.setActive = function (value) {
+				var elementClassList = this.element.classList;
+				if (value) {
+					elementClassList.add(classes.uiPageActive);
+				} else {
+					elementClassList.remove(classes.uiPageActive);
+				}
+			};
+
+			/**
+			 * Return current status of page.
+			 * @method isActive
+			 * @member ns.widget.wearable.Page
+			 * @instance
+			 */
+			prototype.isActive = function () {
+				return this.element.classList.contains(classes.uiPageActive);
+			};
+
+			/**
+			 * Bind events to widget
+			 * @method _bindEvents
+			 * @param {HTMLElement} element
+			 * @protected
+			 * @member ns.widget.wearable.Page
+			 */
+			prototype._bindEvents = function (element) {
+				var self = this;
+				self.contentFillAfterResizeCallback = self._contentFill.bind(self);
+				window.addEventListener("resize", self.contentFillAfterResizeCallback, false);
+			};
+
+			/**
+			 * Refresh widget structure
+			 * @method _refresh
+			 * @protected
+			 * @member ns.widget.wearable.Page
+			 */
+			prototype._refresh = function () {
+				this._contentFill();
+			};
+
+			/**
+			 * Layouting page structure
+			 * @method layout
+			 * @member ns.widget.wearable.Page
+			 */
+			prototype.layout = function () {
+				this._contentFill();
+			};
+
+			/**
+			 * This method triggers BEFORE_SHOW event.
+			 * @method onBeforeShow
+			 * @member ns.widget.wearable.Page
+			 */
+			prototype.onBeforeShow = function () {
+				this.trigger(EventType.BEFORE_SHOW);
+			};
+
+			/**
+			 * This method triggers SHOW event.
+			 * @method onShow
+			 * @member ns.widget.wearable.Page
+			 */
+			prototype.onShow = function () {
+				this.trigger(EventType.SHOW);
+			};
+
+			/**
+			 * This method triggers BEFORE_HIDE event.
+			 * @method onBeforeHide
+			 * @member ns.widget.wearable.Page
+			 */
+			prototype.onBeforeHide = function () {
+				this.trigger(EventType.BEFORE_HIDE);
+			};
+
+			/**
+			 * This method triggers HIDE event.
+			 * @method onHide
+			 * @member ns.widget.wearable.Page
+			 */
+			prototype.onHide = function () {
+				this.trigger(EventType.HIDE);
+			};
+
+			/**
+			 * Destroy widget
+			 * @method _destroy
+			 * @protected
+			 * @member ns.widget.wearable.Page
+			 */
 			prototype._destroy = function () {
-				CorePage.prototype._destroy.call(this);
+				var self = this,
+					element = self.element;
+
+				element = element || self.element;
+				//>>excludeStart("tauDebug", pragmas.tauDebug);
+				ns.log("Called _destroy in ns.widget.wearable.Page");
+				//>>excludeEnd("tauDebug");
+
+				window.removeEventListener("resize", self.contentFillAfterResizeCallback, false);
+
+				// destroy widgets on children
+				engine.destroyAllWidgets(element, true);
 			};
 
 			Page.prototype = prototype;
@@ -384,22 +524,13 @@
 			// definition
 			ns.widget.wearable.Page = Page;
 			engine.defineWidget(
-				"Page",
+				"page",
 				"[data-role=page],.ui-page",
-				[
-					"layout",
-					"focus",
-					"blur",
-					"setActive",
-					"isActive"
-				],
+				["onBeforeShow", "onShow", "onBeforeHide", "onHide", "setActive", "layout"],
 				Page,
-				"wearable",
-				true
+				"wearable"
 			);
-
 			//>>excludeStart("tauBuildExclude", pragmas.tauBuildExclude);
-			return Page;
 		}
 	);
 	//>>excludeEnd("tauBuildExclude");

@@ -1,6 +1,6 @@
 (function (ns) {
 	'use strict';
-	module("profile/mobile/widget/mobile/Drawer", {
+	module("api.ns.widget.Drawer", {
 		});
 
 	test ( "API ns.widget.Drawer" , function () {
@@ -11,7 +11,7 @@
 		equal(typeof ns.widget.mobile.Drawer, 'function', 'Class ns.widget.mobile.Drawer exists');
 
 		widget = ns.engine.instanceWidget(document.getElementById("drawer"), "Drawer");
-		Drawer = ns.widget.core.Drawer;
+		Drawer = ns.widget.mobile.Drawer;
 
 		equal(typeof widget.configure, 'function', 'Method drawer.configure exists');
 		equal(typeof widget._getCreateOptions, 'function', 'Method drawer._getCreateOptions exists');
@@ -34,6 +34,7 @@
 		equal(typeof Drawer.classes, 'object', 'Property drawer.classes exists');
 		equal(typeof Drawer.classes.close, 'string', 'Property drawer.classes.close exists');
 		equal(typeof Drawer.classes.drawer, 'string', 'Property drawer.classes.drawer exists');
+		equal(typeof Drawer.classes.header, 'string', 'Property drawer.classes.header exists');
 		equal(typeof Drawer.classes.left, 'string', 'Property drawer.classes.left exists');
 		equal(typeof Drawer.classes.open, 'string', 'Property drawer.classes.open exists');
 		equal(typeof Drawer.classes.overlay, 'string', 'Property drawer.classes.overlay exists');

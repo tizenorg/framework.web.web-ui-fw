@@ -1,18 +1,7 @@
 /*global window, define, RegExp */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* 
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /**
  * #Path Utility
@@ -99,7 +88,7 @@
 					// URL as well as some other commonly used sub-parts. When used with RegExp.exec()
 					// or String.match, it parses the URL into a results array that looks like this:
 					//
-					//	[0]: http://jblas:password@mycompany.com:8080/mail/inbox?msg=1234&type=unread#msg-content?param1=true&param2=123
+					//	[0]: http://jblas:password@mycompany.com:8080/mail/inbox?msg=1234&type=unread#msg-content
 					//	[1]: http://jblas:password@mycompany.com:8080/mail/inbox?msg=1234&type=unread
 					//	[2]: http://jblas:password@mycompany.com:8080/mail/inbox
 					//	[3]: http://jblas:password@mycompany.com:8080
@@ -116,16 +105,14 @@
 					//	[14]: /mail/
 					//	[15]: inbox
 					//	[16]: ?msg=1234&type=unread
-					//	[17]: #msg-content?param1=true&param2=123
-					//	[18]: #msg-content
-					//	[19]: ?param1=true&param2=123
+					//	[17]: #msg-content
 					//
 					/**
 					* @property {RegExp} urlParseRE Regular expression for parse URL
 					* @member ns.util.path
 					* @static
 					*/
-					urlParseRE: /^(((([^:\/#\?]+:)?(?:(\/\/)((?:(([^:@\/#\?]+)(?:\:([^:@\/#\?]+))?)@)?(([^:\/#\?\]\[]+|\[[^\/\]@#?]+\])(?:\:([0-9]+))?))?)?)?((\/?(?:[^\/\?#]+\/+)*)([^\?#]*)))?(\?[^#]+)?)((#[^\?]*)(\?.*)?)?/,
+					urlParseRE: /^(((([^:\/#\?]+:)?(?:(\/\/)((?:(([^:@\/#\?]+)(?:\:([^:@\/#\?]+))?)@)?(([^:\/#\?\]\[]+|\[[^\/\]@#?]+\])(?:\:([0-9]+))?))?)?)?((\/?(?:[^\/\?#]+\/+)*)([^\?#]*)))?(\?[^#]+)?)(#.*)?/,
 
 					/**
 					* Abstraction to address xss (Issue #4787) by removing the authority in
@@ -138,15 +125,14 @@
 					*/
 					getLocation: function (url) {
 						var uri = this.parseUrl(url || window.location.href),
-							hash = uri.hash,
-							search = uri.hashSearch;
-						// mimic the browser with an empty string when the hash and hashSearch are empty
-						hash = hash === "#" && !search ? "" : hash;
+							hash = uri.hash;
+						// mimic the browser with an empty string when the hash is empty
+						hash = hash === "#" ? "" : hash;
 						location = uri;
 						// Make sure to parse the url or the location object for the hash because using location.hash
 						// is autodecoded in firefox, the rest of the url should be from the object (location unless
 						// we're testing) to avoid the inclusion of the authority
-						return uri.protocol + "//" + uri.host + uri.pathname + uri.search + hash + search;
+						return uri.protocol + "//" + uri.host + uri.pathname + uri.search + hash;
 					},
 
 					/**
@@ -197,7 +183,6 @@
 					* @return {string} return.filename
 					* @return {string} return.search
 					* @return {string} return.hash
-					* @return {string} return.hashSearch
 					* @static
 					*/
 					parseUrl: function (url) {
@@ -205,6 +190,7 @@
 						if (typeof url === "object") {
 							return url;
 						}
+
 						matches = path.urlParseRE.exec(url || "") || [];
 
 							// Create an object that allows the caller to access the sub-matches
@@ -212,29 +198,28 @@
 							// like all other browsers do, so we normalize everything so its consistent
 							// no matter what browser we're running on.
 						return {
-							href: matches[0] || "",
-							hrefNoHash: matches[1] || "",
+							href:		matches[0] || "",
+							hrefNoHash:   matches[1] || "",
 							hrefNoSearch: matches[2] || "",
-							domain: matches[3] || "",
-							protocol: matches[4] || "",
-							doubleSlash: matches[5] || "",
-							authority: matches[6] || "",
-							username: matches[8] || "",
-							password: matches[9] || "",
-							host: matches[10] || "",
-							hostname: matches[11] || "",
-							port: matches[12] || "",
-							pathname: matches[13] || "",
-							directory: matches[14] || "",
-							filename: matches[15] || "",
-							search: matches[16] || "",
-							hash: matches[18] || "",
-							hashSearch: matches[19] || ""
+							domain:	matches[3] || "",
+							protocol:	matches[4] || "",
+							doubleSlash:  matches[5] || "",
+							authority:	matches[6] || "",
+							username:	matches[8] || "",
+							password:	matches[9] || "",
+							host:		matches[10] || "",
+							hostname:	matches[11] || "",
+							port:		matches[12] || "",
+							pathname:	matches[13] || "",
+							directory:	matches[14] || "",
+							filename:	matches[15] || "",
+							search:	matches[16] || "",
+							hash:		matches[17] || ""
 						};
 					},
 
 					/**
-					* Turn relPath into an absolute path. absPath is
+					* Turn relPath into an asbolute path. absPath is
 					* an optional absolute path which describes what
 					* relPath is relative to.
 					* @method makePathAbsolute
@@ -344,12 +329,6 @@
 
 					/**
 					* Add search (aka query) params to the specified url.
-					* If page is embedded page, search query will be added after
-					* hash tag. It's allowed to add query content for both external
-					* pages and embedded pages.
-					* Examples:
-					* http://domain/path/index.html#embedded?search=test
-					* http://domain/path/external.html?s=query#embedded?s=test
 					* @method addSearchParams
 					* @member ns.util.path
 					* @param {string|Object} url
@@ -359,16 +338,8 @@
 					addSearchParams: function (url, params) {
 						var urlObject = path.parseUrl(url),
 							paramsString = (typeof params === "object") ? this.getAsURIParameters(params) : params,
-							searchChar = '',
-							urlObjectHash = urlObject.hash;
-
-						if (path.isEmbedded(url) && paramsString.length > 0) {
-							searchChar = urlObject.hashSearch || "?";
-							return urlObject.hrefNoHash + (urlObjectHash || "") + searchChar + (searchChar.charAt(searchChar.length - 1) === "?" ? "" : "&") + paramsString ;
-						}
-
-						searchChar = urlObject.search || "?";
-						return urlObject.hrefNoSearch + searchChar + (searchChar.charAt(searchChar.length - 1) === "?" ? "" : "&") + paramsString + (urlObjectHash || "");
+							searchChar = urlObject.search || "?";
+						return urlObject.hrefNoSearch + searchChar + (searchChar.charAt(searchChar.length - 1) === "?" ? "" : "&") + paramsString + (urlObject.hash || "");
 					},
 
 					/**
@@ -389,7 +360,7 @@
 
 					/**
 					* Convert absolute Url to data Url
-					* - for embedded pages strips parameters
+					* - for embedded pages strips hash and paramters
 					* - for the same domain as document base remove domain
 					* otherwise returns decoded absolute Url
 					* @method convertUrlToDataUrl
@@ -403,9 +374,10 @@
 					convertUrlToDataUrl: function (absUrl, dialogHashKey, documentBase) {
 						var urlObject = path.parseUrl(absUrl);
 
-						if (path.isEmbeddedPage(urlObject, !!dialogHashKey)) {
-							// Keep hash and search data for embedded page
-							return path.getFilePath(urlObject.hash + urlObject.hashSearch, dialogHashKey);
+						if (path.isEmbeddedPage(urlObject, dialogHashKey)) {
+							// For embedded pages, remove the dialog hash key as in getFilePath(),
+							// otherwise the Data Url won't match the id of the embedded Page.
+							return urlObject.hash.replace(/^#|\?.*$/g, "");
 						}
 						documentBase = documentBase || path.documentBase;
 						if (path.isSameDomain(urlObject, documentBase)) {
@@ -531,7 +503,7 @@
 						if (urlObject.protocol !== "") {
 							return (!path.isPath(urlObject.hash) && !!urlObject.hash && (urlObject.hrefNoHash === path.parseLocation().hrefNoHash));
 						}
-						return (/\?.*#|^#/).test(urlObject.href);
+						return (/^#/).test(urlObject.href);
 					},
 
 					/**
@@ -741,7 +713,7 @@
 					},
 
 					/**
-					* Return the substring of a file path before the sub-page key,
+					* Return the substring of a filepath before the sub-page key,
 					* for making a server request
 					* @method getFilePath
 					* @member ns.util.path

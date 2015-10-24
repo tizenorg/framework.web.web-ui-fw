@@ -1,18 +1,6 @@
 /*global window, define */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint plusplus: true, nomen: true */
 /**
@@ -27,9 +15,9 @@
 		[
 			"../../core/core",
 			"../../core/engine",
-			"../../core/widget/core/Page",
-			"../../core/router/route",
-			"../../core/router/history"
+			"./router/route",
+			"./router/history",
+			"./widget/wearable/Page"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
@@ -40,10 +28,11 @@
 
 			document.addEventListener("routerinit", function (evt) {
 				var router = evt.detail,
-					routePage = router.getRoute("page"),
 					history = ns.router.history,
+					navigator,
 					back = history.back.bind(router),
-					classes = ns.widget.core.Page.classes,
+					rule = ns.router.route,
+					classes = ns.widget.wearable.Page.classes,
 					pageActiveClass = classes.uiPageActive;
 				/**
 				 * @method changePage
@@ -66,13 +55,6 @@
 				 * @member tau
 				 */
 				ns.firstPage = router.getFirstPage();
-				/**
-				 * Returns active page element
-				 * @inheritdoc ns.router.Router#getActivePageElement
-				 * @method getActivePage
-				 * @member tau
-				 */
-				ns.getActivePage = routePage.getActiveElement.bind(routePage);
 				/**
 				 * @inheritdoc ns.router.history#back
 				 * @method back

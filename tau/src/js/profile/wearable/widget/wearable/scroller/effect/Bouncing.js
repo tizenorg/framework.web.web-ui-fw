@@ -1,18 +1,6 @@
-/*global window, define, ns */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/*global window, define, Event, console, ns */
+/* Copyright  2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true, plusplus: true */
 /**
@@ -31,96 +19,61 @@
 		function () {
 			//>>excludeEnd("tauBuildExclude");
 			// scroller.start event trigger when user try to move scroller
-			var utilsObject = ns.util.object,
-				selectors = ns.util.selectors,
-				Bouncing = function (scrollerElement, options) {
-					var self = this;
-					self._orientation = null;
-					self._maxValue = null;
+			var Bouncing = function (scrollerElement, options) {
+					this.orientation = null;
+					this.maxValue = null;
 
-					self._container = null;
-					self._minEffectElement = null;
-					self._maxEffectElement = null;
-
-					self.options = utilsObject.merge({}, Bouncing.defaults, {scrollEndEffectArea: ns.getConfig("scrollEndEffectArea", Bouncing.defaults.scrollEndEffectArea)});
+					this.container = null;
+					this.minEffectElement = null;
+					this.maxEffectElement = null;
 				/**
 				 * target element for bouncing effect
 				 * @property {HTMLElement} targetElement
 				 * @member ns.widget.wearable.scroller.effect.Bouncing
 				 */
-					self._targetElement = null;
+					this.targetElement = null;
 
-					self._isShow = false;
-					self._isDrag = false;
-					self._isShowAnimating = false;
-					self._isHideAnimating = false;
+					this.isShow = false;
+					this.isDrag = false;
+					this.isShowAnimating = false;
+					this.isHideAnimating = false;
 
-					self._create(scrollerElement, options);
-				},
-				endEffectAreaType = {
-					content: "content",
-					screen: "screen"
-				},
-				defaults = {
-					duration: 500,
-					scrollEndEffectArea : "content"
-				},
-				classes = {
-					bouncingEffect: "ui-scrollbar-bouncing-effect",
-					page: "ui-page",
-					left: "ui-left",
-					right: "ui-right",
-					top: "ui-top",
-					bottom: "ui-bottom",
-					hide: "ui-hide",
-					show: "ui-show"
+					this._create(scrollerElement, options);
 				};
 
-			Bouncing.defaults = defaults;
-
 			Bouncing.prototype = {
+				options: {
+					className: "ui-scrollbar-bouncing-effect",
+					duration: 500
+				},
+
 				_create: function (scrollerElement, options) {
-					var self = this;
-					if( self.options.scrollEndEffectArea === endEffectAreaType.content ){
-						self._container = scrollerElement;
-					} else {
-						self._container = selectors.getClosestByClass(scrollerElement, classes.page);
-					}
+					this.container = scrollerElement;
 
-					self._orientation = options.orientation;
-					self._maxValue = self._getValue( options.maxScrollX, options.maxScrollY );
+					this.orientation = options.orientation;
+					this.maxValue = this._getValue( options.maxScrollX, options.maxScrollY );
 
-					self._initLayout();
+					this._initLayout();
 				},
 
 				_initLayout: function() {
-					var self = this,
-						minElement = self._minEffectElement = document.createElement("DIV"),
-						maxElement = self._maxEffectElement = document.createElement("DIV"),
-						className = classes.bouncingEffect;
+					var minElement = this.minEffectElement = document.createElement("DIV"),
+						maxElement = this.maxEffectElement = document.createElement("DIV"),
+						className = this.options.className;
 
-					if ( self._orientation === ns.widget.wearable.scroller.Scroller.Orientation.HORIZONTAL ) {
-						minElement.className = className + " " + classes.left;
-						maxElement.className = className + " " + classes.right;
+					if ( this.orientation === ns.widget.wearable.scroller.Scroller.Orientation.HORIZONTAL ) {
+						minElement.className = className + " ui-left";
+						maxElement.className = className + " ui-right";
 					} else {
-						minElement.className = className + " " + classes.top;
-						maxElement.className = className + " " + classes.bottom;
+						minElement.className = className + " ui-top";
+						maxElement.className = className + " ui-bottom";
 					}
 
-					self._container.appendChild( minElement );
-					self._container.appendChild( maxElement );
+					this.container.appendChild( minElement );
+					this.container.appendChild( maxElement );
 
-					minElement.addEventListener("animationEnd", this);
 					minElement.addEventListener("webkitAnimationEnd", this);
-					minElement.addEventListener("mozAnimationEnd", this);
-					minElement.addEventListener("msAnimationEnd", this);
-					minElement.addEventListener("oAnimationEnd", this);
-
-					maxElement.addEventListener("animationEnd", this);
 					maxElement.addEventListener("webkitAnimationEnd", this);
-					maxElement.addEventListener("mozAnimationEnd", this);
-					maxElement.addEventListener("msAnimationEnd", this);
-					maxElement.addEventListener("oAnimationEnd", this);
 				},
 
 				/**
@@ -131,7 +84,7 @@
 				 * @member ns.widget.wearable.scroller.effect.Bouncing
 				 */
 				drag: function( x, y ) {
-					this._isDrag = true;
+					this.isDrag = true;
 					this._checkAndShow( x, y );
 				},
 
@@ -141,12 +94,11 @@
 				 * @member ns.widget.wearable.scroller.effect.Bouncing
 				 */
 				dragEnd: function() {
-					var self = this;
-					if ( self._isShow && !self._isShowAnimating && !self._isHideAnimating ) {
-						self._beginHide();
+					if ( this.isShow && !this.isShowAnimating && !this.isHideAnimating ) {
+						this._beginHide();
 					}
 
-					self._isDrag = false;
+					this.isDrag = false;
 				},
 
 				/**
@@ -155,10 +107,9 @@
 				 * @member ns.widget.wearable.scroller.effect.Bouncing
 				 */
 				show: function() {
-					var self = this;
-					if ( self._targetElement ) {
-						self._isShow = true;
-						self._beginShow();
+					if ( this.targetElement ) {
+						this.isShow = true;
+						this._beginShow();
 					}
 				},
 
@@ -168,83 +119,77 @@
 				 * @member ns.widget.wearable.scroller.effect.Bouncing
 				 */
 				hide: function() {
-					var self = this;
-					if ( self._isShow ) {
-						self._minEffectElement.style.display = "none";
-						self._maxEffectElement.style.display = "none";
-						self._targetElement.classList.remove(classes.hide);
-						self._targetElement.classList.remove(classes.show);
+					if ( this.isShow ) {
+						this.minEffectElement.style.display = "none";
+						this.maxEffectElement.style.display = "none";
+						this.targetElement.classList.remove("ui-hide");
+						this.targetElement.classList.remove("ui-show");
 					}
-					self._isShow = false;
-					self._isShowAnimating = false;
-					self._isHideAnimating = false;
-					self._targetElement = null;
+					this.isShow = false;
+					this.isShowAnimating = false;
+					this.isHideAnimating = false;
+					this.targetElement = null;
 				},
 
 				_checkAndShow: function( x, y ) {
-					var self = this,
-						val = self._getValue(x, y);
-					if ( !self._isShow ) {
+					var val = this._getValue(x, y);
+					if ( !this.isShow ) {
 						if ( val >= 0 ) {
-							self._targetElement = self._minEffectElement;
-							self.show();
-						} else if ( val <= self._maxValue ) {
-							self._targetElement = self._maxEffectElement;
-							self.show();
+							this.targetElement = this.minEffectElement;
+							this.show();
+						} else if ( val <= this.maxValue ) {
+							this.targetElement = this.maxEffectElement;
+							this.show();
 						}
 
-					} else if ( self._isShow && !self._isDrag && !self._isShowAnimating && !self._isHideAnimating ) {
-						self._beginHide();
+					} else if ( this.isShow && !this.isDrag && !this.isShowAnimating && !this.isHideAnimating ) {
+						this._beginHide();
 					}
 				},
 
 				_getValue: function(x, y) {
-					return this._orientation === ns.widget.wearable.scroller.Scroller.Orientation.HORIZONTAL ? x : y;
+					return this.orientation === ns.widget.wearable.scroller.Scroller.Orientation.HORIZONTAL ? x : y;
 				},
 
 				_beginShow: function() {
-					var self = this;
-					if ( !self._targetElement || self._isShowAnimating ) {
+					if ( !this.targetElement || this.isShowAnimating ) {
 						return;
 					}
 
-					self._targetElement.style.display = "block";
+					this.targetElement.style.display = "block";
 
-					self._targetElement.classList.remove(classes.hide);
-					self._targetElement.classList.add(classes.show);
+					this.targetElement.classList.remove("ui-hide");
+					this.targetElement.classList.add("ui-show");
 
-					self._isShowAnimating = true;
-					self._isHideAnimating = false;
+					this.isShowAnimating = true;
+					this.isHideAnimating = false;
 				},
 
 				_finishShow: function() {
-					var self = this;
-					self._isShowAnimating = false;
-					if ( !self._isDrag ) {
-						self._targetElement.classList.remove(classes.show);
-						self._beginHide();
+					this.isShowAnimating = false;
+					if ( !this.isDrag ) {
+						this.targetElement.classList.remove("ui-show");
+						this._beginHide();
 					}
 				},
 
 				_beginHide: function() {
-					var self = this;
-					if ( self._isHideAnimating ) {
+					if ( this.isHideAnimating ) {
 						return;
 					}
 
-					self._targetElement.classList.remove(classes.show);
-					self._targetElement.classList.add(classes.hide);
+					this.targetElement.classList.remove("ui-show");
+					this.targetElement.classList.add("ui-hide");
 
-					self._isHideAnimating = true;
-					self._isShowAnimating = false;
+					this.isHideAnimating = true;
+					this.isShowAnimating = false;
 				},
 
 				_finishHide: function() {
-					var self = this;
-					self._isHideAnimating = false;
-					self._targetElement.classList.remove(classes.hide);
-					self.hide();
-					self._checkAndShow();
+					this.isHideAnimating = false;
+					this.targetElement.classList.remove("ui-hide");
+					this.hide();
+					this._checkAndShow();
 				},
 
 				/**
@@ -253,10 +198,10 @@
 				 * @member ns.widget.wearable.scroller.effect.Bouncing
 				 */
 				handleEvent: function( event ) {
-					if (event.type.toLowerCase().indexOf("animationend") > -1) {
-						if ( this._isShowAnimating ) {
+					if (event.type === "webkitAnimationEnd") {
+						if ( this.isShowAnimating ) {
 							this._finishShow();
-						} else if ( this._isHideAnimating ) {
+						} else if ( this.isHideAnimating ) {
 							this._finishHide();
 						}
 					}
@@ -268,33 +213,20 @@
 				 * @member ns.widget.wearable.scroller.effect.Bouncing
 				 */
 				destroy: function() {
-					var self = this,
-						maxEffectElement = this._maxEffectElement,
-						minEffectElement = this._minEffectElement;
+					this.minEffectElement.removeEventListener("webkitAnimationEnd", this);
+					this.maxEffectElement.removeEventListener("webkitAnimationEnd", this);
 
-					minEffectElement.removeEventListener("animationEnd", this);
-					minEffectElement.removeEventListener("webkitAnimationEnd", this);
-					minEffectElement.removeEventListener("mozAnimationEnd", this);
-					minEffectElement.removeEventListener("msAnimationEnd", this);
-					minEffectElement.removeEventListener("oAnimationEnd", this);
+					this.container.removeChild( this.minEffectElement );
+					this.container.removeChild( this.maxEffectElement );
 
-					maxEffectElement.removeEventListener("animationEnd", this);
-					maxEffectElement.removeEventListener("webkitAnimationEnd", this);
-					maxEffectElement.removeEventListener("mozAnimationEnd", this);
-					maxEffectElement.removeEventListener("msAnimationEnd", this);
-					maxEffectElement.removeEventListener("oAnimationEnd", this);
+					this.container = null;
+					this.minEffectElement = null;
+					this.maxEffectElement = null;
+					this.targetElement = null;
 
-					self._container.removeChild( minEffectElement );
-					self._container.removeChild( maxEffectElement );
-
-					self._container = null;
-					self._minEffectElement = null;
-					self._maxEffectElement = null;
-					self._targetElement = null;
-
-					self._isShow = null;
-					self._orientation = null;
-					self._maxValue = null;
+					this.isShow = null;
+					this.orientation = null;
+					this.maxValue = null;
 				}
 			};
 

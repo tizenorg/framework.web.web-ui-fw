@@ -2,7 +2,7 @@
 (function (tau) {
 	"use strict";
 
-	module("profile/mobile/widget/mobile/SplitView", {
+	module("widget.SplitView", {
 		teardown: function () {
 			tau.engine._clearBindings();
 		}

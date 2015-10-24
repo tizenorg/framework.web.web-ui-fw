@@ -1,18 +1,7 @@
 /*global window, define, ns */
-/*
- * Copyright (c) 2015 Samsung Electronics Co., Ltd
- *
- * Licensed under the Flora License, Version 1.1 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://floralicense.org/license/
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* 
+ * Copyright (c) 2010 - 2014 Samsung Electronics Co., Ltd.
+ * License : MIT License V2
  */
 /*jslint nomen: true, plusplus: true */
 /**
@@ -94,13 +83,12 @@
 	define(
 		[
 			"../tv",
-			"../../../core/widget/core/Page",
+			"../../../profile/wearable/widget/wearable/Page",
 			"../../../core/engine",
 			"../../../core/util/DOM/css",
 			"../../../core/util/DOM/attributes",
 			"../../../core/util/selectors",
-			"./BaseKeyboardSupport",
-			"./Button"
+			"./BaseKeyboardSupport"
 		],
 		function () {
 			//>>excludeEnd("tauBuildExclude");
@@ -111,7 +99,7 @@
 			 * @private
 			 * @static
 			 */
-			var WearablePage = ns.widget.core.Page,
+			var WearablePage = ns.widget.wearable.Page,
 				WearablePagePrototype = WearablePage.prototype,
 				/**
 				 * Alias for {@link ns.widget.tv.BaseKeyboardSupport}
@@ -182,10 +170,8 @@
 			 * @member ns.widget.tv.Page
 			 */
 			prototype.onShow = function() {
-				var self = this;
-				self.saveKeyboardSupport();
-				self.enableKeyboardSupport();
-				WearablePagePrototype.onShow.call(self);
+				WearablePagePrototype.onShow.call(this);
+				this._supportKeyboard = true;
 			};
 
 			/**
@@ -194,10 +180,8 @@
 			 * @member ns.widget.tv.Page
 			 */
 			prototype.onHide = function() {
-				var self = this;
-				self.disableKeyboardSupport();
-				self.restoreKeyboardSupport();
-				WearablePagePrototype.onHide.call(self);
+				WearablePagePrototype.onHide.call(this);
+				this._supportKeyboard = false;
 			};
 
 			/**
@@ -212,9 +196,7 @@
 					headerButtonsLength = headerButtons.length,
 					i;
 				for (i = 0; i < headerButtonsLength; i++) {
-					engine.instanceWidget(headerButtons[i], "Button", {
-						inline: true
-					});
+					DOM.setNSData(headerButtons[i], "inline", "true");
 				}
 			};
 
@@ -242,17 +224,17 @@
 			 */
 			prototype._buildHeader = function(element) {
 				var self = this,
-					header;
+					header = utilSelectors.getChildrenBySelector(element, "header,[data-role='header'],." + classes.uiHeader)[0];
 
-				WearablePagePrototype._buildHeader.call(self, element);
-				header = self._ui.header;
-
+				// add class if header does not exist
 				if (!header) {
 					element.classList.add(classes.uiHeaderEmpty);
 				} else {
+					header.classList.add(classes.uiHeader);
 					self._buildButtonsInHeader(header);
 					self._buildTitleInHeader(header);
 				}
+				self._ui.header = header;
 			};
 
 			/**
@@ -263,11 +245,65 @@
 			 * @member ns.widget.tv.Page
 			 */
 			prototype._buildFooter = function(element) {
-				WearablePagePrototype._buildFooter.call(this, element);
+				var footer = utilSelectors.getChildrenBySelector(element, "footer,[data-role='footer'],." + classes.uiFooter)[0];
 
-				if (!this._ui.footer) {
+				// add class if footer does not exist
+				if (!footer) {
 					element.classList.add(classes.uiFooterEmpty);
+				} else {
+					footer.classList.add(classes.uiFooter);
 				}
+				this._ui.footer = footer;
+			};
+
+			/**
+			 * Method creates empty page footer.
+			 * @method _buildContent
+			 * @param {HTMLElement} element
+			 * @protected
+			 * @member ns.widget.tv.Page
+			 */
+			prototype._buildContent = function(element) {
+				var content = utilSelectors.getChildrenByClass(element, classes.uiContent)[0],
+					next,
+					child = element.firstChild,
+					ui = this._ui;
+				if (!content) {
+					content = document.createElement("div");
+					while (child) {
+						next = child.nextSibling;
+						if (child !== ui.footer && child !== ui.header) {
+							content.appendChild(child);
+						}
+						child = next;
+					}
+				}
+
+				element.insertBefore(content, ui.footer);
+				content.classList.add(classes.uiContent);
+				ui.content = content;
+			};
+
+			/**
+			 * Build page
+			 * @method _build
+			 * @param {HTMLElement} element
+			 * @return {HTMLElement}
+			 * @protected
+			 * @member ns.widget.tv.Page
+			 */
+			prototype._build = function(element) {
+				var self = this;
+
+				if (typeof WearablePagePrototype._build === FUNCTION_TYPE) {
+					WearablePagePrototype._build.call(self, element);
+				}
+
+				self._buildHeader(element);
+				self._buildFooter(element);
+				self._buildContent(element);
+
+				return element;
 			};
 
 			/**
@@ -349,7 +385,6 @@
 			prototype._bindEvents = function(element) {
 				WearablePagePrototype._bindEvents.call(this, element);
 				this._bindEventKey();
-				this._bindEventMouse();
 			};
 
 			/**
@@ -360,7 +395,6 @@
 			 */
 			prototype._destroy = function() {
 				this._destroyEventKey();
-				this._destroyEventMouse();
 				WearablePagePrototype._destroy.call(this);
 			};
 
@@ -385,7 +419,7 @@
 			ns.widget.tv.Page = Page;
 
 			engine.defineWidget(
-				"Page",
+				"page",
 				"[data-role=page],.ui-page",
 				["onBeforeShow", "onShow", "onBeforeHide", "onHide", "setActive"],
 				Page,

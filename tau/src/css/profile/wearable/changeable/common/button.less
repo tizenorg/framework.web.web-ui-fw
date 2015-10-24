@@ -32,23 +32,7 @@
 		overflow: hidden;
 		background-repeat: no-repeat;
 		background-size: @fixed_button_icon_bg_size @fixed_button_icon_bg_size;
-		position: relative;
 	}
-}
-
-.ui-btn-icon::before {
-	content: "";
-	background-color: @color_button_icon_bg;
-	-webkit-mask-size: @fixed_button_icon_bg_size @fixed_button_icon_bg_size;
-	-webkit-mask-repeat: no-repeat;
-	-webkit-mask-position: 0 0;
-	width: @fixed_button_icon_bg_size;
-	height: @fixed_button_icon_bg_size;
-	top : 50%;
-	left: 50%;
-	transform: translate3d(-50%, -50%, 0);
-	position: absolute;
-	-webkit-mask-image: -webkit-linear-gradient(transparent,transparent);
 }
 
 .ui-default {
@@ -136,7 +120,8 @@ a.ui-btn {
 
 button.ui-btn, input.ui-btn {
 	box-sizing: border-box;
-	.appearance(none);
+	-webkit-appearance: none;
+	-moz-appearance: none;
 	width: 100%;
 
 	&.ui-inline {

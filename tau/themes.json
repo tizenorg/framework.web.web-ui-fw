@@ -6,7 +6,7 @@
 			{
 				"name": "changeable",
 				"images": "images/",
-				"src": "theme.less",
+				"src": "style.changeable.less",
 				"default": "true",
 				"changeable-path": "mobile/changeable/theme-changeable/"
 			}
@@ -16,10 +16,9 @@
 			{
 				"name": "changeable",
 				"images": "images/",
-				"src": "theme.less",
+				"src": "style.changeable.less",
 				"default": "true",
-				"changeable-path": "wearable/changeable/theme-changeable/",
-				"circle-path": "wearable/changeable/circle/"
+				"changeable-path": "wearable/changeable/theme-changeable/"
 			}
 		],
 
@@ -27,7 +26,7 @@
 			{
 				"name": "black",
 				"images": "images/",
-				"src": "theme.less",
+				"src": "style.less",
 				"default": "true",
 				"default-path": "tv/default/theme-black/"
 			}

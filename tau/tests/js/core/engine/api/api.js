@@ -7,8 +7,6 @@
 
 	var engine = ej.engine;
 
-	module("core/engine");
-
 	test("engine object", function() {
 		ok(!!engine, "Engine exists");
 	});

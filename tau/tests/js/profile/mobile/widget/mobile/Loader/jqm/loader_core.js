@@ -2,7 +2,7 @@
  * mobile init tests
  */
 (function($){
-	module("profile/mobile/widget/mobile/Loader", {
+	module("jquery.mobile.loader", {
 		setup: function(){
 			// NOTE reset for gradeA tests
 			$('html').removeClass('ui-mobile');
